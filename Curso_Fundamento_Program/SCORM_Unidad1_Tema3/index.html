@@ -1,0 +1,144 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Unidad 1 · Tema 3 — Estructuras secuenciales</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <script src="scorm.js"></script>
+</head>
+<body>
+  <main>
+    <aside>
+      <div class="logo">Menú del OVA</div>
+      <nav class="menu">
+        <a href="#intro" class="active">🏠 Introducción</a>
+        <a href="#tema">🧭 Desarrollo del Tema</a>
+        <a href="#buenaspracticas">✅ Buenas prácticas</a>
+        <a href="#ejemplos">📄 Ejemplos</a>
+        <a href="#ejercicios">✍️ Ejercicios</a>
+        <a href="#evaluacion">🏁 Evaluación</a>
+      </nav>
+      <footer class="aside">
+        Universidad de Córdoba<br>
+        Téc. Prof. en Programación Web
+      </footer>
+    </aside>
+
+    <section class="content">
+      <div id="intro" class="block">
+        <h1>Estructuras Secuenciales ▶️</h1>
+        <p class="lead">La forma más básica de un algoritmo: ejecutar <strong>instrucciones en orden</strong>, de arriba hacia abajo, sin bifurcaciones ni repeticiones. Son la base sobre la que luego incorporamos condiciones e iteraciones.</p>
+        <span class="badge">Unidad 1 · Tema 3 — Secuencial</span>
+      </div>
+
+      <div id="tema" class="block">
+        <h2>Definición y patrón E–P–S</h2>
+        <div class="card">
+          <p><strong>Estructura secuencial:</strong> ejecución lineal paso a paso.</p>
+          <ul>
+            <li><strong>Entrada (E):</strong> datos que recibes.</li>
+            <li><strong>Proceso (P):</strong> transformaciones y cálculos.</li>
+            <li><strong>Salida (S):</strong> resultados mostrados.</li>
+          </ul>
+          <div class="note">No hay saltos condicionales ni repeticiones. Es el “esqueleto” de cualquier programa.</div>
+        </div>
+      </div>
+
+      <div id="buenaspracticas" class="block">
+        <h2>Buenas prácticas ✅</h2>
+        <div class="grid cols-3">
+          <div class="card">
+            <h3>1. Orden y nombres</h3>
+            <p>Escribe pasos en el orden real de ejecución y usa nombres claros para variables.</p>
+          </div>
+          <div class="card">
+            <h3>2. Entrada validada</h3>
+            <p>Asegura que los datos ingresados tengan formato y rango válidos antes de procesar.</p>
+          </div>
+          <div class="card">
+            <h3>3. Salida útil</h3>
+            <p>Muestra resultados comprensibles y con unidades cuando aplique.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="ejemplos" class="block">
+        <h2>Ejemplos 📄</h2>
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>Ejemplo 1: Saludo</h3>
+            <pre style="white-space:pre-wrap;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px">
+INICIO
+  leer nombre
+  mostrar "Hola, " + nombre
+FIN</pre>
+          </div>
+          <div class="card">
+            <h3>Ejemplo 2: Área de Triángulo</h3>
+            <pre style="white-space:pre-wrap;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px">
+INICIO
+  leer base, altura
+  area ← (base * altura) / 2
+  mostrar "Área: " + area
+FIN</pre>
+          </div>
+          <div class="card" style="grid-column:1/-1">
+            <h3>Ejemplo 3: Suma de Dos Números</h3>
+            <pre style="white-space:pre-wrap;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px">
+INICIO
+  leer a, b
+  suma ← a + b
+  mostrar "Suma: " + suma
+FIN</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="ejercicios" class="block">
+        <h2>¡Practica! ✍️</h2>
+        <div class="grid cols-3">
+          <div class="card">
+            <h3>1. Conversor de Temperatura</h3>
+            <p>Lee °C y muestra °F. Fórmula: F = (C × 9/5) + 32.</p>
+          </div>
+          <div class="card">
+            <h3>2. Perímetro de Rectángulo</h3>
+            <p>Lee base y altura, calcula 2×(base+altura) y muestra resultado.</p>
+          </div>
+          <div class="card">
+            <h3>3. Promedio Simple</h3>
+            <p>Lee 3 números, calcula promedio y muestra en pantalla.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="evaluacion" class="block">
+        <h2>Evaluación 🏁</h2>
+        <div class="quiz">
+          <div class="q">
+            <p><strong>1.</strong> La estructura secuencial se caracteriza por…</p>
+            <label><input type="radio" name="q1" value="a"> Bifurcaciones múltiples (if/else).</label><br>
+            <label><input type="radio" name="q1" value="b"> Ejecución lineal paso a paso sin saltos.</label><br>
+            <label><input type="radio" name="q1" value="c"> Repeticiones controladas (while/for).</label>
+          </div>
+          <div class="q">
+            <p><strong>2.</strong> ¿Cuál de las siguientes secuencias es secuencial?</p>
+            <label><input type="radio" name="q2" value="a"> leer → calcular → mostrar</label><br>
+            <label><input type="radio" name="q2" value="b"> si (x>0) entonces…</label><br>
+            <label><input type="radio" name="q2" value="c"> mientras (x<10) hacer…</label>
+          </div>
+          <div class="q">
+            <p><strong>3.</strong> Escribe en 3–5 líneas un pseudocódigo secuencial que lea dos números, calcule su multiplicación y muestre el resultado.</p>
+            <textarea id="q3" rows="4" style="width:100%;border-radius:12px;border:1px solid #e5e7eb;padding:10px"></textarea>
+          </div>
+          <button id="btn-eval">Verificar respuestas</button>
+          <div id="quiz-result" class="result"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

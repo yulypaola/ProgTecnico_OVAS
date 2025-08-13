@@ -1,0 +1,161 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Unidad 1 · Tema 2 — Identificación y análisis de problemas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <script src="scorm.js"></script>
+</head>
+<body>
+  <main>
+    <aside>
+      <div class="logo">Menú del OVA</div>
+      <nav class="menu">
+        <a href="#intro" class="active">🏠 Introducción</a>
+        <a href="#tema">🧭 Desarrollo del Tema</a>
+        <a href="#experiencias">💡 Experiencias</a>
+        <a href="#marco">🧩 Entradas, Salidas y Restricciones</a>
+        <a href="#ejemplos">📄 Ejemplos</a>
+        <a href="#ejercicios">✍️ Ejercicios</a>
+        <a href="#evaluacion">🏁 Evaluación</a>
+      </nav>
+      <footer class="aside">
+        Universidad de Córdoba<br>
+        Téc. Prof. en Programación Web
+      </footer>
+    </aside>
+
+    <section class="content">
+      <div id="intro" class="block">
+        <h1>Identificar antes de programar 👀</h1>
+        <p class="lead">Antes de escribir código, un buen programador define con precisión el problema. En este tema aprenderás a <strong>delimitar</strong> qué se debe resolver, <strong>analizar</strong> datos de entrada/salida y <strong>detectar restricciones</strong> para proponer soluciones lógicas.</p>
+        <span class="badge">Unidad 1 · Tema 2 — Identificación y análisis</span>
+      </div>
+
+      <div id="tema" class="block">
+        <h2>Ruta de análisis 🧭</h2>
+        <div class="card">
+          <ol>
+            <li><strong>Comprender el contexto:</strong> quién lo necesita y para qué.</li>
+            <li><strong>Delimitar alcance:</strong> qué incluye y qué no incluye.</li>
+            <li><strong>Definir entradas/salidas:</strong> datos que recibe y resultados esperados.</li>
+            <li><strong>Listar restricciones:</strong> reglas, validaciones, tiempos, formatos.</li>
+            <li><strong>Criterios de éxito:</strong> cómo sabrás que funciona.</li>
+          </ol>
+          <div class="note">Consejo: anota los supuestos y valida con tu docente o cliente.</div>
+        </div>
+      </div>
+
+      <div id="experiencias" class="block">
+        <h2>Voces del equipo 💡</h2>
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>Analista de Requerimientos</h3>
+            <p>"Mi tarea es entender el problema real. Un buen análisis evita retrabajo y soluciones equivocadas."</p>
+          </div>
+          <div class="card">
+            <h3>QA / Tester</h3>
+            <p>"Yo traduzco el análisis en casos de prueba. Si las <em>salidas</em> no están claras, no puedo validar el éxito."</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="marco" class="block">
+        <h2>Marco del problema 🧩</h2>
+        <div class="grid cols-3">
+          <div class="card">
+            <h3>Entradas</h3>
+            <ul>
+              <li>Datos proporcionados por el usuario o sistema.</li>
+              <li>Formato y rango válidos.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Proceso</h3>
+            <ul>
+              <li>Transformaciones y reglas de negocio.</li>
+              <li>Algoritmos aplicados.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Salidas</h3>
+            <ul>
+              <li>Resultados visibles o acciones.</li>
+              <li>Métricas para verificar éxito.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div id="ejemplos" class="block">
+        <h2>Ejemplos prácticos 📄</h2>
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>Ejemplo 1: Salario Neto</h3>
+            <ul>
+              <li><strong>Entradas:</strong> horas, tarifa, % deducciones.</li>
+              <li><strong>Proceso:</strong> (horas×tarifa)−deducciones.</li>
+              <li><strong>Salida:</strong> salario neto.</li>
+              <li><strong>Restricciones:</strong> horas ≥ 0; tarifa ≥ SMMLV/h; % 0–100.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Ejemplo 2: Validador de Correo</h3>
+            <ul>
+              <li><strong>Entradas:</strong> email.</li>
+              <li><strong>Proceso:</strong> comprobar formato y existencia.</li>
+              <li><strong>Salida:</strong> “válido” / “inválido”.</li>
+              <li><strong>Restricciones:</strong> dominio permitido, sin espacios.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div id="ejercicios" class="block">
+        <h2>¡Practica el análisis! ✍️</h2>
+        <div class="grid cols-3">
+          <div class="card">
+            <h3>1. Calculadora de Promedio</h3>
+            <p>Define entradas, proceso, salidas y restricciones para tres notas (0–5).</p>
+          </div>
+          <div class="card">
+            <h3>2. Registro de Usuario</h3>
+            <p>Analiza qué datos mínimos necesitas y qué validaciones aplicar.</p>
+          </div>
+          <div class="card">
+            <h3>3. Filtro de Productos</h3>
+            <p>Diseña el análisis para filtrar por precio, categoría y disponibilidad.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="evaluacion" class="block">
+        <h2>Evaluación 🏁</h2>
+        <div class="quiz">
+          <div class="q">
+            <p><strong>1.</strong> ¿Cuál es la mejor secuencia para analizar un problema?</p>
+            <label><input type="radio" name="q1" value="a"> Probar, codificar, preguntar al final.</label><br>
+            <label><input type="radio" name="q1" value="b"> Codificar primero y analizar después.</label><br>
+            <label><input type="radio" name="q1" value="c"> Contexto → alcance → E/S → restricciones → éxito.</label>
+          </div>
+          <div class="q">
+            <p><strong>2.</strong> ¿Qué elemento NO corresponde a una entrada?</p>
+            <label><input type="radio" name="q2" value="a"> Correo electrónico ingresado por el usuario.</label><br>
+            <label><input type="radio" name="q2" value="b"> Mensaje “Bienvenido, Rubén”.</label><br>
+            <label><input type="radio" name="q2" value="c"> Precio digitado en un formulario.</label>
+          </div>
+          <div class="q">
+            <p><strong>3.</strong> Redacta en 3–4 líneas el análisis (E/S, proceso, restricciones) para un sistema que calcule el costo de envío según peso y destino.</p>
+            <textarea id="q3" rows="4" style="width:100%;border-radius:12px;border:1px solid #e5e7eb;padding:10px"></textarea>
+          </div>
+          <button id="btn-eval">Verificar respuestas</button>
+          <div id="quiz-result" class="result"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

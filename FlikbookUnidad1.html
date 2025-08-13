@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVA Flipbook: La Importancia de Programar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .book-container {
+            width: 95vw;
+            height: 90vh;
+            max-width: 1200px;
+            position: relative;
+            perspective: 2500px;
+        }
+
+        .book {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .page {
+            width: 50%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            right: 0;
+            transform-origin: left;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background-color: white;
+            overflow: hidden;
+            border-left: 1px solid #e2e8f0; 
+            box-shadow: 10px 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .page-front, .page-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            overflow-y: auto;
+            padding: 2.5rem;
+        }
+        
+        .page-front::-webkit-scrollbar, .page-back::-webkit-scrollbar { display: none; }
+        .page-front, .page-back { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .page-back {
+            background-color: white; /* El respaldo de la página siempre es blanco */
+            transform: rotateY(180deg);
+            border: 1px solid #e2e8f0;
+        }
+
+        .flipped {
+            transform: rotateY(-180deg);
+        }
+        
+        .page-number {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 w-screen h-screen overflow-hidden">
+
+    <!-- Contenido principal -->
+    <main class="w-full h-full p-4 md:p-8 flex items-center justify-center">
+        <div class="book-container">
+            <div id="book" class="book">
+                <!-- Aquí se crean las páginas individuales del libro. Cada '.page' es una hoja que se puede pasar. -->
+                
+                <!-- Página 1: Portada -->
+                <div class="page">
+                    <div class="page-front">
+                        <div class="text-center flex flex-col items-center justify-center h-full">
+                            <h2 class="text-4xl font-bold text-gray-800">La Importancia de Programar</h2>
+                            <p class="text-xl text-gray-600 mt-4">El Superpoder de Crear y Resolver Problemas</p>
+                            <div class="mt-12 text-[#1A5D1A]">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                            </div>
+                            <p class="mt-8 text-lg">Un Objeto Virtual de Aprendizaje</p>
+                            <div class="mt-4 text-xs text-center text-gray-500">
+                                <p>Universidad de Córdoba</p>
+                                <p>Téc. Prof. en Programación Web</p>
+                            </div>
+                        </div>
+                        <div class="page-number">1</div>
+                    </div>
+                    <div class="page-back"></div>
+                </div>
+
+                <!-- Página 2: Introducción -->
+                <div class="page">
+                    <div class="page-front">
+                        <h3 class="text-2xl font-bold text-[#1A5D1A] mb-4">🏠 ¡Bienvenido, futuro creador!</h3>
+                        <div class="text-gray-700 space-y-4 text-base leading-relaxed">
+                            <p>Piensa en la programación como aprender un nuevo idioma. Pero en vez de hablar con personas de otros países, aprendes a <strong class="font-semibold">"hablar" con los computadores</strong>. Y cuando sabes su idioma, puedes pedirles que hagan cosas asombrosas.</p>
+                            <p>Desde la app que usas para pedir un domicilio en Montería, hasta las plataformas de streaming que te recomiendan la última canción de tu artista vallenato favorito, todo es obra de la programación.</p>
+                            <p>Este no es solo un camino para conseguir un trabajo. Es una invitación a convertirte en un <strong class="font-semibold">solucionador de problemas</strong>, un innovador y un arquitecto del mundo digital. Estás en el lugar correcto, en el momento correcto.</p>
+                        </div>
+                        <div class="page-number">2</div>
+                    </div>
+                    <div class="page-back"></div>
+                </div>
+
+                <!-- Página 3: Desarrollo del Tema 1 -->
+                <div class="page">
+                    <div class="page-front">
+                        <h3 class="text-2xl font-bold text-[#1A5D1A] mb-4">🚀 La Programación: Tu Herramienta Principal</h3>
+                        <div class="text-gray-700 space-y-4 text-base leading-relaxed">
+                            <p>Programar es el arte de darle a un computador una serie de <strong class="font-semibold">instrucciones lógicas y precisas</strong> para lograr un objetivo. Sin el programador, el computador es solo una caja inerte. Contigo, se convierte en una herramienta sin límites.</p>
+                            <h4 class="font-semibold text-lg pt-2">¿Por qué es el Corazón de la Web?</h4>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li><strong>Da vida a los diseños:</strong> Un diseñador puede crear una interfaz hermosa, pero es el programador quien la hace funcionar. Cada clic, cada formulario, cada animación, es código en acción.</li>
+                                <li><strong>Maneja la información:</strong> La web es un universo de datos. La programación gestiona cómo se guardan, se buscan y se muestran estos datos de forma segura y eficiente.</li>
+                                <li><strong>Automatiza procesos:</strong> Tareas que tomarían horas a una persona, un programa las puede hacer en segundos. Desde enviar un correo de bienvenida hasta procesar miles de pagos.</li>
+                            </ul>
+                        </div>
+                        <div class="page-number">3</div>
+                    </div>
+                    <div class="page-back"></div>
+                </div>
+                
+                <!-- Página 4: Desarrollo del Tema 2 -->
+                <div class="page">
+                    <div class="page-front">
+                        <h3 class="text-2xl font-bold text-[#1A5D1A] mb-4">🤔 ¿Qué NO es programar?</h3>
+                        <div class="text-gray-700 space-y-4 text-base leading-relaxed">
+                            <p>Es igual de importante aclarar algunas ideas erróneas comunes:</p>
+                            <ul class="list-none space-y-4">
+                                <li class="flex items-start">
+                                    <span class="text-red-500 font-bold text-xl mr-3">✖</span>
+                                    <div><strong>No es solo para genios matemáticos:</strong> La lógica es clave, pero la creatividad y la perseverancia son mucho más importantes.</div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-red-500 font-bold text-xl mr-3">✖</span>
+                                    <div><strong>No es saber arreglar computadores:</strong> Ser programador no te convierte automáticamente en técnico de hardware. Tu campo de juego es el software.</div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-red-500 font-bold text-xl mr-3">✖</span>
+                                     <div><strong>No es una actividad solitaria:</strong> Hoy, el software se construye en equipo. Aprenderás a colaborar y comunicarte con otros programadores.</div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="page-number">4</div>
+                    </div>
+                    <div class="page-back"></div>
+                </div>
+
+                 <!-- Página 5: Experiencias 1 -->
+                <div class="page">
+                    <div class="page-front">
+                        <h3 class="text-2xl font-bold text-[#1A5D1A] mb-4">💡 El Día a Día de un Programador</h3>
+                        <div class="text-gray-700 space-y-4 text-base">
+                             <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <h4 class="font-bold text-green-800">Mateo, Egresado de Unicórdoba - Desarrollador Remoto</h4>
+                                <p class="italic mt-2">"Mi día a día es una mezcla interesante:</p>
+                                <ul class="list-disc list-inside mt-2 space-y-1">
+                                    <li><strong>Reunión de equipo (15 min):</strong> Empezamos el día contando qué hicimos ayer y qué haremos hoy.</li>
+                                    <li><strong>Programación pura (3-4 horas):</strong> Me concentro en resolver un problema. A veces es crear una nueva función, otras es corregir un error ('bug').</li>
+                                    <li><strong>Investigación:</strong> ¡Nadie lo sabe todo! Paso mucho tiempo en Google o foros como Stack Overflow buscando la mejor manera de resolver algo.</li>
+                                    <li><strong>Pruebas y colaboración:</strong> Reviso el código de mis compañeros y ellos el mío. Así aprendemos todos y aseguramos la calidad."</li>
+                                </ul>
+                             </div>
+                        </div>
+                        <div class="page-number">5</div>
+                    </div>
+                    <div class="page-back"></div>
+                </div>
+
+                <!-- Página 6: Experiencias 2 -->
+                <div class="page">
+                    <div class="page-front">
+                         <h3 class="text-2xl font-bold text-[#1A5D1A] mb-4">🌐 Roles Comunes en la Web</h3>
+                         <div class="text-gray-700 space-y-3 text-sm">
+                            <p>En el mundo del desarrollo web, la gente suele especializarse:</p>
+                            <div class="p-3 bg-gray-50 rounded-lg">
+                                <strong class="text-gray-800">Desarrollador Frontend:</strong> Es el "arquitecto" de lo que ves. Se encarga de que la web sea interactiva y fácil de usar. Usa HTML, CSS y JavaScript.
+                            </div>
+                            <div class="p-3 bg-gray-50 rounded-lg">
+                                <strong class="text-gray-800">Desarrollador Backend:</strong> Es el "ingeniero" de lo que no ves. Construye el cerebro de la aplicación, las bases de datos y la seguridad.
+                            </div>
+                            <div class="p-3 bg-gray-50 rounded-lg">
+                                <strong class="text-gray-800">Desarrollador Full-Stack:</strong> Un perfil muy completo. Trabaja tanto en el Frontend como en el Backend. Sabe diseñar los planos y construir los cimientos.
+                            </div>
+                         </div>
+                        <div class="page-number">6</div>
+                    </div>
+                    <div class="page-back"></div>
+                </div>
+                
+            </div>
+
+            <!-- Controles de Navegación del Libro -->
+            <div class="absolute bottom-4 w-full flex justify-center space-x-4">
+                <button id="prev-btn" class="bg-[#1A5D1A] text-white font-bold py-2 px-6 rounded-lg hover:bg-[#134213] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">Anterior</button>
+                <button id="next-btn" class="bg-[#1A5D1A] text-white font-bold py-2 px-6 rounded-lg hover:bg-[#134213] transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">Siguiente</button>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const book = document.getElementById('book');
+            const pages = Array.from(book.querySelectorAll('.page'));
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            let currentPageIndex = 0;
+            const totalPages = pages.length;
+
+            // Establece el z-index inicial para que las páginas se apilen correctamente
+            pages.forEach((page, index) => {
+                page.style.zIndex = totalPages - index;
+            });
+
+            function updateBook() {
+                // Recorre las páginas y aplica la clase 'flipped' a las que ya se han pasado
+                pages.forEach((page, index) => {
+                    if (index < currentPageIndex) {
+                        page.classList.add('flipped');
+                    } else {
+                        page.classList.remove('flipped');
+                    }
+                });
+
+                // Habilita o deshabilita los botones de navegación
+                prevBtn.disabled = currentPageIndex === 0;
+                nextBtn.disabled = currentPageIndex === totalPages;
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPageIndex < totalPages) {
+                    currentPageIndex++;
+                    updateBook();
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPageIndex > 0) {
+                    currentPageIndex--;
+                    updateBook();
+                }
+            });
+            
+            // Inicializa la vista del libro
+            updateBook();
+        });
+    </script>
+</body>
+</html>

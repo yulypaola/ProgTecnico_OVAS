@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVA: La Importancia de Programar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Estilo para el botón activo en la barra lateral */
+        .sidebar-btn.active {
+            background-color: #ffffff;
+            color: #1a5d1a;
+            font-weight: 600;
+        }
+        /* Ocultar scrollbar pero permitir scroll */
+        .content-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .content-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="flex h-screen bg-white">
+        <!-- Barra lateral de navegación -->
+        <aside id="sidebar" class="w-64 bg-[#1A5D1A] text-white p-6 flex flex-col justify-between shadow-lg">
+            <div>
+                <h1 class="text-2xl font-bold mb-8 text-center">Menú del OVA</h1>
+                <nav id="nav-menu" class="space-y-3">
+                    <button data-target="introduccion" class="sidebar-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-[#1A5D1A] active">
+                        🏠 Introducción
+                    </button>
+                    <button data-target="desarrollo" class="sidebar-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-[#1A5D1A]">
+                        🚀 Desarrollo del Tema
+                    </button>
+                    <button data-target="experiencias" class="sidebar-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-[#1A5D1A]">
+                        💡 Experiencias
+                    </button>
+                    <button data-target="algoritmos" class="sidebar-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-[#1A5D1A]">
+                        🧠 ¿Qué es un Algoritmo?
+                    </button>
+                    <button data-target="ejemplos" class="sidebar-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-[#1A5D1A]">
+                        📋 Ejemplos de Algoritmos
+                    </button>
+                    <button data-target="ejercicios" class="sidebar-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-[#1A5D1A]">
+                        ✍️ Ejercicios Aplicados
+                    </button>
+                    <button data-target="evaluacion" class="sidebar-btn w-full text-left px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white hover:text-[#1A5D1A]">
+                        🏁 Evaluación Final
+                    </button>
+                </nav>
+            </div>
+            <div class="text-center text-xs">
+                <p>Universidad de Córdoba</p>
+                <p>Téc. Prof. en Programación Web</p>
+            </div>
+        </aside>
+
+        <!-- Contenido principal -->
+        <main id="main-content" class="flex-1 p-6 md:p-10 overflow-y-auto content-scroll">
+            <div id="content-sections">
+                <!-- Sección de Introducción -->
+                <div id="introduccion" class="content-section">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">🏠 ¡Bienvenido, futuro creador de la web! 👋</h2>
+                    <div class="space-y-4 text-lg text-gray-700 leading-relaxed">
+                        <p>¿Alguna vez te has preguntado cómo funcionan aplicaciones como Instagram, Netflix o Spotify? La respuesta no es magia, es <strong class="text-[#1A5D1A]">programación</strong>.</p>
+                        <p>Estás a punto de entrar a un mundo donde tendrás el superpoder de darle vida a tus ideas. Aprender a programar no es solo escribir código; es aprender a <strong class="text-[#1A5D1A]">pensar de una manera diferente</strong>, a resolver problemas de forma lógica y a construir las herramientas digitales que el mundo usará mañana.</p>
+                        <p>En este Objeto Virtual de Aprendizaje (OVA), descubrirás por qué la programación es el pilar de tu futura carrera y cómo te convertirá en un profesional indispensable en esta era digital. ¡Prepárate para cambiar tu forma de ver la tecnología para siempre!</p>
+                    </div>
+                </div>
+
+                <!-- Sección de Desarrollo del Tema -->
+                <div id="desarrollo" class="content-section hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">🚀 La Programación: Tu Herramienta Principal</h2>
+                    <div class="space-y-6 text-lg text-gray-700">
+                        <p>Programar es, en esencia, <strong class="text-[#1A5D1A]">darle instrucciones claras a un computador</strong> para que realice una tarea específica. Es el lenguaje que usamos para comunicarnos con la tecnología que nos rodea.</p>
+                        <div class="bg-green-50 p-6 rounded-xl border border-green-200">
+                            <h3 class="text-xl font-semibold text-[#1A5D1A] mb-3">¿Por qué es tan importante para un Programador Web?</h3>
+                            <ul class="list-disc list-inside space-y-3">
+                                <li><strong class="font-semibold">Todo es Programación:</strong> Desde el botón que un usuario presiona para iniciar sesión hasta el sistema que procesa una compra en línea, todo funciona con código. Sin programación, una web sería solo un documento de texto estático y aburrido.</li>
+                                <li><strong class="font-semibold">Resolución de Problemas:</strong> Ser programador es ser un "solucionador" de problemas profesional. Aprenderás a tomar un gran desafío (como "crear una red social") y dividirlo en partes pequeñas y manejables que puedes resolver con código.</li>
+                                <li><strong class="font-semibold">Desarrolla tu Lógica:</strong> La programación te obliga a pensar de forma estructurada y lógica. Esta habilidad no solo te servirá para programar, sino en todos los aspectos de tu vida.</li>
+                                <li><strong class="font-semibold">Innovación y Creatividad:</strong> Con la programación, el único límite es tu imaginación. Puedes crear desde un simple blog personal hasta una compleja aplicación web interactiva que ayude a miles de personas.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección de Experiencias -->
+                <div id="experiencias" class="content-section hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">💡 El Día a Día de un Programador</h2>
+                     <div class="grid md:grid-cols-2 gap-6 text-gray-700">
+                        <div class="bg-white p-6 rounded-xl shadow-md border">
+                            <h3 class="text-xl font-bold text-[#1A5D1A] mb-2">Ana, Desarrolladora Frontend</h3>
+                            <p class="italic">"Mi trabajo es lo que el usuario ve y con lo que interactúa. Uso lenguajes como JavaScript para crear animaciones, menús interactivos y asegurar que la web se vea genial en un celular o en un computador. Es como ser una arquitecta digital. Me encanta cuando veo a la gente usar fácilmente algo que yo construí".</p>
+                        </div>
+                         <div class="bg-white p-6 rounded-xl shadow-md border">
+                            <h3 class="text-xl font-bold text-[#1A5D1A] mb-2">Carlos, Desarrollador Backend</h3>
+                            <p class="italic">"Yo trabajo 'detrás del escenario'. Cuando te registras en una página, yo escribo el código que guarda tu información de forma segura en la base de datos. Me aseguro de que el sitio funcione rápido y sin errores. Es como ser el ingeniero de un motor: no lo ves, pero sin él, el auto no anda".</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md border md:col-span-2">
+                            <h3 class="text-xl font-bold text-[#1A5D1A] mb-2">Sofía, Programadora Freelance de Montería</h3>
+                            <p class="italic">"Saber programar me dio libertad. Puedo trabajar desde mi casa en Montería para clientes en Bogotá, Medellín o incluso en otros países. Cada proyecto es un nuevo reto: un día estoy creando una tienda en línea para un emprendedor local y al siguiente estoy ayudando a una empresa a automatizar sus tareas. ¡Nunca es aburrido!".</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección de Algoritmos -->
+                <div id="algoritmos" class="content-section hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">🧠 ¿Qué es un Algoritmo?</h2>
+                    <div class="space-y-4 text-lg text-gray-700 leading-relaxed">
+                        <p>Antes de escribir una sola línea de código, necesitas un <strong class="text-[#1A5D1A]">algoritmo</strong>.</p>
+                        <p>Un algoritmo es simplemente una <strong class="font-semibold">secuencia de pasos ordenados y finitos para resolver un problema</strong>. ¡Usas algoritmos todos los días sin darte cuenta!</p>
+                        <div class="bg-green-50 p-6 rounded-xl border border-green-200 mt-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-3">Ejemplo cotidiano: Hacer Arroz con Coco</h3>
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li><strong>INICIO</strong></li>
+                                <li>Rallar el coco.</li>
+                                <li>Exprimir el coco para sacar la primera leche (el titoté).</li>
+                                <li>Poner la primera leche en el caldero a fuego alto hasta que salga el aceite y se dore.</li>
+                                <li>Agregar el arroz y sofreír.</li>
+                                <li>Añadir el resto de la leche de coco y el agua necesaria.</li>
+                                <li>Agregar sal y azúcar al gusto.</li>
+                                <li>Esperar a que se seque y tapar a fuego bajo.</li>
+                                <li>Servir cuando esté listo.</li>
+                                <li><strong>FIN</strong></li>
+                            </ol>
+                            <p class="mt-4 text-sm text-gray-600">Si te saltas un paso o cambias el orden, el resultado no será el mismo. En programación, ocurre exactamente lo mismo. El algoritmo es tu <strong class="font-semibold">plan de acción</strong> antes de programar.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección de Ejemplos -->
+                <div id="ejemplos" class="content-section hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">📋 Ejemplos de Algoritmos en la Web</h2>
+                    <div class="space-y-8">
+                        <div class="bg-white p-6 rounded-xl border shadow-sm">
+                             <h3 class="text-xl font-bold text-[#1A5D1A] mb-3">Ejemplo 1: Inicio de Sesión (Login)</h3>
+                             <p class="mb-3 text-gray-600"><strong>Problema:</strong> Verificar si un usuario puede acceder a su cuenta.</p>
+                             <ol class="list-decimal list-inside space-y-1 text-gray-700 bg-gray-50 p-4 rounded-lg">
+                                 <li><strong>INICIO</strong></li>
+                                 <li>Pedir al usuario su correo y contraseña.</li>
+                                 <li>Buscar en la base de datos si el correo existe.</li>
+                                 <li><strong>SI</strong> el correo existe, comparar la contraseña ingresada con la guardada.</li>
+                                 <li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>SI</strong> las contraseñas coinciden, <strong>ENTONCES</strong> mostrarle su página de perfil.</li>
+                                 <li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>SI NO</strong> coinciden, <strong>ENTONCES</strong> mostrar un mensaje de "Contraseña incorrecta".</li>
+                                 <li><strong>SI NO</strong> el correo no existe, <strong>ENTONCES</strong> mostrar un mensaje de "Usuario no encontrado".</li>
+                                 <li><strong>FIN</strong></li>
+                             </ol>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl border shadow-sm">
+                             <h3 class="text-xl font-bold text-[#1A5D1A] mb-3">Ejemplo 2: Agregar producto al carrito</h3>
+                              <p class="mb-3 text-gray-600"><strong>Problema:</strong> Añadir un artículo que el usuario quiere comprar.</p>
+                             <ol class="list-decimal list-inside space-y-1 text-gray-700 bg-gray-50 p-4 rounded-lg">
+                                 <li><strong>INICIO</strong></li>
+                                 <li>El usuario hace clic en el botón "Añadir al carrito".</li>
+                                 <li>Identificar el producto seleccionado (nombre, precio, ID).</li>
+                                 <li>Verificar si ya existe un carrito para ese usuario.</li>
+                                 <li><strong>SI</strong> existe, agregar el producto al carrito existente.</li>
+                                 <li><strong>SI NO</strong> existe, crear un nuevo carrito y agregar el producto.</li>
+                                 <li>Actualizar el ícono del carrito con la nueva cantidad de productos.</li>
+                                 <li>Mostrar un mensaje de confirmación: "¡Producto añadido!".</li>
+                                 <li><strong>FIN</strong></li>
+                             </ol>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección de Ejercicios -->
+                <div id="ejercicios" class="content-section hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">✍️ ¡Ahora a Practicar!</h2>
+                    <p class="text-lg text-gray-600 mb-6">¡Es tu turno de pensar como programador! No necesitas escribir código, solo describe el algoritmo (los pasos) para resolver estos problemas.</p>
+                    <div class="space-y-6">
+                        <div class="bg-green-50 p-6 rounded-xl">
+                            <h3 class="font-semibold text-xl text-gray-800">1. Formulario de Contacto</h3>
+                            <p class="mt-2 text-gray-700">Un usuario llena un formulario en una página web con su nombre, email y un mensaje, y luego presiona "Enviar". Describe el algoritmo de lo que debe pasar después. ¿Qué verificaciones harías? ¿Qué mensaje le mostrarías al usuario al final?</p>
+                        </div>
+                        <div class="bg-green-50 p-6 rounded-xl">
+                            <h3 class="font-semibold text-xl text-gray-800">2. Buscador de Canciones</h3>
+                            <p class="mt-2 text-gray-700">Piensa en Spotify. Un usuario escribe "Joe Arroyo" en la barra de búsqueda y presiona Enter. Describe el algoritmo que debería seguir la plataforma para mostrarle los resultados.</p>
+                        </div>
+                        <div class="bg-green-50 p-6 rounded-xl">
+                            <h3 class="font-semibold text-xl text-gray-800">3. Botón de "Seguir"</h3>
+                            <p class="mt-2 text-gray-700">Describe el algoritmo para un botón de "Seguir" en un perfil de Instagram. ¿Qué pasa la primera vez que un usuario le da clic? ¿Y qué pasa si le vuelve a dar clic (para dejar de seguir)?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección de Evaluación -->
+                <div id="evaluacion" class="content-section hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">🏁 Evaluación Final</h2>
+                    <p class="text-lg text-gray-600 mb-6">Demuestra lo que has aprendido. Responde las siguientes preguntas y luego haz clic en "Verificar Respuestas".</p>
+                    <div id="quiz-form" class="space-y-8">
+                        <!-- Pregunta 1 -->
+                        <div>
+                            <p class="font-semibold text-lg text-gray-800">1. ¿Cuál es la mejor definición de "programar"?</p>
+                            <div class="mt-2 space-y-2">
+                                <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50">
+                                    <input type="radio" name="q1" value="a" class="h-5 w-5 text-green-600 focus:ring-green-500">
+                                    <span class="ml-3 text-gray-700">a) Dibujar páginas web bonitas.</span>
+                                </label>
+                                <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50">
+                                    <input type="radio" name="q1" value="b" class="h-5 w-5 text-green-600 focus:ring-green-500">
+                                    <span class="ml-3 text-gray-700">b) Darle instrucciones a un computador de forma ordenada para que resuelva un problema.</span>
+                                </label>
+                                <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50">
+                                    <input type="radio" name="q1" value="c" class="h-5 w-5 text-green-600 focus:ring-green-500">
+                                    <span class="ml-3 text-gray-700">c) Instalar programas en un computador.</span>
+                                </label>
+                            </div>
+                        </div>
+                        <!-- Pregunta 2 -->
+                        <div>
+                             <p class="font-semibold text-lg text-gray-800">2. Un algoritmo es...</p>
+                             <div class="mt-2 space-y-2">
+                                <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50">
+                                    <input type="radio" name="q2" value="a" class="h-5 w-5 text-green-600 focus:ring-green-500">
+                                    <span class="ml-3 text-gray-700">a) Un lenguaje de programación como Python o JavaScript.</span>
+                                </label>
+                                <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50">
+                                    <input type="radio" name="q2" value="b" class="h-5 w-5 text-green-600 focus:ring-green-500">
+                                    <span class="ml-3 text-gray-700">b) Un error en el código.</span>
+                                </label>
+                                <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50">
+                                    <input type="radio" name="q2" value="c" class="h-5 w-5 text-green-600 focus:ring-green-500">
+                                    <span class="ml-3 text-gray-700">c) Un plan con pasos claros y ordenados para solucionar una tarea.</span>
+                                </label>
+                             </div>
+                        </div>
+                        <!-- Pregunta 3 -->
+                        <div>
+                             <p class="font-semibold text-lg text-gray-800">3. En tus propias palabras, ¿por qué es importante un algoritmo antes de empezar a escribir código?</p>
+                            <textarea id="q3" rows="4" class="mt-2 w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500" placeholder="Escribe tu respuesta aquí..."></textarea>
+                        </div>
+                        
+                        <button id="check-answers-btn" class="bg-[#1A5D1A] text-white font-bold py-3 px-8 rounded-lg hover:bg-[#134213] transition-all duration-200">
+                            Verificar Respuestas
+                        </button>
+                        
+                        <div id="quiz-results" class="hidden mt-6 p-6 rounded-lg"></div>
+
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navMenu = document.getElementById('nav-menu');
+            const contentSections = document.querySelectorAll('.content-section');
+            const sidebarButtons = navMenu.querySelectorAll('.sidebar-btn');
+
+            navMenu.addEventListener('click', (event) => {
+                const targetButton = event.target.closest('.sidebar-btn');
+                if (!targetButton) return;
+
+                const targetId = targetButton.dataset.target;
+                if (!targetId) return;
+                
+                // Actualizar botones
+                sidebarButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                targetButton.classList.add('active');
+
+                // Mostrar contenido
+                contentSections.forEach(section => {
+                    if (section.id === targetId) {
+                        section.classList.remove('hidden');
+                    } else {
+                        section.classList.add('hidden');
+                    }
+                });
+                
+                // Scroll al inicio del contenido
+                 document.getElementById('main-content').scrollTo(0, 0);
+            });
+
+            // Lógica para la evaluación
+            const checkAnswersBtn = document.getElementById('check-answers-btn');
+            const quizResultsDiv = document.getElementById('quiz-results');
+
+            checkAnswersBtn.addEventListener('click', () => {
+                let score = 0;
+                const totalQuestions = 3;
+
+                // Respuesta Q1
+                const q1Answer = document.querySelector('input[name="q1"]:checked');
+                if (q1Answer && q1Answer.value === 'b') {
+                    score++;
+                }
+
+                // Respuesta Q2
+                const q2Answer = document.querySelector('input[name="q2"]:checked');
+                if (q2Answer && q2Answer.value === 'c') {
+                    score++;
+                }
+                
+                // Respuesta Q3
+                const q3Answer = document.getElementById('q3').value;
+                if (q3Answer.trim().length > 10) { // Simple check for a thoughtful answer
+                    score++;
+                }
+
+                let resultMessage = `<h3>Resultados de la Evaluación</h3>`;
+                resultMessage += `<p class="my-2">Has respondido correctamente ${score} de ${totalQuestions} preguntas.</p>`;
+                
+                let feedbackClass = '';
+
+                if (score === totalQuestions) {
+                    resultMessage += `<p class="font-semibold">¡Excelente! Has comprendido todos los conceptos clave. ¡Estás listo para seguir adelante!</p>`;
+                    feedbackClass = 'bg-green-100 border border-green-300 text-green-800';
+                } else if (score >= 1) {
+                    resultMessage += `<p class="font-semibold">¡Buen trabajo! Has entendido los conceptos más importantes. Repasa las secciones para afianzar tu conocimiento.</p>`;
+                    feedbackClass = 'bg-yellow-100 border border-yellow-300 text-yellow-800';
+                } else {
+                    resultMessage += `<p class="font-semibold">Parece que algunos conceptos no quedaron claros. Te recomendamos repasar las secciones de nuevo. ¡No te rindas!</p>`;
+                    feedbackClass = 'bg-red-100 border border-red-300 text-red-800';
+                }
+
+                quizResultsDiv.innerHTML = resultMessage;
+                quizResultsDiv.className = `p-6 rounded-lg ${feedbackClass}`; // Remove hidden and add styling
+            });
+
+        });
+    </script>
+</body>
+</html>

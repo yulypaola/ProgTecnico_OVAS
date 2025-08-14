@@ -1,0 +1,169 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Unidad 1 · Tema 4 — Estructuras condicionales</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <script src="scorm.js"></script>
+</head>
+<body>
+  <main>
+    <aside>
+      <div class="logo">Menú del OVA</div>
+      <nav class="menu">
+        <a href="#intro" class="active">🏠 Introducción</a>
+        <a href="#tema">🧭 Desarrollo del Tema</a>
+        <a href="#tipos">🌿 Tipos de condicional</a>
+        <a href="#operadores">🔗 Operadores</a>
+        <a href="#ejemplos">📄 Ejemplos</a>
+        <a href="#ejercicios">✍️ Ejercicios</a>
+        <a href="#evaluacion">🏁 Evaluación</a>
+      </nav>
+      <footer class="aside">
+        Universidad de Córdoba<br>
+        Téc. Prof. en Programación Web
+      </footer>
+    </aside>
+
+    <section class="content">
+      <div id="intro" class="block">
+        <h1>Estructuras Condicionales 🔀</h1>
+        <p class="lead">Permiten que el algoritmo <strong>tome decisiones</strong>. Según una condición, el flujo continúa por un camino u otro.</p>
+        <span class="badge">Unidad 1 · Tema 4 — Condicionales</span>
+      </div>
+
+      <div id="tema" class="block">
+        <h2>¿Qué son y para qué sirven?</h2>
+        <div class="card">
+          <p>Una condicional evalúa una <strong>expresión booleana</strong> (verdadero/falso) y ejecuta uno u otro bloque de instrucciones según el resultado. Son clave para validar datos y controlar el flujo de tu programa.</p>
+          <div class="note">Recuerda: primero analiza el problema (Tema 2) y define E–P–S (Tema 3) antes de agregar decisiones.</div>
+        </div>
+      </div>
+
+      <div id="tipos" class="block">
+        <h2>Tipos de condicional 🌿</h2>
+        <div class="grid cols-3">
+          <div class="card">
+            <h3>Simple</h3>
+            <pre style="white-space:pre-wrap;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px">
+SI (llueve) ENTONCES
+  llevar paraguas
+FIN SI</pre>
+          </div>
+          <div class="card">
+            <h3>Doble</h3>
+            <pre style="white-space:pre-wrap;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px">
+SI (edad >= 18) ENTONCES
+  "Mayor de edad"
+SINO
+  "Menor de edad"
+FIN SI</pre>
+          </div>
+          <div class="card">
+            <h3>Múltiple</h3>
+            <pre style="white-space:pre-wrap;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px">
+SEGÚN (día)
+  CASO "Lun": "Inicio"
+  CASO "Sab": "Descanso"
+  OTRO: "Clase"
+FIN SEGÚN</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="operadores" class="block">
+        <h2>Operadores 🔗</h2>
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>Relacionales</h3>
+            <ul>
+              <li>&lt;, &gt;, &lt;=, &gt;=, ==, !=</li>
+              <li>Ej.: <kbd>nota &gt;= 3.0</kbd></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Lógicos</h3>
+            <ul>
+              <li>AND (y), OR (o), NOT (no)</li>
+              <li>Ej.: <kbd>edad &gt;= 18 AND documento == válido</kbd></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div id="ejemplos" class="block">
+        <h2>Ejemplos 📄</h2>
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>Ejemplo 1: Par/Impar</h3>
+            <pre style="white-space:pre-wrap;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px">
+INICIO
+  leer n
+  SI (n % 2 == 0) ENTONCES
+    mostrar "Par"
+  SINO
+    mostrar "Impar"
+FIN</pre>
+          </div>
+          <div class="card">
+            <h3>Ejemplo 2: Aprobado/Reprobado</h3>
+            <pre style="white-space:pre-wrap;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px">
+INICIO
+  leer nota
+  SI (nota >= 3.0) ENTONCES
+    mostrar "Aprueba"
+  SINO
+    mostrar "Reprueba"
+FIN</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="ejercicios" class="block">
+        <h2>¡Practica! ✍️</h2>
+        <div class="grid cols-3">
+          <div class="card">
+            <h3>1. Mayoría de edad</h3>
+            <p>Lee edad y muestra si es mayor o menor de edad.</p>
+          </div>
+          <div class="card">
+            <h3>2. Descuento en tienda</h3>
+            <p>Si compra &gt;= $100.000 aplica 10% de descuento, si no, precio normal.</p>
+          </div>
+          <div class="card">
+            <h3>3. Clasificación de temperatura</h3>
+            <p>Según °C: &lt; 15 “Frío”; 15–25 “Agradable”; &gt; 25 “Caliente”.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="evaluacion" class="block">
+        <h2>Evaluación 🏁</h2>
+        <div class="quiz">
+          <div class="q">
+            <p><strong>1.</strong> Una estructura condicional permite…</p>
+            <label><input type="radio" name="q1" value="a"> Repetir instrucciones n veces.</label><br>
+            <label><input type="radio" name="q1" value="b"> Tomar decisiones según una condición.</label><br>
+            <label><input type="radio" name="q1" value="c"> Ejecutar todo en orden sin saltos.</label>
+          </div>
+          <div class="q">
+            <p><strong>2.</strong> ¿Cuál es un ejemplo de condicional múltiple?</p>
+            <label><input type="radio" name="q2" value="a"> if (x&gt;0) {...} else {...}</label><br>
+            <label><input type="radio" name="q2" value="b"> while (x&lt;10) {...}</label><br>
+            <label><input type="radio" name="q2" value="c"> switch (opción) { caso 1: ... }</label>
+          </div>
+          <div class="q">
+            <p><strong>3.</strong> Escribe 3–5 líneas de pseudocódigo para decidir si un número es positivo, negativo o cero.</p>
+            <textarea id="q3" rows="4" style="width:100%;border-radius:12px;border:1px solid #e5e7eb;padding:10px"></textarea>
+          </div>
+          <button id="btn-eval">Verificar respuestas</button>
+          <div id="quiz-result" class="result"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

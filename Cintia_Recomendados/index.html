@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referencias Bibliográficas - OVA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .reference-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        .reference-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .tag {
+            transition: all 0.2s ease;
+        }
+        .tag:hover {
+            transform: scale(1.05);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-md">
+            <div class="container mx-auto px-4 py-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <div class="w-16 h-16 bg-white rounded-full shadow-lg border-2 border-green-500 flex items-center justify-center mr-4">
+                            <span class="text-3xl">📚</span>
+                        </div>
+                        <h1 class="text-2xl md:text-3xl font-bold text-green-800">Referencias bibliográficas</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-8">
+            <!-- Filters -->
+            <div class="mb-8 fade-in">
+                <h2 class="text-xl font-bold text-green-800 mb-4">Filtrar por tipo de recurso</h2>
+                <div class="flex flex-wrap gap-2">
+                    <button class="tag px-4 py-2 bg-green-100 text-green-800 rounded-full hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 active" data-filter="all">Todos</button>
+                    <button class="tag px-4 py-2 bg-white text-green-800 rounded-full hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-500" data-filter="libro">Libros</button>
+                    <button class="tag px-4 py-2 bg-white text-green-800 rounded-full hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-500" data-filter="web">Recursos web</button>
+                </div>
+            </div>
+
+            <!-- References Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" id="references-container">
+                <!-- Nuevas Referencias con QR -->
+                <div class="reference-card bg-white rounded-lg shadow-md overflow-hidden border-l-4 border-green-500 fade-in" data-categories="ecuaciones funciones libro">
+                    <div class="p-6 flex flex-col h-full">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                            <h3 class="font-bold text-lg text-green-800 mb-2 pr-2">Precálculo: matemáticas para el cálculo</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mb-2 sm:mb-0 self-start">Libro</span>
+                        </div>
+                        <p class="text-slate-600 mb-4">Stewart, J., Watson, S., Redlin, L. (2017). <i>Precálculo: matemáticas para el cálculo</i>. Cengage Learning.</p>
+                        <a href="https://www-ebooks7-24-com.ezproxyucor.unicordoba.edu.co/?il=6029" target="_blank" class="text-green-700 hover:text-green-900 underline block mb-4">Ver recurso</a>
+                        <div class="flex justify-end mt-auto">
+                            <img src="img/qr1.png" alt="QR Code" class="w-16 h-16">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reference-card bg-white rounded-lg shadow-md overflow-hidden border-l-4 border-green-500 fade-in" data-categories="ecuaciones funciones libro">
+                    <div class="p-6 flex flex-col h-full">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                            <h3 class="font-bold text-lg text-green-800 mb-2 pr-2">Mate 11</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mb-2 sm:mb-0 self-start">Libro</span>
+                        </div>
+                        <p class="text-slate-600 mb-4">Larson, R. E., Falvo, D. C., Johnson, R., Kuby, P., Edwards, B. (2018). <i>Mate 11</i>. Cengage Learning.</p>
+                        <a href="https://www-ebooks7-24-com.ezproxyucor.unicordoba.edu.co/?il=8945" target="_blank" class="text-green-700 hover:text-green-900 underline block mb-4">Ver recurso</a>
+                        <div class="flex justify-end mt-auto">
+                            <img src="img/qr2.png" alt="QR Code" class="w-16 h-16">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reference-card bg-white rounded-lg shadow-md overflow-hidden border-l-4 border-green-500 fade-in" data-categories="ecuaciones sistemas libro">
+                    <div class="p-6 flex flex-col h-full">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                            <h3 class="font-bold text-lg text-green-800 mb-2 pr-2">Álgebra: elemental</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mb-2 sm:mb-0 self-start">Libro</span>
+                        </div>
+                        <p class="text-slate-600 mb-4">Kaufmann, J. E., Schwitters, K. L. (2018). <i>Álgebra: elemental</i>. Cengage Learning.</p>
+                        <a href="https://www-ebooks7-24-com.ezproxyucor.unicordoba.edu.co/?il=4205" target="_blank" class="text-green-700 hover:text-green-900 underline block mb-4">Ver recurso</a>
+                        <div class="flex justify-end mt-auto">
+                            <img src="img/qr3.png" alt="QR Code" class="w-16 h-16">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reference-card bg-white rounded-lg shadow-md overflow-hidden border-l-4 border-blue-500 fade-in" data-categories="ecuaciones web">
+                    <div class="p-6 flex flex-col h-full">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                            <h3 class="font-bold text-lg text-blue-800 mb-2 pr-2">Khan Academy: Ecuaciones</h3>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mb-2 sm:mb-0 self-start">Web</span>
+                        </div>
+                        <p class="text-slate-600 mb-4">Khan Academy. (s.f.). <i>Ecuaciones y desigualdades</i>. En Khan Academy en español.</p>
+                        <a href="https://es.khanacademy.org/math/algebra/x2f8bb11595b61c86:solve-equations-inequalities" target="_blank" class="text-blue-700 hover:text-blue-900 underline block mb-4">Ver recurso</a>
+                        <div class="flex justify-end mt-auto">
+                            <img src="img/Khan_Academy_Ecuaciones.png" alt="QR Code" class="w-16 h-16">
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Tema 2: Funciones -->
+                <div class="reference-card bg-white rounded-lg shadow-md overflow-hidden border-l-4 border-blue-500 fade-in" data-categories="funciones web">
+                    <div class="p-6 flex flex-col h-full">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                            <h3 class="font-bold text-lg text-blue-800 mb-2 pr-2">Función polinómica</h3>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mb-2 sm:mb-0 self-start">Web</span>
+                        </div>
+                        <p class="text-slate-600 mb-4">Wikipedia. (s.f.). <i>Función polinómica</i>. En Wikipedia, la enciclopedia libre.</p>
+                        <a href="https://es.wikipedia.org/wiki/Función_polinómica" target="_blank" class="text-blue-700 hover:text-blue-900 underline block mb-4">Ver recurso</a>
+                        <div class="flex justify-end mt-auto">
+                            <img src="img/Funcion_polinomica.png" alt="QR Code" class="w-16 h-16">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reference-card bg-white rounded-lg shadow-md overflow-hidden border-l-4 border-blue-500 fade-in" data-categories="funciones web">
+                    <div class="p-6 flex flex-col h-full">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                            <h3 class="font-bold text-lg text-blue-800 mb-2 pr-2">Función exponencial</h3>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mb-2 sm:mb-0 self-start">Web</span>
+                        </div>
+                        <p class="text-slate-600 mb-4">Wikipedia. (s.f.). <i>Función exponencial</i>. En Wikipedia, la enciclopedia libre.</p>
+                        <a href="https://es.wikipedia.org/wiki/Función_exponencial" target="_blank" class="text-blue-700 hover:text-blue-900 underline block mb-4">Ver recurso</a>
+                        <div class="flex justify-end mt-auto">
+                            <img src="img/Funcion_exponencial.png" alt="QR Code" class="w-16 h-16">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filter functionality
+            const filterButtons = document.querySelectorAll('[data-filter]');
+            const referenceCards = document.querySelectorAll('.reference-card');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Update active state
+                    filterButtons.forEach(btn => btn.classList.remove('active', 'bg-green-200', 'bg-green-100'));
+                    filterButtons.forEach(btn => btn.classList.add('bg-white'));
+                    button.classList.remove('bg-white');
+                    button.classList.add('active', 'bg-green-100');
+                    
+                    const filter = button.getAttribute('data-filter');
+                    
+                    referenceCards.forEach(card => {
+                        if (filter === 'all') {
+                            card.style.display = 'block';
+                            setTimeout(() => {
+                                card.classList.add('fade-in');
+                            }, 10);
+                        } else {
+                            const categories = card.getAttribute('data-categories');
+                            if (categories.includes(filter)) {
+                                card.style.display = 'block';
+                                setTimeout(() => {
+                                    card.classList.add('fade-in');
+                                }, 10);
+                            } else {
+                                card.classList.remove('fade-in');
+                                setTimeout(() => {
+                                    card.style.display = 'none';
+                                }, 300);
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

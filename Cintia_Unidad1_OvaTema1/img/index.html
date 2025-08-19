@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVA: Ecuaciones y Desigualdades Lineales</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Verdes y Blancos Institucionales -->
+    <!-- Application Structure Plan: Se diseña un Objeto Virtual de Aprendizaje (OVA) con una disposición de dos columnas. Un menú lateral fijo a la izquierda permite la navegación entre las secciones pedagógicas (Introducción, Objetivos, etc.). El área de contenido principal a la derecha se actualiza dinámicamente con JavaScript para mostrar la sección seleccionada. Esta estructura es ideal para un aprendizaje guiado y organizado, permitiendo al usuario explorar el contenido de forma secuencial o no lineal. -->
+    <!-- Visualization & Content Choices: 1. Navegación -> Menú lateral con estado activo (HTML/JS) y ahora con iconos para mejorar la usabilidad. Justificación: Estructura clásica y efectiva para un OVA. 2. Fundamentos Teóricos -> Contenido textual con tarjetas destacadas con iconos. Justificación: Facilita la lectura y resalta conceptos clave. 3. Actividades Prácticas -> Cuestionario interactivo. Justificación: Fomenta la participación activa. 4. Evaluación -> Quiz de opción múltiple con retroalimentación. Justificación: Permite la autoevaluación del aprendizaje. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .sidebar-link {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background-color: #e6f4ea;
+            color: #166534; /* green-800 */
+            border-left-color: #22c55e; /* green-500 */
+        }
+        .content-pane {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .content-pane.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .quiz-option:hover {
+            background-color: #f0fdf4; /* green-50 */
+        }
+        .quiz-option.selected {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .type-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .type-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg flex-shrink-0 hidden md:flex md:flex-col">
+            <div class="p-4">
+                <div style="width: 150px; height: 150px;" class="p-2 mx-auto flex items-center justify-center bg-white rounded-full shadow-lg border-2 border-green-500 transition-shadow duration-300 hover:shadow-green-400">
+                    <img src="img/logo.webp" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
+                </div>
+            </div>
+            <nav class="mt-6 flex-1">
+                <a href="#" class="sidebar-link active flex items-center py-3 px-6 font-medium text-slate-700" data-target="introduccion"><span class="mr-3 text-xl">🚀</span> Introducción</a>
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="objetivos"><span class="mr-3 text-xl">🎯</span> Objetivos</a>
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="contenido"><span class="mr-3 text-xl">📚</span> Contenido</a>
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="actividades"><span class="mr-3 text-xl">✍️</span> Actividades</a>
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="evaluacion"><span class="mr-3 text-xl">✔️</span> Evaluación</a>
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="recursos"><span class="mr-3 text-xl">📖</span> Recursos</a>
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="bibliografia"><span class="mr-3 text-xl">📚</span> Bibliografía</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50">
+            <!-- Mobile Header -->
+            <div class="md:hidden mb-6 flex flex-col items-center">
+                <div style="width: 100px; height: 100px;" class="p-2 flex items-center justify-center bg-white rounded-full shadow-lg transition-shadow duration-300 hover:shadow-green-400 mb-2">
+                    <img src="img/logo.webp" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
+                </div>
+                 <select id="mobile-nav" class="w-full mt-2 p-2 border rounded-md bg-white shadow-sm">
+                    <option value="introduccion">🚀 Introducción</option>
+                    <option value="objetivos">🎯 Objetivos</option>
+                    <option value="contenido">📚 Contenido</option>
+                    <option value="actividades">✍️ Actividades Prácticas</option>
+                    <option value="evaluacion">✔️ Evaluación</option>
+                    <option value="recursos">📖 Recursos</option>
+                        <option value="bibliografia">📚 Bibliografía</option>
+                </select>
+            </div>
+
+            <!-- Introducción -->
+            <div id="introduccion" class="content-pane active">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-4">Ecuaciones y desigualdades lineales</h2>
+                <p class="text-slate-700 leading-relaxed mb-4">
+                    <span class="text-2xl">🤔</span> <strong>¿Sabías que al programar una app como <span class="text-green-700">Rappi</span>, <span class="text-green-700">Netflix</span> o una tienda online estás usando matemáticas sin darte cuenta?</strong>
+                </p>
+                <p class="text-slate-700 leading-relaxed mb-4">
+                    Cada vez que una app <span class="font-bold text-green-800">calcula el precio total</span> de una compra, 
+                    <span class="font-bold text-green-800">decide si mostrar un contenido según tu edad</span> o 
+                    <span class="font-bold text-green-800">ajusta elementos en pantalla</span>, está usando 
+                    <span class="underline decoration-green-500">ecuaciones y desigualdades lineales</span> <span class="text-xl">📊</span>. En esta guía aprenderás a <span class="font-bold">identificarlas</span>, <span class="font-bold">resolverlas paso a paso</span> y <span class="font-bold">entender cómo se aplican a situaciones reales</span> <span class="text-xl">🚀</span>.
+                </p>
+                <div class="mt-8 p-4 sm:p-6 bg-green-50 border-l-4 border-green-500 rounded-r-lg">
+                    <p class="text-green-800">
+                        Estos conceptos no sólo te ayudarán en la vida cotidiana <span class="text-xl">🛒</span>, sino que son <span class="font-bold">clave en el mundo de la programación</span> <span class="text-xl">💻</span>, donde te permiten <span class="font-bold">tomar decisiones</span>, <span class="font-bold">optimizar recursos</span> y <span class="font-bold">crear código que funciona con lógica y precisión</span> <span class="text-xl">✨</span>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Objetivos -->
+            <div id="objetivos" class="content-pane">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Objetivos de aprendizaje</h2>
+                <ul class="space-y-4">
+                    <li class="flex items-start p-4 bg-white rounded-lg shadow-sm">
+                        <span class="text-green-700 mr-3 text-2xl">🧠</span>
+                        <span>Comprender los conceptos fundamentales de ecuaciones y desigualdades lineales, identificando sus características y diferencias principales.</span>
+                    </li>
+                    <li class="flex items-start p-4 bg-white rounded-lg shadow-sm">
+                        <span class="text-green-700 mr-3 text-2xl">🔍</span>
+                        <span>Desarrollar la habilidad para identificar ecuaciones y desigualdades lineales en situaciones reales, tanto del entorno cotidiano como tecnológico (por ejemplo, apps, compras en línea, recomendaciones de contenido, etc.).</span>
+                    </li>
+                    <li class="flex items-start p-4 bg-white rounded-lg shadow-sm">
+                        <span class="text-green-700 mr-3 text-2xl">📝</span>
+                        <span>Resolver ecuaciones y desigualdades lineales paso a paso, empleando estrategias y métodos matemáticos apropiados.</span>
+                    </li>
+                    <li class="flex items-start p-4 bg-white rounded-lg shadow-sm">
+                        <span class="text-green-700 mr-3 text-2xl">💻</span>
+                        <span>Aplicar los conocimientos adquiridos a la solución de problemas prácticos, optimizando recursos y tomando decisiones lógicas en contextos reales y de programación.</span>
+                    </li>
+                    <li class="flex items-start p-4 bg-white rounded-lg shadow-sm">
+                        <span class="text-green-700 mr-3 text-2xl">🌐✨</span>
+                        <span>Valorar la importancia de las matemáticas en la vida diaria y en el desarrollo de tecnología, reconociendo su impacto en aplicaciones y herramientas digitales que usamos a diario.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Fundamentos Teóricos -->
+            <div id="contenido" class="content-pane">
+                <!-- Acordeón de temas -->
+                <div class="w-full max-w-8xl mx-auto">
+                    <div class="mb-4">
+                        <button type="button" class="w-full flex justify-between items-center p-4 bg-green-100 border border-green-300 rounded-t-lg focus:outline-none font-bold text-green-800 text-lg accordion-btn mb-2" data-target="#panel-ecuaciones">
+                            Ecuaciones lineales<span class="ml-2">➕</span>
+                        </button>
+                    </div>
+                    <div id="panel-ecuaciones" class="accordion-panel hidden bg-white border border-t-0 border-green-300 rounded-b-lg p-4 mb-6">
+                        <!-- Contenido ecuaciones lineales aquí -->
+                        <div class="space-y-8 text-slate-700 leading-relaxed">
+                            <div>
+                                <p class="mb-4">
+                                    Podemos definir una <strong>ecuación lineal</strong> como una frase matemática que tiene dos lados separados por un signo igual (=) en el medio. Esta frase puede contener una o más letras (<strong>incógnitas</strong>) cuyo valor es desconocido. <br>
+                                    Un ejemplo muy sencillo de una ecuación lineal es: <span class="font-mono bg-green-100 px-2 py-1 rounded">x + 6 = 10</span>, donde <span class="font-bold">x</span> es el valor desconocido o incógnita.
+                                </p>
+                            </div>
+                            <div>
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white  rounded flex items-center justify-center overflow-hidden">
+                                        <img src="img/ecuaciones_1.webp" alt="Solución gráfica ejemplo" class="max-w-full max-h-full object-contain" style="object-fit:contain;" loading="lazy" />
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-bold text-green-700 mb-2">¿Cómo se resuelve una ecuación lineal?</h3>
+                                <p class="mb-4">La idea es poder encontrar el número que falta. Es decir, <span class="font-bold">encontrar el valor de <span class="text-green-800">x</span> para que los dos lados tengan el mismo valor</span>. Podemos imaginar que es como una <span class="font-bold">balanza</span> <span class="text-xl">⚖️</span> donde debemos mantener los dos lados equilibrados para que no se incline para uno u otro lado.</p>
+                            </div>
+                            <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+                                <h4 class="font-bold text-green-800 mb-2">Ejemplo #1 - Igualdad de lados</h4>
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white  rounded flex items-center justify-center overflow-hidden">
+                                        <img src="img/ecuaciones_2.webp" alt="Solución gráfica ejemplo" class="max-w-full max-h-full object-contain" style="object-fit:contain;" loading="lazy" />
+                                    </div>
+                                </div>
+                                <p class="mb-2">Supongamos que estás en la finca ayudando a contar los sacos de maíz que recogiste con tu familia.<br>
+                                Tu papá te dice:</p>
+                                <blockquote class="italic text-green-700 mb-2">“Entre tú y yo cargamos 10 sacos, pero tú perdiste la cuenta y no te acuerdas cuántos sacos cargaste tú”<br>“Yo cargué 6 sacos, ¿cuántos sacos cargaste tú?”</blockquote>
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white  rounded flex items-center justify-center overflow-hidden">
+                                        <img src="img/ecuaciones_3.webp" alt="Solución gráfica ejemplo" class="max-w-full max-h-full object-contain" style="object-fit:contain;" loading="lazy" />
+                                    </div>
+                                </div>
+                                <p>Entonces, es cierto que <span class="font-mono bg-green-100 px-2 py-1 rounded">10 = x + 6</span>. Por lo que podemos decir que <span class="font-bold text-green-800">x = 4</span> para que la ecuación sea verdadera. <span class="font-bold">¡Bingo!</span> <span class="text-xl">🎉</span> Ahora le puedes decir a tu papá que cargaste <span class="font-bold">4 sacos de maíz</span>.</p>
+                            </div>
+                            <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+                                <h4 class="font-bold text-green-800 mb-2">Ejemplo #2 - Despeje de Variables</h4>
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white  rounded flex items-center justify-center overflow-hidden">
+                                        <img src="img/ecuaciones_4.webp" alt="Solución gráfica ejemplo" class="max-w-full max-h-full object-contain" style="object-fit:contain;" loading="lazy" />
+                                    </div>
+                                </div>
+                                <p class="mb-2">Pedro es un agricultor que vive en un municipio de Córdoba y quiere empacar sacos de mango. Cada saco pesa 4 kg, y tiene 20 kg de mango. ¿Cuántos sacos puede llenar si cada uno debe pesar lo mismo?</p>
+                                <p>La ecuación sería: <span class="font-mono bg-green-100 px-2 py-1 rounded">4x = 20</span>.</p>
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white  rounded flex items-center justify-center overflow-hidden">
+                                        <img src="img/ecuaciones_5.webp" alt="Solución gráfica ejemplo" class="max-w-full max-h-full object-contain" style="object-fit:contain;" loading="lazy" />
+                                    </div>
+                                </div>
+                                <p>Entonces decimos que la ecuación se cumple de ambos lados debido a que son iguales y concluimos que debo llenar <span class="font-bold text-green-800">5 sacos</span> de 4 kilogramos para empacar 20 kilogramos de mango. <span class="text-xl">🥭</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <button type="button" class="w-full flex justify-between items-start p-4 bg-green-100 border border-green-300 rounded-t-lg focus:outline-none font-bold text-green-800 text-lg accordion-btn mb-2 text-left" data-target="#panel-desigualdades">
+                            Desigualdades lineales<span class="ml-2">➕</span>
+                        </button>
+                    </div>
+                    <div id="panel-desigualdades" class="accordion-panel hidden bg-white border border-t-0 border-green-300 rounded-b-lg p-4 mb-6">
+                        <div class="text-slate-700 leading-relaxed space-y-6">
+                            <div>
+                                <p class="mb-2">Una <strong>desigualdad lineal</strong> es parecida a una ecuación, pero en este caso los dos lados de la frase no están separados por un signo igual (=) sino por otros símbolos que nos ayudan a determinar si un lado es mayor, menor o igual que el otro.</p>
+                                <p>Por ejemplo: <span class="font-mono bg-green-100 px-2 py-1 rounded">5x &lt; 20</span>, aquí estamos diciendo que 5 veces x es menor que 20.</p>
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white  rounded flex items-center justify-center overflow-hidden">
+                                        <img src="img/desigualdades_1.webp" alt="Solución ejercicio 1" class="max-w-full max-h-full object-contain" loading="lazy">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+                                <p>Las desigualdades nos ayudan cuando no queremos o no podemos tener un resultado exacto, sino que nos interesa saber hasta dónde se puede llegar sin pasarnos de un límite.</p>
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white  rounded flex items-center justify-center overflow-hidden">
+                                        <img src="img/desigualdades_2.webp" alt="Solución ejercicio 1" class="max-w-full max-h-full object-contain" loading="lazy">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-green-700 mb-2">¿Cómo se resuelve una desigualdad?</h3>
+                                <p>La desigualdad se resuelve tratando de encontrar qué valores puede tener una letra (como x) para que la frase matemática sea verdadera. Es como resolver una ecuación, pero en lugar de buscar una sola respuesta, vamos a encontrar todas las posibles respuestas que cumplen la condición.</p>
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white  rounded flex items-center justify-center overflow-hidden">
+                                        <img src="img/desigualdades_3.webp" alt="Solución ejercicio 1" class="max-w-full max-h-full object-contain" loading="lazy">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-green-700 mb-2">Símbolos de igualdad o desigualdad</h3>
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full text-sm text-left border border-green-300 rounded-lg">
+                                        <thead class="bg-green-100">
+                                            <tr>
+                                                <th class="py-2 px-4 border-b border-green-300">Símbolo</th>
+                                                <th class="py-2 px-4 border-b border-green-300">Significado</th>
+                                                <th class="py-2 px-4 border-b border-green-300">Ejemplo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="py-2 px-4 border-b border-green-100">&lt;</td>
+                                                <td class="py-2 px-4 border-b border-green-100">menor que</td>
+                                                <td class="py-2 px-4 border-b border-green-100">3 &lt; 5</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2 px-4 border-b border-green-100">&gt;</td>
+                                                <td class="py-2 px-4 border-b border-green-100">mayor que</td>
+                                                <td class="py-2 px-4 border-b border-green-100">5 &gt; 3</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2 px-4 border-b border-green-100">&le;</td>
+                                                <td class="py-2 px-4 border-b border-green-100">menor o igual que</td>
+                                                <td class="py-2 px-4 border-b border-green-100">x &le; 10</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2 px-4 border-b border-green-100">&ge;</td>
+                                                <td class="py-2 px-4 border-b border-green-100">mayor o igual que</td>
+                                                <td class="py-2 px-4 border-b border-green-100">y &ge; 10</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+                                <h4 class="font-bold text-green-800 mb-2">Ejemplo #1</h4>
+                                <p>Imagina que estás en el centro y tienes <span class="font-bold">$100 pesos</span>, quieres comprar unas camisetas y al entrar al almacén la vendedora te dice que cada camiseta cuesta <span class="font-bold">$20</span>. ¿Cuántas camisetas puedes comprar sin pasarte del presupuesto?</p>
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white  rounded flex items-center justify-center overflow-hidden">
+                                        <img src="img/desigualdades_4.webp" alt="Solución ejercicio 1" class="max-w-full max-h-full object-contain" loading="lazy">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+                                <h4 class="font-bold text-green-800 mb-2">Ejemplo #2</h4>
+                                <p>Imagina que tienes una finca con <span class="font-bold">10 cerdos</span>, y cada cerdo necesita al menos <span class="font-bold">3 kilos de alimento</span> al día para estar bien alimentado. Tú eres el encargado de preparar la comida y tienes que asegurarte de que no les falte comida en todo el día.</p>
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white  rounded flex items-center justify-center overflow-hidden">
+                                        <img src="img/desigualdades_5.webp" alt="Solución ejercicio 1" class="max-w-full max-h-full object-contain" loading="lazy">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actividades Prácticas -->
+            <div id="actividades" class="content-pane">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Actividades prácticas</h2>
+                <div class="space-y-8">
+                    <!-- Ejercicio 1 -->
+                    <div class="bg-white border-l-4 border-green-500 rounded-lg shadow-sm p-6">
+                        <h3 class="text-xl font-bold text-green-700 mb-2">Ejercicio 1. Presupuesto para herramientas de desarrollo</h3>
+                        <p class="mb-2"><span class="font-semibold">Situación:</span> estás creando un entorno de trabajo como programador y tienes <span class="font-bold">$50.000</span> disponibles. Cada plugin premium que necesitas cuesta <span class="font-bold">$8.000</span>. ¿Cuántos plugins puedes comprar sin pasarte del presupuesto?</p>
+                        <p class="mb-2"><span class="font-semibold">Desigualdad:</span> <span class="font-mono bg-green-100 px-2 py-1 rounded">8000x ≤ 50000</span></p>
+                        <p class="mb-2"><span class="font-semibold">Interpretación:</span> calcula cuántos plugins puedes instalar sin exceder el presupuesto.</p>
+                        <div class="mt-2 mb-2 p-3 bg-green-50 border border-green-200 rounded flex items-center">
+                            <input type="text" class="activity-input w-full p-2 border rounded-md bg-white" placeholder="Escribe tu respuesta aquí...">
+                        </div>
+                    </div>
+                    <!-- Ejercicio 2 -->
+                    <div class="bg-white border-l-4 border-green-500 rounded-lg shadow-sm p-6">
+                        <h3 class="text-xl font-bold text-green-700 mb-2">Ejercicio 2. Venta de cursos en línea</h3>
+                        <p class="mb-2"><span class="font-semibold">Situación:</span> diseñaste un curso básico de programación y lo vendes a <span class="font-bold">$6.000</span>. Quieres ganar al menos <span class="font-bold">$72.000</span> este mes. ¿Cuántas copias necesitas vender como mínimo?</p>
+                        <p class="mb-2"><span class="font-semibold">Desigualdad:</span> <span class="font-mono bg-green-100 px-2 py-1 rounded">6000x ≥ 72000</span></p>
+                        <p class="mb-2"><span class="font-semibold">Interpretación:</span> resuelve para saber el mínimo de estudiantes necesarios para cumplir tu meta.</p>
+                        <div class="mt-2 mb-2 p-3 bg-green-50 border border-green-200 rounded flex items-center">
+                            <input type="text" class="activity-input w-full p-2 border rounded-md bg-white" placeholder="Escribe tu respuesta aquí...">
+                        </div>
+                    </div>
+                    <!-- Ejercicio 3 -->
+                    <div class="bg-white border-l-4 border-green-500 rounded-lg shadow-sm p-6">
+                        <h3 class="text-xl font-bold text-green-700 mb-2">Ejercicio 3. Meta diaria de ventas</h3>
+                        <p class="mb-2"><span class="font-semibold">Situación:</span> tienes una app de comercio local y ayudas a un pescador a vender sus productos. Cada kilo se vende a <span class="font-bold">$6.000</span>. ¿Cuántos kilos debe vender al día para ganar exactamente <span class="font-bold">$60.000</span>?</p>
+                        <p class="mb-2"><span class="font-semibold">Ecuación:</span> <span class="font-mono bg-green-100 px-2 py-1 rounded">6000x = 60000</span></p>
+                        <p class="mb-2"><span class="font-semibold">Interpretación:</span> resuelve la ecuación y responde la pregunta.</p>
+                        <div class="mt-2 mb-2 p-3 bg-green-50 border border-green-200 rounded flex items-center">
+                            <input type="text" class="activity-input w-full p-2 border rounded-md bg-white" placeholder="Escribe tu respuesta aquí...">
+                        </div>
+                    </div>
+                </div>
+                <button id="check-activity-btn" class="mt-6 bg-green-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-700 transition-colors">Verificar respuestas</button>
+                <div id="activity-result" class="mt-4 font-medium"></div>
+            </div>
+
+            <!-- Evaluación -->
+            <div id="evaluacion" class="content-pane">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Evaluación</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-slate-600 mb-6">Comprueba lo que has aprendido. Selecciona la respuesta correcta para cada pregunta.</p>
+                    <div id="quiz-container"></div>
+                    <button id="submit-quiz-btn" class="mt-6 bg-green-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-700 transition-colors">Finalizar evaluación</button>
+                    <div id="quiz-result" class="mt-4 text-lg font-bold"></div>
+                </div>
+            </div>
+
+            <!-- Recursos -->
+            <div id="recursos" class="content-pane">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Recursos para profundizar</h2>
+                <p class="text-slate-700 leading-relaxed mb-6">Para ampliar tu conocimiento sobre ecuaciones y desigualdades, te recomendamos explorar los siguientes enlaces y documentos:</p>
+                <ul class="space-y-4">
+                    <!-- Recurso 1 -->
+                    <li class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500 flex flex-col sm:flex-row sm:items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-green-700">Test sobre solución de ecuaciones lineales</h3>
+                            <a href="https://wordwall.net/es/resource/2912019/ecuaciones-lineales" target="_blank" class="underline text-slate-700 hover:text-green-700">Ir al recurso</a>
+                        </div>
+                        <div class="mt-4 sm:mt-0 sm:ml-6 flex-shrink-0">
+                            <div class="bg-green-50 border border-green-300 rounded flex items-center justify-center" style="width:2cm;height:2cm;">
+                                <img src="img/qr_1.webp" alt="Solución ejercicio 1" class="max-w-full max-h-full object-contain" loading="lazy">
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Recurso 2 -->
+                    <li class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500 flex flex-col sm:flex-row sm:items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-green-700">Prueba sobre solución de ecuaciones</h3>
+                            <a href="https://wordwall.net/es/resource/74055316/matem%C3%A1ticas/ecuaciones" target="_blank" class="underline text-slate-700 hover:text-green-700">Ir al recurso</a>
+                        </div>
+                        <div class="mt-4 sm:mt-0 sm:ml-6 flex-shrink-0">
+                            <div class="bg-green-50 border border-green-300 rounded flex items-center justify-center" style="width:2cm;height:2cm;">
+                                <img src="img/qr_2.webp" alt="Solución ejercicio 1" class="max-w-full max-h-full object-contain" loading="lazy">
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Recurso 3 -->
+                    <li class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500 flex flex-col sm:flex-row sm:items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-green-700">Test sobre solución de desigualdades lineales</h3>
+                            <a href="https://wordwall.net/es/resource/88111903/matem%C3%A1ticas/desigualdades" target="_blank" class="underline text-slate-700 hover:text-green-700">Ir al recurso</a>
+                        </div>
+                        <div class="mt-4 sm:mt-0 sm:ml-6 flex-shrink-0">
+                            <div class="bg-green-50 border border-green-300 rounded flex items-center justify-center" style="width:2cm;height:2cm;">
+                                <img src="img/qr_3.webp" alt="Solución ejercicio 1" class="max-w-full max-h-full object-contain" loading="lazy">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Bibliografía -->
+            <div id="bibliografia" class="content-pane">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Bibliografía</h2>
+                <div class="space-y-6">
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500">
+                    <span class="block text-slate-700">
+                        Ministerio de Educación Nacional de Colombia. (2006). <i>Estándares Básicos de Competencias en Matemáticas</i>.<br>
+                        <a href="https://www.mineducacion.gov.co/1621/articles-186635_archivo_pdf.pdf" class="text-green-700 underline break-all" target="_blank">https://www.mineducacion.gov.co/1621/articles-186635_archivo_pdf.pdf</a>
+                    </span>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500">
+                    <span class="block text-slate-700">
+                        Godino, J. D., & Batanero, C. (1994). <i>Didáctica de las Matemáticas</i>. Editorial Universidad de Granada.
+                    </span>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500">
+                    <span class="block text-slate-700">
+                        UNESCO – OREALC. (2005). <i>Educación Matemática en Contextos Rurales Latinoamericanos: Proyecto Regional</i>.<br>
+                        <a href="https://unesdoc.unesco.org/ark:/48223/pf0000143685" class="text-green-700 underline break-all" target="_blank">https://unesdoc.unesco.org/ark:/48223/pf0000143685</a>
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Footer/Credits -->
+            <footer class="mt-12 pt-6 border-t-2 border-slate-200 text-center">
+                <p class="text-slate-600 font-medium">Creado por:</p>
+                <p class="text-green-800 font-bold text-lg">Centro de Innovación en TIC para el apoyo de la Docencia CINTIA</p>
+                <p class="text-slate-500 text-sm">Universidad de Córdoba</p>
+            </footer>
+        </main>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    const contentPanes = document.querySelectorAll('.content-pane');
+    const mobileNav = document.getElementById('mobile-nav');
+
+    function switchPane(targetId) {
+        contentPanes.forEach(pane => {
+            pane.classList.remove('active');
+        });
+        const targetPane = document.getElementById(targetId);
+        if (targetPane) {
+            targetPane.classList.add('active');
+        }
+
+        sidebarLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.dataset.target === targetId) {
+                link.classList.add('active');
+            }
+        });
+        
+        if (mobileNav.value !== targetId) {
+            mobileNav.value = targetId;
+        }
+    }
+
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = e.currentTarget.dataset.target;
+            switchPane(targetId);
+        });
+    });
+
+    mobileNav.addEventListener('change', (e) => {
+        switchPane(e.target.value);
+    });
+
+    // --- Actividad Práctica ---
+    const activityData = [
+        { 
+            question: "Un video tutorial que muestra cómo resolver una ecuación.", 
+            options: ["Interactividad", "Finalidad Educativa", "Reusabilidad"], 
+            answer: "Finalidad Educativa" 
+        },
+        { 
+            question: "Un quiz en línea que da retroalimentación inmediata.", 
+            options: ["Interactividad", "Adaptabilidad", "Formato Digital"], 
+            answer: "Interactividad" 
+        },
+        { 
+            question: "Una simulación de un laboratorio de química que se puede usar en bachillerato y universidad.", 
+            options: ["Reusabilidad", "Accesibilidad", "Intencionalidad Educativa"], 
+            answer: "Reusabilidad" 
+        }
+    ];
+
+    const activityContainer = document.getElementById('activity-container');
+    if (activityContainer) {
+        activityData.forEach((item, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'p-4 border rounded-lg';
+            
+            let optionsHtml = item.options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+
+            questionDiv.innerHTML = `
+                <p class="font-medium text-slate-700 mb-2">${index + 1}. ${item.question}</p>
+                <select class="activity-select w-full p-2 border rounded-md bg-white" data-answer="${item.answer}">
+                    <option value="">Selecciona una característica...</option>
+                    ${optionsHtml}
+                </select>
+            `;
+            activityContainer.appendChild(questionDiv);
+        });
+    }
+
+    const checkActivityBtn = document.getElementById('check-activity-btn');
+    if (checkActivityBtn) {
+        checkActivityBtn.addEventListener('click', () => {
+            const selects = document.querySelectorAll('.activity-select');
+            let correctAnswers = 0;
+            selects.forEach(select => {
+                if (select.value === select.dataset.answer) {
+                    correctAnswers++;
+                    select.classList.add('border-green-500');
+                    select.classList.remove('border-red-500');
+                } else {
+                    select.classList.add('border-red-500');
+                    select.classList.remove('border-green-500');
+                }
+            });
+            const resultDiv = document.getElementById('activity-result');
+            resultDiv.textContent = `Obtuviste ${correctAnswers} de ${activityData.length} respuestas correctas.`;
+            resultDiv.className = correctAnswers === activityData.length ? 'mt-4 font-medium text-green-700' : 'mt-4 font-medium text-red-700';
+        });
+    }
+
+    // --- Evaluación Quiz ---
+    const quizData = [
+        {
+            question: "¿Cuál de las siguientes opciones representa una ecuación lineal?",
+            options: ["5x < 20", "6000x = 60000", "x ≥ 10", "y > 3"],
+            answer: "6000x = 60000"
+        },
+        {
+            question: "¿Qué símbolo se usa para indicar 'mayor o igual que'?",
+            options: ["<", ">", "≤", "≥"],
+            answer: "≥"
+        },
+        {
+            question: "Si tienes $100 y cada camiseta cuesta $20, ¿cuál es la desigualdad que representa cuántas camisetas puedes comprar sin pasarte del presupuesto?",
+            options: ["20x ≥ 100", "20x ≤ 100", "x + 20 = 100", "100x ≥ 20"],
+            answer: "20x ≤ 100"
+        },
+        {
+            question: "¿Qué interpretación es correcta sobre la solución de una desigualdad lineal?",
+            options: ["Solo existe una respuesta posible", "No tiene solución", "Puede tener muchas respuestas que cumplen la condición", "Siempre es igual a una ecuación"],
+            answer: "Puede tener muchas respuestas que cumplen la condición"
+        },
+        {
+            question: "Para ganar exactamente $60.000 vendiendo kilos de pescado a $6.000 cada uno, ¿cuántos kilos debes vender?",
+            options: ["5", "10", "12", "20"],
+            answer: "10"
+        }
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+    if(quizContainer) {
+        quizData.forEach((q, index) => {
+            const questionEl = document.createElement('div');
+            questionEl.className = 'mb-6';
+            questionEl.innerHTML = `<p class="font-semibold mb-2">${index + 1}. ${q.question}</p>`;
+            
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = 'space-y-2';
+            
+            q.options.forEach(option => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'quiz-option p-3 border-2 border-slate-200 rounded-lg cursor-pointer';
+                optionEl.textContent = option;
+                optionEl.addEventListener('click', () => {
+                    questionEl.querySelectorAll('.quiz-option').forEach(el => el.classList.remove('selected'));
+                    optionEl.classList.add('selected');
+                });
+                optionsContainer.appendChild(optionEl);
+            });
+            
+            questionEl.appendChild(optionsContainer);
+            quizContainer.appendChild(questionEl);
+        });
+    }
+
+    const submitQuizBtn = document.getElementById('submit-quiz-btn');
+    if(submitQuizBtn){
+        submitQuizBtn.addEventListener('click', () => {
+            let score = 0;
+            const questions = quizContainer.querySelectorAll('.mb-6');
+            const feedbacks = [
+                'Correcto: 6000x = 60000 es una ecuación lineal porque tiene el signo igual (=).',
+                'Correcto: El símbolo ≥ significa "mayor o igual que".',
+                'Correcto: 20x ≤ 100 representa que el gasto total no debe exceder el presupuesto.',
+                'Correcto: Una desigualdad puede tener muchas soluciones que cumplen la condición.',
+                'Correcto: 60000 / 6000 = 10, así que debes vender 10 kilos.'
+            ];
+            const wrongFeedbacks = [
+                'Incorrecto. Recuerda que una ecuación lineal tiene el signo igual (=).',
+                'Incorrecto. El símbolo ≥ es el que indica "mayor o igual que".',
+                'Incorrecto. La desigualdad correcta es 20x ≤ 100.',
+                'Incorrecto. Una desigualdad puede tener muchas soluciones.',
+                'Incorrecto. Debes vender exactamente 10 kilos para ganar $60.000.'
+            ];
+            questions.forEach((q, index) => {
+                const selectedOption = q.querySelector('.quiz-option.selected');
+                let feedbackDiv = q.querySelector('.quiz-feedback');
+                if (!feedbackDiv) {
+                    feedbackDiv = document.createElement('div');
+                    feedbackDiv.className = 'quiz-feedback mt-2 text-sm';
+                    q.appendChild(feedbackDiv);
+                }
+                if (selectedOption && selectedOption.textContent === quizData[index].answer) {
+                    score++;
+                    feedbackDiv.innerHTML = `<span class='text-green-700 font-semibold'>✔️ ${feedbacks[index]}</span>`;
+                } else {
+                    feedbackDiv.innerHTML = `<span class='text-red-700 font-semibold'>❌ ${wrongFeedbacks[index]}</span>`;
+                }
+            });
+            const resultEl = document.getElementById('quiz-result');
+            resultEl.textContent = `Tu puntuación es: ${score} de ${quizData.length}.`;
+            if (score / quizData.length >= 0.7) {
+                resultEl.className = 'mt-4 text-lg font-bold text-green-700';
+            } else {
+                resultEl.className = 'mt-4 text-lg font-bold text-red-700';
+            }
+        });
+    }
+});
+</script>
+
+<script>
+    // JS para verificación de actividades
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkBtn = document.getElementById('check-activity-btn');
+        if (checkBtn) {
+            checkBtn.addEventListener('click', function() {
+                const inputs = document.querySelectorAll('.activity-input');
+                const respuestas = [
+                    ['6', '6.25', '6,25', '6 plugins'], // Ejercicio 1: máximo 6 plugins (estrictamente ≤ 50000/8000)
+                    ['12'], // Ejercicio 2: mínimo 12 estudiantes (72000/6000)
+                    ['10'], // Ejercicio 3: exactamente 10 kilos (60000/6000)
+                ];
+                let correctas = 0;
+                let feedback = [];
+                inputs.forEach((input, idx) => {
+                    const val = input.value.trim().replace(',', '.').toLowerCase();
+                    if (respuestas[idx].some(r => val === r)) {
+                        input.classList.remove('border-red-500');
+                        input.classList.add('border-green-500');
+                        correctas++;
+                        feedback.push(`Ejercicio ${idx+1}: ✔️ Correcto`);
+                    } else {
+                        input.classList.remove('border-green-500');
+                        input.classList.add('border-red-500');
+                        feedback.push(`Ejercicio ${idx+1}: ❌ Incorrecto`);
+                    }
+                });
+                const resultDiv = document.getElementById('activity-result');
+                resultDiv.innerHTML = `<strong>Respuestas correctas: ${correctas} de 3</strong><br>` + feedback.join('<br>');
+                resultDiv.className = correctas === 3 ? 'mt-4 font-medium text-green-700' : 'mt-4 font-medium text-red-700';
+            });
+        }
+    });
+    // JS simple para acordeón
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const panel = document.querySelector(this.getAttribute('data-target'));
+            const isOpen = panel.classList.contains('block');
+            document.querySelectorAll('.accordion-panel').forEach(p => p.classList.add('hidden'));
+            document.querySelectorAll('.accordion-panel').forEach(p => p.classList.remove('block'));
+            if (!isOpen) {
+                panel.classList.remove('hidden');
+                panel.classList.add('block');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

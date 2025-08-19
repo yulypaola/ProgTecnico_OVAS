@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVA: Recurso Educativo Digital (RED)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Verdes y Blancos Institucionales -->
+    <!-- Application Structure Plan: Se diseña un Objeto Virtual de Aprendizaje (OVA) con una disposición de dos columnas. Un menú lateral fijo a la izquierda permite la navegación entre las secciones pedagógicas (Introducción, Objetivos, etc.). El área de contenido principal a la derecha se actualiza dinámicamente con JavaScript para mostrar la sección seleccionada. Esta estructura es ideal para un aprendizaje guiado y organizado, permitiendo al usuario explorar el contenido de forma secuencial o no lineal. -->
+    <!-- Visualization & Content Choices: 1. Navegación -> Menú lateral con estado activo (HTML/JS) y ahora con iconos para mejorar la usabilidad. Justificación: Estructura clásica y efectiva para un OVA. 2. Fundamentos Teóricos -> Contenido textual con tarjetas destacadas con iconos. Justificación: Facilita la lectura y resalta conceptos clave. 3. Actividades Prácticas -> Cuestionario interactivo. Justificación: Fomenta la participación activa. 4. Evaluación -> Quiz de opción múltiple con retroalimentación. Justificación: Permite la autoevaluación del aprendizaje. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .sidebar-link {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background-color: #e6f4ea;
+            color: #166534; /* green-800 */
+            border-left-color: #22c55e; /* green-500 */
+        }
+        .content-pane {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .content-pane.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .quiz-option:hover {
+            background-color: #f0fdf4; /* green-50 */
+        }
+        .quiz-option.selected {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .type-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .type-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        /* Ajuste para la tabla*/
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }   
+        .resultado{
+            border-radius: 15px; /* Esquinas redondeadas */
+            box-shadow: 5px 5px 15px rgb(1, 103, 56); /* Sombra */
+        }
+        {
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #e0eafc, #cfdef3);
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0px 8px 20px rgba(0,0,0,0.15);
+        overflow: hidden;
+        max-width: 700px;
+        width: 100%;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .row {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        transition: background 0.3s;
+    }
+
+    .row:hover {
+        background: #f8f9fc;
+    }
+
+    .left {
+        flex: 1;
+        font-weight: bold;
+        color: #555;
+        text-align: right;
+        padding-right: 15px;
+        border-right: 2px solid #ddd;
+    }
+
+    .right {
+        flex: 2;
+        padding-left: 15px;
+        color: #333;
+    }
+
+    .row:last-child {
+        border-bottom: none;
+    }
+    </style>
+    
+</head>
+<body class="bg-slate-50">
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar logo modificado-->
+        <aside class="w-64 bg-white shadow-lg flex-shrink-0 hidden md:flex md:flex-col">
+            <div class="p-4">
+                <div style="width: 150px; height: 150px;" class="p-2 mx-auto flex items-center justify-center bg-white rounded-full shadow-lg border-2 border-green-500 transition-shadow duration-300 hover:shadow-green-400">
+                    <img src="img/logoCINTIA.png" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
+                </div>
+            </div>
+            <nav class="mt-6 flex-1">
+                <a href="#" class="sidebar-link active flex items-center py-3 px-6 font-medium text-slate-700" data-target="introduccion"><span class="mr-3 text-xl">🚀</span> Introducción</a>
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="objetivos"><span class="mr-3 text-xl">🎯</span> Objetivos</a>
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="fundamentos"><span class="mr-3 text-xl">📚</span> Contenido</a>
+                
+                
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="actividades"><span class="mr-3 text-xl">✍️</span> Actividades</a>
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="evaluacion"><span class="mr-3 text-xl">✔️</span> Evaluación</a>
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="tipos"><span class="mr-3 text-xl">📖</span> Recursos</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50">
+            <!-- Mobile Header logo modificado -->
+           <div class="md:hidden mb-6 flex flex-col items-center">
+                <div style="width: 100px; height: 100px;" class="p-2 flex items-center justify-center bg-white rounded-full shadow-lg transition-shadow duration-300 hover:shadow-green-400 mb-2">
+                    <img src="img/logoCINTIA.png" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
+                </div>
+                 <select id="mobile-nav" class="w-full mt-2 p-2 border rounded-md bg-white shadow-sm">
+                    <option value="introduccion">🚀 Introducción</option>
+                    <option value="objetivos">🎯 Objetivos</option>
+                    <option value="fundamentos">📚 Fundamentos Teóricos</option>
+                    <option value="tipos">📖 Recursos</option>
+                    
+                    <option value="actividades">✍️ Actividades Prácticas</option>
+                    <option value="evaluacion">✔️ Evaluación</option>
+                   
+                </select>
+            </div>
+
+            <!-- Introducción -->
+            <div id="introduccion" class="content-pane active">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-4">Elementos y etiquetas HTML</h2>
+                <p style="text-align: justify;" class="text-slate-700 leading-relaxed mb-4">El desarrollo web se ha consolidado como uno de los pilares fundamentales en la transformación digital de empresas, instituciones y proyectos personales. Un Técnico Profesional en Programación Web posee las competencias necesarias para diseñar, implementar y mantener aplicaciones y sitios web dinámicos, eficientes y seguros, aplicando lenguajes de programación, herramientas y metodologías actualizadas.</p>
+                <div class="mt-8 p-4 sm:p-6 bg-green-50 border-l-4 border-green-500 rounded-r-lg">
+                    <p class="text-green-800">Navega por el menú para explorar cada una de las secciones de este OVA. ¡Comencemos este viaje de aprendizaje!</p>
+                </div>
+            </div>
+
+            <!-- Objetivos -->
+            <div id="objetivos" class="content-pane">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Objetivos de aprendizaje</h2>
+                <p class="text-slate-700 leading-relaxed mb-6">Al finalizar el estudio de este Objeto Virtual de Aprendizaje, estarás en capacidad de:</p>
+                <ul class="space-y-4">
+                    <li class="flex items-start p-4 bg-white rounded-lg shadow-sm">
+                        <span class="text-green-600 font-bold text-2xl mr-4">🎯</span>
+                        <p class="text-slate-700"><strong>Construir</strong> sitios y aplicaciones web dinámicas y funcionales, aplicando lenguajes de programación.</p>
+                    </li>
+                    <li class="flex items-start p-4 bg-white rounded-lg shadow-sm">
+                        <span class="text-green-600 font-bold text-2xl mr-4">🎯</span>
+                        <p class="text-slate-700"><strong>Implementar</strong> soluciones web seguras y optimizadas, integrando bases de datos.</p>
+                    </li>
+                    <li class="flex items-start p-4 bg-white rounded-lg shadow-sm">
+                        <span class="text-green-600 font-bold text-2xl mr-4">🎯</span>
+                        <p class="text-slate-700"><strong>Fomentar</strong> el trabajo colaborativo y la adaptación a nuevas tecnologías, aplicando metodologías ágiles y habilidades de comunicación.</p>
+                    </li>
+                </ul>
+            </div>
+
+             <!-- Fundamentos con acordeón -->
+        <div id="fundamentos" class="content-pane">
+            <div class="space-y-4">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-green-700 pt-4 mb-4">HTML</h2>
+                        <p> significa HyperText Markup Language, es decir, Lenguaje de Marcado de Hipertexto.Es el lenguaje base para crear páginas web, y permite estructurar el contenido que vemos en Internet, como títulos, párrafos, imágenes, enlaces, formularios, botones, entre otros.</p>
+                        <p class="mt-2">HTML no es un lenguaje de programación (no tiene lógica como condicionales o bucles), sino un lenguaje de estructura que usa etiquetas (tags) para indicar qué es cada elemento dentro de una página web.</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-green-700 pt-4 mb-4">Principales etiquetas HTML</h3>
+                        <div class="space-y-6">
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <div class="text-center mb-4">
+                                    <img class="resultado mx-auto" src="img/Imagen 4.png" width="500" height="400" alt="">
+                                </div>
+                                <h4 class="text-lg sm:text-xl font-bold text-green-700 flex items-center mb-2"><span class="text-2xl mr-3">🎯</span>Estructura básica de una página HTML:</h4>
+                                <div class="text-center mb-4">
+                                    <img src="img/imagen 1.jpg" class="mx-auto" style="border-radius: 15px;" width="500" height="400" alt="">
+                                </div>
+                                <p class="text-center font-medium text-gray-600 mb-2">Resultado: </p>
+                                <div class="text-center">
+                                    <img class="resultado mx-auto" src="img/imagen 2.png"  width="500" height="400"  alt="">
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <h4 class="text-lg sm:text-xl font-bold text-green-700 flex items-center mb-2"><span class="text-2xl mr-3">👆</span>Ejemplo práctico</h4>
+                                <h5><strong>Empecemos con la estructura HTML base de la tienda online.</strong></h5>
+                                <br>
+                                <p style="text-align: justify;">A continuación, te muestro una estructura sencilla, clara y bien organizada para una tienda en línea. Esta incluye secciones típicas como encabezado, navegación, productos, carrito y pie de página. Posteriormente podrás ir personalizando y añadiendo funcionalidades.
+                                El código correspondiente al ejercicio se encuentra en el archivo anexos.                                                                            </p>
+                                <br>
+                                <p class="text-center font-medium text-gray-600 mb-2">Resultado: </p>
+                                <div class="text-center">
+                                    <img  class="resultado mx-auto" src="img/Imagen 3.png" alt="">
+                                </div>
+                            </div>
+                            
+                             
+                        </div>
+                    </div> 
+            </div>
+        </div>
+
+            
+            
+            <!-- Tipos y Herramientas -->
+            <div id="tipos" class="content-pane">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Recursos digitales para el Desarrollo Web </h2>
+                <p class="text-slate-700 leading-relaxed mb-6">Los recursos educativos digitales para el Desarrollo Web pueden tomar muchas formas. Aquí se muestran algunos de los recurso más utilizados junto con ejemplos de plataformas populares para crearlos o encontrarlos.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <a href="https://www.youtube.com/@codigofacilito" target="_blank" class="type-card bg-white p-4 rounded-lg shadow-sm block text-center">
+                        <p class="text-4xl mb-2">🎬</p>
+                        <p class="font-bold">Videos educativos</p>
+                        <p class="text-sm text-green-700">YouTube</p>
+                    </a>
+                    <a href="https://republicaweb.es/" target="_blank" class="type-card bg-white p-4 rounded-lg shadow-sm block text-center">
+                        <p class="text-4xl mb-2">🎧</p>
+                        <p class="font-bold">Podcasts</p>
+                        <p class="text-sm text-green-700">Podcasts</p>
+                    </a>
+                    <a href="https://codi.link/PGRpdj4KICA8YnV0dG9uPvCfpbMgQ2xpY2sgbWUgdGVzdCE8L2J1dHRvbj4KPC9kaXY+%7CYnV0dG9uIHsKICBmb250LXNpemU6IDQ4cHg7CiAgYm9yZGVyOiAxcHggc29saWQgcmVkOwogIGJhY2tncm91bmQ6IHllbGxvdzsKICBjb2xvcjogIzMzMzsKICBwYWRkaW5nOiA0cHggMTZweDsKICBjdXJzb3I6IHBvaW50ZXI7CiAgYm9yZGVyLXJhZGl1czogOTk5OXB4Owp9Cgpib2R5IHsKICBkaXNwbGF5OiBncmlkOwogIHBsYWNlLWNvbnRlbnQ6IGNlbnRlcjsKICBoZWlnaHQ6IDEwMHZoOwp9%7CaW1wb3J0IENhbnZhc0NvbmZldHRpIGZyb20gJ2h0dHBzOi8vY2RuLnNreXBhY2suZGV2L2NhbnZhcy1jb25mZXR0aSc7Cgpkb2N1bWVudC5xdWVyeVNlbGVjdG9yKCdidXR0b24nKS5hZGRFdmVudExpc3RlbmVyKCdjbGljaycsICgpID0+IHsKICBDYW52YXNDb25mZXR0aSgpCn0p" target="_blank" class="type-card bg-white p-4 rounded-lg shadow-sm block text-center">
+                        <p class="text-4xl mb-2">🕹️</p>
+                        <p class="font-bold">Simuladores</p>
+                        <p class="text-sm text-green-700">Codi</p>
+                    </a>
+                    <a href="https://kahoot.com/" target="_blank" class="type-card bg-white p-4 rounded-lg shadow-sm block text-center">
+                        <p class="text-4xl mb-2">🧠</p>
+                        <p class="font-bold">Quizzes interactivos</p>
+                        <p class="text-sm text-green-700">Kahoot!, Quizizz</p>
+                    </a>
+                    <a href="https://genial.ly/" target="_blank" class="type-card bg-white p-4 rounded-lg shadow-sm block text-center">
+                        <p class="text-4xl mb-2">📄</p>
+                        <p class="font-bold">Infografías</p>
+                        <p class="text-sm text-green-700">Genially, Canva</p>
+                    </a>
+                    <a href="https://coggle.it/" target="_blank" class="type-card bg-white p-4 rounded-lg shadow-sm block text-center">
+                        <p class="text-4xl mb-2">🗺️</p>
+                        <p class="font-bold">Mapas conceptuales</p>
+                        <p class="text-sm text-green-700">Coggle, Miro</p>
+                    </a>
+                    <a href="https://www.sololearn.com/" target="_blank" class="type-card bg-white p-4 rounded-lg shadow-sm block text-center">
+                        <p class="text-4xl mb-2">📱</p>
+                        <p class="font-bold">Aplicaciones móviles</p>
+                        <p class="text-sm text-green-700">SoloLearn (Android / iOS)</p>
+                    </a>
+                     <a href="https://learn.shayhowe.com/" target="_blank" class="type-card bg-white p-4 rounded-lg shadow-sm block text-center">
+                        <p class="text-4xl mb-2">📚</p>
+                        <p class="font-bold">Libros digitales</p>
+                        <p class="text-sm text-green-700">Learn to Code HTML & CSS</p>
+                    </a>
+                </div>
+            </div>
+
+           
+
+            <!-- Cuestionario HTML -->
+            <div id="actividades" class="content-pane">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Cuestionario HTML</h2>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold text-green-700 mb-4">🧩 Cuestionario básico sobre HTML</h3>
+                    <p class="text-slate-600 mb-6">Responde las siguientes 10 preguntas sobre HTML. Selecciona todas las opciones que consideres correctas usando los checkboxes.</p>
+                    
+                    <form id="html-quiz-form">
+                        <div class="space-y-6">
+                            <!-- Pregunta 1 -->
+                            <div class="border-l-4 border-green-500 pl-4">
+                                <h4 class="font-bold text-lg mb-3">1. ¿Qué significa HTML?</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q1" value="a" class="mr-3">
+                                        <span>HyperText Markup Language</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q1" value="b" class="mr-3">
+                                        <span>High Tech Modern Language</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q1" value="c" class="mr-3">
+                                        <span>Home Tool Markup Language</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta 2 -->
+                            <div class="border-l-4 border-green-500 pl-4">
+                                <h4 class="font-bold text-lg mb-3">2. ¿Cuáles son las etiquetas básicas de estructura HTML?</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q2" value="a" class="mr-3">
+                                        <span>&lt;html&gt;</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q2" value="b" class="mr-3">
+                                        <span>&lt;head&gt;</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q2" value="c" class="mr-3">
+                                        <span>&lt;body&gt;</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q2" value="d" class="mr-3">
+                                        <span>&lt;title&gt;</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta 3 -->
+                            <div class="border-l-4 border-green-500 pl-4">
+                                <h4 class="font-bold text-lg mb-3">3. ¿Qué etiquetas se usan para crear encabezados?</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q3" value="a" class="mr-3">
+                                        <span>&lt;h1&gt; hasta &lt;h6&gt;</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q3" value="b" class="mr-3">
+                                        <span>&lt;header&gt;</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q3" value="c" class="mr-3">
+                                        <span>&lt;title&gt;</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta 4 -->
+                            <div class="border-l-4 border-green-500 pl-4">
+                                <h4 class="font-bold text-lg mb-3">4. ¿Cómo se crea un enlace en HTML?</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q4" value="a" class="mr-3">
+                                        <span>&lt;a href="url"&gt;texto&lt;/a&gt;</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q4" value="b" class="mr-3">
+                                        <span>&lt;link href="url"&gt;</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q4" value="c" class="mr-3">
+                                        <span>&lt;url&gt;texto&lt;/url&gt;</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta 5 -->
+                            <div class="border-l-4 border-green-500 pl-4">
+                                <h4 class="font-bold text-lg mb-3">5. ¿Qué etiquetas se usan para crear listas?</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q5" value="a" class="mr-3">
+                                        <span>&lt;ul&gt; (lista desordenada)</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q5" value="b" class="mr-3">
+                                        <span>&lt;ol&gt; (lista ordenada)</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q5" value="c" class="mr-3">
+                                        <span>&lt;li&gt; (elemento de lista)</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta 6 -->
+                            <div class="border-l-4 border-green-500 pl-4">
+                                <h4 class="font-bold text-lg mb-3">6. ¿Cómo se inserta una imagen en HTML?</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q6" value="a" class="mr-3">
+                                        <span>&lt;img src="ruta" alt="descripción"&gt;</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q6" value="b" class="mr-3">
+                                        <span>&lt;image src="ruta"&gt;</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q6" value="c" class="mr-3">
+                                        <span>&lt;picture src="ruta"&gt;</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta 7 -->
+                            <div class="border-l-4 border-green-500 pl-4">
+                                <h4 class="font-bold text-lg mb-3">7. ¿Qué etiquetas se usan para crear formularios?</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q7" value="a" class="mr-3">
+                                        <span>&lt;form&gt;</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q7" value="b" class="mr-3">
+                                        <span>&lt;input&gt;</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q7" value="c" class="mr-3">
+                                        <span>&lt;button&gt;</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta 8 -->
+                            <div class="border-l-4 border-green-500 pl-4">
+                                <h4 class="font-bold text-lg mb-3">8. ¿Cuáles son elementos de bloque en HTML?</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q8" value="a" class="mr-3">
+                                        <span>&lt;div&gt;</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q8" value="b" class="mr-3">
+                                        <span>&lt;p&gt;</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q8" value="c" class="mr-3">
+                                        <span>&lt;span&gt;</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta 9 -->
+                            <div class="border-l-4 border-green-500 pl-4">
+                                <h4 class="font-bold text-lg mb-3">9. ¿Qué atributos puede tener la etiqueta &lt;img&gt;?</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q9" value="a" class="mr-3">
+                                        <span>src (fuente de la imagen)</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q9" value="b" class="mr-3">
+                                        <span>alt (texto alternativo)</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q9" value="c" class="mr-3">
+                                        <span>width y height (dimensiones)</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Pregunta 10 -->
+                            <div class="border-l-4 border-green-500 pl-4">
+                                <h4 class="font-bold text-lg mb-3">10. ¿Qué etiquetas se usan para crear tablas?</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q10" value="a" class="mr-3">
+                                        <span>&lt;table&gt;</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q10" value="b" class="mr-3">
+                                        <span>&lt;tr&gt; (fila)</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="q10" value="c" class="mr-3">
+                                        <span>&lt;td&gt; (celda)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="mt-8 bg-green-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-green-700 transition-colors">
+                            📝 Verificar respuestas
+                        </button>
+                    </form>
+
+                    <!-- Resultados -->
+                    <div id="quiz-results" class="mt-8 hidden">
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
+                            <h4 class="font-bold text-green-800 text-lg mb-2">🎯 Resultados del cuestionario</h4>
+                            <div id="score-display" class="text-green-700 font-medium"></div>
+                            <div id="answers-display" class="mt-4 text-sm text-green-700"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Evaluación -->
+            <div id="evaluacion" class="content-pane">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Evaluación</h2>
+                <div class="bg-gradient-to-br from-white to-green-50 p-8 rounded-xl shadow-lg border border-green-100">
+                    <div class="text-center mb-8">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+                            <span class="text-3xl">📝</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-green-800 mb-2">Actividad de aprendizaje</h3>
+                        <p class="text-slate-600 text-lg">Comprueba lo que has aprendido. Selecciona la respuesta correcta para cada pregunta.</p>
+                    </div>
+                    
+                    <div class="bg-white p-8 rounded-lg shadow-md border-l-4 border-green-500">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                <span class="text-xl">🎯</span>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-800">Actividad 1. Crea tu tarjeta de presentación</h4>
+                                <p class="text-gray-600">Aplicar etiquetas básicas de HTML</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-blue-50 p-6 rounded-lg border border-blue-200 mb-6">
+                            <p class="text-gray-700 mb-4"><strong>Objetivo:</strong> Aplicar etiquetas básicas.</p>
+                            <p class="text-gray-700 mb-4">Crea una página con la siguiente información:</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="space-y-3">
+                                    <div class="flex items-center p-3 bg-white rounded-lg border border-blue-200 hover:border-blue-300 transition-colors">
+                                        <span class="text-blue-500 text-xl mr-3">✍️</span>
+                                        <span class="text-gray-700">Tu nombre (etiqueta <code class="bg-gray-100 px-2 py-1 rounded text-sm">&lt;h1&gt;</code>)</span>
+                                    </div>
+                                    <div class="flex items-center p-3 bg-white rounded-lg border border-blue-200 hover:border-blue-300 transition-colors">
+                                        <span class="text-blue-500 text-xl mr-3">✍️</span>
+                                        <span class="text-gray-700">Una breve descripción tuya (etiqueta <code class="bg-gray-100 px-2 py-1 rounded text-sm">&lt;p&gt;</code>)</span>
+                                    </div>
+                                    <div class="flex items-center p-3 bg-white rounded-lg border border-blue-200 hover:border-blue-300 transition-colors">
+                                        <span class="text-blue-500 text-xl mr-3">✍️</span>
+                                        <span class="text-gray-700">Tus pasatiempos como lista (<code class="bg-gray-100 px-2 py-1 rounded text-sm">&lt;ul&gt;</code>)</span>
+                                    </div>
+                                </div>
+                                <div class="space-y-3">
+                                    <div class="flex items-center p-3 bg-white rounded-lg border border-blue-200 hover:border-blue-300 transition-colors">
+                                        <span class="text-blue-500 text-xl mr-3">✍️</span>
+                                        <span class="text-gray-700">Un enlace a un video que te guste (<code class="bg-gray-100 px-2 py-1 rounded text-sm">&lt;a href=""&gt;</code>)</span>
+                                    </div>
+                                    <div class="flex items-center p-3 bg-white rounded-lg border border-blue-200 hover:border-blue-300 transition-colors">
+                                        <span class="text-blue-500 text-xl mr-3">✍️</span>
+                                        <span class="text-gray-700">Una imagen representativa (<code class="bg-gray-100 px-2 py-1 rounded text-sm">&lt;img&gt;</code>)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button onclick="window.open('https://codi.link/PGRpdj4KICA8YnV0dG9uPvCfpbMgQ2xpY2sgbWUgdGVzdCE8L2J1dHRvbj4KPC9kaXY+%7CYnV0dG9uIHsKICBmb250LXNpemU6IDQ4cHg7CiAgYm9yZGVyOiAxcHggc29saWQgcmVkOwogIGJhY2tncm91bmQ6IHllbGxvdzsKICBjb2xvcjogIzMzMzsKICBwYWRkaW5nOiA0cHggMTZweDsKICBjdXJzb3I6IHBvaW50ZXI7CiAgYm9yZGVyLXJhZGl1czogOTk5OXB4Owp9Cgpib2R5IHsKICBkaXNwbGF5OiBncmlkOwogIHBsYWNlLWNvbnRlbnQ6IGNlbnRlcjsKICBoZWlnaHQ6IDEwMHZoOwp9%7CaW1wb3J0IENhbnZhc0NvbmZldHRpIGZyb20gJ2h0dHBzOi8vY2RuLnNreXBhY2suZGV2L2NhbnZhcy1jb25mZXR0aSc7Cgpkb2N1bWVudC5xdWVyeVNlbGVjdG9yKCdidXR0b24nKS5hZGRFdmVudExpc3RlbmVyKCdjbGljaycsICgpID0+IHsKICBDYW52YXNDb25mZXR0aSgpCn0p');" id="submit-quiz-btn" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white font-bold text-lg rounded-xl hover:from-green-700 hover:to-green-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                                <span class="mr-3">🚀</span>
+                                Iniciar evaluación
+                            </button>
+                        </div>
+                        
+                        <div id="quiz-result" class="mt-6 text-center"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lecturas Sugeridas -->
+            <div id="lecturas" class="content-pane">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Lecturas Sugeridas para Profundizar</h2>
+                <p class="text-slate-700 leading-relaxed mb-6">Para ampliar tu conocimiento sobre los Recursos Educativos Digitales, te recomendamos explorar los siguientes enlaces y documentos:</p>
+                <ul class="space-y-4">
+                    <li class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <a href="https://developer.mozilla.org/es/" target="_blank" class="font-bold text-green-700 hover:underline flex items-center"><span class="text-xl mr-3">📖</span> mozilla.org</a>
+                        <p class="text-slate-600 text-sm mt-1 pl-8">Recursos para desarrolladores, por desarrolladores.</p>
+                    </li>
+                    <li class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <a href="https://www.w3schools.com/" target="_blank" class="font-bold text-green-700 hover:underline flex items-center"><span class="text-xl mr-3">📖</span> w3schools </a>
+                        <p class="text-slate-600 text-sm mt-1 pl-8">Aprende a programar Con el sitio de desarrolladores web más grande del mundo.</p>
+                    </li>
+                    <li class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <a href="https://www.frontendmentor.io/" target="_blank" class="font-bold text-green-700 hover:underline flex items-center"><span class="text-xl mr-3">📖</span> Frontend Mentor</a>
+                        <p class="text-slate-600 text-sm mt-1 pl-8">Desafíos de codificación front-end y full-stack.</p>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Footer/Credits -->
+            <footer class="mt-12 pt-6 border-t-2 border-slate-200 text-center">
+                <p class="text-slate-600 font-medium">Creado por:</p>
+                <p class="text-green-800 font-bold text-lg">Centro de Innovación en TIC para el apoyo de la Docencia CINTIA</p>
+                <p class="text-slate-500 text-sm">Universidad de Córdoba</p>
+            </footer>
+        </main>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    const contentPanes = document.querySelectorAll('.content-pane');
+    const mobileNav = document.getElementById('mobile-nav');
+
+    function switchPane(targetId) {
+        contentPanes.forEach(pane => {
+            pane.classList.remove('active');
+        });
+        const targetPane = document.getElementById(targetId);
+        if (targetPane) {
+            targetPane.classList.add('active');
+        }
+
+        sidebarLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.dataset.target === targetId) {
+                link.classList.add('active');
+            }
+        });
+        
+        if (mobileNav.value !== targetId) {
+            mobileNav.value = targetId;
+        }
+    }
+
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = e.currentTarget.dataset.target;
+            switchPane(targetId);
+        });
+    });
+
+    mobileNav.addEventListener('change', (e) => {
+        switchPane(e.target.value);
+    });
+
+    // --- Evaluación Quiz ---
+    const quizData = [
+        {
+            question: "¿Cuál es el propósito principal de un RED?",
+            options: ["Entretener al usuario", "Facilitar un proceso de enseñanza y aprendizaje", "Vender un producto digital", "Mostrar publicidad"],
+            answer: "Facilitar un proceso de enseñanza y aprendizaje"
+        },
+        {
+            question: "La característica que permite usar un RED en diferentes contextos se llama:",
+            options: ["Interactividad", "Adaptabilidad", "Reusabilidad", "Accesibilidad"],
+            answer: "Reusabilidad"
+        },
+        {
+            question: "Un ejemplo de un RED es:",
+            options: ["Una película de Hollywood", "Un videojuego de acción comercial", "Una simulación interactiva de PhET Colorado", "Un anuncio de televisión"],
+            answer: "Una simulación interactiva de PhET Colorado"
+        }
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+    if(quizContainer) {
+        quizData.forEach((q, index) => {
+            const questionEl = document.createElement('div');
+            questionEl.className = 'mb-6';
+            questionEl.innerHTML = `<p class="font-semibold mb-2">${index + 1}. ${q.question}</p>`;
+            
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = 'space-y-2';
+            
+            q.options.forEach(option => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'quiz-option p-3 border-2 border-slate-200 rounded-lg cursor-pointer';
+                optionEl.textContent = option;
+                optionEl.addEventListener('click', () => {
+                    questionEl.querySelectorAll('.quiz-option').forEach(el => el.classList.remove('selected'));
+                    optionEl.classList.add('selected');
+                });
+                optionsContainer.appendChild(optionEl);
+            });
+            
+            questionEl.appendChild(optionsContainer);
+            quizContainer.appendChild(questionEl);
+        });
+    }
+
+    const submitQuizBtn = document.getElementById('submit-quiz-btn');
+    if (submitQuizBtn) {
+        submitQuizBtn.addEventListener('click', () => {
+            let score = 0;
+            const questions = quizContainer.querySelectorAll('.mb-6');
+            questions.forEach((q, index) => {
+                const selectedOption = q.querySelector('.quiz-option.selected');
+                if (selectedOption && selectedOption.textContent === quizData[index].answer) {
+                    score++;
+                }
+            });
+            const resultEl = document.getElementById('quiz-result');
+            resultEl.textContent = `Tu puntuación es: ${score} de ${quizData.length}.`;
+            if (score / quizData.length >= 0.7) {
+                resultEl.className = 'mt-4 text-lg font-bold text-green-700';
+            } else {
+                resultEl.className = 'mt-4 text-lg font-bold text-red-700';
+            }
+        });
+    }
+
+    // --- Cuestionario HTML ---
+    const htmlQuizForm = document.getElementById('html-quiz-form');
+    if (htmlQuizForm) {
+        htmlQuizForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Respuestas correctas para cada pregunta
+            const correctAnswers = {
+                q1: ['a'], // Solo HyperText Markup Language
+                q2: ['a', 'b', 'c', 'd'], // Todas las etiquetas básicas
+                q3: ['a'], // Solo h1 hasta h6
+                q4: ['a'], // Solo <a href="url">texto</a>
+                q5: ['a', 'b', 'c'], // Todas las etiquetas de listas
+                q6: ['a'], // Solo <img src="ruta" alt="descripción">
+                q7: ['a', 'b', 'c'], // Todas las etiquetas de formularios
+                q8: ['a', 'b'], // Solo div y p (span es inline)
+                q9: ['a', 'b', 'c'], // Todos los atributos de img
+                q10: ['a', 'b', 'c'] // Todas las etiquetas de tablas
+            };
+
+            let totalScore = 0;
+            let maxScore = 0;
+            let answersDisplay = '';
+
+            // Calcular puntuación
+            Object.keys(correctAnswers).forEach(questionName => {
+                const checkboxes = document.querySelectorAll(`input[name="${questionName}"]:checked`);
+                const selectedValues = Array.from(checkboxes).map(cb => cb.value);
+                const correctValues = correctAnswers[questionName];
+                
+                // Verificar si todas las respuestas correctas están seleccionadas y no hay incorrectas
+                const allCorrect = correctValues.every(val => selectedValues.includes(val)) && 
+                                 selectedValues.every(val => correctValues.includes(val));
+                
+                if (allCorrect) {
+                    totalScore += 1;
+                }
+                
+                maxScore += 1;
+                
+                // Agregar a la visualización de respuestas
+                const questionNumber = questionName.replace('q', '');
+                answersDisplay += `<div class="mb-2"><strong>Pregunta ${questionNumber}:</strong> `;
+                if (allCorrect) {
+                    answersDisplay += '<span class="text-green-600">✓ Correcta</span>';
+                } else {
+                    answersDisplay += '<span class="text-red-600">✗ Incorrecta</span>';
+                    answersDisplay += `<br><small>Respuestas correctas: ${correctValues.map(v => {
+                        const labels = {
+                            'a': 'Primera opción',
+                            'b': 'Segunda opción', 
+                            'c': 'Tercera opción',
+                            'd': 'Cuarta opción'
+                        };
+                        return labels[v] || v;
+                    }).join(', ')}</small>`;
+                }
+                answersDisplay += '</div>';
+            });
+
+            // Mostrar resultados
+            const scoreDisplay = document.getElementById('score-display');
+            const answersDisplayEl = document.getElementById('answers-display');
+            const quizResults = document.getElementById('quiz-results');
+
+            scoreDisplay.innerHTML = `<strong>Puntuación: ${totalScore} de ${maxScore} (${Math.round((totalScore/maxScore)*100)}%)</strong>`;
+            answersDisplayEl.innerHTML = answersDisplay;
+            quizResults.classList.remove('hidden');
+
+            // Scroll hacia los resultados
+            quizResults.scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+});
+</script>
+
+</body>
+</html>

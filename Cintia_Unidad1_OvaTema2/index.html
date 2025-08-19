@@ -3,97 +3,206 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>OVA: Tema 2 — Identificación y análisis de problemas</title>
+  <title>OVA - Tema 2: Identificación y análisis de problemas</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { font-family: Arial, sans-serif; }
-    .sidebar-link { border-left: 4px solid transparent; padding: 8px; display:block; }
-    .sidebar-link.active { border-left: 4px solid #22c55e; background:#f0fdf4; }
-    .content-pane { display:none; }
-    .content-pane.active { display:block; }
+    .accordion-content { display: none; }
+    .accordion-header.active + .accordion-content { display: block; }
   </style>
 </head>
-<body class="bg-gray-50">
-<div class="flex">
+<body class="bg-gray-50 text-gray-800">
+
+<div class="flex min-h-screen">
+  <!-- Sidebar -->
   <aside class="w-64 bg-white shadow-md hidden md:block">
-    <div class="p-4 text-center">
-      <img src="img/logo.webp" alt="Logo" class="w-24 mx-auto"/>
+    <div class="p-4 text-center border-b">
+      <img src="img/logo.webp" alt="Logo" class="w-28 mx-auto"/>
+      <h1 class="text-lg font-bold mt-2 text-green-700">Tema 2</h1>
     </div>
-    <nav>
-      <a href="#" class="sidebar-link active" data-target="intro">Introducción</a>
-      <a href="#" class="sidebar-link" data-target="objetivos">Objetivos</a>
-      <a href="#" class="sidebar-link" data-target="contenido">Contenido</a>
-      <a href="#" class="sidebar-link" data-target="actividades">Actividades</a>
-      <a href="#" class="sidebar-link" data-target="evaluacion">Evaluación</a>
-      <a href="#" class="sidebar-link" data-target="recursos">Recursos</a>
+    <nav class="p-4 space-y-2">
+      <a href="#intro" class="block hover:text-green-700">Introducción</a>
+      <a href="#objetivos" class="block hover:text-green-700">Objetivos</a>
+      <a href="#contenido" class="block hover:text-green-700">Contenido</a>
+      <a href="#actividades" class="block hover:text-green-700">Actividades</a>
+      <a href="#evaluacion" class="block hover:text-green-700">Evaluación</a>
+      <a href="#recursos" class="block hover:text-green-700">Recursos</a>
     </nav>
   </aside>
-  <main class="flex-1 p-6">
-    <section id="intro" class="content-pane active">
+
+  <!-- Main -->
+  <main class="flex-1 p-6 space-y-10">
+
+    <!-- Introducción -->
+    <section id="intro">
       <h2 class="text-2xl font-bold text-green-800 mb-4">Introducción</h2>
-      <p>En este tema aprenderás a identificar y analizar problemas para proponer soluciones lógicas, 
-      reconociendo entradas, restricciones y salidas, además de plantear un primer borrador de pseudocódigo.</p>
+      <p>
+        En este tema aprenderás a <b>identificar y analizar problemas</b> para proponer soluciones lógicas.
+        Conocerás cómo reconocer <b>entradas, restricciones y salidas</b>, descomponer un problema con
+        el esquema <b>E-P-S</b>, trabajar con <b>tipos de datos</b> y <b>operadores</b>, y finalmente
+        elaborar un primer borrador de pseudocódigo.
+      </p>
     </section>
-    <section id="objetivos" class="content-pane">
+
+    <!-- Objetivos -->
+    <section id="objetivos">
       <h2 class="text-2xl font-bold text-green-800 mb-4">Objetivos</h2>
       <ul class="list-disc pl-6 space-y-2">
         <li>Identificar entradas, restricciones y salidas de un problema.</li>
         <li>Aplicar el esquema E-P-S para descomponer un problema.</li>
-        <li>Reconocer tipos de datos, variables y constantes en un contexto técnico.</li>
-        <li>Utilizar operadores y expresiones para plantear soluciones lógicas básicas.</li>
+        <li>Reconocer tipos de datos, variables y constantes.</li>
+        <li>Usar operadores y expresiones para plantear soluciones básicas.</li>
         <li>Validar rangos y formatos de datos.</li>
-        <li>Elaborar un primer borrador de pseudocódigo.</li>
+        <li>Elaborar un borrador de pseudocódigo.</li>
       </ul>
     </section>
-    <section id="contenido" class="content-pane">
+
+    <!-- Contenido con acordeón -->
+    <section id="contenido">
       <h2 class="text-2xl font-bold text-green-800 mb-4">Contenido</h2>
-      <p>Incluye:</p>
-      <ul class="list-disc pl-6 space-y-1">
-        <li>Entradas, restricciones y salidas</li>
-        <li>Del texto del problema a E-P-S</li>
-        <li>Tipos de datos, variables y constantes</li>
-        <li>Operadores aritméticos, relacionales y lógicos</li>
-        <li>Precedencia, paréntesis y casting</li>
-        <li>Validación de rango y formato</li>
-        <li>Borrador de pseudocódigo</li>
-      </ul>
+
+      <div class="space-y-4">
+        <!-- Panel A -->
+        <div>
+          <button class="accordion-header w-full text-left p-3 bg-green-100 rounded font-semibold">A. Entradas, restricciones y salidas</button>
+          <div class="accordion-content p-3 border rounded">
+            <p>Todo problema debe analizarse identificando:</p>
+            <ul class="list-disc pl-6">
+              <li><b>Entradas:</b> datos iniciales necesarios.</li>
+              <li><b>Restricciones:</b> condiciones o limitaciones.</li>
+              <li><b>Salidas:</b> resultados esperados.</li>
+            </ul>
+            <img src="img/ers.png" alt="ERS" class="mt-3 w-72"/>
+          </div>
+        </div>
+
+        <!-- Panel B -->
+        <div>
+          <button class="accordion-header w-full text-left p-3 bg-green-100 rounded font-semibold">B. Del texto del problema a E-P-S</button>
+          <div class="accordion-content p-3 border rounded">
+            <p>El esquema <b>E-P-S</b> ayuda a organizar problemas complejos en pasos simples.</p>
+            <img src="img/eps.png" alt="EPS" class="mt-3 w-72"/>
+          </div>
+        </div>
+
+        <!-- Panel C -->
+        <div>
+          <button class="accordion-header w-full text-left p-3 bg-green-100 rounded font-semibold">C. Tipos de datos, variables y constantes</button>
+          <div class="accordion-content p-3 border rounded">
+            <ul class="list-disc pl-6">
+              <li><b>Entero:</b> números sin decimales.</li>
+              <li><b>Real:</b> números con decimales.</li>
+              <li><b>Lógico:</b> verdadero o falso.</li>
+              <li><b>Cadena:</b> texto.</li>
+            </ul>
+            <img src="img/tipos_datos.png" alt="Tipos de datos" class="mt-3 w-72"/>
+          </div>
+        </div>
+
+        <!-- Panel D -->
+        <div>
+          <button class="accordion-header w-full text-left p-3 bg-green-100 rounded font-semibold">D. Operadores y expresiones</button>
+          <div class="accordion-content p-3 border rounded">
+            <p>Existen tres grandes grupos de operadores:</p>
+            <ul class="list-disc pl-6">
+              <li>Aritméticos: +, -, *, /, %</li>
+              <li>Relacionales: ==, !=, &lt;, &lt;=, &gt;, &gt;=</li>
+              <li>Lógicos: &&, ||, !</li>
+            </ul>
+            <img src="img/operadores.png" alt="Operadores" class="mt-3 w-72"/>
+          </div>
+        </div>
+
+        <!-- Panel E -->
+        <div>
+          <button class="accordion-header w-full text-left p-3 bg-green-100 rounded font-semibold">E. Validación de rango y formato</button>
+          <div class="accordion-content p-3 border rounded">
+            <p>Un buen programa debe manejar entradas inválidas con mensajes claros y seguros.</p>
+            <img src="img/validacion.png" alt="Validación" class="mt-3 w-72"/>
+          </div>
+        </div>
+
+        <!-- Panel F -->
+        <div>
+          <button class="accordion-header w-full text-left p-3 bg-green-100 rounded font-semibold">F. Del análisis al borrador de pseudocódigo</button>
+          <div class="accordion-content p-3 border rounded">
+            <p>El pseudocódigo es un puente entre el análisis y la programación real.</p>
+            <img src="img/pseudocodigo.png" alt="Pseudocódigo" class="mt-3 w-72"/>
+          </div>
+        </div>
+      </div>
     </section>
-    <section id="actividades" class="content-pane">
+
+    <!-- Actividades -->
+    <section id="actividades">
       <h2 class="text-2xl font-bold text-green-800 mb-4">Actividades</h2>
-      <ol class="list-decimal pl-6 space-y-1">
-        <li>Identificar entradas y salidas en un problema cotidiano.</li>
-        <li>Clasificar variables y tipos de datos.</li>
-        <li>Resolver ejercicios con operadores.</li>
-        <li>Redactar un mini pseudocódigo.</li>
+      <ol class="list-decimal pl-6 space-y-2">
+        <li>Identifica entradas, restricciones y salidas de un problema cotidiano.</li>
+        <li>Clasifica variables en entero, real, lógico o cadena.</li>
+        <li>Escribe 3 expresiones usando operadores aritméticos y lógicos.</li>
+        <li>Redacta un borrador de pseudocódigo simple (ej. calcular promedio).</li>
       </ol>
     </section>
-    <section id="evaluacion" class="content-pane">
+
+    <!-- Evaluación -->
+    <section id="evaluacion">
       <h2 class="text-2xl font-bold text-green-800 mb-4">Evaluación</h2>
-      <p>Quiz de selección múltiple con retroalimentación inmediata.</p>
+      <p>Responde el siguiente quiz:</p>
+      <div id="quiz" class="space-y-4 mt-3"></div>
+      <button onclick="checkQuiz()" class="mt-3 bg-green-600 text-white px-4 py-2 rounded">Enviar respuestas</button>
+      <p id="result" class="mt-2 font-bold"></p>
     </section>
-    <section id="recursos" class="content-pane">
-      <h2 class="text-2xl font-bold text-green-800 mb-4">Recursos y bibliografía</h2>
+
+    <!-- Recursos -->
+    <section id="recursos">
+      <h2 class="text-2xl font-bold text-green-800 mb-4">Recursos y Bibliografía</h2>
       <ul class="list-disc pl-6">
         <li>Joyanes Aguilar, L. (2020). Fundamentos de programación. McGraw-Hill.</li>
-        <li>PSeInt: <a href="https://pseint.sourceforge.net" target="_blank">https://pseint.sourceforge.net</a></li>
-        <li>FreeCodeCamp: <a href="https://www.freecodecamp.org/espanol/" target="_blank">https://www.freecodecamp.org/espanol/</a></li>
+        <li><a href="https://pseint.sourceforge.net" target="_blank" class="text-green-700">PSeInt</a></li>
+        <li><a href="https://www.freecodecamp.org/espanol/" target="_blank" class="text-green-700">FreeCodeCamp</a></li>
       </ul>
+      <img src="img/qr_recursos.png" alt="QR recursos" class="mt-3 w-32"/>
     </section>
+
   </main>
 </div>
+
 <script>
-document.querySelectorAll('.sidebar-link').forEach(link => {
-  link.addEventListener('click', e => {
-    e.preventDefault();
-    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-    link.classList.add('active');
-    const target = link.getAttribute('data-target');
-    document.querySelectorAll('.content-pane').forEach(pane => {
-      pane.classList.remove('active');
-      if(pane.id === target) pane.classList.add('active');
-    });
+const quizQuestions = [
+  { q: "¿Qué significa EPS en análisis de problemas?", a: ["Entrada-Proceso-Salida","Entidad-Propiedad-Servicio","Ejemplo-Prueba-Solución"], correct: 0 },
+  { q: "¿Cuál de estos es un operador lógico?", a: ["+","==","||"], correct: 2 },
+  { q: "El tipo de dato 'cadena' se refiere a:", a: ["Texto","Verdadero/Falso","Números enteros"], correct: 0 }
+];
+
+function renderQuiz(){
+  const quizDiv = document.getElementById('quiz');
+  quizQuestions.forEach((q, i) => {
+    let block = document.createElement('div');
+    block.innerHTML = `<p class='font-semibold'>${i+1}. ${q.q}</p>` + 
+      q.a.map((opt, idx) => 
+        `<label class='block'><input type='radio' name='q${i}' value='${idx}'> ${opt}</label>`).join('');
+    quizDiv.appendChild(block);
+  });
+}
+function checkQuiz(){
+  let score = 0;
+  quizQuestions.forEach((q,i) => {
+    let ans = document.querySelector(`input[name='q${i}']:checked`);
+    if(ans && parseInt(ans.value) === q.correct) score++;
+  });
+  document.getElementById('result').textContent = "Tu puntaje: " + score + " / " + quizQuestions.length;
+}
+renderQuiz();
+
+// Acordeón
+document.querySelectorAll('.accordion-header').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    btn.classList.toggle('active');
+    let content = btn.nextElementSibling;
+    content.style.display = content.style.display==='block'?'none':'block';
   });
 });
 </script>
+
 </body>
 </html>
+

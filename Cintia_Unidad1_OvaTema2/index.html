@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OVA: Tema 2 — Identificación y análisis de problemas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .sidebar-link { border-left: 4px solid transparent; padding: 8px; display:block; }
+    .sidebar-link.active { border-left: 4px solid #22c55e; background:#f0fdf4; }
+    .content-pane { display:none; }
+    .content-pane.active { display:block; }
+  </style>
+</head>
+<body class="bg-gray-50">
+<div class="flex">
+  <aside class="w-64 bg-white shadow-md hidden md:block">
+    <div class="p-4 text-center">
+      <img src="img/logo.webp" alt="Logo" class="w-24 mx-auto"/>
+    </div>
+    <nav>
+      <a href="#" class="sidebar-link active" data-target="intro">Introducción</a>
+      <a href="#" class="sidebar-link" data-target="objetivos">Objetivos</a>
+      <a href="#" class="sidebar-link" data-target="contenido">Contenido</a>
+      <a href="#" class="sidebar-link" data-target="actividades">Actividades</a>
+      <a href="#" class="sidebar-link" data-target="evaluacion">Evaluación</a>
+      <a href="#" class="sidebar-link" data-target="recursos">Recursos</a>
+    </nav>
+  </aside>
+  <main class="flex-1 p-6">
+    <section id="intro" class="content-pane active">
+      <h2 class="text-2xl font-bold text-green-800 mb-4">Introducción</h2>
+      <p>En este tema aprenderás a identificar y analizar problemas para proponer soluciones lógicas, 
+      reconociendo entradas, restricciones y salidas, además de plantear un primer borrador de pseudocódigo.</p>
+    </section>
+    <section id="objetivos" class="content-pane">
+      <h2 class="text-2xl font-bold text-green-800 mb-4">Objetivos</h2>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>Identificar entradas, restricciones y salidas de un problema.</li>
+        <li>Aplicar el esquema E-P-S para descomponer un problema.</li>
+        <li>Reconocer tipos de datos, variables y constantes en un contexto técnico.</li>
+        <li>Utilizar operadores y expresiones para plantear soluciones lógicas básicas.</li>
+        <li>Validar rangos y formatos de datos.</li>
+        <li>Elaborar un primer borrador de pseudocódigo.</li>
+      </ul>
+    </section>
+    <section id="contenido" class="content-pane">
+      <h2 class="text-2xl font-bold text-green-800 mb-4">Contenido</h2>
+      <p>Incluye:</p>
+      <ul class="list-disc pl-6 space-y-1">
+        <li>Entradas, restricciones y salidas</li>
+        <li>Del texto del problema a E-P-S</li>
+        <li>Tipos de datos, variables y constantes</li>
+        <li>Operadores aritméticos, relacionales y lógicos</li>
+        <li>Precedencia, paréntesis y casting</li>
+        <li>Validación de rango y formato</li>
+        <li>Borrador de pseudocódigo</li>
+      </ul>
+    </section>
+    <section id="actividades" class="content-pane">
+      <h2 class="text-2xl font-bold text-green-800 mb-4">Actividades</h2>
+      <ol class="list-decimal pl-6 space-y-1">
+        <li>Identificar entradas y salidas en un problema cotidiano.</li>
+        <li>Clasificar variables y tipos de datos.</li>
+        <li>Resolver ejercicios con operadores.</li>
+        <li>Redactar un mini pseudocódigo.</li>
+      </ol>
+    </section>
+    <section id="evaluacion" class="content-pane">
+      <h2 class="text-2xl font-bold text-green-800 mb-4">Evaluación</h2>
+      <p>Quiz de selección múltiple con retroalimentación inmediata.</p>
+    </section>
+    <section id="recursos" class="content-pane">
+      <h2 class="text-2xl font-bold text-green-800 mb-4">Recursos y bibliografía</h2>
+      <ul class="list-disc pl-6">
+        <li>Joyanes Aguilar, L. (2020). Fundamentos de programación. McGraw-Hill.</li>
+        <li>PSeInt: <a href="https://pseint.sourceforge.net" target="_blank">https://pseint.sourceforge.net</a></li>
+        <li>FreeCodeCamp: <a href="https://www.freecodecamp.org/espanol/" target="_blank">https://www.freecodecamp.org/espanol/</a></li>
+      </ul>
+    </section>
+  </main>
+</div>
+<script>
+document.querySelectorAll('.sidebar-link').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+    const target = link.getAttribute('data-target');
+    document.querySelectorAll('.content-pane').forEach(pane => {
+      pane.classList.remove('active');
+      if(pane.id === target) pane.classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>

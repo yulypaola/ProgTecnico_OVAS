@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OVA: Tema 2 — Identificación y análisis de problemas para proponer soluciones lógicas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    .sidebar-link { transition: all .3s ease; border-left: 4px solid transparent; }
+    .sidebar-link.active, .sidebar-link:hover { background:#e6f4ea; color:#166534; border-left-color:#22c55e; }
+    .content-pane { display:none; animation:fadeIn .5s ease-in-out; }
+    .content-pane.active { display:block; }
+    @keyframes fadeIn { from {opacity:0; transform:translateY(20px)} to {opacity:1; transform:translateY(0)} }
+    .quiz-option:hover { background:#f0fdf4; }
+    .quiz-option.selected { background:#dcfce7; border-color:#22c55e; }
+    .image-container { position:relative; overflow:hidden; }
+    .expand-btn { position:absolute; bottom:10px; right:10px; background:rgba(34,197,94,.85); color:#fff; border:none; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px; opacity:0; transition:opacity .3s, transform .3s; z-index:10; }
+    @media (max-width: 768px) { .expand-btn { opacity:.9; width:44px; height:44px; font-size:22px; } }
+    .image-container:hover .expand-btn { opacity:1; transform:scale(1.1); }
+    .image-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.8); z-index:1000; justify-content:center; align-items:center; opacity:0; transition:opacity .3s; }
+    .image-modal.active { display:flex; opacity:1; }
+    .modal-content { max-width:90%; max-height:90%; position:relative; }
+    .modal-content img { max-width:100%; max-height:90vh; border:4px solid #fff; border-radius:4px; box-shadow:0 10px 25px rgba(0,0,0,.5); }
+    .close-modal { position:absolute; top:-20px; right:-20px; background:#ef4444; color:#fff; border:none; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px; }
+  </style>
+</head>
+<body class="bg-slate-50">
+<div class="flex min-h-screen">
+  <aside class="w-64 bg-white shadow-lg flex-shrink-0 hidden md:flex md:flex-col">
+    <div class="p-4">
+      <div style="width:150px;height:150px" class="p-2 mx-auto flex items-center justify-center bg-white rounded-full shadow-lg border-2 border-green-500">
+        <img src="img/logo.webp" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
+      </div>
+    </div>
+    <nav class="mt-6 flex-1">
+      <a href="#" class="sidebar-link active flex items-center py-3 px-6 font-medium text-slate-700" data-target="introduccion"><span class="mr-3 text-xl">🚀</span> Introducción</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="objetivos"><span class="mr-3 text-xl">🎯</span> Objetivos</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="contenido"><span class="mr-3 text-xl">📚</span> Contenido</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="actividades"><span class="mr-3 text-xl">✍️</span> Actividades</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="evaluacion"><span class="mr-3 text-xl">✔️</span> Evaluación</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="recursos"><span class="mr-3 text-xl">📖</span> Recursos</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="bibliografia"><span class="mr-3 text-xl">📚</span> Bibliografía</a>
+    </nav>
+  </aside>
+
+  <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50">
+    <div class="md:hidden mb-6 flex flex-col items-center">
+      <div style="width:100px;height:100px" class="p-2 flex items-center justify-center bg-white rounded-full shadow-lg mb-2">
+        <img src="img/logo.webp" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
+      </div>
+      <select id="mobile-nav" class="w-full mt-2 p-2 border rounded-md bg-white shadow-sm">
+        <option value="introduccion">🚀 Introducción</option>
+        <option value="objetivos">🎯 Objetivos</option>
+        <option value="contenido">📚 Contenido</option>
+        <option value="actividades">✍️ Actividades</option>
+        <option value="evaluacion">✔️ Evaluación</option>
+        <option value="recursos">📖 Recursos</option>
+        <option value="bibliografia">📚 Bibliografía</option>
+      </select>
+    </div>
+
+    <!-- Intro -->
+    <section id="introduccion" class="content-pane active">
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-800">Identificación y análisis de problemas para proponer soluciones lógicas</h1>
+      <p class="mt-4 leading-relaxed">
+        🏠 <strong>Antes de programar</strong>, es imprescindible comprender el problema: qué se recibe (entradas), qué se transforma/valida (proceso) y qué se espera obtener (salidas). Esto implica reconocer restricciones (límites, reglas del negocio, rangos válidos, requisitos de seguridad), elegir tipos de datos adecuados, nombrar variables y constantes con claridad y expresar operaciones y decisiones de forma precisa, usando prioridad de operadores y paréntesis.
+      </p>
+      <p class="mt-2 leading-relaxed">
+        El enfoque de esta guía conduce del enunciado en lenguaje natural al modelo lógico y, finalmente, a expresiones y decisiones listas para pseudocódigo o código.
+      </p>
+      <div class="mt-6 p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-lg">
+        <p class="text-emerald-900">Navega por el menú para explorar el objetivo, el contenido, las actividades, la evaluación y los recursos.</p>
+      </div>
+    </section>
+
+    <!-- Objetivo -->
+    <section id="objetivos" class="content-pane">
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Objetivo</h2>
+      <p class="leading-relaxed">
+        >🧠</span><span><strong>Reconocer y aplicar</strong> herramientas básicas para describir problemas y proponer soluciones lógicas, identificando restricciones y condiciones, seleccionando tipos de datos, definiendo variables y constantes, y utilizando operadores aritméticos, relacionales y lógicos con su prioridad y el uso adecuado de paréntesis. Al finalizar, el estudiante elaborará expresiones y decisiones válidas para resolver problemas sencillos.
+      </p>
+    </section>
+
+    <!-- Contenido -->
+      <section id="contenido" class="content-pane">
+      <div class="space-y-4">
+        <!-- A: Definición -->
+        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
+          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
+            Operadores
+            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
+          </summary>
+          <div class="px-4 pb-4 text-slate-700 space-y-3">
+            <p> Los <strong> operadores </strong> permiten calcular, comparar y (más adelante) construir decisiones. En esta unidad se usan de forma básica, con ejemplos claros y advertencias comunes.</p>
+            <p> Los <strong> Operadores aritméticos. </strong> Son símbolos que permiten realizar cálculos matemáticos con números, variables o constantes. Se usan para construir expresiones numéricas; recuerda no dividir entre cero y distinguir entre división entera y real.</p>
+
+            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Operadores aritméticos </figcaption>
+              <img src="img/img01.png" alt=" . " class="w-full object-contain rounded"/>
+            </figure>
+            <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg">
+              <p class="font-semibold text-emerald-900"> Ten en cuenta tres cuidados esenciales al trabajar con operadores aritméticos: nunca dividas entre cero (provoca error de ejecución), distingue división entera y real (por ejemplo, 7/2 puede dar 3 o 3.5 según el lenguaje) y usa el módulo (%) con enteros, teniendo en cuenta que con números negativos su resultado puede variar según el lenguaje; atender estos puntos evita fallas comunes y resultados inesperados.</p>
+              <ol class="list-decimal ml-6">
+
+             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Cuidados frecuentes. </figcaption>
+              <img src="img/img02.png" alt=" . " class="w-full object-contain rounded"/>
+            </figure>
+                
+            <p> Los <strong> Operadores relacionales. </strong> Los operadores relacionales se usan para comparar dos valores (del mismo tipo) y el resultado siempre es Verdadero o Falso. Sirven para verificar igualdad, diferencia y orden: ==,  !=,  <,  <=,  >, >=. Con números comparan magnitudes; con texto la comparación puede depender de mayúsculas/minúsculas según el lenguaje. La figura resume cada signo, su significado y ejemplos que usaremos para escribir condiciones simples en esta unidad.</p>
+
+            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Operadores relacionales. </figcaption>
+              <img src="img/img03.png" alt=" . " class="w-full object-contain rounded"/>
+            </figure>
+
+            <p> Los <strong> Operadores lógicos. </strong> Los operadores lógicos trabajan con valores Verdadero/Falso y nos ayudan a decidir a partir de condiciones simples.</p>
+
+            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Operadores lógicos. </figcaption>
+              <img src="img/img04.png" alt=" . " class="w-full object-contain rounded"/>
+            </figure>
+                
+                
+              </ol>
+            </div>
+          </div>
+        </details>
+
+        <!-- B: Características -->
+        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
+          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
+            Prioridad de operadores y uso de paréntesis 
+            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
+          </summary>
+          <div class="px-4 pb-4 text-slate-700 space-y-3">
+           <p> Antes de evaluar una  <strong> expresión </strong> expresión, el computador sigue un orden de prioridad: primero multiplicación/división/módulo, luego suma/resta, después las comparaciones (relacionales), luego la negación lógica (!), y al final AND (&&) y OR (||). La siguiente figura lo resume; cuando tengas duda, usa paréntesis para dejar clara la intención de la operación inicial.</p>
+
+            <figure class="mt-2">
+              <img src="img/img05.png" class="w-full object-contain" alt="Prioridades de los operadores">
+            </figure>
+            <p class="mt-3">Regla práctica: usa paréntesis para dejar clara la intención. Por ejemplo, si tienes la ecuación:  <strong> a +   b   *   c </strong> para que se calcule primero a + b (usa paréntesis) así: <strong> (a +   b) *   c </strong> .</p>
+
+  <!-- B: nuevo -->
+            
+      <!-- B: fin nuevo -->      
+
+            <div class="grid sm:grid-cols-2 gap-4">
+              
+            </div>
+          </div>
+        </details>
+
+        <!-- C: Ejemplos -->
+        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
+          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
+            Tipos de Datos
+            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
+          </summary>
+          <div class="px-4 pb-4 text-slate-700 space-y-3">
+          
+           <p> En <strong> programación </strong> usamos tipos de datos primitivos para indicar qué clase de información puede guardar una variable o constante y qué operaciones se pueden hacer con ella. En lógica de programación trabajamos, principalmente, con los siguientes:</p>
+
+            <figure class="border rounded p-3">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Tipos de datos</figcaption>
+              <img src="img/img06.png" class="w-full object-contain" alt="Tipos de datos">
+            </figure>
+
+                        
+            
+          </div>
+        </details>
+
+        <!-- D: Importancia -->
+        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
+          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
+            Variables y Constantes
+            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
+          </summary>
+          <div class="px-4 pb-4 text-slate-700 space-y-3">
+            <p>Variable. Una variable es un nombre que le damos a un dato para representar una característica de algo dentro del problema. Durante la ejecución del algoritmo su valor puede cambiar. Ejemplo del contexto “estudiante”: necesitamos guardar tipo de documento, número, nombres, apellidos y código institucional. Para cada dato definimos una variable con nombre claro:</p>
+          
+            <ul class="list-disc ml-6 space-y-1">
+              <li>tipo de identificación → tipDoc, tipoIdentificacion, tipoDocumento.</li>
+              <li>número de identificación → numDoc, nroDoc, nroIdent.</li>
+              <li>nombres del estudiante → nomEst.</li>
+              <li>apellidos del estudiante → apeEst.</li>
+              <li>código/ID del estudiante → codEst, idEst.</li>
+            </ul>
+
+            <figure>
+              <img src="img/img07.png" class="w-full object-contain" alt="Consejos para identificadores">
+            </figure>
+          </div>
+        </details>
+
+        <!-- E: EPS -->
+        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
+          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
+            Identificación de restricciones y condiciones en un problema
+            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
+          </summary>
+          <div class="px-4 pb-4 text-slate-700 space-y-3">
+
+            <p>¿Qué buscamos?</p>
+          
+            <ul class="list-disc ml-6 space-y-1">
+              <li>Restricciones: reglas que siempre deben cumplirse (rango, formato, opciones válidas, existencia del dato).</li>
+              <li>Condición básica: una comparación que activa una acción (sin combinar con “y/o” todavía).</li>
+              <li>Comparadores a usar: operadores relacionales.</li>
+            </ul>
+            <p>¿Qué tener en cuenta?</p>
+          
+            <ul class="list-disc ml-6 space-y-1">
+              <li>Entradas: Qué datos llegan?.</li>
+              <li>Restricciones (mín. 2): rango, formato u opciones permitidas.</li>
+              <li>Condición (1 comparación): qué evaluar para decidir una acción.</li>
+             <li>Proceso: operación sencilla (cálculo o asignación).</li>
+                 <li>Salidas + Mensajes: qué mostrar/guardar; texto breve si se rompe una restricción.</li>
+            </ul>
+          <p>Ejemplo. (<strong>Ejercicio práctico de un Parqueadero</strong>), Enunciado: Un parqueadero cobra por fracción de hora. Si el número de horas es mayor o igual que 8, se debe aplicar al cliente un descuento de 1 hora, eso significa que, si el vehículo del cliente demora 10 horas en el parqueadero, sólo se le deben cobrar 9 horas.</p>
+            <figure class="border rounded p-3">
+              <img src="img/img09.png" class="w-full object-contain" alt="Ejemplo">
+            </figure>
+                
+            <p>Todo algoritmo puede entenderse como un sistema que recibe información (<strong>entrada</strong>), la transforma (<strong>proceso</strong>) y genera un <strong>resultado</strong> (<strong>salida</strong>).</p>
+            <figure class="border rounded p-3">
+              <img src="img/img08.png" class="w-full object-contain" alt="Lista de verificación">
+            </figure>
+            
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div class="p-3 border rounded">
+              </div>
+              <div class="p-3 border rounded">
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- Actividades -->
+    <section id="actividades" class="content-pane">
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Actividades</h2>
+      <div class="space-y-6">
+        <div class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5">
+          <p class="font-semibold text-emerald-700 mb-2">Situación 1</p>
+          <p class="mb-3">Un agricultor desea saber cuántos bultos de yuca puede vender si cada bulto pesa 50 kg y su cosecha total fue de 750 kg. Completa E-P-S:</p>
+          <div class="grid sm:grid-cols-3 gap-3">
+            <input data-ans="entrada" placeholder="Entrada" class="act-1 p-2 border rounded bg-white">
+            <input data-ans="proceso" placeholder="Proceso" class="act-1 p-2 border rounded bg-white">
+            <input data-ans="salida" placeholder="Salida" class="act-1 p-2 border rounded bg-white">
+          </div>
+        </div>
+        <div class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5">
+          <p class="font-semibold text-emerald-700 mb-2">Situación 2</p>
+          <p class="mb-3">Tienda virtual con 5% de descuento si cantidad &gt; 10. Completa E-P-S:</p>
+          <div class="grid sm:grid-cols-3 gap-3">
+            <input data-ans="entrada" placeholder="Entrada" class="act-2 p-2 border rounded bg-white">
+            <input data-ans="proceso" placeholder="Proceso" class="act-2 p-2 border rounded bg-white">
+            <input data-ans="salida" placeholder="Salida" class="act-2 p-2 border rounded bg-white">
+          </div>
+        </div>
+      </div>
+      <button id="check-acts" class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded transition-colors">Verificar</button>
+      <div id="acts-result" class="mt-3 font-semibold"></div>
+    </section>
+
+    <!-- Evaluación (quiz) -->
+    <section id="evaluacion" class="content-pane">
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Evaluación</h2>
+      <div class="bg-white p-5 rounded-lg shadow-md">
+        <div id="quiz"></div>
+        <button id="quiz-submit" class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded transition-colors">Finalizar</button>
+        <div id="quiz-result" class="mt-3 text-lg font-bold"></div>
+      </div>
+    </section>
+
+    <!-- Recursos (3 tarjetas como la imagen) -->
+    <section id="recursos" class="content-pane">
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-6">Recursos</h2>
+      <div class="grid lg:grid-cols-3 gap-5">
+        <!-- Card 1 -->
+        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-xl font-bold text-slate-900 leading-tight">Lógica de programación</h3>
+              <span class="badge">Libro</span>
+            </div>
+            <p class="text-sm text-slate-700"><strong>Trejos Buriticá, O. I.</strong> (2023). <em>Lógica de programación</em>. Ediciones de la U.</p>
+            <a href="https://www.edicionesdelau.com/" target="_blank" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
+          </div>
+          <div class="mt-4 flex justify-end">
+            <img src="img/qr_logica.png" alt="QR Lógica de programación" class="w-20 h-20 object-contain">
+          </div>
+        </article>
+        <!-- Card 2 -->
+        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-xl font-bold text-slate-900 leading-tight">Solucionario en pseudocódigo</h3>
+              <span class="badge">Libro</span>
+            </div>
+            <p class="text-sm text-slate-700"><strong>Trejos Buriticá, O. I.</strong> (2021). <em>Lógica de programación: solucionario en pseudocódigo. Ejercicios resueltos</em>. Ediciones de la U.</p>
+            <a href="https://www.edicionesdelau.com/" target="_blank" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
+          </div>
+          <div class="mt-4 flex justify-end">
+            <img src="img/qr_solucionario.png" alt="QR Solucionario en pseudocódigo" class="w-20 h-20 object-contain">
+          </div>
+        </article>
+        <!-- Card 3 -->
+        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-xl font-bold text-slate-900 leading-tight">Fundamentos de programación</h3>
+              <span class="badge">Libro</span>
+            </div>
+            <p class="text-sm text-slate-700"><strong>García Santillán, I.</strong> (Ed.). (2014). <em>Fundamentos de programación usando PSeInt</em>. Unidad de Producción y Difusión Científica y Académica.</p>
+            <a href="#" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
+          </div>
+          <div class="mt-4 flex justify-end">
+            <img src="img/qr_fundamentos.png" alt="QR Fundamentos de programación" class="w-20 h-20 object-contain">
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Bibliografía -->
+    <section id="bibliografia" class="content-pane">
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Bibliografía</h2>
+      <ul class="space-y-3">
+        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+          Trejos Buriticá, O. I. (2023). <em>Lógica de programación</em>. Ediciones de la U.
+        </li>
+        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+          Trejos Buriticá, O. I. (2021). <em>Lógica de programación: solucionario en pseudocódigo. Ejercicios resueltos</em>. Ediciones de la U.
+        </li>
+        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+          García Santillán, I. (Ed.). (2014). <em>Fundamentos de programación usando PSeInt</em>. Unidad de Producción y Difusión Científica y Académica.
+        </li>
+      </ul>
+      <footer class="mt-10 pt-6 border-t text-center text-slate-600">
+        <p class="font-medium">Unicórdoba, calidad, innovación e inclusión para la transformación del territorio.</p>
+        <a class="text-emerald-700 underline" href="https://www.unicordoba.edu.co" target="_blank">www.unicordoba.edu.co</a>
+      </footer>
+    </section>
+  </main>
+</div>
+
+<!-- Image modal -->
+<div id="imgModal" class="image-modal">
+  <img id="imgModalSrc" src="" alt="Vista ampliada" class="max-w-[92vw] max-h-[92vh] border-4 border-white rounded shadow-2xl"/>
+</div>
+
+<script>
+// Navigation
+const panes = document.querySelectorAll('.content-pane');
+const links = document.querySelectorAll('.sidebar-link');
+const mobileNav = document.getElementById('mobile-nav');
+function go(id){
+  panes.forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  links.forEach(a=>a.classList.toggle('active', a.dataset.target===id));
+  if(mobileNav) mobileNav.value=id;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+links.forEach(a=>a.addEventListener('click', e=>{e.preventDefault(); go(a.dataset.target)}));
+if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
+
+// Activities check (very lightweight rubric)
+document.getElementById('check-acts')?.addEventListener('click',()=>{
+  let correct = 0, total=0;
+  document.querySelectorAll('.act-1,.act-2').forEach(inp=>{
+    total++;
+    const v = inp.value.toLowerCase();
+    const kind = inp.classList.contains('act-1')? '1':'2';
+    let ok=false;
+    if(kind==='1'){ // yuca / bultos
+      if(inp.dataset.ans==='entrada') ok = v.includes('cosecha')||v.includes('750')||v.includes('50')||v.includes('kg');
+      if(inp.dataset.ans==='proceso') ok = v.includes('divid')||v.includes('750/50')||v.includes('750 ÷ 50');
+      if(inp.dataset.ans==='salida') ok = v.includes('15')||v.includes('bult');
+    }else{ // descuento 5% si cantidad>10
+      if(inp.dataset.ans==='entrada') ok = v.includes('precio')&&v.includes('cantidad');
+      if(inp.dataset.ans==='proceso') ok = v.includes('subtotal')||v.includes('precio*cantidad')||v.includes('descuento')||v.includes('5%')||v.includes('0.05');
+      if(inp.dataset.ans==='salida') ok = v.includes('total')||v.includes('valor final')||v.includes('a pagar');
+    }
+    inp.classList.toggle('border-green-500', ok);
+    inp.classList.toggle('border-red-500', !ok);
+    if(ok) correct++;
+  });
+  const res = document.getElementById('acts-result');
+  res.textContent = `Respuestas correctas: ${correct} de ${total}.`;
+  res.className = 'mt-3 font-semibold ' + (correct/total>=0.7 ? 'text-emerald-700':'text-red-700');
+});
+
+// Quiz
+const quizData=[
+  {q:'¿Qué es un algoritmo?', opts:['Una secuencia finita y ordenada de pasos para resolver un problema.','El código fuente de un programa.','Una base de datos.','Una imagen.'], a:0},
+  {q:'¿Qué diferencia a un algoritmo de un programa?', opts:['Ninguna.','El algoritmo describe pasos; el programa implementa esos pasos en un lenguaje.','El algoritmo siempre es más corto que el programa.','El programa es una idea y el algoritmo es el código.'], a:1},
+  {q:'Marca la opción que NO es característica esencial de un buen algoritmo:', opts:['Finito','Definido','Infinito','Eficiente'], a:2},
+  {q:'En la estructura E-P-S, “proceso” corresponde a…', opts:['Datos que ingresan','Transformaciones y operaciones','Resultado final','Validaciones del LMS'], a:1},
+  {q:'En una compra en línea, ¿cuál sería la salida del algoritmo “subtotal”?', opts:['Precio','Cantidad','Subtotal','Descuento'], a:2}
+];
+const quiz = document.getElementById('quiz');
+if(quiz){
+  quizData.forEach((it,i)=>{
+    const wrap = document.createElement('div'); wrap.className='mb-5';
+    wrap.innerHTML = `<p class='font-semibold mb-2'>${i+1}. ${it.q}</p>`;
+    it.opts.forEach((op,idx)=>{
+      const d=document.createElement('div');
+      d.className='quiz-option p-3 border-2 border-slate-200 rounded-lg cursor-pointer mb-2';
+      d.textContent=op;
+      d.addEventListener('click',()=>{
+        wrap.querySelectorAll('.quiz-option').forEach(x=>x.classList.remove('selected'));
+        d.classList.add('selected');
+      });
+      wrap.appendChild(d);
+    });
+    quiz.appendChild(wrap);
+  });
+  document.getElementById('quiz-submit').addEventListener('click',()=>{
+    let score=0, answered=0;
+    [...quiz.children].forEach((block,i)=>{
+      const sel = block.querySelector('.quiz-option.selected'); 
+      if(sel){ answered++; if(sel.textContent===quizData[i].opts[quizData[i].a]) score++; }
+    });
+    const pct = score/quizData.length;
+    const out=document.getElementById('quiz-result');
+    out.textContent = `Puntaje: ${score}/${quizData.length} (${Math.round(pct*100)}%).`;
+    out.className='mt-3 text-lg font-bold ' + (pct>=0.7?'text-emerald-700':'text-red-700');
+    // report to SCORM if available
+    if(window.SCORM12) SCORM12.setScore(pct);
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+}
+
+// Lightweight image zoom for figures with images (click to open)
+const modal=document.getElementById('imgModal');
+const modalImg=document.getElementById('imgModalSrc');
+document.querySelectorAll('figure img').forEach(img=>{
+  img.classList.add('cursor-zoom-in');
+  img.addEventListener('click',()=>{ modal.classList.add('active'); modalImg.src=img.src; });
+});
+modal?.addEventListener('click',()=>modal.classList.remove('active'));
+</script>
+</body>
+</html>

@@ -243,6 +243,61 @@
             <figure class="mt-2">
               <img src="img/img02.png" class="w-full object-contain" alt="Principales características de un buen algoritmo">
             </figure>
+<!-- modifico para mostrar conceptos cualitativos y cuantiotativod=s-->
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+              <meta charset="UTF-8">
+              <style>
+                .tooltip {
+                  position: relative;
+                  display: inline-block;
+                  cursor: pointer;
+                  font-weight: bold;
+                  color: #006633; /* verde oscuro como tus títulos */
+                }
+            
+                .tooltip .tooltiptext {
+                  visibility: hidden;
+                  width: 250px;
+                  background-color: #006633; /* verde oscuro */
+                  color: #ffffff;
+                  text-align: center;
+                  border-radius: 6px;
+                  padding: 8px;
+                  font-size: 14px;
+                  font-weight: normal;
+                  position: absolute;
+                  z-index: 1;
+                  bottom: 125%;
+                  left: 50%;
+                  margin-left: -125px;
+                  opacity: 0;
+                  transition: opacity 0.4s;
+                }
+            
+                .tooltip:hover .tooltiptext {
+                  visibility: visible;
+                  opacity: 1;
+                }
+              </style>
+            </head>
+            <body>
+              <p>
+                Además, los algoritmos pueden ser 
+                <span class="tooltip">cualitativos
+                  <span class="tooltiptext">Un algoritmo cualitativo se describe en palabras o pasos no numéricos.</span>
+                </span> 
+                (descritos en palabras) o 
+                <span class="tooltip">cuantitativos
+                  <span class="tooltiptext">Un algoritmo cuantitativo requiere cálculos numéricos para resolverse.</span>
+                </span> 
+                (requieren cálculos numéricos).
+              </p>
+            </body>
+            </html>
+<!-- modifico para mostrar conceptos cualitativos y cuantiotativod=s-->
+            
             <p class="mt-3">Además, los algoritmos pueden ser <strong>cualitativos</strong> (descritos en palabras) o <strong>cuantitativos</strong> (requieren cálculos numéricos).</p>
 <!-- B: nuevo -->
             <figure class="mt-2">

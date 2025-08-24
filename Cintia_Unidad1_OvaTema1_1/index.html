@@ -240,9 +240,65 @@
               <div class="p-3 rounded border border-emerald-200 bg-emerald-50">✔️ <strong>Eficiente</strong>: buen uso de recursos.</div>
               <div class="p-3 rounded border border-emerald-200 bg-emerald-50">✔️ <strong>Legible</strong>: fácil de seguir y mantener.</div>
             </div>
+
+
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+              <meta charset="UTF-8">
+              <style>
+                .tooltip {
+                  position: relative;
+                  display: inline-block;
+                  cursor: pointer;
+                  font-weight: bold;
+                  color: #006633; /* Verde oscuro como tus títulos */
+                }
+            
+                .tooltip .tooltiptext {
+                  visibility: hidden;
+                  width: 300px;
+                  background-color: #006633; /* Fondo verde oscuro */
+                  color: #ffffff; /* Texto blanco */
+                  text-align: center;
+                  border-radius: 6px;
+                  padding: 10px;
+                  font-size: 14px;
+                  font-weight: normal;
+                  position: absolute;
+                  z-index: 1;
+                  bottom: 125%; /* Se muestra arriba */
+                  left: 50%;
+                  margin-left: -150px;
+                  opacity: 0;
+                  transition: opacity 0.4s;
+                }
+            
+                .tooltip:hover .tooltiptext {
+                  visibility: visible;
+                  opacity: 1;
+                }
+              </style>
+            </head>
+            <body>
+              <p>
+                Para que un algoritmo sea considerado correcto y útil no basta con que resuelva un problema, 
+                también debe cumplir con ciertas 
+                <span class="tooltip">características
+                  <span class="tooltiptext">
+                    Estas propiedades permiten que los algoritmos sean comprensibles, se ejecuten sin errores y puedan utilizarse en diferentes contextos de manera eficiente.
+                  </span>
+                </span> 
+                que aseguren su claridad, precisión y aplicabilidad...
+              </p>
+            </body>
+            </html>
+            
+
             <figure class="mt-2">
               <img src="img/img02.png" class="w-full object-contain" alt="Principales características de un buen algoritmo">
             </figure>
+            
 <!-- modifico para mostrar conceptos cualitativos y cuantiotativod=s-->
             <!DOCTYPE html>
             <html lang="es">
@@ -286,7 +342,7 @@
               <p>
                 Además, los algoritmos pueden ser 
                 <span class="tooltip">cualitativos
-                  <span class="tooltiptext">Un algoritmo cualitativo se describe en palabras o pasos no numéricos.</span>
+                  <span class="tooltiptext">Un algoritmo cualitativo se describe en palabras sin involucrar cálculos numéricos o matemáticos.</span>
                 </span> 
                 (descritos en palabras) o 
                 <span class="tooltip">cuantitativos
@@ -298,7 +354,6 @@
             </html>
 <!-- modifico para mostrar conceptos cualitativos y cuantiotativod=s-->
             
-            <p class="mt-3">Además, los algoritmos pueden ser <strong>cualitativos</strong> (descritos en palabras) o <strong>cuantitativos</strong> (requieren cálculos numéricos).</p>
 <!-- B: nuevo -->
             <figure class="mt-2">
               <img src="img/img03.png" class="w-full object-contain" alt="Comparación">

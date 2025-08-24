@@ -100,7 +100,53 @@
               <figcaption class="font-semibold text-emerald-800 mb-2">Algoritmo secuencial — Preparar una hamburguesa</figcaption>
               <img src="img/img01.png" alt="Pasos para preparar una hamburguesa" class="w-full object-contain rounded"/>
             </figure>
+<!-- desde aqui inlui informacion-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      font-weight: bold;
+      color: darkblue;
+    }
 
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 250px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%; /* Posición arriba */
+      left: 50%;
+      margin-left: -125px;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <p>
+    <span class="tooltip">ALGORITMO SECUENCIAL
+      <span class="tooltiptext">Un algoritmo secuencial es aquel en el que las instrucciones se ejecutan paso a paso en orden.</span>
+    </span>
+  </p>
+</body>
+</html>
+            
+<!-- hasta aqui inlui informacion-->            
         <p>
           <span title="Un algoritmo secuencial es aquel en el que las instrucciones se ejecutan en un orden paso a paso, sin saltos ni condiciones.">
             ALGORITMO SECUENCIAL

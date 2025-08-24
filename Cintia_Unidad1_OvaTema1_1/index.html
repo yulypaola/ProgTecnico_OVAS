@@ -164,109 +164,65 @@
           </div>
 <!-- se incluyen otros ejemplos-->  
         <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --verde: #006633;     /* tu verde de títulos */
-      --naranja: #cc3300;   /* texto del disparador (puedes cambiarlo) */
-    }
+          <html lang="es">
+          <head>
+            <meta charset="UTF-8">
+            <style>
+              .tooltip {
+                position: relative;
+                display: inline-block;
+                cursor: pointer;
+                font-weight: bold;
+                color:  #006633; /* Verde oscuro */
+              }
+          
+              .tooltip .tooltiptext {
+                visibility: hidden;
+                width: 280px;
+                background-color:  #006633; /* Verde oscuro */
+                color: #ffffff; /* Texto blanco */
+                text-align: left;
+                border-radius: 6px;
+                padding: 10px;
+                font-size: 14px;
+                font-weight: normal;
+                position: absolute;
+                z-index: 1;
+                bottom: 125%;
+                left: 50%;
+                margin-left: -140px;
+                opacity: 0;
+                transition: opacity 0.4s;
+              }
+          
+              .tooltip:hover .tooltiptext {
+                visibility: visible;
+                opacity: 1;
+              }
+            </style>
+          </head>
+          <body>
+            <p>
+              <span class="tooltip">&#128221; Ver ejemplos de algoritmos secuenciales
+                <span class="tooltiptext">
+                  <b>Ejemplo 1.</b> Lavarse las manos <br>
+                  1. Abrir el grifo.<br>
+                  2. Mojar las manos.<br>
+                  3. Aplicar jabón.<br>
+                  4. Frotar bien.<br>
+                  5. Enjuagar y secar.<br><br>
+                  
+                  <b>Ejemplo 2.</b> Encender un computador <br>
+                  1. Conectar el cable de corriente.<br>
+                  2. Presionar el botón de encendido.<br>
+                  3. Esperar el inicio del sistema.<br>
+                  4. Ingresar usuario y contraseña.<br>
+                </span>
+              </span>
+            </p>
+          </body>
+          </html>
 
-    .tooltip {
-      position: relative;
-      display: inline-block;
-      cursor: pointer;
-      font-weight: 700;
-      color: var(--naranja);
-    }
-
-    /* Capa del tooltip */
-    .tooltip .tooltiptext {
-      position: absolute;
-      z-index: 10;
-      bottom: 125%;                 /* aparece arriba; usa top:125% si lo quieres abajo */
-      left: 50%;
-      transform: translateX(-50%);
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity .3s ease;
-
-      display: block;
-      width: 300px;
-      max-width: 80vw;
-      padding: 12px 14px;
-      border-radius: 8px;
-      background: var(--verde);
-      box-shadow: 0 6px 16px rgba(0,0,0,.18);
-
-      text-align: left !important;
-      line-height: 1.4;
-      white-space: normal;
-      color: #fff !important;
-    }
-
-    /* Fuerza estilos internos por si hay resets globales */
-    .tooltip .tooltiptext *, .tooltip .tooltiptext b {
-      color: #fff !important;
-      text-align: left !important;
-    }
-
-    .tooltip .tooltiptext ol {
-      list-style: decimal !important;
-      list-style-position: outside;
-      margin: 6px 0 12px 1.25rem;  /* sangría */
-      padding: 0;
-    }
-
-    .tooltip .tooltiptext li {
-      margin: 2px 0;
-    }
-
-    /* Flecha */
-    .tooltip .tooltiptext::after {
-      content: "";
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      border-width: 8px;
-      border-style: solid;
-      border-color: var(--verde) transparent transparent transparent;
-    }
-
-    .tooltip:hover .tooltiptext {
-      visibility: visible;
-      opacity: 1;
-    }
-  </style>
-</head>
-<body>
-  <p>
-    <span class="tooltip">&#128221; Ver ejemplos de algoritmos secuenciales
-      <div class="tooltiptext">
-        <b>Ejemplo 1. Lavarse las manos</b>
-        <ol>
-          <li>Abrir el grifo.</li>
-          <li>Mojar las manos.</li>
-          <li>Aplicar jabón.</li>
-          <li>Frotar bien.</li>
-          <li>Enjuagar y secar.</li>
-        </ol>
-
-        <b>Ejemplo 2. Encender un computador</b>
-        <ol>
-          <li>Conectar el cable de corriente.</li>
-          <li>Presionar el botón de encendido.</li>
-          <li>Esperar el inicio del sistema.</li>
-          <li>Ingresar usuario y contraseña.</li>
-        </ol>
-      </div>
-    </span>
-  </p>
-</body>
-</html>
 <!-- se incluyen otros ejemplos-->            
         </details>
 

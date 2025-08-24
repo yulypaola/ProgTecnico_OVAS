@@ -162,6 +162,67 @@
               </ol>
             </div>
           </div>
+<!-- se incluyen otros ejemplos-->  
+          <!DOCTYPE html>
+          <html lang="es">
+          <head>
+            <meta charset="UTF-8">
+            <style>
+              .tooltip {
+                position: relative;
+                display: inline-block;
+                cursor: pointer;
+                font-weight: bold;
+                color: #cc3300; /* Naranja rojizo */
+              }
+          
+              .tooltip .tooltiptext {
+                visibility: hidden;
+                width: 280px;
+                background-color: #cc3300; /* Fondo naranja rojizo */
+                color: #ffffff; /* Texto blanco */
+                text-align: left;
+                border-radius: 6px;
+                padding: 10px;
+                font-size: 14px;
+                font-weight: normal;
+                position: absolute;
+                z-index: 1;
+                bottom: 125%;
+                left: 50%;
+                margin-left: -140px;
+                opacity: 0;
+                transition: opacity 0.4s;
+              }
+          
+              .tooltip:hover .tooltiptext {
+                visibility: visible;
+                opacity: 1;
+              }
+            </style>
+          </head>
+          <body>
+            <p>
+              <span class="tooltip">&#128221; Ver ejemplos de algoritmos secuenciales
+                <span class="tooltiptext">
+                  <b>Ejemplo 1:</b> Lavarse las manos <br>
+                  1. Abrir el grifo.<br>
+                  2. Mojar las manos.<br>
+                  3. Aplicar jabón.<br>
+                  4. Frotar bien.<br>
+                  5. Enjuagar y secar.<br><br>
+                  
+                  <b>Ejemplo 2:</b> Encender un computador <br>
+                  1. Conectar el cable de corriente.<br>
+                  2. Presionar el botón de encendido.<br>
+                  3. Esperar el inicio del sistema.<br>
+                  4. Ingresar usuario y contraseña.<br>
+                </span>
+              </span>
+            </p>
+          </body>
+          </html>
+<!-- se incluyen otros ejemplos-->            
         </details>
 
         <!-- B: Características -->

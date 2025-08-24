@@ -163,7 +163,7 @@
             </div>
           </div>
 <!-- se incluyen otros ejemplos-->  
-          <!DOCTYPE html>
+         <!DOCTYPE html>
           <html lang="es">
           <head>
             <meta charset="UTF-8">
@@ -173,26 +173,37 @@
                 display: inline-block;
                 cursor: pointer;
                 font-weight: bold;
-                color:  #006633; /* Verde oscuro */
+                color: #006633; /* Verde oscuro */
               }
           
               .tooltip .tooltiptext {
                 visibility: hidden;
                 width: 280px;
-                background-color:  #006633; /* Verde oscuro */
-                color: #ffffff; /* Texto blanco */
-                text-align: left;
+                background-color: #006633; /* Fondo verde */
+                color: #ffffff;            /* Texto blanco */
+                text-align: left;          /* Alineado a la izquierda */
                 border-radius: 6px;
-                padding: 10px;
+                padding: 12px;
                 font-size: 14px;
                 font-weight: normal;
+                line-height: 1.4;
                 position: absolute;
                 z-index: 1;
-                bottom: 125%;
+                bottom: 125%;              /* aparece arriba */
                 left: 50%;
                 margin-left: -140px;
                 opacity: 0;
                 transition: opacity 0.4s;
+              }
+          
+              .tooltip .tooltiptext ol {
+                margin: 6px 0 12px 20px;   /* sangría y separación */
+                padding: 0;
+              }
+          
+              .tooltip .tooltiptext b {
+                display: block;            /* título del ejemplo en su propia línea */
+                margin-bottom: 4px;
               }
           
               .tooltip:hover .tooltiptext {
@@ -205,18 +216,22 @@
             <p>
               <span class="tooltip">&#128221; Ver ejemplos de algoritmos secuenciales
                 <span class="tooltiptext">
-                  <b>Ejemplo 1.</b> Lavarse las manos <br>
-                  1. Abrir el grifo.<br>
-                  2. Mojar las manos.<br>
-                  3. Aplicar jabón.<br>
-                  4. Frotar bien.<br>
-                  5. Enjuagar y secar.<br><br>
-                  
-                  <b>Ejemplo 2.</b> Encender un computador <br>
-                  1. Conectar el cable de corriente.<br>
-                  2. Presionar el botón de encendido.<br>
-                  3. Esperar el inicio del sistema.<br>
-                  4. Ingresar usuario y contraseña.<br>
+                  <b>Ejemplo 1. Lavarse las manos</b>
+                  <ol>
+                    <li>Abrir el grifo.</li>
+                    <li>Mojar las manos.</li>
+                    <li>Aplicar jabón.</li>
+                    <li>Frotar bien.</li>
+                    <li>Enjuagar y secar.</li>
+                  </ol>
+          
+                  <b>Ejemplo 2. Encender un computador</b>
+                  <ol>
+                    <li>Conectar el cable de corriente.</li>
+                    <li>Presionar el botón de encendido.</li>
+                    <li>Esperar el inicio del sistema.</li>
+                    <li>Ingresar usuario y contraseña.</li>
+                  </ol>
                 </span>
               </span>
             </p>

@@ -217,7 +217,21 @@
             <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
           </summary>
           <div class="px-4 pb-4 text-slate-700 space-y-3">
-           <p> Antes de evaluar una  <strong> expresión </strong> expresión, el computador sigue un orden de prioridad: primero multiplicación/división/módulo, luego suma/resta, después las comparaciones (relacionales), luego la negación lógica (!), y al final AND (&&) y OR (||). La siguiente figura lo resume; cuando tengas duda, usa paréntesis para dejar clara la intención de la operación inicial.</p>
+            
+          <p>
+            Antes de evaluar una <strong>expresión</strong>, el computador sigue un orden de 
+            <span class="tooltip">prioridad
+              <span class="tooltiptext">
+                Orden de evaluación: <br>
+                1. Multiplicación / División / Módulo <br>
+                2. Suma / Resta <br>
+                3. Comparaciones (relacionales) <br>
+                4. Negación lógica (!) <br>
+                5. AND (&&) y OR (||)
+              </span>
+            </span>. 
+            La siguiente figura lo resume; cuando tengas duda, usa paréntesis para dejar clara la intención de la operación inicial.
+          </p>
 
             <figure class="mt-2">
               <img src="img/img05.png" class="w-full object-contain" alt="Prioridades de los operadores">

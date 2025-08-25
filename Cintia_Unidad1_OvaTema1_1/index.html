@@ -26,8 +26,41 @@
     .modal-content { max-width:90%; max-height:90%; position:relative; }
     .modal-content img { max-width:100%; max-height:90vh; border:4px solid #fff; border-radius:4px; box-shadow:0 10px 25px rgba(0,0,0,.5); }
     .close-modal { position:absolute; top:-20px; right:-20px; background:#ef4444; color:#fff; border:none; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px; }
+
+     /* ====== Tooltips (estilos globales) ====== */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      font-weight: bold;
+      color: #006633; /* Verde oscuro */
+    }
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 280px;
+      background-color: #006633; /* Verde oscuro */
+      color: #ffffff;            /* Texto blanco */
+      text-align: left;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 14px;
+      font-weight: normal;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+  
   </style>
 </head>
+  
 <body class="bg-slate-50">
 <div class="flex min-h-screen">
   <aside class="w-64 bg-white shadow-lg flex-shrink-0 hidden md:flex md:flex-col">

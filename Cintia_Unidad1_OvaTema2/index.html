@@ -322,32 +322,33 @@
             Identificación de restricciones y condiciones en un problema
             <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
           </summary>
-          <div class="px-4 pb-4 text-slate-700 space-y-3">
+          
+         <div class="grid md:grid-cols-2 gap-4">
+          <!-- Card 1 -->
+          <article
+            class="rounded-2xl p-6 shadow-lg bg-gradient-to-br from-emerald-500 to-emerald-600 text-white hover:shadow-xl transition-shadow">
+            <h3 class="text-xl font-extrabold mb-3">¿Qué buscamos?</h3>
+            <ul class="list-disc ml-5 space-y-2 marker:text-white">
+              <li><span class="font-semibold">Restricciones:</span> reglas que siempre deben cumplirse (rango, formato, opciones válidas, existencia del dato).</li>
+              <li><span class="font-semibold">Condición básica:</span> una comparación que activa una acción (sin combinar con “y/o” todavía).</li>
+              <li><span class="font-semibold">Comparadores:</span> operadores relacionales.</li>
+            </ul>
+          </article>
+        
+          <!-- Card 2 -->
+          <article
+            class="rounded-2xl p-6 shadow-lg bg-gradient-to-br from-indigo-500 to-sky-500 text-white hover:shadow-xl transition-shadow">
+            <h3 class="text-xl font-extrabold mb-3">¿Qué tener en cuenta?</h3>
+            <ul class="list-disc ml-5 space-y-2 marker:text-white">
+              <li><span class="font-semibold">Entradas:</span> qué datos llegan.</li>
+              <li><span class="font-semibold">Restricciones (mín. 2):</span> rango, formato u opciones permitidas.</li>
+              <li><span class="font-semibold">Condición (1 comparación):</span> qué evaluar para decidir una acción.</li>
+              <li><span class="font-semibold">Proceso:</span> operación sencilla (cálculo o asignación).</li>
+              <li><span class="font-semibold">Salidas + Mensajes:</span> qué mostrar/guardar; texto breve si se rompe una restricción.</li>
+            </ul>
+          </article>
+        </div>
 
-         
-            <!-- Qué buscamos -->
-            <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-4">
-              <h3 class="font-bold text-emerald-800 mb-2">¿Qué buscamos?</h3>
-              <ul class="list-disc ml-5 text-slate-700 space-y-1">
-                <li><strong>Restricciones:</strong> reglas que siempre deben cumplirse (rango, formato, opciones válidas, existencia del dato).</li>
-                <li><strong>Condición básica:</strong> una comparación que activa una acción (sin combinar con “y/o” todavía).</li>
-                <li><strong>Comparadores:</strong> operadores relacionales.</li>
-              </ul>
-            </article>
-          
-            <!-- Qué tener en cuenta -->
-            <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-4">
-              <h3 class="font-bold text-emerald-800 mb-2">¿Qué tener en cuenta?</h3>
-              <ul class="list-disc ml-5 text-slate-700 space-y-1">
-                <li><strong>Entradas:</strong> qué datos llegan.</li>
-                <li><strong>Restricciones (mín. 2):</strong> rango, formato u opciones permitidas.</li>
-                <li><strong>Condición (1 comparación):</strong> qué evaluar para decidir una acción.</li>
-                <li><strong>Proceso:</strong> operación sencilla (cálculo o asignación).</li>
-                <li><strong>Salidas + Mensajes:</strong> qué mostrar/guardar; texto breve si se rompe una restricción.</li>
-              </ul>
-            </article>
-          
-          </div>
 
           <!-- Grid del ejemplo (3 columnas) -->
 <div class="grid md:grid-cols-3 gap-4 mt-4">

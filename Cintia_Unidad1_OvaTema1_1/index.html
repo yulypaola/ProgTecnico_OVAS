@@ -57,7 +57,26 @@
       visibility: visible;
       opacity: 1;
     }
-  
+
+/* --- FIX RÁPIDO DE LAYOUT EN DESKTOP --- */
+@media (min-width: 768px){
+  .min-h-screen.flex{           /* contenedor del aside + main */
+    display:flex !important;
+    flex-direction: row !important;
+    align-items:flex-start;
+  }
+  aside.w-64{                   /* menú lateral */
+    flex: 0 0 16rem !important; /* 256px */
+    max-width: 16rem !important;
+  }
+  main.flex-1{                  /* área de contenido */
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+}
+
+
+    
   </style>
 </head>
   

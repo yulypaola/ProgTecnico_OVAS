@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OVA: Tema 3 — Estructuras de control secuenciales y condicionales</title>
+  <title>OVA: Tema 2 — Identificación y análisis de problemas para proponer soluciones lógicas</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,6 +26,40 @@
     .modal-content { max-width:90%; max-height:90%; position:relative; }
     .modal-content img { max-width:100%; max-height:90vh; border:4px solid #fff; border-radius:4px; box-shadow:0 10px 25px rgba(0,0,0,.5); }
     .close-modal { position:absolute; top:-20px; right:-20px; background:#ef4444; color:#fff; border:none; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px; }
+ 
+  /* ====== Tooltips (estilos globales) ====== */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: bold;
+  color: #006633; /* Verde oscuro */
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 280px;
+  background-color: #006633; /* Verde oscuro */
+  color: #ffffff;            /* Texto blanco */
+  text-align: left;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: normal;
+  position: absolute;
+  z-index: 30;      /* sube la capa por si hay otros elementos encima */
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none; /* evita interferir con el hover */
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+  
   </style>
 </head>
 <body class="bg-slate-50">
@@ -65,9 +99,9 @@
 
     <!-- Intro -->
     <section id="introduccion" class="content-pane active">
-      <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-800">Estructuras de control secuenciales y condicionales</h1>
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-800">Identificación y análisis de problemas para proponer soluciones lógicas</h1>
       <p class="mt-4 leading-relaxed">
-        🏠 <strong>En programación</strong>, las estructuras de control son como el mapa que guía a un programa. Sin estas estructuras, el programa solo podría ejecutar instrucciones una tras otra, sin tomar decisiones ni reaccionar a distintas situaciones. Con esta guía aprenderás paso a paso cómo funcionan las secuencias y las estructuras condicionales básicas, para que puedas usarlas sin miedo y con confianza.
+        🏠 <strong>Antes de programar</strong>, es imprescindible comprender el problema: qué se recibe (entradas), qué se transforma/valida (proceso) y qué se espera obtener (salidas). Esto implica reconocer restricciones (límites, reglas del negocio, rangos válidos, requisitos de seguridad), elegir tipos de datos adecuados, nombrar variables y constantes con claridad y expresar operaciones y decisiones de forma precisa, usando prioridad de operadores y paréntesis.
       </p>
       <p class="mt-2 leading-relaxed">
         El enfoque de esta guía conduce del enunciado en lenguaje natural al modelo lógico y, finalmente, a expresiones y decisiones listas para pseudocódigo o código.
@@ -80,9 +114,10 @@
     <!-- Objetivo -->
     <section id="objetivos" class="content-pane">
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Objetivo</h2>
-      <p class="leading-relaxed">
-        >🧠</span><span><strong>Reconocer y aplicar</strong> herramientas básicas para describir problemas y proponer soluciones lógicas, identificando restricciones y condiciones, seleccionando tipos de datos, definiendo variables y constantes, y utilizando operadores aritméticos, relacionales y lógicos con su prioridad y el uso adecuado de paréntesis. Al finalizar, el estudiante elaborará expresiones y decisiones válidas para resolver problemas sencillos.
+     <p class="leading-relaxed">
+        🧠 <strong>Reconocer y aplicar</strong> herramientas básicas para describir problemas y proponer soluciones lógicas, identificando restricciones y condiciones, seleccionando tipos de datos, definiendo variables y constantes, y utilizando operadores aritméticos, relacionales y lógicos con su prioridad y el uso adecuado de paréntesis. Al finalizar, el estudiante elaborará expresiones y decisiones válidas para resolver problemas sencillos.
       </p>
+
     </section>
 
     <!-- Contenido -->
@@ -96,37 +131,81 @@
           </summary>
           <div class="px-4 pb-4 text-slate-700 space-y-3">
             <p> Los <strong> operadores </strong> permiten calcular, comparar y (más adelante) construir decisiones. En esta unidad se usan de forma básica, con ejemplos claros y advertencias comunes.</p>
-            <p> Los <strong> Operadores aritméticos. </strong> Son símbolos que permiten realizar cálculos matemáticos con números, variables o constantes. Se usan para construir expresiones numéricas; recuerda no dividir entre cero y distinguir entre división entera y real.</p>
+            
+            </figure>
+           <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg">
 
+            <p>
+              Los 
+              <span class="tooltip"><strong>Operadores aritméticos</strong>
+                <span class="tooltiptext">
+                  Se usan para construir expresiones numéricas; recuerda no dividir entre cero y distinguir entre división entera y real.
+                </span>
+              </span>. 
+              Son símbolos que permiten realizar cálculos matemáticos con números, variables o constantes.
+            </p>
+          
+          </div>
+
+
+            </figure>
+              
             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Operadores aritméticos </figcaption>
+              <figcaption class="font-semibold text-emerald-800 mb-2">Relación de Operadores aritméticos </figcaption>
               <img src="img/img01.png" alt=" . " class="w-full object-contain rounded"/>
             </figure>
-            <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg">
-              <p class="font-semibold text-emerald-900"> Ten en cuenta tres cuidados esenciales al trabajar con operadores aritméticos: nunca dividas entre cero (provoca error de ejecución), distingue división entera y real (por ejemplo, 7/2 puede dar 3 o 3.5 según el lenguaje) y usa el módulo (%) con enteros, teniendo en cuenta que con números negativos su resultado puede variar según el lenguaje; atender estos puntos evita fallas comunes y resultados inesperados.</p>
-              <ol class="list-decimal ml-6">
+            <div class="p-4">
+            
+            
+               <figcaption class="font-semibold text-emerald-800 mb-2">
+                <span class="tooltip">Cuidados frecuentes
+                  <span class="tooltiptext">
+                    Nunca dividas entre cero (provoca error de ejecución), distingue división entera y real (por ejemplo, 7/2 puede dar 3 o 3.5 según el lenguaje) y usa el módulo (%) con enteros, teniendo en cuenta que con números negativos su resultado puede variar según el lenguaje; atender estos puntos evita fallas comunes y resultados inesperados.
+                  </span>
+                </span>
+              </figcaption>
 
-             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Cuidados frecuentes. </figcaption>
-              <img src="img/img02.png" alt=" . " class="w-full object-contain rounded"/>
-            </figure>
-                
-            <p> Los <strong> Operadores relacionales. </strong> Los operadores relacionales se usan para comparar dos valores (del mismo tipo) y el resultado siempre es Verdadero o Falso. Sirven para verificar igualdad, diferencia y orden: ==,  !=,  <,  <=,  >, >=. Con números comparan magnitudes; con texto la comparación puede depender de mayúsculas/minúsculas según el lenguaje. La figura resume cada signo, su significado y ejemplos que usaremos para escribir condiciones simples en esta unidad.</p>
+               
+               <img src="img/img02.png" alt=" . " class="w-full object-contain rounded"/>
+  
+              
+              <p class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg mb-4">
+                Los 
+                <span class="tooltip"><strong>Operadores relacionales</strong>
+                  <span class="tooltiptext">
+                    Con números comparan magnitudes; con texto la comparación puede depender de mayúsculas/minúsculas según el lenguaje. 
+                  </span>
+                </span>. 
+                Los operadores relacionales se usan para comparar dos valores (del mismo tipo) y el resultado siempre es Verdadero o Falso. 
+                Sirven para verificar igualdad, diferencia y orden: <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>.
+              </p>
+
 
             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Operadores relacionales. </figcaption>
+              <figcaption class="font-semibold text-emerald-800 mb-2">Relación de operadores relacionales. </figcaption>
               <img src="img/img03.png" alt=" . " class="w-full object-contain rounded"/>
             </figure>
 
-            <p> Los <strong> Operadores lógicos. </strong> Los operadores lógicos trabajan con valores Verdadero/Falso y nos ayudan a decidir a partir de condiciones simples.</p>
+            <p class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg mb-4">
+              Los 
+              <span class="tooltip"><strong>Operadores lógicos</strong>
+                <span class="tooltiptext">
+                  Los principales operadores lógicos son: <br>
+                  <b>&amp;&amp; (AND):</b> verdadero solo si ambas condiciones lo son.<br>
+                  <b>|| (OR):</b> verdadero si al menos una condición lo es.<br>
+                  <b>! (NOT):</b> invierte el valor lógico (verdadero ↔ falso).
+                </span>
+              </span>. 
+              Los operadores lógicos trabajan con valores Verdadero/Falso y nos ayudan a decidir a partir de condiciones simples.
+            </p>
 
             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Operadores lógicos. </figcaption>
+              <figcaption class="font-semibold text-emerald-800 mb-2">Relación de operadores lógicos. </figcaption>
               <img src="img/img04.png" alt=" . " class="w-full object-contain rounded"/>
             </figure>
                 
                 
-              </ol>
+           
             </div>
           </div>
         </details>
@@ -138,13 +217,32 @@
             <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
           </summary>
           <div class="px-4 pb-4 text-slate-700 space-y-3">
-           <p> Antes de evaluar una  <strong> expresión </strong> expresión, el computador sigue un orden de prioridad: primero multiplicación/división/módulo, luego suma/resta, después las comparaciones (relacionales), luego la negación lógica (!), y al final AND (&&) y OR (||). La siguiente figura lo resume; cuando tengas duda, usa paréntesis para dejar clara la intención de la operación inicial.</p>
+            
+          <p>
+            Antes de evaluar una <strong>expresión</strong>, el computador sigue un orden de 
+            <span class="tooltip">prioridad
+              <span class="tooltiptext">
+                Orden de evaluación: <br>
+                1. Multiplicación / División / Módulo <br>
+                2. Suma / Resta <br>
+                3. Comparaciones (relacionales) <br>
+                4. Negación lógica (!) <br>
+                5. AND (&&) y OR (||)
+              </span>
+            </span>. 
+            La siguiente figura lo resume; cuando tengas duda, usa paréntesis para dejar clara la intención de la operación inicial.
+          </p>
 
             <figure class="mt-2">
               <img src="img/img05.png" class="w-full object-contain" alt="Prioridades de los operadores">
             </figure>
-            <p class="mt-3">Regla práctica: usa paréntesis para dejar clara la intención. Por ejemplo, si tienes la ecuación:  <strong> a +   b   *   c </strong> para que se calcule primero a + b (usa paréntesis) así: <strong> (a +   b) *   c </strong> .</p>
-
+            <p>
+              Regla práctica: usa paréntesis para dejar clara la intención. 
+              Por ejemplo, si tienes la ecuación: 
+              <span class="text-red-600 font-bold">a + b * c</span> 
+              para que se calcule primero a + b (usa paréntesis) así: 
+              <span class="text-red-600 font-bold">(a + b) * c</span>.
+            </p>
   <!-- B: nuevo -->
             
       <!-- B: fin nuevo -->      
@@ -166,7 +264,6 @@
            <p> En <strong> programación </strong> usamos tipos de datos primitivos para indicar qué clase de información puede guardar una variable o constante y qué operaciones se pueden hacer con ella. En lógica de programación trabajamos, principalmente, con los siguientes:</p>
 
             <figure class="border rounded p-3">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Tipos de datos</figcaption>
               <img src="img/img06.png" class="w-full object-contain" alt="Tipos de datos">
             </figure>
 
@@ -182,16 +279,37 @@
             <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
           </summary>
           <div class="px-4 pb-4 text-slate-700 space-y-3">
-            <p>Variable. Una variable es un nombre que le damos a un dato para representar una característica de algo dentro del problema. Durante la ejecución del algoritmo su valor puede cambiar. Ejemplo del contexto “estudiante”: necesitamos guardar tipo de documento, número, nombres, apellidos y código institucional. Para cada dato definimos una variable con nombre claro:</p>
-          
-            <ul class="list-disc ml-6 space-y-1">
-              <li>tipo de identificación → tipDoc, tipoIdentificacion, tipoDocumento.</li>
-              <li>número de identificación → numDoc, nroDoc, nroIdent.</li>
-              <li>nombres del estudiante → nomEst.</li>
-              <li>apellidos del estudiante → apeEst.</li>
-              <li>código/ID del estudiante → codEst, idEst.</li>
-            </ul>
 
+            <p class="mb-3">
+            En programación usamos <strong>identificadores</strong> para nombrar datos. Los dos más comunes son 
+            <em>variables</em> y <em>constantes</em>: según la necesidad, el valor puede cambiar o permanecer fijo.
+          </p>
+          
+          <p class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg mb-3">
+            Una <span class="tooltip"><strong>variable</strong>
+              <span class="tooltiptext">
+                Su valor puede cambiar durante la ejecución.<br>
+                Ejemplos:<br>
+                <code>edad = 17 → 18</code><br>
+                <code>total = subtotal + iva</code><br>
+                <code>temperaturaHoy = 32; temperaturaManana = 31</code><br>
+                Suele ser numérica, de texto o lógica (V/F).
+              </span>
+            </span> es un identificador cuyo valor puede modificarse a lo largo del algoritmo.
+          </p>
+          
+          <p class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg">
+            Una <span class="tooltip"><strong>constante</strong>
+              <span class="tooltiptext">
+                Su valor NO cambia en todo el programa.<br>
+                Ejemplos:<br>
+                <code>PI = 3.1416</code>, <code>IVA = 0.19</code>, <code>MAX_ESTUDIANTES = 40</code>.<br>
+                Convención: escribir en MAYÚSCULAS con guion bajo.
+              </span>
+            </span> mantiene el mismo valor durante la ejecución (no se reasigna).
+          </p>
+
+          
             <figure>
               <img src="img/img07.png" class="w-full object-contain" alt="Consejos para identificadores">
             </figure>
@@ -204,41 +322,94 @@
             Identificación de restricciones y condiciones en un problema
             <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
           </summary>
-          <div class="px-4 pb-4 text-slate-700 space-y-3">
+          
+         <div class="grid md:grid-cols-2 gap-4">
+          <!-- Card 1 -->
+          <article
+            class="rounded-2xl p-6 shadow-lg bg-gradient-to-br from-emerald-500 to-emerald-600 text-white hover:shadow-xl transition-shadow">
+            <h3 class="text-xl font-extrabold mb-3">¿Qué buscamos?</h3>
+            <ul class="list-disc ml-5 space-y-2 marker:text-white">
+              <li><span class="font-semibold">Restricciones:</span> reglas que siempre deben cumplirse (rango, formato, opciones válidas, existencia del dato).</li>
+              <li><span class="font-semibold">Condición básica:</span> una comparación que activa una acción (sin combinar con “y/o” todavía).</li>
+              <li><span class="font-semibold">Comparadores:</span> operadores relacionales.</li>
+            </ul>
+          </article>
+        
+          <!-- Card 2 -->
+          <article
+            class="rounded-2xl p-6 shadow-lg bg-gradient-to-br from-indigo-500 to-sky-500 text-white hover:shadow-xl transition-shadow">
+            <h3 class="text-xl font-extrabold mb-3">¿Qué tener en cuenta?</h3>
+            <ul class="list-disc ml-5 space-y-2 marker:text-white">
+              <li><span class="font-semibold">Entradas:</span> qué datos llegan.</li>
+              <li><span class="font-semibold">Restricciones (mín. 2):</span> rango, formato u opciones permitidas.</li>
+              <li><span class="font-semibold">Condición (1 comparación):</span> qué evaluar para decidir una acción.</li>
+              <li><span class="font-semibold">Proceso:</span> operación sencilla (cálculo o asignación).</li>
+              <li><span class="font-semibold">Salidas + Mensajes:</span> qué mostrar/guardar; texto breve si se rompe una restricción.</li>
+            </ul>
+          </article>
+        </div>
 
-            <p>¿Qué buscamos?</p>
+
+          <!-- Grid del ejemplo (3 columnas) -->
+<div class="grid md:grid-cols-3 gap-4 mt-4">
+
+  <!-- Enunciado ocupa las 3 columnas -->
+  <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-4 md:col-span-3">
+    <h3 class="font-bold text-emerald-800 mb-2">Ejemplo — Ejercicio práctico de un Parqueadero</h3>
+    <p class="text-slate-700">
+      Un parqueadero cobra por fracción de hora. Si el número de horas es mayor o igual que 8,
+      se debe aplicar al cliente un descuento de 1 hora. Eso significa que,
+      si el vehículo del cliente demora 10 horas en el parqueadero,
+      solo se le deben cobrar 9 horas.
+    </p>
+  </article>
+
+  <!-- Fila 1: 3 tarjetas -->
+  <article class="bg-emerald-50 border border-emerald-200 rounded-lg shadow-sm p-4">
+    <h3 class="font-bold text-emerald-700 mb-2">Entradas sugeridas</h3>
+    <ul class="list-disc ml-5 text-slate-700">
+      <li>horas (entero)</li>
+      <li>tarifaHora (entero)</li>
+    </ul>
+  </article>
+
+  <article class="bg-blue-50 border border-blue-200 rounded-lg shadow-sm p-4">
+    <h3 class="font-bold text-blue-700 mb-2">Restricciones</h3>
+    <ul class="list-disc ml-5 text-slate-700">
+      <li>horas ≥ 1</li>
+      <li>tarifaHora > 0</li>
+    </ul>
+  </article>
+
+  <article class="bg-yellow-50 border border-yellow-200 rounded-lg shadow-sm p-4">
+    <h3 class="font-bold text-yellow-700 mb-2">Condición</h3>
+    <p class="text-slate-700">
+      si <code>horas ≥ 8</code> entonces <code>descuento = tarifaHora</code>
+    </p>
+  </article>
+
+  <!-- Fila 2: Proceso (2 col) + Salidas (1 col) -->
+  <article class="bg-purple-50 border border-purple-200 rounded-lg shadow-sm p-4 md:col-span-2">
+    <h3 class="font-bold text-purple-700 mb-2">Proceso</h3>
+    <pre class="bg-white border rounded p-3 text-sm text-slate-800 whitespace-pre-wrap">
+subtotal = horas * tarifaHora
+descuento = 0
+si (horas >= 8) entonces
+    descuento = tarifaHora
+fin si
+total = subtotal - descuento
+    </pre>
+  </article>
+
+  <article class="bg-pink-50 border border-pink-200 rounded-lg shadow-sm p-4">
+    <h3 class="font-bold text-pink-700 mb-2">Salidas</h3>
+    <p class="text-slate-700"><code>total</code>, <code>descuento</code></p>
+  </article>
+
+</div>
+
+
           
-            <ul class="list-disc ml-6 space-y-1">
-              <li>Restricciones: reglas que siempre deben cumplirse (rango, formato, opciones válidas, existencia del dato).</li>
-              <li>Condición básica: una comparación que activa una acción (sin combinar con “y/o” todavía).</li>
-              <li>Comparadores a usar: operadores relacionales.</li>
-            </ul>
-            <p>¿Qué tener en cuenta?</p>
-          
-            <ul class="list-disc ml-6 space-y-1">
-              <li>Entradas: Qué datos llegan?.</li>
-              <li>Restricciones (mín. 2): rango, formato u opciones permitidas.</li>
-              <li>Condición (1 comparación): qué evaluar para decidir una acción.</li>
-             <li>Proceso: operación sencilla (cálculo o asignación).</li>
-                 <li>Salidas + Mensajes: qué mostrar/guardar; texto breve si se rompe una restricción.</li>
-            </ul>
-          <p>Ejemplo. (<strong>Ejercicio práctico de un Parqueadero</strong>), Enunciado: Un parqueadero cobra por fracción de hora. Si el número de horas es mayor o igual que 8, se debe aplicar al cliente un descuento de 1 hora, eso significa que, si el vehículo del cliente demora 10 horas en el parqueadero, sólo se le deben cobrar 9 horas.</p>
-            <figure class="border rounded p-3">
-              <img src="img/img09.png" class="w-full object-contain" alt="Ejemplo">
-            </figure>
-                
-            <p>Todo algoritmo puede entenderse como un sistema que recibe información (<strong>entrada</strong>), la transforma (<strong>proceso</strong>) y genera un <strong>resultado</strong> (<strong>salida</strong>).</p>
-            <figure class="border rounded p-3">
-              <img src="img/img08.png" class="w-full object-contain" alt="Lista de verificación">
-            </figure>
-            
-            <div class="grid sm:grid-cols-2 gap-4">
-              <div class="p-3 border rounded">
-              </div>
-              <div class="p-3 border rounded">
-              </div>
-            </div>
-          </div>
         </details>
       </div>
     </section>
@@ -246,29 +417,119 @@
     <!-- Actividades -->
     <section id="actividades" class="content-pane">
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Actividades</h2>
-      <div class="space-y-6">
-        <div class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5">
-          <p class="font-semibold text-emerald-700 mb-2">Situación 1</p>
-          <p class="mb-3">Un agricultor desea saber cuántos bultos de yuca puede vender si cada bulto pesa 50 kg y su cosecha total fue de 750 kg. Completa E-P-S:</p>
-          <div class="grid sm:grid-cols-3 gap-3">
-            <input data-ans="entrada" placeholder="Entrada" class="act-1 p-2 border rounded bg-white">
-            <input data-ans="proceso" placeholder="Proceso" class="act-1 p-2 border rounded bg-white">
-            <input data-ans="salida" placeholder="Salida" class="act-1 p-2 border rounded bg-white">
-          </div>
-        </div>
-        <div class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5">
-          <p class="font-semibold text-emerald-700 mb-2">Situación 2</p>
-          <p class="mb-3">Tienda virtual con 5% de descuento si cantidad &gt; 10. Completa E-P-S:</p>
-          <div class="grid sm:grid-cols-3 gap-3">
-            <input data-ans="entrada" placeholder="Entrada" class="act-2 p-2 border rounded bg-white">
-            <input data-ans="proceso" placeholder="Proceso" class="act-2 p-2 border rounded bg-white">
-            <input data-ans="salida" placeholder="Salida" class="act-2 p-2 border rounded bg-white">
-          </div>
-        </div>
-      </div>
-      <button id="check-acts" class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded transition-colors">Verificar</button>
-      <div id="acts-result" class="mt-3 font-semibold"></div>
-    </section>
+
+<!-- ========== SITUACIÓN 1 ========== -->
+<article class="bg-white border rounded-lg shadow-sm p-5 mb-8">
+  <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 1</h3>
+  <p class="mb-4">
+    Un Cine necesita un sistema que permita mostrar el valor a cobrar por tiquete de entrada,
+    teniendo en cuenta que se aplica un <strong>descuento infantil del 20%</strong> si el niño es
+    <strong>menor de 12 años</strong>.
+  </p>
+
+  <!-- Grid 3 arriba / 2 abajo -->
+  <div class="grid md:grid-cols-3 gap-4">
+    <!-- Entradas -->
+    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+      <h4 class="font-bold text-emerald-800 mb-2">Entradas sugeridas</h4>
+      <ul class="list-disc ml-5 text-slate-700 mb-3">
+        <li>edad (entero)</li>
+        <li>precioBase (real)</li>
+      </ul>
+      <input class="a1 entrada w-full p-2 border rounded bg-white"
+             placeholder="Escribe aquí tus entradas…">
+    </div>
+
+    <!-- Restricciones -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <h4 class="font-bold text-blue-700 mb-2">Restricciones</h4>
+      <input class="a1 restricciones w-full p-2 border rounded bg-white"
+             placeholder="Ej.: edad ≥ 0; precioBase &gt; 0">
+    </div>
+
+    <!-- Condición -->
+    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+      <h4 class="font-bold text-yellow-700 mb-2">Condición</h4>
+      <input class="a1 condicion w-full p-2 border rounded bg-white"
+             placeholder="Ej.: edad &lt; 12">
+    </div>
+
+    <!-- Proceso -->
+    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 md:col-span-2">
+      <h4 class="font-bold text-purple-700 mb-2">Proceso</h4>
+      <textarea rows="4" class="a1 proceso w-full p-2 border rounded bg-white"
+        placeholder="Pseudocódigo o fórmula…&#10;si (edad &lt; 12) entonces total = precioBase * 0.8&#10;si no total = precioBase"></textarea>
+    </div>
+
+    <!-- Salidas -->
+    <div class="bg-pink-50 border border-pink-200 rounded-lg p-4">
+      <h4 class="font-bold text-pink-700 mb-2">Salidas</h4>
+      <input class="a1 salidas w-full p-2 border rounded bg-white"
+             placeholder="Ej.: total a pagar">
+    </div>
+  </div>
+</article>
+
+<!-- ========== SITUACIÓN 2 ========== -->
+<article class="bg-white border rounded-lg shadow-sm p-5">
+  <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 2</h3>
+  <p class="mb-4">
+    Una tienda local aplica un <strong>descuento del 10%</strong> si el medio de pago es
+    igual a <strong>“efectivo”</strong>.
+  </p>
+
+  <div class="grid md:grid-cols-3 gap-4">
+    <!-- Entradas -->
+    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+      <h4 class="font-bold text-emerald-800 mb-2">Entradas sugeridas</h4>
+      <ul class="list-disc ml-5 text-slate-700 mb-3">
+        <li>subtotal (real)</li>
+        <li>medioPago (texto)</li>
+      </ul>
+      <input class="a2 entrada w-full p-2 border rounded bg-white"
+             placeholder="Escribe aquí tus entradas…">
+    </div>
+
+    <!-- Restricciones -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <h4 class="font-bold text-blue-700 mb-2">Restricciones</h4>
+      <input class="a2 restricciones w-full p-2 border rounded bg-white"
+             placeholder="Ej.: subtotal &gt; 0; medioPago permitido">
+    </div>
+
+    <!-- Condición -->
+    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+      <h4 class="font-bold text-yellow-700 mb-2">Condición</h4>
+      <input class="a2 condicion w-full p-2 border rounded bg-white"
+             placeholder='Ej.: medioPago == "efectivo"'>
+    </div>
+
+    <!-- Proceso -->
+    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 md:col-span-2">
+      <h4 class="font-bold text-purple-700 mb-2">Proceso</h4>
+      <textarea rows="4" class="a2 proceso w-full p-2 border rounded bg-white"
+        placeholder="Pseudocódigo o fórmula…&#10;si (medioPago == &quot;efectivo&quot;) entonces total = subtotal * 0.9&#10;si no total = subtotal"></textarea>
+    </div>
+
+    <!-- Salidas -->
+    <div class="bg-pink-50 border border-pink-200 rounded-lg p-4">
+      <h4 class="font-bold text-pink-700 mb-2">Salidas</h4>
+      <input class="a2 salidas w-full p-2 border rounded bg-white"
+             placeholder="Ej.: total a pagar, descuento">
+    </div>
+  </div>
+</article>
+
+<!-- Botón verificar -->
+<div class="mt-5">
+  <button id="check-acts"
+    class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded transition-colors">
+    Verificar
+  </button>
+  <div id="acts-result" class="mt-3 font-semibold"></div>
+
+</section>  <!-- ← cierre de la sección ACTIVIDADES -->
+
 
     <!-- Evaluación (quiz) -->
     <section id="evaluacion" class="content-pane">
@@ -295,7 +556,7 @@
             <a href="https://www.edicionesdelau.com/" target="_blank" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
           </div>
           <div class="mt-4 flex justify-end">
-            <img src="img/qr_logica.png" alt="QR Lógica de programación" class="w-20 h-20 object-contain">
+            <img src="img/09_ebooks724_ucordoba.png" alt="QR Lógica de programación" class="w-20 h-20 object-contain">
           </div>
         </article>
         <!-- Card 2 -->
@@ -309,7 +570,7 @@
             <a href="https://www.edicionesdelau.com/" target="_blank" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
           </div>
           <div class="mt-4 flex justify-end">
-            <img src="img/qr_solucionario.png" alt="QR Solucionario en pseudocódigo" class="w-20 h-20 object-contain">
+            <img src="img/08_solucionario_ucordoba.png" alt="QR Solucionario en pseudocódigo" class="w-20 h-20 object-contain">
           </div>
         </article>
         <!-- Card 3 -->
@@ -323,7 +584,7 @@
             <a href="#" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
           </div>
           <div class="mt-4 flex justify-end">
-            <img src="img/qr_fundamentos.png" alt="QR Fundamentos de programación" class="w-20 h-20 object-contain">
+            <img src="img/07_fundamPseint.png" alt="QR Fundamentos de programación" class="w-20 h-20 object-contain">
           </div>
         </article>
       </div>
@@ -372,38 +633,169 @@ links.forEach(a=>a.addEventListener('click', e=>{e.preventDefault(); go(a.datase
 if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
 
 // Activities check (very lightweight rubric)
-document.getElementById('check-acts')?.addEventListener('click',()=>{
-  let correct = 0, total=0;
-  document.querySelectorAll('.act-1,.act-2').forEach(inp=>{
-    total++;
-    const v = inp.value.toLowerCase();
-    const kind = inp.classList.contains('act-1')? '1':'2';
-    let ok=false;
-    if(kind==='1'){ // yuca / bultos
-      if(inp.dataset.ans==='entrada') ok = v.includes('cosecha')||v.includes('750')||v.includes('50')||v.includes('kg');
-      if(inp.dataset.ans==='proceso') ok = v.includes('divid')||v.includes('750/50')||v.includes('750 ÷ 50');
-      if(inp.dataset.ans==='salida') ok = v.includes('15')||v.includes('bult');
-    }else{ // descuento 5% si cantidad>10
-      if(inp.dataset.ans==='entrada') ok = v.includes('precio')&&v.includes('cantidad');
-      if(inp.dataset.ans==='proceso') ok = v.includes('subtotal')||v.includes('precio*cantidad')||v.includes('descuento')||v.includes('5%')||v.includes('0.05');
-      if(inp.dataset.ans==='salida') ok = v.includes('total')||v.includes('valor final')||v.includes('a pagar');
-    }
-    inp.classList.toggle('border-green-500', ok);
-    inp.classList.toggle('border-red-500', !ok);
-    if(ok) correct++;
-  });
+
+// ====== Verificador de Actividades (S1: cine, S2: efectivo) ======
+document.getElementById('check-acts')?.addEventListener('click', () => {
+  let correct = 0, total = 0;
+
+  // Helper: evalúa si el texto contiene TODAS las palabras clave (al menos una variante por grupo)
+  const hasAll = (txt, keywords) => {
+    txt = txt.toLowerCase();
+    return keywords.every(group =>
+      group.some(k => txt.includes(k))
+    );
+  };
+
+  // -------- Situación 1 (Cine) --------
+  // Entradas
+  total++;
+  if (hasAll(document.querySelector('.a1.entrada')?.value || '', [
+      ['edad'], ['precio', 'preciobase'] ])) correct++;
+
+  // Restricciones
+  total++;
+  if (hasAll(document.querySelector('.a1.restricciones')?.value || '', [
+      ['edad','>=','mayor','igual','0'], ['precio','preciobase','>','mayor','0'] ])) correct++;
+
+  // Condición
+  total++;
+  if (hasAll(document.querySelector('.a1.condicion')?.value || '', [
+      ['edad','<','menor','12'] ])) correct++;
+
+  // Proceso
+  total++;
+  if (hasAll(document.querySelector('.a1.proceso')?.value || '', [
+      ['si','if'], ['edad','<','menor','12'], ['precio','preciobase','*','0.8','20%'] ])) correct++;
+
+  // Salidas
+  total++;
+  if (hasAll(document.querySelector('.a1.salidas')?.value || '', [
+      ['total','pagar','valor'] ])) correct++;
+
+
+
+  // -------- Situación 2 (Tienda) --------
+  // Entradas
+  total++;
+  if (hasAll(document.querySelector('.a2.entrada')?.value || '', [
+      ['subtotal'], ['medio','pago','mediopago'] ])) correct++;
+
+  // Restricciones
+  total++;
+  if (hasAll(document.querySelector('.a2.restricciones')?.value || '', [
+      ['subtotal','>','mayor','0'] ])) correct++;
+
+  // Condición
+  total++;
+  if (hasAll(document.querySelector('.a2.condicion')?.value || '', [
+      ['medio','pago','mediopago'], ['efectivo','"efectivo"','=='] ])) correct++;
+
+  // Proceso
+  total++;
+  if (hasAll(document.querySelector('.a2.proceso')?.value || '', [
+      ['si','if'], ['efectivo'], ['subtotal','*','0.9','10%'] ])) correct++;
+
+  // Salidas
+  total++;
+  if (hasAll(document.querySelector('.a2.salidas')?.value || '', [
+      ['total','pagar'], ['descuento'] ])) correct++;
+
+  // Resultado
   const res = document.getElementById('acts-result');
   res.textContent = `Respuestas correctas: ${correct} de ${total}.`;
-  res.className = 'mt-3 font-semibold ' + (correct/total>=0.7 ? 'text-emerald-700':'text-red-700');
+  res.className = 'mt-3 font-semibold ' + (correct/total >= 0.7 ? 'text-emerald-700' : 'text-red-700');
+  window.scrollTo({ top: res.offsetTop - 80, behavior: 'smooth' });
 });
 
+
+
 // Quiz
-const quizData=[
-  {q:'¿Qué es un algoritmo?', opts:['Una secuencia finita y ordenada de pasos para resolver un problema.','El código fuente de un programa.','Una base de datos.','Una imagen.'], a:0},
-  {q:'¿Qué diferencia a un algoritmo de un programa?', opts:['Ninguna.','El algoritmo describe pasos; el programa implementa esos pasos en un lenguaje.','El algoritmo siempre es más corto que el programa.','El programa es una idea y el algoritmo es el código.'], a:1},
-  {q:'Marca la opción que NO es característica esencial de un buen algoritmo:', opts:['Finito','Definido','Infinito','Eficiente'], a:2},
-  {q:'En la estructura E-P-S, “proceso” corresponde a…', opts:['Datos que ingresan','Transformaciones y operaciones','Resultado final','Validaciones del LMS'], a:1},
-  {q:'En una compra en línea, ¿cuál sería la salida del algoritmo “subtotal”?', opts:['Precio','Cantidad','Subtotal','Descuento'], a:2}
+const quizData = [
+  {
+    q: "En el análisis de un problema, ¿qué representan las ENTRADAS?",
+    opts: [
+      "Los resultados finales que se esperan",
+      "Los datos iniciales necesarios para procesar",
+      "Las condiciones que limitan la solución",
+      "Los pasos intermedios del algoritmo"
+    ],
+    a: 1
+  },
+  {
+    q: "¿Cuál de las siguientes NO es una característica de una restricción?",
+    opts: [
+      "Debe cumplirse siempre",
+      "Define un límite o condición",
+      "Se puede omitir sin afectar el resultado",
+      "Puede referirse a rangos válidos o formatos"
+    ],
+    a: 2
+  },
+  {
+    q: "Los operadores aritméticos se usan para…",
+    opts: [
+      "Comparar dos valores y devolver Verdadero/Falso",
+      "Conectar condiciones con Y/O",
+      "Realizar cálculos numéricos",
+      "Definir variables y constantes"
+    ],
+    a: 2
+  },
+  {
+    q: "¿Cuál es el resultado de la prioridad de operadores en: 2 + 3 * 4?",
+    opts: ["20", "14", "24", "12"],
+    a: 1
+  },
+  {
+    q: "¿Qué operador RELACIONAL representa 'menor o igual que'?",
+    opts: ["<=", ">=", "==", "!="],
+    a: 0
+  },
+  {
+    q: "El operador LÓGICO AND (&&) devuelve Verdadero si…",
+    opts: [
+      "Una de las condiciones es verdadera",
+      "Las dos condiciones son verdaderas",
+      "Ninguna condición es verdadera",
+      "Invierte el valor lógico de la condición"
+    ],
+    a: 1
+  },
+  {
+    q: "Para forzar que a + b se calcule antes que * c, ¿cómo debería escribirse?",
+    opts: ["a + b * c", "(a + b) * c", "a + (b * c)", "a + (b) * (c)"],
+    a: 1
+  },
+  {
+    q: "Una VARIABLE se diferencia de una CONSTANTE porque…",
+    opts: [
+      "Su valor puede cambiar durante la ejecución",
+      "Su valor no puede cambiar",
+      "Se escribe siempre en mayúsculas",
+      "Solo almacena números enteros"
+    ],
+    a: 0
+  },
+  {
+    q: "En la estructura Entrada–Proceso–Salida, el PROCESO corresponde a…",
+    opts: [
+      "Los datos iniciales",
+      "Las transformaciones/operaciones sobre los datos",
+      "El resultado final mostrado",
+      "Las restricciones del negocio"
+    ],
+    a: 1
+  },
+  {
+    q: "¿Cuál de estas comparaciones es correcta para verificar si 'medioPago' es 'efectivo'?",
+    opts: [
+      "medioPago = \"efectivo\"",
+      "medioPago == \"efectivo\"",
+      "medioPago !== \"efectivo\"",
+      "medioPago >= \"efectivo\""
+    ],
+    a: 1
+  }
 ];
 const quiz = document.getElementById('quiz');
 if(quiz){
@@ -437,7 +829,7 @@ if(quiz){
     window.scrollTo({top:0,behavior:'smooth'});
   });
 }
-
+// ===== Zoom ligero de imágenes de <figure> =====
 // Lightweight image zoom for figures with images (click to open)
 const modal=document.getElementById('imgModal');
 const modalImg=document.getElementById('imgModalSrc');

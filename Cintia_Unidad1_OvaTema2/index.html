@@ -632,7 +632,7 @@ links.forEach(a=>a.addEventListener('click', e=>{e.preventDefault(); go(a.datase
 if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
 
 // Activities check (very lightweight rubric)
-<script>
+
 // ====== Verificador de Actividades (S1: cine, S2: efectivo) ======
 document.getElementById('check-acts')?.addEventListener('click', () => {
   let correct = 0, total = 0;
@@ -748,7 +748,7 @@ if(quiz){
     window.scrollTo({top:0,behavior:'smooth'});
   });
 }
-
+// ===== Zoom ligero de imágenes de <figure> =====
 // Lightweight image zoom for figures with images (click to open)
 const modal=document.getElementById('imgModal');
 const modalImg=document.getElementById('imgModalSrc');

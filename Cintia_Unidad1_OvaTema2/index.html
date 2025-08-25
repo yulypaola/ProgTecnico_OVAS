@@ -632,30 +632,81 @@ links.forEach(a=>a.addEventListener('click', e=>{e.preventDefault(); go(a.datase
 if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
 
 // Activities check (very lightweight rubric)
-document.getElementById('check-acts')?.addEventListener('click',()=>{
-  let correct = 0, total=0;
-  document.querySelectorAll('.act-1,.act-2').forEach(inp=>{
-    total++;
-    const v = inp.value.toLowerCase();
-    const kind = inp.classList.contains('act-1')? '1':'2';
-    let ok=false;
-    if(kind==='1'){ // yuca / bultos
-      if(inp.dataset.ans==='entrada') ok = v.includes('cosecha')||v.includes('750')||v.includes('50')||v.includes('kg');
-      if(inp.dataset.ans==='proceso') ok = v.includes('divid')||v.includes('750/50')||v.includes('750 ÷ 50');
-      if(inp.dataset.ans==='salida') ok = v.includes('15')||v.includes('bult');
-    }else{ // descuento 5% si cantidad>10
-      if(inp.dataset.ans==='entrada') ok = v.includes('precio')&&v.includes('cantidad');
-      if(inp.dataset.ans==='proceso') ok = v.includes('subtotal')||v.includes('precio*cantidad')||v.includes('descuento')||v.includes('5%')||v.includes('0.05');
-      if(inp.dataset.ans==='salida') ok = v.includes('total')||v.includes('valor final')||v.includes('a pagar');
-    }
-    inp.classList.toggle('border-green-500', ok);
-    inp.classList.toggle('border-red-500', !ok);
-    if(ok) correct++;
-  });
+<script>
+// ====== Verificador de Actividades (S1: cine, S2: efectivo) ======
+document.getElementById('check-acts')?.addEventListener('click', () => {
+  let correct = 0, total = 0;
+
+  // Helper: evalúa si el texto contiene TODAS las palabras clave (al menos una variante por grupo)
+  const hasAll = (txt, keywords) => {
+    txt = txt.toLowerCase();
+    return keywords.every(group =>
+      group.some(k => txt.includes(k))
+    );
+  };
+
+  // -------- Situación 1 (Cine) --------
+  // Entradas
+  total++;
+  if (hasAll(document.querySelector('.a1.entrada')?.value || '', [
+      ['edad'], ['precio', 'preciobase'] ])) correct++;
+
+  // Restricciones
+  total++;
+  if (hasAll(document.querySelector('.a1.restricciones')?.value || '', [
+      ['edad','>=','mayor','igual','0'], ['precio','preciobase','>','mayor','0'] ])) correct++;
+
+  // Condición
+  total++;
+  if (hasAll(document.querySelector('.a1.condicion')?.value || '', [
+      ['edad','<','menor','12'] ])) correct++;
+
+  // Proceso
+  total++;
+  if (hasAll(document.querySelector('.a1.proceso')?.value || '', [
+      ['si','if'], ['edad','<','menor','12'], ['precio','preciobase','*','0.8','20%'] ])) correct++;
+
+  // Salidas
+  total++;
+  if (hasAll(document.querySelector('.a1.salidas')?.value || '', [
+      ['total','pagar','valor'] ])) correct++;
+
+
+
+  // -------- Situación 2 (Tienda) --------
+  // Entradas
+  total++;
+  if (hasAll(document.querySelector('.a2.entrada')?.value || '', [
+      ['subtotal'], ['medio','pago','mediopago'] ])) correct++;
+
+  // Restricciones
+  total++;
+  if (hasAll(document.querySelector('.a2.restricciones')?.value || '', [
+      ['subtotal','>','mayor','0'] ])) correct++;
+
+  // Condición
+  total++;
+  if (hasAll(document.querySelector('.a2.condicion')?.value || '', [
+      ['medio','pago','mediopago'], ['efectivo','"efectivo"','=='] ])) correct++;
+
+  // Proceso
+  total++;
+  if (hasAll(document.querySelector('.a2.proceso')?.value || '', [
+      ['si','if'], ['efectivo'], ['subtotal','*','0.9','10%'] ])) correct++;
+
+  // Salidas
+  total++;
+  if (hasAll(document.querySelector('.a2.salidas')?.value || '', [
+      ['total','pagar'], ['descuento'] ])) correct++;
+
+  // Resultado
   const res = document.getElementById('acts-result');
   res.textContent = `Respuestas correctas: ${correct} de ${total}.`;
-  res.className = 'mt-3 font-semibold ' + (correct/total>=0.7 ? 'text-emerald-700':'text-red-700');
+  res.className = 'mt-3 font-semibold ' + (correct/total >= 0.7 ? 'text-emerald-700' : 'text-red-700');
+  window.scrollTo({ top: res.offsetTop - 80, behavior: 'smooth' });
 });
+</script>
+
 
 // Quiz
 const quizData=[

@@ -349,9 +349,56 @@
           
           </div>
 
-            
-          <p>Ejemplo. (<strong>Ejercicio práctico de un Parqueadero</strong>), Enunciado: Un parqueadero cobra por fracción de hora. Si el número de horas es mayor o igual que 8, se debe aplicar al cliente un descuento de 1 hora, eso significa que, si el vehículo del cliente demora 10 horas en el parqueadero, sólo se le deben cobrar 9 horas.</p>
-            <figure class="border rounded p-3">
+          <div class="grid md:grid-cols-2 gap-4 mt-4">
+
+          <!-- Entradas -->
+          <article class="bg-white border border-emerald-200 rounded-lg shadow-sm p-4">
+            <h3 class="font-bold text-emerald-700 mb-2">Entradas sugeridas</h3>
+            <ul class="list-disc ml-5 text-slate-700">
+              <li>horas (entero)</li>
+              <li>tarifaHora (entero)</li>
+            </ul>
+          </article>
+        
+          <!-- Restricciones -->
+          <article class="bg-white border border-emerald-200 rounded-lg shadow-sm p-4">
+            <h3 class="font-bold text-emerald-700 mb-2">Restricciones</h3>
+            <ul class="list-disc ml-5 text-slate-700">
+              <li>horas ≥ 1</li>
+              <li>tarifaHora > 0</li>
+            </ul>
+          </article>
+        
+          <!-- Condición -->
+          <article class="bg-white border border-emerald-200 rounded-lg shadow-sm p-4">
+            <h3 class="font-bold text-emerald-700 mb-2">Condición</h3>
+            <p class="text-slate-700">si <code>horas ≥ 8</code> entonces <code>descuento = tarifaHora</code></p>
+          </article>
+        
+          <!-- Proceso -->
+          <article class="bg-white border border-emerald-200 rounded-lg shadow-sm p-4 md:col-span-2">
+            <h3 class="font-bold text-emerald-700 mb-2">Proceso</h3>
+            <pre class="bg-slate-50 border rounded p-3 text-sm text-slate-800 whitespace-pre-wrap">
+        subtotal = horas * tarifaHora
+        descuento = 0
+        si (horas >= 8) entonces
+            descuento = tarifaHora
+        fin si
+        total = subtotal - descuento
+            </pre>
+          </article>
+        
+          <!-- Salidas -->
+          <article class="bg-white border border-emerald-200 rounded-lg shadow-sm p-4 md:col-span-2">
+            <h3 class="font-bold text-emerald-700 mb-2">Salidas</h3>
+            <p class="text-slate-700"><code>total</code>, <code>descuento</code></p>
+          </article>
+        
+        </div>
+  
+
+          
+          <figure class="border rounded p-3">
               <img src="img/img09.png" class="w-full object-contain" alt="Ejemplo">
             </figure>
                 

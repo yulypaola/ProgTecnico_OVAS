@@ -417,48 +417,118 @@ total = subtotal - descuento
     <!-- Actividades -->
     <section id="actividades" class="content-pane">
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Actividades</h2>
-      <div class="space-y-6">
-        <div class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5">
-          <p class="font-semibold text-emerald-700 mb-2">Situación 1</p>
-          <p class="mb-3">Un Cine necesita un sistema que permita mostrar el valor a cobrar por tiquete de entrada, teniendo en cuenta que se aplica un descuento infantil del 20%, si el niño es menor de 12 años.
-                        :</p>
-          <p class="mb-3"> Entradas sugeridas: :</p>
-                 
-            <ul class="list-disc ml-6 space-y-1">
-              <li>edad (entero).</li>
-              <li>precioBase (real).</li>
-           </ul>
-          
-          <div class="grid sm:grid-cols-3 gap-3">
-            <input data-ans="entrada" placeholder="Entradas Sugeridas" class="act-1 p-2 border rounded bg-white">
-            <input data-ans="proceso" placeholder="Restricciones" class="act-1 p-2 border rounded bg-white">
-            <input data-ans="salida" placeholder="Condición" class="act-1 p-2 border rounded bg-white">
-            <input data-ans="salida" placeholder="Proceso" class="act-1 p-2 border rounded bg-white">
-            <input data-ans="salida" placeholder="Salidas" class="act-1 p-2 border rounded bg-white">
-          </div>
-        </div>
-        <div class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5">
-          <p class="font-semibold text-emerald-700 mb-2">Situación 2</p>
-          <p class="mb-3">Una tienda local aplica un descuento del 10% si el medio de pago es igual a "efectivo" &gt; :</p>
-           <p class="mb-3"> Entradas sugeridas: :</p>
-                 
-            <ul class="list-disc ml-6 space-y-1">
-              <li>subtotal (real).</li>
-              <li>medioPago (texto).</li>
-           </ul>
-          
-          <div class="grid sm:grid-cols-3 gap-3">
-            <input data-ans="entrada" placeholder="Entradas Sugeridas" class="act-1 p-2 border rounded bg-white">
-            <input data-ans="proceso" placeholder="Restricciones" class="act-1 p-2 border rounded bg-white">
-            <input data-ans="salida" placeholder="Condición" class="act-1 p-2 border rounded bg-white">
-            <input data-ans="salida" placeholder="Proceso" class="act-1 p-2 border rounded bg-white">
-            <input data-ans="salida" placeholder="Salidas" class="act-1 p-2 border rounded bg-white">
-          </div>
-        </div>
-      </div>
-      <button id="check-acts" class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded transition-colors">Verificar</button>
-      <div id="acts-result" class="mt-3 font-semibold"></div>
-    </section>
+
+<!-- ========== SITUACIÓN 1 ========== -->
+<article class="bg-white border rounded-lg shadow-sm p-5 mb-8">
+  <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 1</h3>
+  <p class="mb-4">
+    Un Cine necesita un sistema que permita mostrar el valor a cobrar por tiquete de entrada,
+    teniendo en cuenta que se aplica un <strong>descuento infantil del 20%</strong> si el niño es
+    <strong>menor de 12 años</strong>.
+  </p>
+
+  <!-- Grid 3 arriba / 2 abajo -->
+  <div class="grid md:grid-cols-3 gap-4">
+    <!-- Entradas -->
+    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+      <h4 class="font-bold text-emerald-800 mb-2">Entradas sugeridas</h4>
+      <ul class="list-disc ml-5 text-slate-700 mb-3">
+        <li>edad (entero)</li>
+        <li>precioBase (real)</li>
+      </ul>
+      <input class="a1 entrada w-full p-2 border rounded bg-white"
+             placeholder="Escribe aquí tus entradas…">
+    </div>
+
+    <!-- Restricciones -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <h4 class="font-bold text-blue-700 mb-2">Restricciones</h4>
+      <input class="a1 restricciones w-full p-2 border rounded bg-white"
+             placeholder="Ej.: edad ≥ 0; precioBase &gt; 0">
+    </div>
+
+    <!-- Condición -->
+    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+      <h4 class="font-bold text-yellow-700 mb-2">Condición</h4>
+      <input class="a1 condicion w-full p-2 border rounded bg-white"
+             placeholder="Ej.: edad &lt; 12">
+    </div>
+
+    <!-- Proceso -->
+    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 md:col-span-2">
+      <h4 class="font-bold text-purple-700 mb-2">Proceso</h4>
+      <textarea rows="4" class="a1 proceso w-full p-2 border rounded bg-white"
+        placeholder="Pseudocódigo o fórmula…&#10;si (edad &lt; 12) entonces total = precioBase * 0.8&#10;si no total = precioBase"></textarea>
+    </div>
+
+    <!-- Salidas -->
+    <div class="bg-pink-50 border border-pink-200 rounded-lg p-4">
+      <h4 class="font-bold text-pink-700 mb-2">Salidas</h4>
+      <input class="a1 salidas w-full p-2 border rounded bg-white"
+             placeholder="Ej.: total a pagar">
+    </div>
+  </div>
+</article>
+
+<!-- ========== SITUACIÓN 2 ========== -->
+<article class="bg-white border rounded-lg shadow-sm p-5">
+  <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 2</h3>
+  <p class="mb-4">
+    Una tienda local aplica un <strong>descuento del 10%</strong> si el medio de pago es
+    igual a <strong>“efectivo”</strong>.
+  </p>
+
+  <div class="grid md:grid-cols-3 gap-4">
+    <!-- Entradas -->
+    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+      <h4 class="font-bold text-emerald-800 mb-2">Entradas sugeridas</h4>
+      <ul class="list-disc ml-5 text-slate-700 mb-3">
+        <li>subtotal (real)</li>
+        <li>medioPago (texto)</li>
+      </ul>
+      <input class="a2 entrada w-full p-2 border rounded bg-white"
+             placeholder="Escribe aquí tus entradas…">
+    </div>
+
+    <!-- Restricciones -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <h4 class="font-bold text-blue-700 mb-2">Restricciones</h4>
+      <input class="a2 restricciones w-full p-2 border rounded bg-white"
+             placeholder="Ej.: subtotal &gt; 0; medioPago permitido">
+    </div>
+
+    <!-- Condición -->
+    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+      <h4 class="font-bold text-yellow-700 mb-2">Condición</h4>
+      <input class="a2 condicion w-full p-2 border rounded bg-white"
+             placeholder='Ej.: medioPago == "efectivo"'>
+    </div>
+
+    <!-- Proceso -->
+    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 md:col-span-2">
+      <h4 class="font-bold text-purple-700 mb-2">Proceso</h4>
+      <textarea rows="4" class="a2 proceso w-full p-2 border rounded bg-white"
+        placeholder="Pseudocódigo o fórmula…&#10;si (medioPago == &quot;efectivo&quot;) entonces total = subtotal * 0.9&#10;si no total = subtotal"></textarea>
+    </div>
+
+    <!-- Salidas -->
+    <div class="bg-pink-50 border border-pink-200 rounded-lg p-4">
+      <h4 class="font-bold text-pink-700 mb-2">Salidas</h4>
+      <input class="a2 salidas w-full p-2 border rounded bg-white"
+             placeholder="Ej.: total a pagar, descuento">
+    </div>
+  </div>
+</article>
+
+<!-- Botón verificar -->
+<div class="mt-5">
+  <button id="check-acts"
+    class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded transition-colors">
+    Verificar
+  </button>
+  <div id="acts-result" class="mt-3 font-semibold"></div>
+</div>
+
 
     <!-- Evaluación (quiz) -->
     <section id="evaluacion" class="content-pane">

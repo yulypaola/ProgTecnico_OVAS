@@ -324,22 +324,32 @@
           </summary>
           <div class="px-4 pb-4 text-slate-700 space-y-3">
 
-            <p>¿Qué buscamos?</p>
+         
+            <!-- Qué buscamos -->
+            <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-4">
+              <h3 class="font-bold text-emerald-800 mb-2">¿Qué buscamos?</h3>
+              <ul class="list-disc ml-5 text-slate-700 space-y-1">
+                <li><strong>Restricciones:</strong> reglas que siempre deben cumplirse (rango, formato, opciones válidas, existencia del dato).</li>
+                <li><strong>Condición básica:</strong> una comparación que activa una acción (sin combinar con “y/o” todavía).</li>
+                <li><strong>Comparadores:</strong> operadores relacionales.</li>
+              </ul>
+            </article>
           
-            <ul class="list-disc ml-6 space-y-1">
-              <li>Restricciones: reglas que siempre deben cumplirse (rango, formato, opciones válidas, existencia del dato).</li>
-              <li>Condición básica: una comparación que activa una acción (sin combinar con “y/o” todavía).</li>
-              <li>Comparadores a usar: operadores relacionales.</li>
-            </ul>
-            <p>¿Qué tener en cuenta?</p>
+            <!-- Qué tener en cuenta -->
+            <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-4">
+              <h3 class="font-bold text-emerald-800 mb-2">¿Qué tener en cuenta?</h3>
+              <ul class="list-disc ml-5 text-slate-700 space-y-1">
+                <li><strong>Entradas:</strong> qué datos llegan.</li>
+                <li><strong>Restricciones (mín. 2):</strong> rango, formato u opciones permitidas.</li>
+                <li><strong>Condición (1 comparación):</strong> qué evaluar para decidir una acción.</li>
+                <li><strong>Proceso:</strong> operación sencilla (cálculo o asignación).</li>
+                <li><strong>Salidas + Mensajes:</strong> qué mostrar/guardar; texto breve si se rompe una restricción.</li>
+              </ul>
+            </article>
           
-            <ul class="list-disc ml-6 space-y-1">
-              <li>Entradas: Qué datos llegan?.</li>
-              <li>Restricciones (mín. 2): rango, formato u opciones permitidas.</li>
-              <li>Condición (1 comparación): qué evaluar para decidir una acción.</li>
-             <li>Proceso: operación sencilla (cálculo o asignación).</li>
-                 <li>Salidas + Mensajes: qué mostrar/guardar; texto breve si se rompe una restricción.</li>
-            </ul>
+          </div>
+
+            
           <p>Ejemplo. (<strong>Ejercicio práctico de un Parqueadero</strong>), Enunciado: Un parqueadero cobra por fracción de hora. Si el número de horas es mayor o igual que 8, se debe aplicar al cliente un descuento de 1 hora, eso significa que, si el vehículo del cliente demora 10 horas en el parqueadero, sólo se le deben cobrar 9 horas.</p>
             <figure class="border rounded p-3">
               <img src="img/img09.png" class="w-full object-contain" alt="Ejemplo">

@@ -352,38 +352,33 @@
           </summary>
           <div class="px-4 pb-4 text-slate-700 space-y-3">
 
-            <p class="mb-3">
-            En programación usamos <strong>identificadores</strong> para nombrar datos. Los dos más comunes son 
-            <em>variables</em> y <em>constantes</em>: según la necesidad, el valor puede cambiar o permanecer fijo.
+           <p class="mt-3 text-slate-700 leading-relaxed">
+                Los <strong>condicionales múltiples</strong> permiten tomar decisiones cuando existen varias condiciones posibles. 
+                Se pueden implementar de dos formas:
           </p>
-          
-          <p class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg mb-3">
-            Una <span class="tooltip"><strong>variable</strong>
-              <span class="tooltiptext">
-                Su valor puede cambiar durante la ejecución.<br>
-                Ejemplos:<br>
-                <code>edad = 17 → 18</code><br>
-                <code>total = subtotal + iva</code><br>
-                <code>temperaturaHoy = 32; temperaturaManana = 31</code><br>
-                Suele ser numérica, de texto o lógica (V/F).
-              </span>
-            </span> es un identificador cuyo valor puede modificarse a lo largo del algoritmo.
-          </p>
-          
-          <p class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg">
-            Una <span class="tooltip"><strong>constante</strong>
-              <span class="tooltiptext">
-                Su valor NO cambia en todo el programa.<br>
-                Ejemplos:<br>
-                <code>PI = 3.1416</code>, <code>IVA = 0.19</code>, <code>MAX_ESTUDIANTES = 40</code>.<br>
-                Convención: escribir en MAYÚSCULAS con guion bajo.
-              </span>
-            </span> mantiene el mismo valor durante la ejecución (no se reasigna).
-          </p>
+
+              <ul class="list-disc ml-6 space-y-2 text-slate-700">
+                <li>
+                  Mediante múltiples condicionales 
+                  <span class="tooltip text-green-600 font-bold">SI anidados
+                    <span class="tooltiptext">
+                      Donde cada condición se evalúa de forma secuencial.
+                    </span>
+                  </span>.
+                </li>
+                <li>
+                  Mediante la 
+                  <span class="tooltip text-green-600 font-bold">estructura SEGÚN
+                    <span class="tooltiptext">
+                      Facilita la lectura cuando se compara una misma variable contra diferentes valores.
+                    </span>
+                  </span>, que mejora la claridad del código.
+                </li>
+              </ul>
 
           
             <figure>
-              <img src="img/img07.png" class="w-full object-contain" alt="Consejos para identificadores">
+              <img src="img/img010.png" class="w-full object-contain" alt="Cómo implementar condicionales múltiples">
             </figure>
           </div>
         </details>

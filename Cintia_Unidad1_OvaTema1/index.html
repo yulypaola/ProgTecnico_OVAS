@@ -186,14 +186,15 @@
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
-        
+        html, body { height: 100%; overflow: hidden; }
+
     </style>
 </head>
 <body class="bg-slate-50">
 
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <aside class="w-64 bg-white shadow-lg flex-shrink-0 hidden md:flex md:flex-col">
+         <aside class="w-64 bg-white shadow-lg hidden md:flex md:flex-col fixed top-0 left-0 h-screen overflow-y-auto">
             <div class="p-4">
                 <div style="width: 150px; height: 150px;" class="p-2 mx-auto flex items-center justify-center bg-white rounded-full shadow-lg border-2 border-green-500 transition-shadow duration-300 hover:shadow-green-400">
                     <img src="img/logo.png" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
@@ -211,8 +212,9 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50">
-            <!-- Mobile Header -->
+             <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50 h-screen overflow-y-auto md:ml-64">
+
+           <!-- Mobile Header -->
             <div class="md:hidden mb-6 flex flex-col items-center">
                 <div style="width: 100px; height: 100px;" class="p-2 flex items-center justify-center bg-white rounded-full shadow-lg transition-shadow duration-300 hover:shadow-green-400 mb-2">
                     <img src="img/logo.png" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
@@ -711,6 +713,8 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const targetId = e.currentTarget.dataset.target;
             switchPane(targetId);
+            document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
+
         });
     });
 
@@ -930,7 +934,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Desplazamiento suave hacia el botón del acordeón desplegado
                 setTimeout(() => {
-                    this.scrollIntoView({ behavior: 'smooth', block: 'start' });
+const main = document.querySelector('main');
+const offset = this.getBoundingClientRect().top - main.getBoundingClientRect().top;
+main.scrollBy({ top: offset - 16, behavior: 'smooth' });
                 }, 100); // Pequeño retraso para asegurar que el panel esté visible
             } else {
                 // Cambiar el símbolo del botón

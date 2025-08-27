@@ -627,11 +627,9 @@ document.addEventListener('DOMContentLoaded', function() {
   function loadVoices() {
     voices = synth.getVoices();
    // Intentar siempre seleccionar una voz femenina en español
-    preferredVoice = voices.find(v => v.name.toLowerCase().includes('paulina'))   // Chrome/Google
-              || voices.find(v => v.name.toLowerCase().includes('soledad'))   // Windows
-              || voices.find(v => v.name.toLowerCase().includes('female'))    // voces marcadas como femeninas
-              || voices.find(v => v.lang.toLowerCase().startsWith('es'))      // cualquier voz en español
-              || voices[0] || null; 
+   preferredVoice = voices.find(v => v.name.includes('soledad')) 
+              || voices.find(v => v.lang.toLowerCase().startsWith('es')) 
+              || voices[0] || null;
   }
   loadVoices();
   if (synth.onvoiceschanged !== undefined) {

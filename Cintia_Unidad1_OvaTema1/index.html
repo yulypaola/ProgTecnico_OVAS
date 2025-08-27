@@ -627,7 +627,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function loadVoices() {
     voices = synth.getVoices();
    // Intentar siempre seleccionar una voz femenina en español
-   preferredVoice = voices.find(v => v.name.includes('soledad')) 
+   preferredVoice = voices.find(v => v.name.includes('Paulina')) 
               || voices.find(v => v.lang.toLowerCase().startsWith('es')) 
               || voices[0] || null;
   }

@@ -26,15 +26,63 @@
     .modal-content { max-width:90%; max-height:90%; position:relative; }
     .modal-content img { max-width:100%; max-height:90vh; border:4px solid #fff; border-radius:4px; box-shadow:0 10px 25px rgba(0,0,0,.5); }
     .close-modal { position:absolute; top:-20px; right:-20px; background:#ef4444; color:#fff; border:none; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px; }
-  /* Solo el área de contenido hará scroll */
-html, body { height: 100%; overflow: hidden; }
+
+     /* ====== Tooltips (estilos globales) ====== */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      font-weight: bold;
+      color: #006633; /* Verde oscuro */
+    }
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 280px;
+      background-color: #006633; /* Verde oscuro */
+      color: #ffffff;            /* Texto blanco */
+      text-align: left;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 14px;
+      font-weight: normal;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+
+/* --- FIX RÁPIDO DE LAYOUT EN DESKTOP --- */
+@media (min-width: 768px){
+  .min-h-screen.flex{           /* contenedor del aside + main */
+    display:flex !important;
+    flex-direction: row !important;
+    align-items:flex-start;
+  }
+  aside.w-64{                   /* menú lateral */
+    flex: 0 0 16rem !important; /* 256px */
+    max-width: 16rem !important;
+  }
+  main.flex-1{                  /* área de contenido */
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+}
+
+
+    
   </style>
 </head>
+  
 <body class="bg-slate-50">
 <div class="flex min-h-screen">
-  
-  <aside class="w-64 bg-white shadow-lg hidden md:flex md:flex-col fixed top-0 left-0 h-screen overflow-y-auto">
-
+  <aside class="w-64 bg-white shadow-lg flex-shrink-0 hidden md:flex md:flex-col">
     <div class="p-4">
       <div style="width:150px;height:150px" class="p-2 mx-auto flex items-center justify-center bg-white rounded-full shadow-lg border-2 border-green-500">
         <img src="img/logo.webp" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
@@ -51,8 +99,7 @@ html, body { height: 100%; overflow: hidden; }
     </nav>
   </aside>
 
-  <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50 h-screen overflow-y-auto md:ml-64">
-
+  <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50">
     <div class="md:hidden mb-6 flex flex-col items-center">
       <div style="width:100px;height:100px" class="p-2 flex items-center justify-center bg-white rounded-full shadow-lg mb-2">
         <img src="img/logo.webp" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
@@ -68,434 +115,464 @@ html, body { height: 100%; overflow: hidden; }
       </select>
     </div>
 
-    <!-- Introducción -->
-<section id="introduccion" class="content-pane active">
-  <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-4"> Concepto de algoritmo e importancia en la solución de problemas </h2>
-  <p class="text-slate-700 leading-relaxed mb-4"> 🏠 <strong>¡Bienvenido!</strong> 👋 Imagina que vas a preparar una hamburguesa con tus amigos. Si sigues los pasos en orden, obtendrás el resultado esperado. Pero si te saltas uno, el producto final no será el mismo. Así funcionan los algoritmos: pasos que siempre llevan a un resultado.
-  </p>
-  <p class="text-slate-700 leading-relaxed"> Un algoritmo es una secuencia ordenada de pasos que permiten alcanzar un objetivo o resolver un problema. En la vida cotidiana utilizamos algoritmos constantemente, aunque no lo notemos: seguir una receta, resolver un problema matemático, organizar una lista de tareas o retirar dinero de un cajero. En programación, los algoritmos son la base de todo lo que hacemos, pues de su claridad y precisión depende el funcionamiento correcto de cualquier software. Conocer y aplicar el concepto de algoritmo permite transformar un problema productivo en una secuencia de pasos claros y precisos que, posteriormente, se pueden traducir a un lenguaje de programación. </p>
-    
-    <!-- START Información de Navegación-->
-      <div class="mt-8 p-4 sm:p-6 bg-green-50 border-l-4 border-green-500 rounded-r-lg">
-                    <p class="text-green-800">Navega por el menú para explorar cada una de las secciones de este OVA. ¡Comencemos este viaje de aprendizaje!</p>
-                </div>
-    <!-- END Información de Navegación-->
+    <!-- Intro -->
+    <section id="introduccion" class="content-pane active">
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-800">Concepto de algoritmo y su importancia en la solución de problemas</h1>
+      <p class="mt-4 leading-relaxed">
+        🏠 <strong>¡Bienvenido!</strong> Imagina que vas a preparar una hamburguesa con tus amigos. Si sigues los pasos en orden, obtendrás el resultado esperado; si te saltas uno, el producto final cambia. Así funcionan los <strong>algoritmos</strong>: secuencias de pasos que llevan a un resultado.
+      </p>
+      <p class="mt-2 leading-relaxed">
+        En programación, los algoritmos son la base de todo; de su claridad y precisión depende el funcionamiento correcto de cualquier software. Conocerlos permite transformar un problema en pasos claros que luego se traducen a un lenguaje de programación.
+      </p>
+      <div class="mt-6 p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-lg">
+        <p class="text-emerald-900">Navega por el menú para explorar el objetivo, el contenido, las actividades, la evaluación y los recursos.</p>
+      </div>
     </section>
 
-    <!-- Objetivos -->
+    <!-- Objetivo -->
     <section id="objetivos" class="content-pane">
-      <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Objetivos de aprendizaje – Tema 1</h2>
-      <ul class="space-y-4">
-        <li class="flex items-start p-4 bg-white rounded-lg shadow-sm"><span class="text-green-700 mr-3 text-2xl">🧩</span><span><strong>Reconocer</strong> qué es un problema, un algoritmo y un programa, identificando sus diferencias.</span></li>
-        <li class="flex items-start p-4 bg-white rounded-lg shadow-sm"><span class="text-green-700 mr-3 text-2xl">🧠</span><span><strong>Explicar</strong> la importancia de los algoritmos en la solución de problemas, destacando su utilidad para la claridad y reducción de errores.</span></li>
-        <li class="flex items-start p-4 bg-white rounded-lg shadow-sm"><span class="text-green-700 mr-3 text-2xl">🛠️</span><span><strong>Identificar</strong> las características de un buen algoritmo y su aplicación en ejemplos cotidianos y técnicos sencillos.</span></li>
-      </ul>
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Objetivo</h2>
+
+      <p class="leading-relaxed">
+  🧠 <strong>Comprender</strong> el concepto de algoritmo, sus características y su importancia en la solución de problemas, a partir de ejemplos cotidianos y tecnológicos. Reconocer su papel como base del pensamiento lógico y de la programación, y comenzar a representarlos en pasos secuenciales claros.
+</p>
+
+      
     </section>
 
-    <!-- Contenido (A-G) -->
+    <!-- Contenido -->
     <section id="contenido" class="content-pane">
-      <div class="w-full max-w-8xl mx-auto">
-        <!-- Panel A -->
-        <div class="mb-4">
-          <button type="button" class="w-full flex justify-between items-center p-4 bg-green-100 border border-green-300 rounded-t-lg font-bold text-green-800 text-lg accordion-btn mb-2" data-target="#panel-a">
-            Definición y diferencias: problema, algoritmo y programa <span class="ml-2">➕</span>
-          </button>
-        </div>
-        <div id="panel-a" class="accordion-panel hidden bg-white border border-t-0 border-green-300 rounded-b-lg p-4 mb-6 space-y-3 text-slate-700">
-          <p><strong>Problema:</strong> necesidad a resolver, descrita con entradas, restricciones y resultado esperado.</p>
-          <p><strong>Algoritmo:</strong> secuencia finita y ordenada de pasos para resolver el problema (independiente del lenguaje).</p>
-          <p><strong>Programa:</strong> implementación de un algoritmo en un lenguaje (ej.: PSeInt, C, Python).</p>
-          <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-            <p class="font-semibold text-green-800 mb-1">Mini‑ejemplo:</p>
-            <ul class="list-disc ml-6">
-              <li><em>Problema:</em> Calcular pago por día.</li>
-              <li><em>Algoritmo:</em> Leer horas y tarifa; calcular <code>pago = horas × tarifa</code>; mostrar pago.</li>
-              <li><em>Programa:</em> Código en PSeInt que implementa los pasos.</li>
+      <div class="space-y-4">
+        <!-- A: Definición -->
+        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
+          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
+            Definición de algoritmo
+            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
+          </summary>
+          <div class="px-4 pb-4 text-slate-700 space-y-3">
+            <p>Un <strong>algoritmo</strong> es un conjunto finito de instrucciones u operaciones que se ejecutan en un orden específico para resolver un problema o realizar una tarea. Es como una receta: sigues las instrucciones y obtienes el resultado esperado.</p>
+          
+<!-- desde aqui inlui informacion-->
+<p>
+  <span class="tooltip">Algoritmo secuencial - Preparación de una hamburguesa
+    <span class="tooltiptext">
+      Un algoritmo secuencial es aquel en el que las instrucciones se ejecutan paso a paso en orden.
+    </span>
+  </span>
+</p>
+
+            
+             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2"></figcaption>
+              <img src="img/img01.png" alt="Pasos para preparar una hamburguesa" class="w-full object-contain rounded"/>
+            </figure>
+            
+<!-- hasta aqui inlui informacion-->            
+            
+            <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg">
+              <p class="font-semibold text-emerald-900">Otro caso cotidiano de algoritmo secuencial: pasos para preparar café:</p>
+              <ol class="list-decimal ml-6">
+                <li>Calentar el agua.</li>
+                <li>Colocar café en el filtro.</li>
+                <li>Verter el agua caliente sobre el café.</li>
+                <li>Servir en una taza.</li>
+                <li>Endulzar y revolver.</li>
+              </ol>
+            </div>
+          </div>
+<!-- se incluyen otros ejemplos-->  
+       <p>
+  <span class="tooltip">&#128221; Ver ejemplos de algoritmos secuenciales
+    <span class="tooltiptext">
+      <b>Ejemplo 1.</b> Lavarse las manos <br>
+      1. Abrir el grifo.<br>
+      2. Mojar las manos.<br>
+      3. Aplicar jabón.<br>
+      4. Frotar bien.<br>
+      5. Enjuagar y secar.<br><br>
+
+      <b>Ejemplo 2.</b> Encender un computador <br>
+      1. Conectar el cable de corriente.<br>
+      2. Presionar el botón de encendido.<br>
+      3. Esperar el inicio del sistema.<br>
+      4. Ingresar usuario y contraseña.<br>
+    </span>
+  </span>
+</p>
+
+<!-- se incluyen otros ejemplos-->            
+        </details>
+
+        <!-- B: Características -->
+        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
+          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
+            Características de los algoritmos
+            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
+          </summary>
+       
+
+
+            <p>
+  Para que un algoritmo sea considerado correcto y útil no basta con que resuelva un problema, 
+  también debe cumplir con ciertas 
+  <span class="tooltip">características
+    <span class="tooltiptext">
+      Estas propiedades permiten que los algoritmos sean comprensibles, se ejecuten sin errores y puedan utilizarse en diferentes contextos de manera eficiente.
+    </span>
+  </span> 
+  que aseguren su claridad, precisión y aplicabilidad...
+</p>
+
+            
+
+            <figure class="mt-2">
+              <img src="img/img02.png" class="w-full object-contain" alt="Principales características de un buen algoritmo">
+            </figure>
+            
+<!-- modifico para mostrar conceptos cualitativos y cuantiotativod=s-->
+<p>
+  Además, los algoritmos pueden ser 
+  <span class="tooltip">cualitativos
+    <span class="tooltiptext">
+      Un algoritmo cualitativo se describe en palabras sin involucrar cálculos numéricos o matemáticos.
+    </span>
+  </span> 
+  (descritos en palabras) o 
+  <span class="tooltip">cuantitativos
+    <span class="tooltiptext">
+      Un algoritmo cuantitativo requiere cálculos numéricos para resolverse.
+    </span>
+  </span> 
+  (requieren cálculos numéricos).
+</p>
+
+          
+<!-- modifico para mostrar conceptos cualitativos y cuantiotativod=s-->
+       <p class="mt-3">Comparación de algoritmos <strong>cualitativos</strong> y <strong>cuantitativos</strong>.</p>
+ 
+<!-- B: nuevo -->
+            <figure class="mt-2">
+              <img src="img/img03.png" class="w-full object-contain" alt="Comparación">
+            </figure>
+      <!-- B: fin nuevo -->      
+            <p class="mt-3">A Continuación se visualiza un ejemplo <strong>cualitativo</strong> y <strong>cuantitativo</strong>.</p>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+              <figure class="border rounded p-3">
+                <figcaption class="font-semibold text-emerald-800 mb-2">Algoritmo cualitativo — Preparar una taza de café</figcaption>
+                <img src="img/img04.png" class="w-full object-contain" alt="Algoritmo cualitativo">
+              </figure>
+              <figure class="border rounded p-3">
+                <figcaption class="font-semibold text-emerald-800 mb-2">Algoritmo cuantitativo — Calcular el promedio de 3 notas</figcaption>
+                <img src="img/img05.png" class="w-full object-contain" alt="Algoritmo cuantitativo">
+              </figure>
+            
+          </div>
+        </details>
+
+        <!-- C: Ejemplos -->
+        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
+          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
+            Ejemplos de algoritmos (vida diaria y programación)
+            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
+          </summary>
+          <div class="px-4 pb-4 text-slate-700 space-y-3">
+            <ul class="list-disc ml-6 space-y-1">
+              <li>Seguir una receta de cocina.</li>
+              <li>Encender y utilizar un computador.</li>
+              <li>Calcular el subtotal de una compra (precio × cantidad).</li>
+              <li>Procesos locales agrícolas como el empaque de mangos: recolectar → lavar → seleccionar → pesar → almacenar.</li>
             </ul>
+            <figure class="border rounded p-3">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Algotirmo resuelto. Proceso de empaque de mangos</figcaption>
+              <img src="img/img07.png" class="w-full object-contain" alt="Proceso de empaque de mangos">
+            </figure>
           </div>
-        </div>
+        </details>
 
-        <!-- Panel B -->
-        <div class="mb-4">
-          <button type="button" class="w-full flex justify-between items-center p-4 bg-green-100 border border-green-300 rounded-t-lg font-bold text-green-800 text-lg accordion-btn mb-2" data-target="#panel-b">
-            La Programación: tu herramienta principal <span class="ml-2">➕</span>
-          </button>
-        </div>
-        <div id="panel-b" class="accordion-panel hidden bg-white border border-t-0 border-green-300 rounded-b-lg p-4 mb-6">
-          <p class="mb-2 text-slate-700">Programar es, en esencia, <strong>dar instrucciones claras a un computador</strong> para que ejecute una tarea específica.</p>
-          <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
-            <div class="w-full bg-white rounded flex items-center justify-center overflow-hidden image-container" style="min-height:260px;">
-              <img src="img/programacion_herramienta.png" alt="La Programación: Tu Herramienta Principal" class="max-w-full max-h-full object-contain expandable-image" loading="lazy">
-              <button class="expand-btn" data-img="img/programacion_herramienta.png">🔍</button>
-            </div>
+        <!-- D: Importancia -->
+        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
+          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
+            Importancia de los algoritmos
+            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
+          </summary>
+          <div class="px-4 pb-4 text-slate-700 space-y-3">
+            <p>Los algoritmos constituyen la base del pensamiento lógico y de la programación. Permiten resolver problemas de manera ordenada, precisa y eficiente en la vida cotidiana, la producción agropecuaria y los sistemas informáticos.</p>
+            <figure>
+              <img src="img/img08.png" class="w-full object-contain" alt="Beneficios de mejora de procesos">
+            </figure>
           </div>
-          <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
-            <div class="w-full bg-white rounded flex items-center justify-center overflow-hidden image-container" style="min-height:320px;">
-              <img src="img/importancia_programador_web.png" alt="Importancia de la Programación Web" class="max-w-full max-h-full object-contain expandable-image" loading="lazy">
-              <button class="expand-btn" data-img="img/importancia_programador_web.png">🔍</button>
-            </div>
-          </div>
-        </div>
+        </details>
 
-        <!-- Panel C -->
-        <div class="mb-4">
-          <button type="button" class="w-full flex justify-between items-start p-4 bg-green-100 border border-green-300 rounded-t-lg font-bold text-green-800 text-lg accordion-btn mb-2 text-left" data-target="#panel-c">
-            Propósito de los algoritmos en la solución de problemas <span class="ml-2">➕</span>
-          </button>
-        </div>
-        <div id="panel-c" class="accordion-panel hidden bg-white border border-t-0 border-green-300 rounded-b-lg p-4 mb-6">
-          <ul class="list-disc ml-6 text-slate-700 space-y-2">
-            <li><strong>Claridad:</strong> define entradas, proceso y salidas sin ambigüedad.</li>
-            <li><strong>Reducción de errores:</strong> al detallar pasos, se detectan fallas antes de programar.</li>
-            <li><strong>Repetibilidad:</strong> cualquiera puede ejecutar el mismo proceso y obtener el mismo resultado.</li>
-          </ul>
-          <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
-            <div class="w-full bg-white rounded flex items-center justify-center overflow-hidden image-container" style="min-height:320px;">
-              <img src="img/importancia_programador_web.png" alt="¿Por qué es importante para un Programador Web?" class="max-w-full max-h-full object-contain expandable-image" loading="lazy">
-              <button class="expand-btn" data-img="img/importancia_programador_web.png">🔍</button>
-            </div>
-          </div>
-        </div>
+        <!-- E: EPS -->
+        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
+          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
+            Estructura Entrada – Proceso – Salida (E-P-S)
+            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
+          </summary>
+          <div class="px-4 pb-4 text-slate-700 space-y-3">
+            <p>Todo algoritmo puede entenderse como un sistema que recibe información (<strong>entrada</strong>), la transforma (<strong>proceso</strong>) y genera un <strong>resultado</strong> (<strong>salida</strong>).</p>
+            <figure class="border rounded p-3">
+              <img src="img/img09.png" class="w-full object-contain" alt="Estructura Entrada Proceso Salida">
+            </figure>
 
-        <!-- Panel D -->
-        <div class="mb-4">
-          <button type="button" class="w-full flex justify-between items-center p-4 bg-green-100 border border-green-300 rounded-t-lg font-bold text-green-800 text-lg accordion-btn mb-2" data-target="#panel-d">
-            Características de un buen algoritmo <span class="ml-2">➕</span>
-          </button>
-        </div>
-        <div id="panel-d" class="accordion-panel hidden bg-white border border-t-0 border-green-300 rounded-b-lg p-4 mb-6 text-slate-700">
-          <div class="grid sm:grid-cols-2 gap-4">
-            <div class="p-4 bg-green-50 rounded border border-green-200">✔️ <strong>Finito</strong>: termina en pasos limitados.</div>
-            <div class="p-4 bg-green-50 rounded border border-green-200">✔️ <strong>Claro</strong>: instrucciones entendibles.</div>
-            <div class="p-4 bg-green-50 rounded border border-green-200">✔️ <strong>Correcto</strong>: produce salidas esperadas.</div>
-            <div class="p-4 bg-green-50 rounded border border-green-200">✔️ <strong>Eficiente</strong>: usa bien recursos.</div>
-            <div class="p-4 bg-green-50 rounded border border-green-200">✔️ <strong>Legible</strong>: fácil de seguir y mantener.</div>
-          </div>
-        </div>
+            
+      <div class="grid sm:grid-cols-2 gap-4">
+  <!-- Ejemplo 1 -->
+  <article class="rounded-xl border border-emerald-200 bg-white p-4 shadow-sm">
+    <h3 class="text-emerald-800 font-semibold text-lg">Ejemplo 1 — Jugo de mango</h3>
 
-        <!-- Panel E -->
-        <div class="mb-4">
-          <button type="button" class="w-full flex justify-between items-center p-4 bg-green-100 border border-green-300 rounded-t-lg font-bold text-green-800 text-lg accordion-btn mb-2" data-target="#panel-e">
-            E‑P‑S y condiciones previas/posteriores <span class="ml-2">➕</span>
-          </button>
-        </div>
-        <div id="panel-e" class="accordion-panel hidden bg-white border border-t-0 border-green-300 rounded-b-lg p-4 mb-6 text-slate-700">
-          <div class="grid grid-cols-3 gap-4 text-center">
-            <div><img src="img/icon_e.png" alt="Entrada" class="mx-auto mb-2" style="width:72px;height:72px"><p><strong>Entrada</strong></p></div>
-            <div><img src="img/icon_p.png" alt="Proceso" class="mx-auto mb-2" style="width:72px;height:72px"><p><strong>Proceso</strong></p></div>
-            <div><img src="img/icon_s.png" alt="Salida" class="mx-auto mb-2" style="width:72px;height:72px"><p><strong>Salida</strong></p></div>
-          </div>
-          <p class="mt-3"><strong>Precondición:</strong> lo que debe cumplirse antes (ej.: <code>horas ≥ 0</code>). <strong>Postcondición:</strong> lo que será cierto al finalizar (ej.: <code>pago = horas × tarifa</code>).</p>
-        </div>
+    <div class="mt-3 grid sm:grid-cols-3 gap-3">
+      <div class="rounded-lg border border-emerald-100 p-3">
+        <span class="text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Entrada</span>
+        <p class="text-sm text-slate-700 mt-1">Mangos, agua, azúcar</p>
+      </div>
+      <div class="rounded-lg border border-emerald-100 p-3">
+        <span class="text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Proceso</span>
+        <p class="text-sm text-slate-700 mt-1">Pelar, cortar y licuar</p>
+      </div>
+      <div class="rounded-lg border border-emerald-100 p-3">
+        <span class="text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Salida</span>
+        <p class="text-sm text-slate-700 mt-1">Vaso de jugo</p>
+      </div>
+    </div>
+  </article>
 
-        <!-- Panel F -->
-        <div class="mb-4">
-          <button type="button" class="w-full flex justify-between items-center p-4 bg-green-100 border border-green-300 rounded-t-lg font-bold text-green-800 text-lg accordion-btn mb-2" data-target="#panel-f">
-            Ejemplos del entorno (técnicos y cotidianos) <span class="ml-2">➕</span>
-          </button>
-        </div>
-        <div id="panel-f" class="accordion-panel hidden bg-white border border-t-0 border-green-300 rounded-b-lg p-4 mb-6 text-slate-700 space-y-3">
-          <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-            <p class="font-semibold text-green-800 mb-1">1) Cálculo de pago diario</p>
-            <p><em>Entrada:</em> horas, tarifa. <em>Proceso:</em> <code>pago ← horas × tarifa</code>. <em>Salida:</em> pago. Pre: <code>horas ≥ 0</code>, <code>tarifa > 0</code>. Post: <code>pago ≥ 0</code>.</p>
-          </div>
-          <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-            <p class="font-semibold text-green-800 mb-1">2) Control simple de inventario</p>
-            <p><em>Entrada:</em> stock, entradas, salidas, mínimo. <em>Proceso:</em> <code>nuevoStock ← stock + entradas − salidas</code>. <em>Salida:</em> nuevoStock y alerta si <code>nuevoStock &lt; mínimo</code>.</p>
-          </div>
-          <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
-            <p class="font-semibold text-green-800 mb-1">3) Registro de asistencia</p>
-            <p><em>Entrada:</em> listaEstudiantes, marcas. <em>Proceso:</em> contar presentes. <em>Salida:</em> totalPresentes y porcentaje.</p>
-          </div>
-        </div>
+  <!-- Ejemplo 2 -->
+  <article class="rounded-xl border border-emerald-200 bg-white p-4 shadow-sm">
+    <h3 class="text-emerald-800 font-semibold text-lg">Ejemplo 2 — Subtotal de compra</h3>
 
-        <!-- Panel G -->
-        <div class="mb-4">
-          <button type="button" class="w-full flex justify-between items-center p-4 bg-green-100 border border-green-300 rounded-t-lg font-bold text-green-800 text-lg accordion-btn mb-2" data-target="#panel-g">
-            Experiencias y roles de programadores <span class="ml-2">➕</span>
-          </button>
-        </div>
-        <div id="panel-g" class="accordion-panel hidden bg-white border border-t-0 border-green-300 rounded-b-lg p-4 mb-6">
-          <p class="text-slate-700 mb-2">El trabajo de programación puede tomar diversas formas (frontend, backend o freelance), pero siempre gira en torno a diseñar y probar <strong>algoritmos</strong> que resuelvan problemas reales.</p>
-          <div class="mt-4 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
-            <div class="w-full bg-white rounded flex items-center justify-center overflow-hidden image-container" style="min-height:320px;">
-              <img src="img/roles_programadores.png" alt="Roles de Programadores" class="max-w-full max-h-full object-contain expandable-image" loading="lazy">
-              <button class="expand-btn" data-img="img/roles_programadores.png">🔍</button>
-            </div>
+    <div class="mt-3 grid sm:grid-cols-3 gap-3">
+      <div class="rounded-lg border border-emerald-100 p-3">
+        <span class="text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Entrada</span>
+        <p class="text-sm text-slate-700 mt-1">Precio, cantidad</p>
+      </div>
+      <div class="rounded-lg border border-emerald-100 p-3">
+        <span class="text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Proceso</span>
+        <p class="text-sm text-slate-700 mt-1">Precio × cantidad</p>
+      </div>
+      <div class="rounded-lg border border-emerald-100 p-3">
+        <span class="text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Salida</span>
+        <p class="text-sm text-slate-700 mt-1">Subtotal mostrado</p>
+      </div>
+    </div>
+  </article>
+</div>
+
+
+            
           </div>
-        </div>
+        </details>
       </div>
     </section>
 
     <!-- Actividades -->
-    <section id="actividades" class="content-pane">
-      <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Actividades prácticas</h2>
-      <div class="space-y-8" id="activity-container">
-        <div class="bg-white border-l-4 border-green-500 rounded-lg shadow-sm p-6">
-          <h3 class="text-xl font-bold text-green-700 mb-2">Actividad 1. Distinguir conceptos</h3>
-          <p class="mb-2">Selecciona a qué categoría pertenece cada descripción.</p>
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="p-4 border rounded-lg">
-              <p class="mb-2">“Secuencia finita y ordenada de pasos para resolver un caso.”</p>
-              <select class="activity-select w-full p-2 border rounded-md bg-white" data-answer="Algoritmo">
-                <option value="">Selecciona…</option>
-                <option>Problema</option><option>Algoritmo</option><option>Programa</option>
-              </select>
-            </div>
-            <div class="p-4 border rounded-lg">
-              <p class="mb-2">“Necesidad a resolver con entradas, restricciones y resultado esperado.”</p>
-              <select class="activity-select w-full p-2 border rounded-md bg-white" data-answer="Problema">
-                <option value="">Selecciona…</option>
-                <option>Problema</option><option>Algoritmo</option><option>Programa</option>
-              </select>
-            </div>
-            <div class="p-4 border rounded-lg">
-              <p class="mb-2">“Implementación del algoritmo en un lenguaje de programación.”</p>
-              <select class="activity-select w-full p-2 border rounded-md bg-white" data-answer="Programa">
-                <option value="">Selecciona…</option>
-                <option>Problema</option><option>Algoritmo</option><option>Programa</option>
-              </select>
-            </div>
+      <section id="actividades" class="content-pane">
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Actividades</h2>
+      <div class="space-y-6">
+        <div class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5">
+          <p class="font-semibold text-emerald-700 mb-2">Situación 1</p>
+          <p class="mb-3">Un agricultor desea saber cuántos bultos de yuca puede vender si cada bulto pesa 50 kg y su cosecha total fue de 750 kg. Completa E-P-S:</p>
+          <div class="grid sm:grid-cols-3 gap-3">
+            <input data-ans="entrada" placeholder="Entrada" class="act-1 p-2 border rounded bg-white">
+            <input data-ans="proceso" placeholder="Proceso" class="act-1 p-2 border rounded bg-white">
+            <input data-ans="salida" placeholder="Salida" class="act-1 p-2 border rounded bg-white">
           </div>
         </div>
-
-        <div class="bg-white border-l-4 border-green-500 rounded-lg shadow-sm p-6">
-          <h3 class="text-xl font-bold text-green-700 mb-2">Actividad 2. Características de un buen algoritmo</h3>
-          <p class="mb-2">Elige la característica a la que corresponde cada enunciado.</p>
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="p-4 border rounded-lg">
-              <p class="mb-2">“Se puede ejecutar en un número limitado de pasos.”</p>
-              <select class="activity-select w-full p-2 border rounded-md bg-white" data-answer="Finito">
-                <option value="">Selecciona…</option>
-                <option>Finito</option><option>Claro</option><option>Correcto</option><option>Eficiente</option><option>Legible</option>
-              </select>
-            </div>
-            <div class="p-4 border rounded-lg">
-              <p class="mb-2">“Produce los resultados esperados para entradas válidas.”</p>
-              <select class="activity-select w-full p-2 border rounded-md bg-white" data-answer="Correcto">
-                <option value="">Selecciona…</option>
-                <option>Finito</option><option>Claro</option><option>Correcto</option><option>Eficiente</option><option>Legible</option>
-              </select>
-            </div>
-            <div class="p-4 border rounded-lg">
-              <p class="mb-2">“Usa adecuadamente tiempo y recursos.”</p>
-              <select class="activity-select w-full p-2 border rounded-md bg-white" data-answer="Eficiente">
-                <option value="">Selecciona…</option>
-                <option>Finito</option><option>Claro</option><option>Correcto</option><option>Eficiente</option><option>Legible</option>
-              </select>
-            </div>
-            <div class="p-4 border rounded-lg">
-              <p class="mb-2">“Es fácil de leer y mantener.”</p>
-              <select class="activity-select w-full p-2 border rounded-md bg-white" data-answer="Legible">
-                <option value="">Selecciona…</option>
-                <option>Finito</option><option>Claro</option><option>Correcto</option><option>Eficiente</option><option>Legible</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-white border-l-4 border-green-500 rounded-lg shadow-sm p-6">
-          <h3 class="text-xl font-bold text-green-700 mb-2">Actividad 3. Completar la estructura de una solución</h3>
-          <p class="mb-2">Caso: “Cálculo de pago diario”. Completa los campos (palabras clave suficientes).</p>
-          <div class="grid md:grid-cols-3 gap-4">
-            <div class="p-3 border rounded"><label class="block text-sm text-slate-600 mb-1">Entrada</label><input type="text" class="activity-input w-full p-2 border rounded-md bg-white" placeholder="Ej.: horas, tarifa"></div>
-            <div class="p-3 border rounded"><label class="block text-sm text-slate-600 mb-1">Proceso</label><input type="text" class="activity-input w-full p-2 border rounded-md bg-white" placeholder="Ej.: pago = horas × tarifa"></div>
-            <div class="p-3 border rounded"><label class="block text-sm text-slate-600 mb-1">Salida</label><input type="text" class="activity-input w-full p-2 border rounded-md bg-white" placeholder="Ej.: pago"></div>
+        <div class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5">
+          <p class="font-semibold text-emerald-700 mb-2">Situación 2</p>
+          <p class="mb-3">Tienda virtual con 5% de descuento si cantidad &gt; 10. Completa E-P-S:</p>
+          <div class="grid sm:grid-cols-3 gap-3">
+            <input data-ans="entrada" placeholder="Entrada" class="act-2 p-2 border rounded bg-white">
+            <input data-ans="proceso" placeholder="Proceso" class="act-2 p-2 border rounded bg-white">
+            <input data-ans="salida" placeholder="Salida" class="act-2 p-2 border rounded bg-white">
           </div>
         </div>
       </div>
-      <button id="check-activity-btn" class="mt-6 bg-green-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-700 transition-colors">Verificar respuestas</button>
-      <div id="activity-result" class="mt-4 font-medium"></div>
+      <button id="check-acts" class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded transition-colors">Verificar</button>
+      <div id="acts-result" class="mt-3 font-semibold"></div>
     </section>
 
-    <!-- Evaluación -->
+    
+    <!-- Evaluación (quiz) -->
     <section id="evaluacion" class="content-pane">
-      <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Evaluación</h2>
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <p class="text-slate-600 mb-6">Selecciona la respuesta correcta para cada pregunta.</p>
-        <div id="quiz-container"></div>
-        <button id="submit-quiz-btn" class="mt-6 bg-green-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-700 transition-colors">Finalizar evaluación</button>
-        <div id="quiz-result" class="mt-4 text-lg font-bold"></div>
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Evaluación</h2>
+      <div class="bg-white p-5 rounded-lg shadow-md">
+        <div id="quiz"></div>
+        <button id="quiz-submit" class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded transition-colors">Finalizar</button>
+        <div id="quiz-result" class="mt-3 text-lg font-bold"></div>
       </div>
     </section>
 
-    <!-- Recursos -->
+    <!-- Recursos (3 tarjetas como la imagen) -->
     <section id="recursos" class="content-pane">
-      <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Recursos para profundizar</h2>
-      <ul class="space-y-4">
-        <li class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500 flex flex-col sm:flex-row sm:items-center justify-between">
-          <div><h3 class="font-bold text-green-700">PSeInt – Sitio oficial</h3><a class="underline text-slate-700 hover:text-green-700 break-all" href="https://pseint.sourceforge.net/" target="_blank">https://pseint.sourceforge.net/</a></div>
-          <div class="mt-4 sm:mt-0 sm:ml-6 flex-shrink-0"><img src="img/qr_pseint.png" alt="QR PSeInt" class="w-24 h-24 object-contain" loading="lazy"></div>
-        </li>
-        <li class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500 flex flex-col sm:flex-row sm:items-center justify-between">
-          <div><h3 class="font-bold text-green-700">Khan Academy – Programación</h3><a class="underline text-slate-700 hover:text-green-700 break-all" href="https://es.khanacademy.org/computing/computer-programming" target="_blank">https://es.khanacademy.org/computing/computer-programming</a></div>
-          <div class="mt-4 sm:mt-0 sm:ml-6 flex-shrink-0"><img src="img/qr_khan.png" alt="QR Khan Academy" class="w-24 h-24 object-contain" loading="lazy"></div>
-        </li>
-        <li class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500 flex flex-col sm:flex-row sm:items-center justify-between">
-          <div><h3 class="font-bold text-green-700">freeCodeCamp en Español</h3><a class="underline text-slate-700 hover:text-green-700 break-all" href="https://www.freecodecamp.org/espanol/learn/" target="_blank">https://www.freecodecamp.org/espanol/learn/</a></div>
-          <div class="mt-4 sm:mt-0 sm:ml-6 flex-shrink-0"><img src="img/qr_freecodecamp.png" alt="QR freeCodeCamp" class="w-24 h-24 object-contain" loading="lazy"></div>
-        </li>
-      </ul>
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-6">Recursos</h2>
+      <div class="grid lg:grid-cols-3 gap-5">
+        <!-- Card 1 -->
+        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-xl font-bold text-slate-900 leading-tight">Lógica de programación</h3>
+              <span class="badge">Libro</span>
+            </div>
+            <p class="text-sm text-slate-700"><strong>Trejos Buriticá, O. I.</strong> (2023). <em>Lógica de programación</em>. Ediciones de la U.</p>
+            <a href="https://www.edicionesdelau.com/" target="_blank" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
+          </div>
+          <div class="mt-4 flex justify-end">
+            <img src="img/09_ebooks724_ucordoba.png" alt="QR Lógica de programación" class="w-20 h-20 object-contain">
+          </div>
+        </article>
+        <!-- Card 2 -->
+        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-xl font-bold text-slate-900 leading-tight">Solucionario en pseudocódigo</h3>
+              <span class="badge">Libro</span>
+            </div>
+            <p class="text-sm text-slate-700"><strong>Trejos Buriticá, O. I.</strong> (2021). <em>Lógica de programación: solucionario en pseudocódigo. Ejercicios resueltos</em>. Ediciones de la U.</p>
+            <a href="https://www.edicionesdelau.com/" target="_blank" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
+          </div>
+          <div class="mt-4 flex justify-end">
+            <img src="img/08_solucionario_ucordoba.png" alt="QR Solucionario en pseudocódigo" class="w-20 h-20 object-contain">
+          </div>
+        </article>
+        <!-- Card 3 -->
+        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-xl font-bold text-slate-900 leading-tight">Fundamentos de programación</h3>
+              <span class="badge">Libro</span>
+            </div>
+            <p class="text-sm text-slate-700"><strong>García Santillán, I.</strong> (Ed.). (2014). <em>Fundamentos de programación usando PSeInt</em>. Unidad de Producción y Difusión Científica y Académica.</p>
+            <a href="#" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
+          </div>
+          <div class="mt-4 flex justify-end">
+            <img src="img/07_fundamPseint.png" alt="QR Fundamentos de programación" class="w-20 h-20 object-contain">
+          </div>
+        </article>
+      </div>
     </section>
+
+    
+    
 
     <!-- Bibliografía -->
     <section id="bibliografia" class="content-pane">
-      <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Bibliografía</h2>
-      <div class="space-y-6">
-        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-green-500"><span class="block text-slate-700">Joyanes Aguilar, L. (2020). <i>Fundamentos de programación, algoritmos, estructuras de datos y objetos</i>. McGraw‑Hill.</span></div>
-        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-green-500"><span class="block text-slate-700">PSeInt. (s. f.). <i>Entorno para aprendizaje de programación</i>. Sitio oficial: <a href="https://pseint.sourceforge.net/" target="_blank" class="text-green-700 underline break-all">https://pseint.sourceforge.net/</a></span></div>
-      </div>
-      <footer class="mt-12 pt-6 border-t-2 border-slate-200 text-center">
-        <p class="text-slate-600 font-medium">Creado por:</p>
-        <p class="text-green-800 font-bold text-lg">Centro de Innovación en TIC para el apoyo de la Docencia CINTIA</p>
-        <p class="text-slate-500 text-sm">Universidad de Córdoba</p>
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Bibliografía</h2>
+      <ul class="space-y-3">
+        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+          Trejos Buriticá, O. I. (2023). <em>Lógica de programación</em>. Ediciones de la U.
+        </li>
+        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+          Trejos Buriticá, O. I. (2021). <em>Lógica de programación: solucionario en pseudocódigo. Ejercicios resueltos</em>. Ediciones de la U.
+        </li>
+        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+          García Santillán, I. (Ed.). (2014). <em>Fundamentos de programación usando PSeInt</em>. Unidad de Producción y Difusión Científica y Académica.
+        </li>
+      </ul>
+      <footer class="mt-10 pt-6 border-t text-center text-slate-600">
+        <p class="font-medium">Unicórdoba, calidad, innovación e inclusión para la transformación del territorio.</p>
+        <a class="text-emerald-700 underline" href="https://www.unicordoba.edu.co" target="_blank">www.unicordoba.edu.co</a>
       </footer>
     </section>
   </main>
 </div>
 
-<!-- Modal imágenes -->
-<div id="imageModal" class="image-modal">
-  <div class="modal-content">
-    <img id="modalImage" src="" alt="Imagen ampliada">
-    <button class="close-modal" id="closeModal">&times;</button>
-  </div>
+<!-- Image modal -->
+<div id="imgModal" class="image-modal">
+  <img id="imgModalSrc" src="" alt="Vista ampliada" class="max-w-[92vw] max-h-[92vh] border-4 border-white rounded shadow-2xl"/>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const sidebarLinks = document.querySelectorAll('.sidebar-link');
-  const panes = document.querySelectorAll('.content-pane');
-  const mobileNav = document.getElementById('mobile-nav');
+// Navigation
+const panes = document.querySelectorAll('.content-pane');
+const links = document.querySelectorAll('.sidebar-link');
+const mobileNav = document.getElementById('mobile-nav');
+function go(id){
+  panes.forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  links.forEach(a=>a.classList.toggle('active', a.dataset.target===id));
+  if(mobileNav) mobileNav.value=id;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+links.forEach(a=>a.addEventListener('click', e=>{e.preventDefault(); go(a.dataset.target)}));
+if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
 
-  function switchPane(id) {
-    panes.forEach(p => p.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    sidebarLinks.forEach(l => { l.classList.toggle('active', l.dataset.target === id); });
-    if (mobileNav && mobileNav.value !== id) mobileNav.value = id;
-  }
-
-  sidebarLinks.forEach(l => l.addEventListener('click', (e) => { e.preventDefault(); switchPane(l.dataset.target); }));
-  if (mobileNav) mobileNav.addEventListener('change', (e) => switchPane(e.target.value));
-
-  // Quiz
-  const quizData = [
-    {
-      question: "¿Qué diferencia a un algoritmo de un programa?",
-      options: ["Un algoritmo es la secuencia de pasos; un programa es su implementación en un lenguaje.", "Ambos son lo mismo.", "El programa es una idea y el algoritmo es el código.", "El programa siempre es más corto que el algoritmo."],
-      answer: "Un algoritmo es la secuencia de pasos; un programa es su implementación en un lenguaje."
-    },
-    {
-      question: "¿Cuál NO es una característica esencial de un buen algoritmo?",
-      options: ["Finito", "Claro", "Correcto", "Infinito"],
-      answer: "Infinito"
-    },
-    {
-      question: "Completa: programar es ______ a un computador para que ejecute una tarea.",
-      options: ["imaginar cosas", "darle instrucciones claras", "aprender inglés", "usar cualquier lenguaje"],
-      answer: "darle instrucciones claras"
-    },
-    {
-      question: "En el caso 'pago diario', ¿qué corresponde a la salida?",
-      options: ["horas", "tarifa", "pago", "horas y tarifa"],
-      answer: "pago"
-    },
-    {
-      question: "¿Cuál de las siguientes es una ventaja de diseñar un algoritmo antes de programar?",
-      options: ["Aumenta la ambigüedad", "Reduce errores y mejora la repetibilidad", "Hace innecesarias las pruebas", "Evita escribir documentación"],
-      answer: "Reduce errores y mejora la repetibilidad"
+// Activities check (very lightweight rubric)
+document.getElementById('check-acts')?.addEventListener('click',()=>{
+  let correct = 0, total=0;
+  document.querySelectorAll('.act-1,.act-2').forEach(inp=>{
+    total++;
+    const v = inp.value.toLowerCase();
+    const kind = inp.classList.contains('act-1')? '1':'2';
+    let ok=false;
+    if(kind==='1'){ // yuca / bultos
+      if(inp.dataset.ans==='entrada') ok = v.includes('cosecha')||v.includes('750')||v.includes('50')||v.includes('kg');
+      if(inp.dataset.ans==='proceso') ok = v.includes('divid')||v.includes('750/50')||v.includes('750 ÷ 50');
+      if(inp.dataset.ans==='salida') ok = v.includes('15')||v.includes('bult');
+    }else{ // descuento 5% si cantidad>10
+      if(inp.dataset.ans==='entrada') ok = v.includes('precio')&&v.includes('cantidad');
+      if(inp.dataset.ans==='proceso') ok = v.includes('subtotal')||v.includes('precio*cantidad')||v.includes('descuento')||v.includes('5%')||v.includes('0.05');
+      if(inp.dataset.ans==='salida') ok = v.includes('total')||v.includes('valor final')||v.includes('a pagar');
     }
-  ];
-  const quizContainer = document.getElementById('quiz-container');
-  if (quizContainer) {
-    quizData.forEach((q, idx) => {
-      const wrap = document.createElement('div');
-      wrap.className = 'mb-6';
-      wrap.innerHTML = `<p class="font-semibold mb-2">${idx+1}. ${q.question}</p>`;
-      const opts = document.createElement('div');
-      opts.className = 'space-y-2';
-      q.options.forEach(opt => {
-        const el = document.createElement('div');
-        el.className = 'quiz-option p-3 border-2 border-slate-200 rounded-lg cursor-pointer';
-        el.textContent = opt;
-        el.addEventListener('click', () => {
-          wrap.querySelectorAll('.quiz-option').forEach(x => x.classList.remove('selected'));
-          el.classList.add('selected');
-        });
-        opts.appendChild(el);
-      });
-      wrap.appendChild(opts);
-      quizContainer.appendChild(wrap);
-    });
-  }
-  const submitBtn = document.getElementById('submit-quiz-btn');
-  if (submitBtn) {
-    submitBtn.addEventListener('click', () => {
-      let score=0;
-      const questions = quizContainer.querySelectorAll('.mb-6');
-      questions.forEach((qEl, i) => {
-        const selected = qEl.querySelector('.quiz-option.selected');
-        let fb = qEl.querySelector('.quiz-feedback');
-        if (!fb) { fb = document.createElement('div'); fb.className = 'quiz-feedback mt-2 text-sm'; qEl.appendChild(fb); }
-        if (selected && selected.textContent === quizData[i].answer) { score++; fb.innerHTML = "<span class='text-green-700 font-semibold'>✔️ Correcto</span>"; }
-        else { fb.innerHTML = "<span class='text-red-700 font-semibold'>❌ Incorrecto</span>"; }
-      });
-      const result = document.getElementById('quiz-result');
-      result.textContent = `Tu puntuación es: ${score} de ${quizData.length}.`;
-      result.className = score/quizData.length >= 0.7 ? 'mt-4 text-lg font-bold text-green-700' : 'mt-4 text-lg font-bold text-red-700';
-    });
-  }
-
-  // Actividades check
-  const checkBtn = document.getElementById('check-activity-btn');
-  if (checkBtn) {
-    checkBtn.addEventListener('click', () => {
-      let correct = 0;
-      const selects = document.querySelectorAll('.activity-select');
-      selects.forEach(s => { if (s.value === s.dataset.answer) { correct++; s.classList.add('border-green-500'); s.classList.remove('border-red-500'); } else { s.classList.add('border-red-500'); s.classList.remove('border-green-500'); } });
-      const inputs = document.querySelectorAll('.activity-input');
-      const expected = [["horas","tarifa"], ["pago"], ["pago"]];
-      inputs.forEach((inp, i) => {
-        const val = inp.value.toLowerCase();
-        const ok = expected[i].every(k => val.includes(k));
-        if (ok) { correct++; inp.classList.add('border-green-500'); inp.classList.remove('border-red-500'); }
-        else { inp.classList.add('border-red-500'); inp.classList.remove('border-green-500'); }
-      });
-      const total = selects.length + inputs.length;
-      const res = document.getElementById('activity-result');
-      res.innerHTML = `<strong>Respuestas correctas: ${correct} de ${total}</strong>`;
-      res.className = correct===total ? 'mt-4 font-medium text-green-700' : 'mt-4 font-medium text-red-700';
-    });
-  }
-
-  // Accordion
-  document.querySelectorAll('.accordion-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const panel = document.querySelector(this.getAttribute('data-target'));
-      const isOpen = panel.classList.contains('block');
-      document.querySelectorAll('.accordion-panel').forEach(p => p.classList.add('hidden'));
-      document.querySelectorAll('.accordion-panel').forEach(p => p.classList.remove('block'));
-      if (!isOpen) { panel.classList.remove('hidden'); panel.classList.add('block'); this.querySelector('span').textContent = '➖'; setTimeout(() => this.scrollIntoView({behavior:'smooth', block:'start'}), 100); }
-      else { this.querySelector('span').textContent = '➕'; }
-      document.querySelectorAll('.accordion-btn').forEach(o => { if (o !== this) o.querySelector('span').textContent='➕'; });
-    });
+    inp.classList.toggle('border-green-500', ok);
+    inp.classList.toggle('border-red-500', !ok);
+    if(ok) correct++;
   });
-
-  // Modal imágenes
-  const modal = document.getElementById('imageModal');
-  const modalImg = document.getElementById('modalImage');
-  const closeBtn = document.getElementById('closeModal');
-  document.querySelectorAll('.expand-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault(); e.stopPropagation();
-      modalImg.src = btn.getAttribute('data-img');
-      modal.classList.add('active'); document.body.style.overflow='hidden';
-    });
-  });
-  closeBtn.addEventListener('click', () => { modal.classList.remove('active'); document.body.style.overflow=''; });
-  modal.addEventListener('click', (e) => { if (e.target === modal) { modal.classList.remove('active'); document.body.style.overflow=''; } });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('active')) { modal.classList.remove('active'); document.body.style.overflow=''; } });
+  const res = document.getElementById('acts-result');
+  res.textContent = `Respuestas correctas: ${correct} de ${total}.`;
+  res.className = 'mt-3 font-semibold ' + (correct/total>=0.7 ? 'text-emerald-700':'text-red-700');
 });
+
+// Quiz
+const quizData=[
+  {q:'¿Qué es un algoritmo?', opts:['Una secuencia finita y ordenada de pasos para resolver un problema.','El código fuente de un programa.','Una base de datos.','Una imagen.'], a:0},
+  {q:'¿Qué diferencia a un algoritmo de un programa?', opts:['Ninguna.','El algoritmo describe pasos; el programa implementa esos pasos en un lenguaje.','El algoritmo siempre es más corto que el programa.','El programa es una idea y el algoritmo es el código.'], a:1},
+  {q:'Marca la opción que NO es característica esencial de un buen algoritmo:', opts:['Finito','Definido','Infinito','Eficiente'], a:2},
+  {q:'En la estructura E-P-S, “proceso” corresponde a…', opts:['Datos que ingresan','Transformaciones y operaciones','Resultado final','Validaciones del LMS'], a:1},
+  {q:'En una compra en línea, ¿cuál sería la salida del algoritmo “subtotal”?', opts:['Precio','Cantidad','Subtotal','Descuento'], a:2}
+];
+const quiz = document.getElementById('quiz');
+if(quiz){
+  quizData.forEach((it,i)=>{
+    const wrap = document.createElement('div'); wrap.className='mb-5';
+    wrap.innerHTML = `<p class='font-semibold mb-2'>${i+1}. ${it.q}</p>`;
+    it.opts.forEach((op,idx)=>{
+      const d=document.createElement('div');
+      d.className='quiz-option p-3 border-2 border-slate-200 rounded-lg cursor-pointer mb-2';
+      d.textContent=op;
+      d.addEventListener('click',()=>{
+        wrap.querySelectorAll('.quiz-option').forEach(x=>x.classList.remove('selected'));
+        d.classList.add('selected');
+      });
+      wrap.appendChild(d);
+    });
+    quiz.appendChild(wrap);
+  });
+  document.getElementById('quiz-submit').addEventListener('click',()=>{
+    let score=0, answered=0;
+    [...quiz.children].forEach((block,i)=>{
+      const sel = block.querySelector('.quiz-option.selected'); 
+      if(sel){ answered++; if(sel.textContent===quizData[i].opts[quizData[i].a]) score++; }
+    });
+    const pct = score/quizData.length;
+    const out=document.getElementById('quiz-result');
+    out.textContent = `Puntaje: ${score}/${quizData.length} (${Math.round(pct*100)}%).`;
+    out.className='mt-3 text-lg font-bold ' + (pct>=0.7?'text-emerald-700':'text-red-700');
+    // report to SCORM if available
+    if(window.SCORM12) SCORM12.setScore(pct);
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+}
+
+// Lightweight image zoom for figures with images (click to open)
+const modal=document.getElementById('imgModal');
+const modalImg=document.getElementById('imgModalSrc');
+document.querySelectorAll('figure img').forEach(img=>{
+  img.classList.add('cursor-zoom-in');
+  img.addEventListener('click',()=>{ modal.classList.add('active'); modalImg.src=img.src; });
+});
+modal?.addEventListener('click',()=>modal.classList.remove('active'));
 </script>
 </body>
 </html>

@@ -1,4 +1,431 @@
-<div class="mb-4">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVA: Ecuaciones y Desigualdades Lineales</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Verdes y Blancos Institucionales -->
+    <!-- Application Structure Plan: Se diseña un Objeto Virtual de Aprendizaje (OVA) con una disposición de dos columnas. Un menú lateral fijo a la izquierda permite la navegación entre las secciones pedagógicas (Introducción, Objetivos, etc.). El área de contenido principal a la derecha se actualiza dinámicamente con JavaScript para mostrar la sección seleccionada. Esta estructura es ideal para un aprendizaje guiado y organizado, permitiendo al usuario explorar el contenido de forma secuencial o no lineal. -->
+    <!-- Visualization & Content Choices: 1. Navegación -> Menú lateral con estado activo (HTML/JS) y ahora con iconos para mejorar la usabilidad. Justificación: Estructura clásica y efectiva para un OVA. 2. Fundamentos Teóricos -> Contenido textual con tarjetas destacadas con iconos. Justificación: Facilita la lectura y resalta conceptos clave. 3. Actividades Prácticas -> Cuestionario interactivo. Justificación: Fomenta la participación activa. 4. Evaluación -> Quiz de opción múltiple con retroalimentación. Justificación: Permite la autoevaluación del aprendizaje. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .sidebar-link {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background-color: #e6f4ea;
+            color: #166534; /* green-800 */
+            border-left-color: #22c55e; /* green-500 */
+        }
+        .content-pane {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .content-pane.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .quiz-option:hover {
+            background-color: #f0fdf4; /* green-50 */
+        }
+        .quiz-option.selected {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .type-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .type-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        
+        /* Estilos para el popup de imágenes */
+        .image-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .expand-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(34, 197, 94, 0.8); /* green-500 con transparencia */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 10;
+        }
+        
+        /* En dispositivos móviles, mostrar siempre el botón */
+        @media (max-width: 768px) {
+            .expand-btn {
+                opacity: 0.9;
+                width: 44px;
+                height: 44px;
+                font-size: 22px;
+                background-color: rgba(34, 197, 94, 0.9);
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+                animation: pulse 2s infinite;
+            }
+        }
+        
+        .image-container:hover .expand-btn {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .image-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        
+        .modal-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            border: 4px solid white;
+            border-radius: 4px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Optimizaciones para dispositivos móviles */
+        @media (max-width: 768px) {
+            .modal-content {
+                max-width: 90%;
+                animation: slideUpFade 0.3s ease-out;
+                margin-right: 15px; /* Dar más espacio para el botón de cierre */
+            }
+            
+            .modal-content img {
+                border-width: 2px;
+            }
+            
+            .close-modal {
+                top: 10px;
+                right: 10px;
+                width: 36px;
+                height: 36px;
+                position: absolute;
+                z-index: 1010; /* Asegurar que esté por encima de todo */
+            }
+        }
+        
+        /* Animación especial para móviles */
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            background-color: #ef4444; /* red-500 */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+    </style>
+</head>
+<body class="bg-slate-50">
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg flex-shrink-0 hidden md:flex md:flex-col">
+            <div class="p-4">
+                <div style="width: 150px; height: 150px;" class="p-2 mx-auto flex items-center justify-center bg-white rounded-full shadow-lg border-2 border-green-500 transition-shadow duration-300 hover:shadow-green-400">
+                    <img src="img/logo.png" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
+                </div>
+            </div>
+            <nav class="mt-6 flex-1">
+                <a href="#" class="sidebar-link active flex items-center py-3 px-6 font-medium text-slate-700" data-target="introduccion"><span class="mr-3 text-xl">🚀</span> Introducción</a>
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="objetivos"><span class="mr-3 text-xl">🎯</span> Objetivos</a>
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="contenido"><span class="mr-3 text-xl">📚</span> Contenido</a>
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="actividades"><span class="mr-3 text-xl">✍️</span> Actividades</a>
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="evaluacion"><span class="mr-3 text-xl">✔️</span> Evaluación</a>
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="recursos"><span class="mr-3 text-xl">📖</span> Recursos</a>
+                <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="bibliografia"><span class="mr-3 text-xl">📚</span> Bibliografía</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50">
+            <!-- Mobile Header -->
+            <div class="md:hidden mb-6 flex flex-col items-center">
+                <div style="width: 100px; height: 100px;" class="p-2 flex items-center justify-center bg-white rounded-full shadow-lg transition-shadow duration-300 hover:shadow-green-400 mb-2">
+                    <img src="img/logo.png" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
+                </div>
+                 <select id="mobile-nav" class="w-full mt-2 p-2 border rounded-md bg-white shadow-sm">
+                    <option value="introduccion">🚀 Introducción</option>
+                    <option value="objetivos">🎯 Objetivos</option>
+                    <option value="contenido">📚 Contenido</option>
+                    <option value="actividades">✍️ Actividades Prácticas</option>
+                    <option value="evaluacion">✔️ Evaluación</option>
+                    <option value="recursos">📖 Recursos</option>
+                        <option value="bibliografia">📚 Bibliografía</option>
+                </select>
+            </div>
+            
+
+          <!-- Introducción -->
+            <div id="introduccion" class="content-pane active">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-4">Planos angulos y movimineto de la cámara </h2>
+                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white rounded flex items-center justify-center overflow-hidden image-container">
+                        <img src="img/planos.jpg" alt="Gráfica función polinómica creciente" class="max-w-full max-h-full object-contain" loading="lazy"/>
+                        <button class="expand-btn" data-img="img/planos.jpg">🔍</button>
+                    </div>
+                 
+                </div>
+                <p class="text-lg text-slate-700 leading-relaxed mb-4">
+                    Dominar el lenguaje visual es clave para transmitir <span class="font-bold text-green-700">emociones y mensajes con impacto🔎</span>. Los planos <span class="font-bold text-green-700">(como el general o el primer plano)</span> definen qué vemos y en qué contexto; los ángulos<span class="font-bold text-green-700">(picado, contrapicado)</span> influyen en la percepción de poder o vulnerabilidad de los personajes; y los movimientos <span class="font-bold text-green-700">(paneos, travellings)</span> guían la atención del espectador de forma dinámica. Juntos, estas herramientas no solo enriquecen la narrativa audiovisual, sino que transforman una simple escena en una experiencia immersiva y memorable. Aprender a utilizarlos eleva cualquier proyecto, desde cortometrajes hasta contenidos educativos o promocionales📹.
+                </p>
+            <div class="speech-controls mb-4 p-3 bg-green-100 rounded-lg flex items-center flex-wrap gap-2" data-target="introduccion">
+    <button class="play-btn bg-green-600 hover:bg-green-700 text-white font-medium py-1 px-4 rounded-full flex items-center">
+        <span class="mr-1">▶️</span> Leer
+    </button>
+    <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-4 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏸️</span> Pausar
+    </button>
+    <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-4 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏹️</span> Detener
+    </button>
+    <div class="flex items-center ml-2">
+        <label for="speech-rate-introduccion" class="text-sm text-green-800 mr-2">Velocidad:</label>
+        <input type="range" class="speech-rate" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1" class="w-24">
+    </div>
+</div>
+
+                <div class="mt-2 p-2 bg-blue-50 border border-blue-200 rounded text-sm text-blue-800">
+                    <strong>💡 Atajos de teclado:</strong> Presiona <kbd class="bg-white px-2 py-1 rounded border">Espacio</kbd> para reproducir/pausar, <kbd class="bg-white px-2 py-1 rounded border">Tab</kbd> para detener
+                </div>
+
+            </div>
+
+            <!-- Objetivos -->
+            <div id="objetivos" class="content-pane">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Objetivos de aprendizaje</h2>
+                <div class="speech-controls mb-4 p-3 bg-green-100 rounded-lg flex items-center flex-wrap gap-2" data-target="objetivos">
+                    <button class="play-btn bg-green-600 hover:bg-green-700 text-white font-medium py-1 px-4 rounded-full flex items-center">
+                        <span class="mr-1">▶️</span> Leer
+                    </button>
+                    <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-4 rounded-full flex items-center" disabled>
+                        <span class="mr-1">⏸️</span> Pausar
+                    </button>
+                    <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-4 rounded-full flex items-center" disabled>
+                        <span class="mr-1">⏹️</span> Detener
+                    </button>
+                    <div class="flex items-center ml-2">
+                        <label for="speech-rate-objetivos" class="text-sm text-green-800 mr-2">Velocidad:</label>
+                        <input type="range" class="speech-rate" id="speech-rate-objetivos" min="0.5" max="2" step="0.1" value="1" class="w-24">
+                    </div>
+                </div>
+                <ul class="space-y-4">
+                    <li class="flex items-start p-4 bg-white rounded-lg shadow-sm">
+                        <span class="text-green-700 mr-3 text-2xl">🧠</span>
+                        <span>Al finalizar la sesión, el estudiante identificará y clasificará correctamente al menos 8 de los 10 planos cinematográficos principales (general, entero, americano, medio, primer plano, etc.) presentados en un ejercicio visual, utilizando una rúbrica proporcionada.</span>
+                    </li>
+                    <li class="flex items-start p-4 bg-white rounded-lg shadow-sm">
+                        <span class="text-green-700 mr-3 text-2xl">🔍</span>
+                        <span>Tras analizar 3 escenas de películas, el estudiante explicará por escrito el efecto emocional de 3 ángulos de cámara (picado, contrapicado, neutro) con un 100% de precisión en la terminología técnica, en un informe de 500 palabras.</span>
+                    </li>
+                    <li class="flex items-start p-4 bg-white rounded-lg shadow-sm">
+                        <span class="text-green-700 mr-3 text-2xl">📝</span>
+                        <span>En 2 horas, el estudiante grabará una escena de 30 segundos aplicando 3 movimientos de cámara (paneo, travelling, zoom) de manera técnicamente correcta y justificará su elección narrativa en un breve informe.</span>
+                    </li>
+                    <li class="flex items-start p-4 bg-white rounded-lg shadow-sm">
+                        <span class="text-green-700 mr-3 text-2xl">💻</span>
+                        <span>Al concluir el módulo, el estudiante diseñará un guion gráfico (storyboard) con 6 viñetas que integren al menos 3 planos, 2 ángulos y 2 movimientos de cámara, coherentes con una narrativa propuesta, y recibirá retroalimentación positiva en al menos el 80% de los criterios de evaluación</span>
+                    </li>
+
+                </ul>
+            </div>
+
+            <!-- Fundamentos Teóricos -->
+            <div id="contenido" class="content-pane">
+                <div class="speech-controls mb-4 p-3 bg-green-100 rounded-lg flex items-center flex-wrap gap-2" data-target="contenido">
+                    <button class="play-btn bg-green-600 hover:bg-green-700 text-white font-medium py-1 px-4 rounded-full flex items-center">
+                        <span class="mr-1">▶️</span> Leer
+                    </button>
+                    <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-4 rounded-full flex items-center" disabled>
+                        <span class="mr-1">⏸️</span> Pausar
+                    </button>
+                    <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-4 rounded-full flex items-center" disabled>
+                        <span class="mr-1">⏹️</span> Detener
+                    </button>
+                    <div class="flex items-center ml-2">
+                        <label for="speech-rate-contenido" class="text-sm text-green-800 mr-2">Velocidad:</label>
+                        <input type="range" class="speech-rate" id="speech-rate-contenido" min="0.5" max="2" step="0.1" value="1" class="w-24">
+                    </div>
+                </div>
+                <!-- Acordeón de temas -->
+                <div class="w-full max-w-8xl mx-auto">
+                    <div class="mb-4">
+                        <button type="button" class="w-full flex justify-between items-center p-4 bg-green-100 border border-green-300 rounded-t-lg focus:outline-none font-bold text-green-800 text-lg accordion-btn mb-2" data-target="#panel-ecuaciones">
+                            Tipos de planos<span class="ml-2">➕</span>
+                        </button>
+                    </div>
+                    <div id="panel-ecuaciones" class="accordion-panel hidden bg-white border border-t-0 border-green-300 rounded-b-lg p-4 mb-6">
+                        <!-- Contenido tipos de planos-->
+                        <div class="space-y-8 text-slate-700 leading-relaxed">
+                            <div>
+                                <p class="mb-4"> 
+                                    En este tema exploraremos <strong>los planos, ángulos y movimientos de cámara</strong> en la composición visual. Estos elementos son fundamentales para transmitir <strong>emociones y contar historias a través de la imagen.</strong> Aprenderemos cómo utilizarlos de manera efectiva para crear impacto visual en nuestras producciones audiovisuales.                      
+                                </p>
+                            </div>
+                            <div>
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white rounded flex items-center justify-center overflow-hidden image-container">
+                                        <img src="img/planocontrapicado.jpg" alt="Solución gráfica ejemplo" class="max-w-full max-h-full object-contain expandable-image" style="object-fit:contain;" loading="lazy" />
+                                        <button class="expand-btn" data-img="img/planocontrapicado.jpg">🔍</button>
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-bold text-green-700 mb-2"></h3>
+                                <p class="mb-4">
+                                    Los planos son las diferentes distancias entre la cámara y el sujeto o escenario. Podemos utilizar <strong>planos generales</strong> para mostrar el contexto, <strong>planos medios</strong> para resaltar la interacción entre personajes y <strong>planos cerrados</strong> para enfocar en detalles. Cada tipo de plano transmite diferentes sensaciones y nos ayuda a contar la historia de manera más efectiva.<p></p>
+                                </div>
+                                    <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+                                <h4 class="font-bold text-green-800 mb-2">Tipos de planos</h4>
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white rounded flex items-center justify-center overflow-hidden image-container">
+                                        <img src="img/Tiposdeplanos.jpg" alt="Solución gráfica ejemplo" class="max-w-full max-h-full object-contain expandable-image" style="object-fit:contain;" loading="lazy" />
+                                        <button class="expand-btn" data-img="img/Tiposdeplanos.jpg">🔍</button>
+                                    </div>
+                                </div>
+                                <h4 class="font-bold text-green-800 mb-2">Plano general:</h4>
+
+                                <p class="mb-2">Se usa para visualizar completamente a nuestro modelo y abarca todo los elementos de una escena, es decir, que aparece todo el cuerpo de pies a cabeza, sin ningún tipo de recorte.</p>
+                                <blockquote class="italic text-green-700 mb-2">“Se utiliza en los inicios de las tomas para dar un contexto de ubicación”
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white rounded flex items-center justify-center overflow-hidden image-container">
+                                        <img src="img/planogeneral.jpeg" alt="Solución gráfica ejemplo" class="max-w-full max-h-full object-contain expandable-image" style="object-fit:contain;" loading="lazy" />
+                                        <button class="expand-btn" data-img="img/planogeneral.jpeg">🔍</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+                                <h4 class="font-bold text-green-800 mb-2">Plano americano</h4>
+                                <p class="mb-2">Este plano nació en la época de las películas de westerns pues se ocupaba que en las escenas de duelos se pudieran apreciar las pistolas de lo vaqueros. El plano Americano se toma de las rodillas hacia arriba.</p>
+
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white rounded flex items-center justify-center overflow-hidden image-container">
+                                        <img src="img/planoamericano1.jpg" alt="Solución gráfica ejemplo" class="max-w-full max-h-full object-contain expandable-image" style="object-fit:contain;" loading="lazy" />
+                                        <button class="expand-btn" data-img="img/planoamericano1.jpg">🔍</button>
+                                    </div>
+                                </div>
+                            </div>
+                                 <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+                                <h4 class="font-bold text-green-800 mb-2">Plano medio</h4>
+                                <p class="mb-2">El plano medio cubre hasta la cintura, recogiendo la línea de corte entre el ombligo hasta casi la entrepierna. En
+                                caso de estar sentado el sujeto la tolerancia baja hasta aproximadamente la mitad del muslo. Este tipo de encuadre se suele utilizer para resaltar la belleza del cuerpo humano, por lo que es un tipo de plano muy utilizado en fotografía de moda.</p>
+
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300      rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white rounded flex items-center justify-center overflow-hidden image-container">
+                                        <img src="img/planomedio.webp" alt="Solución gráfica ejemplo" class="max-w-full max-h-full object-contain expandable-image" style="object-fit:contain;" loading="lazy" />
+                                        <button class="expand-btn" data-img="img/planomedio.webp">🔍</button>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+
+                           
+                            <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+                                <h4 class="font-bold text-green-800 mb-2">Primer plano</h4>
+                                <p class="mb-2">Es un plano del rostro incluyendo los hombros o parte de ellos. En este plano, ya se alcanza un grado muy elevado de intimidad. Con él se pretenden realzar los rasgos del rostro,
+                                la mirada, la expresión, los gestos…es el retrato del rostro propiamente dicho. Posee una elevada identificación emocional con el espectador..</p>
+
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white rounded flex items-center justify-center overflow-hidden image-container">
+                                        <img src="img/primerplano.jpg" alt="Solución gráfica ejemplo" class="max-w-full max-h-full object-contain expandable-image" style="object-fit:contain;" loading="lazy" />
+                                        <button class="expand-btn" data-img="img/primerplano.jpg">🔍</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                             <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+                                <h4 class="font-bold text-green-800 mb-2">Plano de detalle</h4>
+                                <p class="mb-2">Solo muestra en su máxima expression a un objeto. En esta parte se concentra la máxima capacidad expresiva. sirve para enfatizar algún element de esa realidad. Destaca algún detalle que de otra forma pasaría desapercibido y hace sentir al
+                                espectador tener más interés. Y permite ver una figura, persona u objeto de más cerca para mayorfijación.</p>
+
+                                <div class="mt-4 mb-6 p-4 bg-white border border-green-300 rounded-lg shadow-sm flex flex-col items-center">
+                                    <div class="w-full h-32 sm:h-48 md:h-64 xl:h-80 bg-white rounded flex items-center justify-center overflow-hidden image-container">
+                                        <img src="img/planomediocorto.avif" alt="Solución gráfica ejemplo" class="max-w-full max-h-full object-contain expandable-image" style="object-fit:contain;" loading="lazy" />
+                                        <button class="expand-btn" data-img="img/planomediocorto.avif">🔍</button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                        
+                    </div>
+
+                    
+                    <div class="mb-4">
                         <button type="button" class="w-full flex justify-between items-start p-4 bg-green-100 border border-green-300 rounded-t-lg focus:outline-none font-bold text-green-800 text-lg accordion-btn mb-2 text-left" data-target="#panel-desigualdades">
                             Ángulo<span class="ml-2">➕</span>
                         </button>
@@ -53,4 +480,829 @@
                                         <button class="expand-btn" data-img="img/angulocenital.jpg">🔍</button>
                                     </div>
                                 </div>
-                            </div>
+                            </div>
+
+                            
+
+                        
+                                                </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actividades Prácticas -->
+            <div id="actividades" class="content-pane">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Actividades prácticas</h2>
+                <div class="speech-controls mb-4 p-3 bg-green-100 rounded-lg flex items-center flex-wrap gap-2" data-target="actividades">
+                    <button class="play-btn bg-green-600 hover:bg-green-700 text-white font-medium py-1 px-4 rounded-full flex items-center">
+                        <span class="mr-1">▶️</span> Leer
+                    </button>
+                    <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-4 rounded-full flex items-center" disabled>
+                        <span class="mr-1">⏸️</span> Pausar
+                    </button>
+                    <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-4 rounded-full flex items-center" disabled>
+                        <span class="mr-1">⏹️</span> Detener
+                    </button>
+                    <div class="flex items-center ml-2">
+
+
+                        <label for="speech-rate-actividades" class="text-sm text-green-800 mr-2">Velocidad:</label>
+                        <input type="range" class="speech-rate" id="speech-rate-actividades" min="0.5" max="2" step="0.1" value="1" class="w-24">
+                    </div>
+                </div>
+                <div class="space-y-8">
+                    <!-- Ejercicio 1 -->
+                    <div class="bg-white border-l-4 border-green-500 rounded-lg shadow-sm p-6">
+                        <h3 class="text-xl font-bold text-green-700 mb-2">Ejercicio 1. Presupuesto para herramientas de desarrollo</h3>
+                        <p class="mb-2"><span class="font-semibold">Situación:</span> estás creando un entorno de trabajo como programador y tienes <span class="font-bold">$50.000</span> disponibles. Cada plugin premium que necesitas cuesta <span class="font-bold">$8.000</span>. ¿Cuántos plugins puedes comprar sin pasarte del presupuesto?</p>
+                        <p class="mb-2"><span class="font-semibold">Desigualdad:</span> <span class="font-mono bg-green-100 px-2 py-1 rounded">8000x ≤ 50000</span></p>
+                        <p class="mb-2"><span class="font-semibold">Interpretación:</span> calcula cuántos plugins puedes instalar sin exceder el presupuesto.</p>
+                        <div class="mt-2 mb-2 p-3 bg-green-50 border border-green-200 rounded flex items-center">
+                            <input type="text" class="activity-input w-full p-2 border rounded-md bg-white" placeholder="Escribe tu respuesta aquí...">
+                        </div>
+                    </div>
+                    <!-- Ejercicio 2 -->
+                    <div class="bg-white border-l-4 border-green-500 rounded-lg shadow-sm p-6">
+                        <h3 class="text-xl font-bold text-green-700 mb-2">Ejercicio 2. Venta de cursos en línea</h3>
+                        <p class="mb-2"><span class="font-semibold">Situación:</span> diseñaste un curso básico de programación y lo vendes a <span class="font-bold">$6.000</span>. Quieres ganar al menos <span class="font-bold">$72.000</span> este mes. ¿Cuántas copias necesitas vender como mínimo?</p>
+                        <p class="mb-2"><span class="font-semibold">Desigualdad:</span> <span class="font-mono bg-green-100 px-2 py-1 rounded">6000x ≥ 72000</span></p>
+                        <p class="mb-2"><span class="font-semibold">Interpretación:</span> resuelve para saber el mínimo de estudiantes necesarios para cumplir tu meta.</p>
+                        <div class="mt-2 mb-2 p-3 bg-green-50 border border-green-200 rounded flex items-center">
+                            <input type="text" class="activity-input w-full p-2 border rounded-md bg-white" placeholder="Escribe tu respuesta aquí...">
+                        </div>
+                    </div>
+                    <!-- Ejercicio 3 -->
+                    <div class="bg-white border-l-4 border-green-500 rounded-lg shadow-sm p-6">
+                        <h3 class="text-xl font-bold text-green-700 mb-2">Ejercicio 3. Meta diaria de ventas</h3>
+                        <p class="mb-2"><span class="font-semibold">Situación:</span> tienes una app de comercio local y ayudas a un pescador a vender sus productos. Cada kilo se vende a <span class="font-bold">$6.000</span>. ¿Cuántos kilos debe vender al día para ganar exactamente <span class="font-bold">$60.000</span>?</p>
+                        <p class="mb-2"><span class="font-semibold">Ecuación:</span> <span class="font-mono bg-green-100 px-2 py-1 rounded">6000x = 60000</span></p>
+                        <p class="mb-2"><span class="font-semibold">Interpretación:</span> resuelve la ecuación y responde la pregunta.</p>
+                        <div class="mt-2 mb-2 p-3 bg-green-50 border border-green-200 rounded flex items-center">
+                            <input type="text" class="activity-input w-full p-2 border rounded-md bg-white" placeholder="Escribe tu respuesta aquí...">
+                        </div>
+                    </div>
+                </div>
+                <button id="check-activity-btn" class="mt-6 bg-green-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-700 transition-colors">Verificar respuestas</button>
+                <div id="activity-result" class="mt-4 font-medium"></div>
+            </div>
+
+            <!-- Evaluación -->
+            <div id="evaluacion" class="content-pane">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Evaluación</h2>
+                <div class="speech-controls mb-4 p-3 bg-green-100 rounded-lg flex items-center flex-wrap gap-2" data-target="evaluacion">
+                    <button class="play-btn bg-green-600 hover:bg-green-700 text-white font-medium py-1 px-4 rounded-full flex items-center">
+                        <span class="mr-1">▶️</span> Leer
+                    </button>
+                    <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-4 rounded-full flex items-center" disabled>
+                        <span class="mr-1">⏸️</span> Pausar
+                    </button>
+                    <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-4 rounded-full flex items-center" disabled>
+                        <span class="mr-1">⏹️</span> Detener
+                    </button>
+                    <div class="flex items-center ml-2">
+                        <label for="speech-rate-evaluacion" class="text-sm text-green-800 mr-2">Velocidad:</label>
+                        <input type="range" class="speech-rate" id="speech-rate-evaluacion" min="0.5" max="2" step="0.1" value="1" class="w-24">
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-slate-600 mb-6">Comprueba lo que has aprendido. Selecciona la respuesta correcta para cada pregunta.</p>
+                    <div id="quiz-container"></div>
+                    <button id="submit-quiz-btn" class="mt-6 bg-green-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-700 transition-colors">Finalizar evaluación</button>
+                    <div id="quiz-result" class="mt-4 text-lg font-bold"></div>
+                </div>
+            </div>
+
+            <!-- Recursos -->
+            <div id="recursos" class="content-pane">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Recursos para profundizar</h2>
+                <div class="speech-controls mb-4 p-3 bg-green-100 rounded-lg flex items-center flex-wrap gap-2" data-target="recursos">
+                    <button class="play-btn bg-green-600 hover:bg-green-700 text-white font-medium py-1 px-4 rounded-full flex items-center">
+                        <span class="mr-1">▶️</span> Leer
+                    </button>
+                    <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-4 rounded-full flex items-center" disabled>
+                        <span class="mr-1">⏸️</span> Pausar
+                    </button>
+                    <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-4 rounded-full flex items-center" disabled>
+                        <span class="mr-1">⏹️</span> Detener
+                    </button>
+                    <div class="flex items-center ml-2">
+                        <label for="speech-rate-recursos" class="text-sm text-green-800 mr-2">Velocidad:</label>
+                        <input type="range" class="speech-rate" id="speech-rate-recursos" min="0.5" max="2" step="0.1" value="1" class="w-24">
+                    </div>
+                </div>
+                <p class="text-slate-700 leading-relaxed mb-6">Para ampliar tu conocimiento sobre los sistemas de ecuaciones lineales, te recomendamos explorar los siguientes enlaces y documentos:</p>
+                <ul class="space-y-4">
+                    <!-- Recurso 1 -->
+                    <li class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500 flex flex-col sm:flex-row sm:items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-green-700">Test sobre solución de ecuaciones lineales</h3>
+{{ ... }}
+                            <a href="https://wordwall.net/es/resource/2912019/ecuaciones-lineales" target="_blank" class="underline text-slate-700 hover:text-green-700">Ir al recurso</a>
+                        </div>
+                        <div class="mt-4 sm:mt-0 sm:ml-6 flex-shrink-0">
+                            <div class="bg-green-50 border border-green-300 rounded flex items-center justify-center" style="width:2cm;height:2cm;">
+                                <img src="img/qr_1.webp" alt="Solución ejercicio 1" class="max-w-full max-h-full object-contain" loading="lazy">
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Recurso 2 -->
+                    <li class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500 flex flex-col sm:flex-row sm:items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-green-700">Prueba sobre solución de ecuaciones</h3>
+                            <a href="https://wordwall.net/es/resource/74055316/matem%C3%A1ticas/ecuaciones" target="_blank" class="underline text-slate-700 hover:text-green-700">Ir al recurso</a>
+                        </div>
+                        <div class="mt-4 sm:mt-0 sm:ml-6 flex-shrink-0">
+                            <div class="bg-green-50 border border-green-300 rounded flex items-center justify-center" style="width:2cm;height:2cm;">
+                                <img src="img/qr_2.webp" alt="Solución ejercicio 1" class="max-w-full max-h-full object-contain" loading="lazy">
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Recurso 3 -->
+                    <li class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500 flex flex-col sm:flex-row sm:items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-green-700">Test sobre solución de desigualdades lineales</h3>
+                            <a href="https://wordwall.net/es/resource/88111903/matem%C3%A1ticas/desigualdades" target="_blank" class="underline text-slate-700 hover:text-green-700">Ir al recurso</a>
+                        </div>
+                        <div class="mt-4 sm:mt-0 sm:ml-6 flex-shrink-0">
+                            <div class="bg-green-50 border border-green-300 rounded flex items-center justify-center" style="width:2cm;height:2cm;">
+                                <img src="img/qr_3.webp" alt="Solución ejercicio 1" class="max-w-full max-h-full object-contain" loading="lazy">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Bibliografía -->
+            <div id="bibliografia" class="content-pane">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-6">Bibliografía</h2>
+                <div class="speech-controls mb-4 p-3 bg-green-100 rounded-lg flex items-center flex-wrap gap-2" data-target="bibliografia">
+                    <button class="play-btn bg-green-600 hover:bg-green-700 text-white font-medium py-1 px-4 rounded-full flex items-center">
+                        <span class="mr-1">▶️</span> Leer
+                    </button>
+                    <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-4 rounded-full flex items-center" disabled>
+                        <span class="mr-1">⏸️</span> Pausar
+                    </button>
+                    <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-4 rounded-full flex items-center" disabled>
+                        <span class="mr-1">⏹️</span> Detener
+                    </button>
+                    <div class="flex items-center ml-2">
+                        <label for="speech-rate-bibliografia" class="text-sm text-green-800 mr-2">Velocidad:</label>
+                        <input type="range" class="speech-rate" id="speech-rate-bibliografia" min="0.5" max="2" step="0.1" value="1" class="w-24">
+                    </div>
+                </div>
+                <div class="space-y-6">
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500">
+                    <span class="block text-slate-700">
+                        Ministerio de Educación Nacional de Colombia. (2006). <i>Estándares Básicos de Competencias en Matemáticas</i>.<br>
+                        <a href="https://www.mineducacion.gov.co/1621/articles-186635_archivo_pdf.pdf" class="text-green-700 underline break-all" target="_blank">https://www.mineducacion.gov.co/1621/articles-186635_archivo_pdf.pdf</a>
+                    </span>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500">
+                    <span class="block text-slate-700">
+                        Godino, J. D., & Batanero, C. (1994). <i>Didáctica de las Matemáticas</i>. Editorial Universidad de Granada.
+                    </span>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-green-500">
+                    <span class="block text-slate-700">
+                        UNESCO – OREALC. (2005). <i>Educación Matemática en Contextos Rurales Latinoamericanos: Proyecto Regional</i>.<br>
+                        <a href="https://unesdoc.unesco.org/ark:/48223/pf0000143685" class="text-green-700 underline break-all" target="_blank">https://unesdoc.unesco.org/ark:/48223/pf0000143685</a>
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Footer/Credits -->
+            <footer class="mt-12 pt-6 border-t-2 border-slate-200 text-center">
+                <p class="text-slate-600 font-medium">Creado por:</p>
+                <p class="text-green-800 font-bold text-lg">Centro de Innovación en TIC para el apoyo de la Docencia CINTIA</p>
+                <p class="text-slate-500 text-sm">Universidad de Córdoba</p>
+            </footer>
+        </main>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    const contentPanes = document.querySelectorAll('.content-pane');
+    const mobileNav = document.getElementById('mobile-nav');
+
+    function switchPane(targetId) {
+        contentPanes.forEach(pane => {
+            pane.classList.remove('active');
+        });
+        const targetPane = document.getElementById(targetId);
+        if (targetPane) {
+            targetPane.classList.add('active');
+        }
+
+        sidebarLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.dataset.target === targetId) {
+                link.classList.add('active');
+            }
+        });
+        
+        if (mobileNav.value !== targetId) {
+            mobileNav.value = targetId;
+        }
+    }
+
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = e.currentTarget.dataset.target;
+            switchPane(targetId);
+        });
+    });
+
+    mobileNav.addEventListener('change', (e) => {
+        switchPane(e.target.value);
+    });
+
+    // --- Actividad Práctica ---
+    const activityData = [
+        { 
+            question: "Un video tutorial que muestra cómo resolver una ecuación.", 
+            options: ["Interactividad", "Finalidad Educativa", "Reusabilidad"], 
+            answer: "Finalidad Educativa" 
+        },
+        { 
+            question: "Un quiz en línea que da retroalimentación inmediata.", 
+            options: ["Interactividad", "Adaptabilidad", "Formato Digital"], 
+            answer: "Interactividad" 
+        },
+        { 
+            question: "Una simulación de un laboratorio de química que se puede usar en bachillerato y universidad.", 
+            options: ["Reusabilidad", "Accesibilidad", "Intencionalidad Educativa"], 
+            answer: "Reusabilidad" 
+        }
+    ];
+
+    const activityContainer = document.getElementById('activity-container');
+    if (activityContainer) {
+        activityData.forEach((item, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'p-4 border rounded-lg';
+            
+            let optionsHtml = item.options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+
+            questionDiv.innerHTML = `
+                <p class="font-medium text-slate-700 mb-2">${index + 1}. ${item.question}</p>
+                <select class="activity-select w-full p-2 border rounded-md bg-white" data-answer="${item.answer}">
+                    <option value="">Selecciona una característica...</option>
+                    ${optionsHtml}
+                </select>
+            `;
+            activityContainer.appendChild(questionDiv);
+        });
+    }
+
+    const checkActivityBtn = document.getElementById('check-activity-btn');
+    if (checkActivityBtn) {
+        checkActivityBtn.addEventListener('click', () => {
+            const selects = document.querySelectorAll('.activity-select');
+            let correctAnswers = 0;
+            selects.forEach(select => {
+                if (select.value === select.dataset.answer) {
+                    correctAnswers++;
+                    select.classList.add('border-green-500');
+                    select.classList.remove('border-red-500');
+                } else {
+                    select.classList.add('border-red-500');
+                    select.classList.remove('border-green-500');
+                }
+            });
+            const resultDiv = document.getElementById('activity-result');
+            resultDiv.textContent = `Obtuviste ${correctAnswers} de ${activityData.length} respuestas correctas.`;
+            resultDiv.className = correctAnswers === activityData.length ? 'mt-4 font-medium text-green-700' : 'mt-4 font-medium text-red-700';
+        });
+    }
+
+    // --- Evaluación Quiz ---
+    const quizData = [
+        {
+            question: "¿Cuál de las siguientes opciones representa una ecuación lineal?",
+            options: ["5x < 20", "6000x = 60000", "x ≥ 10", "y > 3"],
+            answer: "6000x = 60000"
+        },
+        {
+            question: "¿Qué símbolo se usa para indicar 'mayor o igual que'?",
+            options: ["<", ">", "≤", "≥"],
+            answer: "≥"
+        },
+        {
+            question: "Si tienes $100 y cada camiseta cuesta $20, ¿cuál es la desigualdad que representa cuántas camisetas puedes comprar sin pasarte del presupuesto?",
+            options: ["20x ≥ 100", "20x ≤ 100", "x + 20 = 100", "100x ≥ 20"],
+            answer: "20x ≤ 100"
+        },
+        {
+            question: "¿Qué interpretación es correcta sobre la solución de una desigualdad lineal?",
+            options: ["Solo existe una respuesta posible", "No tiene solución", "Puede tener muchas respuestas que cumplen la condición", "Siempre es igual a una ecuación"],
+            answer: "Puede tener muchas respuestas que cumplen la condición"
+        },
+        {
+            question: "Para ganar exactamente $60.000 vendiendo kilos de pescado a $6.000 cada uno, ¿cuántos kilos debes vender?",
+            options: ["5", "10", "12", "20"],
+            answer: "10"
+        }
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+    if(quizContainer) {
+        quizData.forEach((q, index) => {
+            const questionEl = document.createElement('div');
+            questionEl.className = 'mb-6';
+            questionEl.innerHTML = `<p class="font-semibold mb-2">${index + 1}. ${q.question}</p>`;
+            
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = 'space-y-2';
+            
+            q.options.forEach(option => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'quiz-option p-3 border-2 border-slate-200 rounded-lg cursor-pointer';
+                optionEl.textContent = option;
+                optionEl.addEventListener('click', () => {
+                    questionEl.querySelectorAll('.quiz-option').forEach(el => el.classList.remove('selected'));
+                    optionEl.classList.add('selected');
+                });
+                optionsContainer.appendChild(optionEl);
+            });
+            
+            questionEl.appendChild(optionsContainer);
+            quizContainer.appendChild(questionEl);
+        });
+    }
+
+    const submitQuizBtn = document.getElementById('submit-quiz-btn');
+    if(submitQuizBtn){
+        submitQuizBtn.addEventListener('click', () => {
+            let score = 0;
+            const questions = quizContainer.querySelectorAll('.mb-6');
+            const feedbacks = [
+                'Correcto: 6000x = 60000 es una ecuación lineal porque tiene el signo igual (=).',
+                'Correcto: El símbolo ≥ significa "mayor o igual que".',
+                'Correcto: 20x ≤ 100 representa que el gasto total no debe exceder el presupuesto.',
+                'Correcto: Una desigualdad puede tener muchas soluciones que cumplen la condición.',
+                'Correcto: 60000 / 6000 = 10, así que debes vender 10 kilos.'
+            ];
+            const wrongFeedbacks = [
+                'Incorrecto. Recuerda que una ecuación lineal tiene el signo igual (=).',
+                'Incorrecto. El símbolo ≥ es el que indica "mayor o igual que".',
+                'Incorrecto. La desigualdad correcta es 20x ≤ 100.',
+                'Incorrecto. Una desigualdad puede tener muchas soluciones.',
+                'Incorrecto. Debes vender exactamente 10 kilos para ganar $60.000.'
+            ];
+            questions.forEach((q, index) => {
+                const selectedOption = q.querySelector('.quiz-option.selected');
+                let feedbackDiv = q.querySelector('.quiz-feedback');
+                if (!feedbackDiv) {
+                    feedbackDiv = document.createElement('div');
+                    feedbackDiv.className = 'quiz-feedback mt-2 text-sm';
+                    q.appendChild(feedbackDiv);
+                }
+                if (selectedOption && selectedOption.textContent === quizData[index].answer) {
+                    score++;
+                    feedbackDiv.innerHTML = `<span class='text-green-700 font-semibold'>✔️ ${feedbacks[index]}</span>`;
+                } else {
+                    feedbackDiv.innerHTML = `<span class='text-red-700 font-semibold'>❌ ${wrongFeedbacks[index]}</span>`;
+                }
+            });
+            const resultEl = document.getElementById('quiz-result');
+            resultEl.textContent = `Tu puntuación es: ${score} de ${quizData.length}.`;
+            if (score / quizData.length >= 0.7) {
+                resultEl.className = 'mt-4 text-lg font-bold text-green-700';
+            } else {
+                resultEl.className = 'mt-4 text-lg font-bold text-red-700';
+            }
+        });
+    }
+});
+</script>
+
+<script>
+    // JS para verificación de actividades
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkBtn = document.getElementById('check-activity-btn');
+        if (checkBtn) {
+            checkBtn.addEventListener('click', function() {
+                const inputs = document.querySelectorAll('.activity-input');
+                const respuestas = [
+                    ['6', '6.25', '6,25', '6 plugins'], // Ejercicio 1: máximo 6 plugins (estrictamente ≤ 50000/8000)
+                    ['12'], // Ejercicio 2: mínimo 12 estudiantes (72000/6000)
+                    ['10'], // Ejercicio 3: exactamente 10 kilos (60000/6000)
+                ];
+                let correctas = 0;
+                let feedback = [];
+                inputs.forEach((input, idx) => {
+                    const val = input.value.trim().replace(',', '.').toLowerCase();
+                    if (respuestas[idx].some(r => val === r)) {
+                        input.classList.remove('border-red-500');
+                        input.classList.add('border-green-500');
+                        correctas++;
+                        feedback.push(`Ejercicio ${idx+1}: ✔️ Correcto`);
+                    } else {
+                        input.classList.remove('border-green-500');
+                        input.classList.add('border-red-500');
+                        feedback.push(`Ejercicio ${idx+1}: ❌ Incorrecto`);
+                    }
+                });
+                const resultDiv = document.getElementById('activity-result');
+                resultDiv.innerHTML = `<strong>Respuestas correctas: ${correctas} de 3</strong><br>` + feedback.join('<br>');
+                resultDiv.className = correctas === 3 ? 'mt-4 font-medium text-green-700' : 'mt-4 font-medium text-red-700';
+            });
+        }
+    });
+</script>
+
+<script>
+    // JS para acordeón con desplazamiento automático
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const panel = document.querySelector(this.getAttribute('data-target'));
+            const isOpen = panel.classList.contains('block');
+            document.querySelectorAll('.accordion-panel').forEach(p => p.classList.add('hidden'));
+            document.querySelectorAll('.accordion-panel').forEach(p => p.classList.remove('block'));
+            
+            if (!isOpen) {
+                panel.classList.remove('hidden');
+                panel.classList.add('block');
+                // Cambiar el símbolo del botón
+                this.querySelector('span').textContent = '➖';
+                
+                // Desplazamiento suave hacia el botón del acordeón desplegado
+                setTimeout(() => {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100); // Pequeño retraso para asegurar que el panel esté visible
+            } else {
+                // Cambiar el símbolo del botón
+                this.querySelector('span').textContent = '➕';
+            }
+            
+            // Actualizar todos los demás botones
+            document.querySelectorAll('.accordion-btn').forEach(otherBtn => {
+                if (otherBtn !== this) {
+                    otherBtn.querySelector('span').textContent = '➕';
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    // JS para modal de imagen
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const closeBtn = document.getElementById('closeModal');
+        const expandBtns = document.querySelectorAll('.expand-btn');
+        
+        // Abrir modal al hacer clic en el botón de expandir
+        expandBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevenir comportamiento por defecto
+                e.stopPropagation(); // Evitar propagación del evento
+                
+                const imgSrc = this.getAttribute('data-img');
+                modalImg.src = imgSrc;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Evitar scroll en el fondo
+                
+                // Agregar feedback táctil en dispositivos móviles si está disponible
+                if (window.navigator && window.navigator.vibrate) {
+                    window.navigator.vibrate(50); // Vibración sutil de 50ms
+                }
+            });
+        });
+        
+        // Cerrar modal al hacer clic en el botón de cerrar
+        closeBtn.addEventListener('click', function() {
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // Restaurar scroll
+        });
+        
+        // Cerrar modal al hacer clic fuera de la imagen
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = ''; // Restaurar scroll
+            }
+        });
+        
+        // Cerrar modal con la tecla ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                modal.classList.remove('active');
+                document.body.style.overflow = ''; // Restaurar scroll
+            }
+        });
+    });
+</script>
+
+    <!-- Modal para ampliar imágenes -->    
+    <div id="imageModal" class="image-modal">
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="Imagen ampliada">
+            <button class="close-modal" id="closeModal">&times;</button>
+        </div>
+    </div>
+</body>:
+
+<script>
+    // SCRIPT DE SÍNTESIS DE VOZ MEJORADO
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // VARIABLES GLOBALES
+        const synth = window.speechSynthesis;
+        let voices = [];
+        let activeReaders = {}; // Almacena los lectores activos por sección
+        let paulinaVoice = null; // Variable para almacenar la voz de Paulina
+        let currentActiveSection = null; // Sección actualmente activa
+        
+        // GESTIÓN DE VOCES
+        function loadVoices() {
+            voices = synth.getVoices();
+            console.log('Voces disponibles:', voices.length);
+            
+            // Buscar la voz de Paulina (es-MX)
+            paulinaVoice = voices.find(voice => voice.name.includes('Paulina'));
+            
+            // Si no se encuentra Paulina, buscar cualquier voz en español
+            if (!paulinaVoice) {
+                paulinaVoice = voices.find(voice => voice.lang.startsWith('es'));
+                if (paulinaVoice) {
+                    console.log('Usando voz en español alternativa:', paulinaVoice.name);
+                } else {
+                    console.warn('No se encontró ninguna voz en español, usando voz predeterminada');
+                    if (voices.length > 0) {
+                        paulinaVoice = voices[0];
+                        console.log('Usando voz predeterminada:', paulinaVoice.name);
+                    }
+                }
+            } else {
+                console.log('Voz Paulina encontrada:', paulinaVoice.name);
+            }
+        }
+        
+        // Cargar voces cuando estén disponibles
+        if (synth.onvoiceschanged !== undefined) {
+            synth.onvoiceschanged = loadVoices;
+        }
+        loadVoices();
+        
+        // EXTRACCIÓN DE TEXTO
+        function getSectionText(sectionId) {
+            // Limpiar el ID de la sección
+            if (sectionId.startsWith('#')) {
+                sectionId = sectionId.substring(1);
+            }
+            
+            const section = document.getElementById(sectionId);
+            if (!section) {
+                console.error('No se encontró la sección:', sectionId);
+                return '';
+            }
+            
+            console.log('Obteniendo texto de la sección:', sectionId);
+            
+            // Obtener elementos de texto
+            const textElements = section.querySelectorAll('p, li, .text-slate-700, h1, h2, h3, h4, h5, h6');
+            let text = '';
+            
+            if (textElements.length === 0) {
+                // Si no se encuentran elementos específicos, usar todo el texto
+                text = section.textContent.trim();
+                console.log('Usando texto completo de la sección');
+            } else {
+                // Procesar elementos manteniendo el orden del DOM
+                // Esto permite mantener una estructura lógica en la lectura
+                
+                // Crear un array con todos los elementos para ordenarlos por posición en el DOM
+                const allElements = [];
+                textElements.forEach(el => allElements.push({element: el, isHeading: /^H[1-6]$/.test(el.tagName)}));
+                
+                // Ordenar elementos por su posición en el documento
+                allElements.sort((a, b) => {
+                    const position = a.element.compareDocumentPosition(b.element);
+                    return position & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+                });
+                
+                // Procesar cada elemento añadiendo pausas después de los títulos
+                allElements.forEach(item => {
+                    const content = item.element.textContent.trim();
+                    if (item.isHeading) {
+                        // Añadir el título seguido de una pausa (usando puntos)
+                        text += content + '. . . ';
+                    } else {
+                        // Añadir el contenido normal
+                        text += content + ' ';
+                    }
+                });
+                
+                console.log('Elementos de texto procesados:', textElements.length);
+            }
+            
+            return text.trim();
+        }
+        
+        // GESTIÓN DE ESTADOS DE BOTONES
+        function updateButtonStates(controlsElement, isPlaying) {
+            const playBtn = controlsElement.querySelector('.play-btn');
+            const pauseBtn = controlsElement.querySelector('.pause-btn');
+            const stopBtn = controlsElement.querySelector('.stop-btn');
+            
+            if (playBtn) playBtn.disabled = isPlaying;
+            if (pauseBtn) pauseBtn.disabled = !isPlaying;
+            if (stopBtn) stopBtn.disabled = !isPlaying;
+        }
+        
+        // FUNCIONES DE CONTROL DE REPRODUCCIÓN
+        function playSection(sectionId, controlsElement) {
+            const reader = activeReaders[sectionId];
+            
+            // Si hay un lector pausado, reanudarlo
+            if (reader && reader.isPaused) {
+                console.log('Reanudando lectura pausada');
+                synth.resume();
+                reader.isPaused = false;
+                updateButtonStates(controlsElement, true);
+                return;
+            }
+            
+            // Detener cualquier lectura anterior
+            stopAllSections();
+            
+            // Obtener el texto a leer
+            const textToRead = getSectionText(sectionId);
+            if (!textToRead) {
+                console.error('No se encontró texto para leer');
+                return;
+            }
+            
+            console.log('Iniciando lectura, longitud del texto:', textToRead.length);
+            
+            // Configurar el utterance
+            const rateControl = controlsElement.querySelector('.speech-rate');
+            const utterance = new SpeechSynthesisUtterance(textToRead);
+            utterance.lang = 'es-ES';
+            utterance.rate = parseFloat(rateControl.value);
+            
+            if (paulinaVoice) {
+                utterance.voice = paulinaVoice;
+            }
+            
+            // Eventos del utterance
+            utterance.onend = function() {
+                console.log('Lectura finalizada');
+                updateButtonStates(controlsElement, false);
+                delete activeReaders[sectionId];
+                currentActiveSection = null;
+            };
+            
+            utterance.onerror = function(event) {
+                console.error('Error en síntesis de voz:', event.error);
+                updateButtonStates(controlsElement, false);
+                delete activeReaders[sectionId];
+                currentActiveSection = null;
+            };
+            
+            // Guardar referencia
+            activeReaders[sectionId] = {
+                utterance: utterance,
+                isPaused: false,
+                textToRead: textToRead,
+                controls: controlsElement
+            };
+            
+            currentActiveSection = sectionId;
+            
+            // Iniciar lectura
+            synth.speak(utterance);
+            updateButtonStates(controlsElement, true);
+        }
+        
+        function pauseSection(sectionId) {
+            const reader = activeReaders[sectionId];
+            if (reader && !reader.isPaused && synth.speaking) {
+                console.log('Pausando lectura');
+                synth.pause();
+                reader.isPaused = true;
+                updateButtonStates(reader.controls, true);
+                reader.controls.querySelector('.play-btn').disabled = false;
+            }
+        }
+        
+        function stopSection(sectionId) {
+            const reader = activeReaders[sectionId];
+            if (reader) {
+                console.log('Deteniendo lectura');
+                synth.cancel();
+                updateButtonStates(reader.controls, false);
+                delete activeReaders[sectionId];
+                if (currentActiveSection === sectionId) {
+                    currentActiveSection = null;
+                }
+            }
+        }
+        
+        function stopAllSections() {
+            synth.cancel();
+            Object.keys(activeReaders).forEach(sectionId => {
+                const reader = activeReaders[sectionId];
+                if (reader && reader.controls) {
+                    updateButtonStates(reader.controls, false);
+                }
+            });
+            activeReaders = {};
+            currentActiveSection = null;
+        }
+        
+        // ATAJOS DE TECLADO
+        document.addEventListener('keydown', function(event) {
+            // Evitar activar atajos si el usuario está escribiendo en un input
+            if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+                return;
+            }
+            
+            // ESPACIO: Play/Pause
+            if (event.code === 'Space') {
+                event.preventDefault();
+                
+                // Buscar la sección visible actualmente
+                const visibleSection = document.querySelector('.content-pane.active');
+                if (!visibleSection) return;
+                
+                const sectionId = visibleSection.id;
+                const controls = visibleSection.querySelector('.speech-controls');
+                
+                if (!controls) return;
+                
+                const reader = activeReaders[sectionId];
+                
+                if (reader && reader.isPaused) {
+                    // Reanudar
+                    playSection(sectionId, controls);
+                } else if (reader && synth.speaking) {
+                    // Pausar
+                    pauseSection(sectionId);
+                } else {
+                    // Iniciar
+                    playSection(sectionId, controls);
+                }
+                
+                console.log('Atajo de teclado: Espacio - Play/Pause');
+            }
+            
+            // TAB: Stop
+            if (event.code === 'Tab' && !event.shiftKey) {
+                if (currentActiveSection) {
+                    event.preventDefault();
+                    stopSection(currentActiveSection);
+                    console.log('Atajo de teclado: Tab - Stop');
+                }
+            }
+        });
+        
+        // CONFIGURACIÓN DE CONTROLES
+        document.querySelectorAll('.speech-controls').forEach(controls => {
+            const sectionId = controls.getAttribute('data-target');
+            const playBtn = controls.querySelector('.play-btn');
+            const pauseBtn = controls.querySelector('.pause-btn');
+            const stopBtn = controls.querySelector('.stop-btn');
+            const rateControl = controls.querySelector('.speech-rate');
+            
+            if (!sectionId || !playBtn || !pauseBtn || !stopBtn || !rateControl) {
+                console.error('Faltan elementos necesarios para el control de voz');
+                return;
+            }
+            
+            console.log('Configurando controles para sección:', sectionId);
+            
+            // Botón Play
+            playBtn.addEventListener('click', () => playSection(sectionId, controls));
+            
+            // Botón Pause
+            pauseBtn.addEventListener('click', () => pauseSection(sectionId));
+            
+            // Botón Stop
+            stopBtn.addEventListener('click', () => stopSection(sectionId));
+            
+            // Control de velocidad
+            rateControl.addEventListener('change', function() {
+                const reader = activeReaders[sectionId];
+                if (reader && synth.speaking) {
+                    // Reiniciar con nueva velocidad
+                    const wasPlaying = !reader.isPaused;
+                    stopSection(sectionId);
+                    if (wasPlaying) {
+                        setTimeout(() => playSection(sectionId, controls), 100);
+                    }
+                }
+            });
+        });
+        
+        console.log('Sistema de síntesis de voz inicializado');
+        console.log('Atajos: Espacio = Play/Pause, Tab = Stop');
+    });
+</script>
+
+</body>
+</html>

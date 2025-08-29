@@ -164,10 +164,30 @@
 
     <!-- Objetivo -->
     <section id="objetivos" class="content-pane">
+        <!-- Controles de lectura (TTS) arriba y a la derecha -->
+        <div class="flex justify-end">
+          <div class="speech-controls mb-2 p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm" data-target="introduccion">
+            <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+              <span class="mr-1">▶️</span> Leer
+            </button>
+            <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+              <span class="mr-1">⏸️</span> Pausar
+            </button>
+            <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+              <span class="mr-1">⏹️</span> Detener
+            </button>
+        
+            <div class="flex items-center ml-2">
+              <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+              <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
+            </div>
+          </div>
+        </div>
+    <!-- fin Controles de lectura (TTS) arriba y a la derecha -->
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Objetivo</h2>
 
       <p class="leading-relaxed">
-  🧠 <strong>Comprender</strong> el concepto de algoritmo, sus características y su importancia en la solución de problemas, a partir de ejemplos cotidianos y tecnológicos. Reconocer su papel como base del pensamiento lógico y de la programación, y comenzar a representarlos en pasos secuenciales claros.
+  <strong>Comprender</strong> el concepto de algoritmo, sus características y su importancia en la solución de problemas, a partir de ejemplos cotidianos y tecnológicos. Reconocer su papel como base del pensamiento lógico y de la programación, y comenzar a representarlos en pasos secuenciales claros.
 </p>
 
       

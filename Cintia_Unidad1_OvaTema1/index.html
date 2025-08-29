@@ -215,6 +215,36 @@
     <!-- Contenido -->
     <section id="contenido" class="content-pane">
       <div class="space-y-4">
+
+    <!-- Controles TTS para acordeón de CONTENIDO -->
+          <div class="flex justify-end">
+            <div class="space-y-1">
+              <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+                   data-mode="accordion" data-container="#contenido">
+                <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+                  <span class="mr-1">▶️</span> Leer
+                </button>
+                <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+                  <span class="mr-1">⏸️</span> Pausar
+                </button>
+                <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+                  <span class="mr-1">⏹️</span> Detener
+                </button>
+          
+                <div class="flex items-center ml-2">
+                  <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+                  <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+                </div>
+              </div>
+          
+              <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+                <strong>💡 Atajos:</strong>
+                <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+                <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+              </div>
+            </div>
+          </div>
+        
         <!-- A: Definición -->
         <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
           <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
@@ -886,6 +916,138 @@ modal?.addEventListener('click',()=>modal.classList.remove('active'));
     });
 </script>
 
+  <script>
+// ==== TTS para acordeón (usa un solo set de controles) ====
+document.addEventListener('DOMContentLoaded', () => {
+  const synth = window.speechSynthesis;
+  let voices = [], preferred = null;
+  const ctrl = document.querySelector('.speech-controls[data-mode="accordion"]');
+  if (!ctrl) return;
+
+  function loadVoices(){
+    voices = synth.getVoices();
+    preferred = voices.find(v => v.name.includes('Paulina'))
+             || voices.find(v => (v.lang||'').toLowerCase().startsWith('es'))
+             || voices[0] || null;
+  }
+  loadVoices();
+  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+
+  const containerSel = ctrl.getAttribute('data-container') || '#contenido';
+  const container = document.querySelector(containerSel);
+  if (!container) return;
+
+  const playBtn  = ctrl.querySelector('.play-btn');
+  const pauseBtn = ctrl.querySelector('.pause-btn');
+  const stopBtn  = ctrl.querySelector('.stop-btn');
+  const rateCtrl = ctrl.querySelector('.speech-rate');
+
+  let currentUtterance = null, isPaused = false;
+
+  // Devuelve el <details> abierto; si ninguno, el primero
+  function getActiveDetails() {
+    return container.querySelector('details[open]') || container.querySelector('details');
+  }
+
+  // Toma texto del acordeón: título (summary) + contenido
+  function getDetailsText(det){
+    if (!det) return '';
+    const parts = [];
+    const sum = det.querySelector(':scope > summary');
+    if (sum) {
+      const t = (sum.textContent||'').trim();
+      if (t) parts.push(t + '. . . ');
+    }
+    // Todo lo que no sea summary
+    const bodyNodes = det.querySelectorAll(':scope > :not(summary)');
+    if (bodyNodes.length){
+      bodyNodes.forEach(n=>{
+        // solo textos relevantes
+        n.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption').forEach(el=>{
+          const t = (el.textContent||'').trim();
+          if (t) parts.push(t + ' ');
+        });
+        // fallback si no hay hijos seleccionables
+        if (!n.querySelector('h1,h2,h3,h4,h5,h6,p,li,figcaption')){
+          const t = (n.textContent||'').trim();
+          if (t) parts.push(t + ' ');
+        }
+      });
+    } else {
+      const t = (det.textContent||'').trim();
+      if (t) parts.push(t);
+    }
+    return parts.join('').trim();
+  }
+
+  function setButtons(playing){
+    playBtn.disabled  = playing && !isPaused;
+    pauseBtn.disabled = !playing;
+    stopBtn.disabled  = !playing;
+  }
+
+  function stop(){
+    if (synth.speaking || synth.pending) synth.cancel();
+    currentUtterance = null; isPaused = false; setButtons(false);
+  }
+
+  function play(){
+    if (currentUtterance && isPaused && synth.speaking){
+      synth.resume(); isPaused = false; setButtons(true); return;
+    }
+    stop();
+    const det = getActiveDetails();
+    const text = getDetailsText(det);
+    if (!text) return;
+
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang  = (preferred && preferred.lang) || 'es-ES';
+    utt.voice = preferred || null;
+    utt.rate  = parseFloat(rateCtrl?.value || '1');
+
+    utt.onend   = () => { currentUtterance = null; setButtons(false); };
+    utt.onerror = () => { currentUtterance = null; setButtons(false); };
+
+    currentUtterance = utt;
+    synth.speak(utt); isPaused = false; setButtons(true);
+  }
+
+  function pause(){
+    if (currentUtterance && !isPaused && synth.speaking){
+      synth.pause(); isPaused = true; playBtn.disabled = false;
+    }
+  }
+
+  // Eventos de botones
+  playBtn.addEventListener('click',  play);
+  pauseBtn.addEventListener('click', pause);
+  stopBtn.addEventListener('click',  stop);
+
+  // Cambiar velocidad al vuelo
+  rateCtrl?.addEventListener('change', () => {
+    const wasSpeaking = !!currentUtterance && !isPaused && synth.speaking;
+    if (wasSpeaking){ stop(); setTimeout(play, 80); }
+  });
+
+  // Si el usuario abre otro acordeón, detén lectura
+  container.querySelectorAll('details').forEach(d=>{
+    d.addEventListener('toggle', () => {
+      if (d.open) stop(); // corta y deja listo para volver a "Leer"
+    });
+  });
+
+  // Atajos (solo si la pestaña "contenido" está visible)
+  document.addEventListener('keydown', (e) => {
+    const activePane = document.querySelector('.content-pane.active');
+    if (!activePane || activePane.id !== 'contenido') return;
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+    if (e.code === 'Space') { e.preventDefault(); (currentUtterance && !isPaused && synth.speaking) ? pause() : play(); }
+    if (e.code === 'Tab' && !e.shiftKey) { stop(); }
+    if (e.code === 'Escape') { stop(); }
+  });
+});
+</script>
 
 
   

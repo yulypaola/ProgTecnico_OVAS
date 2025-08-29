@@ -100,8 +100,7 @@
       <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="bibliografia"><span class="mr-3 text-xl">📚</span> Bibliografía</a>
     </nav>
   </aside>
-
-<main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50 h-screen overflow-y-auto md:ml-64">
+<main class="flex-1 pt-4 px-4 sm:px-6 md:px-10 bg-gray-50 h-screen overflow-y-auto md:ml-64">
     
     <div class="md:hidden mb-6 flex flex-col items-center">
       <div style="width:100px;height:100px" class="p-2 flex items-center justify-center bg-white rounded-full shadow-lg mb-2">
@@ -120,7 +119,43 @@
 
     <!-- Intro -->
     <section id="introduccion" class="content-pane active">
-      <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-800">Concepto de algoritmo y su importancia en la solución de problemas</h1>
+      <!-- Controles + Atajos juntos y alineados a la derecha -->
+  <div class="flex justify-end">
+    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
+      <!-- Controles de lectura (TTS) -->
+      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+           data-target="introduccion">
+        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+          <span class="mr-1">▶️</span> Leer
+        </button>
+        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏸️</span> Pausar
+        </button>
+        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏹️</span> Detener
+        </button>
+
+        <div class="flex items-center ml-2">
+          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
+        </div>
+      </div>
+
+      <!-- Atajos, misma columna, alineados a la derecha -->
+      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
+                  max-w-xl w-full ml-auto">
+        <strong>💡 Atajos de teclado:</strong>
+        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
+        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
+      </div>
+    </div>
+  </div>
+
+  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
+     
+      <h1 class="mt-3 text-2xl sm:text-3xl font-extrabold text-emerald-800"> Concepto de algoritmo y su importancia en la solución de problemas</h1>
+
+      
       <p class="mt-4 leading-relaxed">
         🏠 <strong>¡Bienvenido!</strong> Imagina que vas a preparar una hamburguesa con tus amigos. Si sigues los pasos en orden, obtendrás el resultado esperado; si te saltas uno, el producto final cambia. Así funcionan los <strong>algoritmos</strong>: secuencias de pasos que llevan a un resultado.
       </p>
@@ -134,10 +169,44 @@
 
     <!-- Objetivo -->
     <section id="objetivos" class="content-pane">
+        <!-- Controles de lectura (TTS) arriba y a la derecha -->
+      <!-- Controles + Atajos juntos y alineados a la derecha -->
+  <div class="flex justify-end">
+    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
+      <!-- Controles de lectura (TTS) -->
+      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+           data-target="introduccion">
+        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+          <span class="mr-1">▶️</span> Leer
+        </button>
+        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏸️</span> Pausar
+        </button>
+        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏹️</span> Detener
+        </button>
+
+        <div class="flex items-center ml-2">
+          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
+        </div>
+      </div>
+
+      <!-- Atajos, misma columna, alineados a la derecha -->
+      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
+                  max-w-xl w-full ml-auto">
+        <strong>💡 Atajos de teclado:</strong>
+        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
+        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
+      </div>
+    </div>
+  </div>
+
+  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Objetivo</h2>
 
       <p class="leading-relaxed">
-  🧠 <strong>Comprender</strong> el concepto de algoritmo, sus características y su importancia en la solución de problemas, a partir de ejemplos cotidianos y tecnológicos. Reconocer su papel como base del pensamiento lógico y de la programación, y comenzar a representarlos en pasos secuenciales claros.
+  <strong>Comprender</strong> el concepto de algoritmo, sus características y su importancia en la solución de problemas, a partir de ejemplos cotidianos y tecnológicos. Reconocer su papel como base del pensamiento lógico y de la programación, y comenzar a representarlos en pasos secuenciales claros.
 </p>
 
       
@@ -371,6 +440,39 @@
 
     <!-- Actividades -->
       <section id="actividades" class="content-pane">
+        <!-- Controles + Atajos juntos y alineados a la derecha -->
+  <div class="flex justify-end">
+    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
+      <!-- Controles de lectura (TTS) -->
+      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+           data-target="introduccion">
+        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+          <span class="mr-1">▶️</span> Leer
+        </button>
+        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏸️</span> Pausar
+        </button>
+        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏹️</span> Detener
+        </button>
+
+        <div class="flex items-center ml-2">
+          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
+        </div>
+      </div>
+
+      <!-- Atajos, misma columna, alineados a la derecha -->
+      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
+                  max-w-xl w-full ml-auto">
+        <strong>💡 Atajos de teclado:</strong>
+        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
+        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
+      </div>
+    </div>
+  </div>
+
+  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Actividades</h2>
       <div class="space-y-6">
         <div class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5">
@@ -399,6 +501,39 @@
     
     <!-- Evaluación (quiz) -->
     <section id="evaluacion" class="content-pane">
+      <!-- Controles + Atajos juntos y alineados a la derecha -->
+  <div class="flex justify-end">
+    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
+      <!-- Controles de lectura (TTS) -->
+      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+           data-target="introduccion">
+        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+          <span class="mr-1">▶️</span> Leer
+        </button>
+        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏸️</span> Pausar
+        </button>
+        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏹️</span> Detener
+        </button>
+
+        <div class="flex items-center ml-2">
+          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
+        </div>
+      </div>
+
+      <!-- Atajos, misma columna, alineados a la derecha -->
+      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
+                  max-w-xl w-full ml-auto">
+        <strong>💡 Atajos de teclado:</strong>
+        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
+        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
+      </div>
+    </div>
+  </div>
+
+  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Evaluación</h2>
       <div class="bg-white p-5 rounded-lg shadow-md">
         <div id="quiz"></div>
@@ -409,6 +544,39 @@
 
     <!-- Recursos (3 tarjetas como la imagen) -->
     <section id="recursos" class="content-pane">
+    <!-- Controles + Atajos juntos y alineados a la derecha -->
+  <div class="flex justify-end">
+    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
+      <!-- Controles de lectura (TTS) -->
+      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+           data-target="introduccion">
+        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+          <span class="mr-1">▶️</span> Leer
+        </button>
+        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏸️</span> Pausar
+        </button>
+        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏹️</span> Detener
+        </button>
+
+        <div class="flex items-center ml-2">
+          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
+        </div>
+      </div>
+
+      <!-- Atajos, misma columna, alineados a la derecha -->
+      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
+                  max-w-xl w-full ml-auto">
+        <strong>💡 Atajos de teclado:</strong>
+        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
+        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
+      </div>
+    </div>
+  </div>
+
+  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-6">Recursos</h2>
       <div class="grid lg:grid-cols-3 gap-5">
         <!-- Card 1 -->
@@ -461,6 +629,39 @@
 
     <!-- Bibliografía -->
     <section id="bibliografia" class="content-pane">
+      <!-- Controles + Atajos juntos y alineados a la derecha -->
+  <div class="flex justify-end">
+    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
+      <!-- Controles de lectura (TTS) -->
+      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+           data-target="introduccion">
+        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+          <span class="mr-1">▶️</span> Leer
+        </button>
+        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏸️</span> Pausar
+        </button>
+        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏹️</span> Detener
+        </button>
+
+        <div class="flex items-center ml-2">
+          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
+        </div>
+      </div>
+
+      <!-- Atajos, misma columna, alineados a la derecha -->
+      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
+                  max-w-xl w-full ml-auto">
+        <strong>💡 Atajos de teclado:</strong>
+        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
+        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
+      </div>
+    </div>
+  </div>
+
+  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Bibliografía</h2>
       <ul class="space-y-3">
         <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
@@ -581,5 +782,257 @@ document.querySelectorAll('figure img').forEach(img=>{
 });
 modal?.addEventListener('click',()=>modal.classList.remove('active'));
 </script>
+<script>
+// ==== Síntesis de voz para la sección "introduccion" ====
+// Basado en tu segundo OVA, simplificado y encapsulado.
+document.addEventListener('DOMContentLoaded', function() {
+  const synth = window.speechSynthesis;
+  let voices = [];
+  let preferredVoice = null; // Paulina (es-MX) si existe, o cualquier voz en español
+  const controls = document.querySelector('.speech-controls[data-target="introduccion"]');
+  if (!controls) return;
+
+  const playBtn  = controls.querySelector('.play-btn');
+  const pauseBtn = controls.querySelector('.pause-btn');
+  const stopBtn  = controls.querySelector('.stop-btn');
+  const rateCtrl = controls.querySelector('.speech-rate');
+
+  let currentUtterance = null;
+  let isPaused = false;
+
+  function loadVoices() {
+    voices = synth.getVoices();
+   // Intentar siempre seleccionar una voz femenina en español
+   preferredVoice = voices.find(v => v.name.includes('Paulina')) 
+              || voices.find(v => v.lang.toLowerCase().startsWith('es')) 
+              || voices[0] || null;
+  }
+  loadVoices();
+  if (synth.onvoiceschanged !== undefined) {
+    synth.onvoiceschanged = loadVoices;
+  }
+
+  // Toma el texto de la sección "introduccion"
+  function getIntroText() {
+    const section = document.getElementById('introduccion');
+    if (!section) return '';
+    const nodes = section.querySelectorAll('p, li, h1, h2, h3, h4, h5, h6');
+    if (!nodes.length) return section.textContent.trim();
+    let text = '';
+    nodes.forEach(el => {
+      const isHeading = /^H[1-6]$/.test(el.tagName);
+      const t = (el.textContent || '').trim();
+      if (!t) return;
+      text += isHeading ? t + '. . . ' : t + ' ';
+    });
+    return text.trim();
+  }
+
+  function setButtons(playing) {
+    playBtn.disabled  = playing && !isPaused;
+    pauseBtn.disabled = !playing;
+    stopBtn.disabled  = !playing;
+  }
+
+  function play() {
+    if (currentUtterance && isPaused) {
+      synth.resume();
+      isPaused = false;
+      setButtons(true);
+      return;
+    }
+
+    // detén cualquier lectura previa
+    stop();
+
+    const text = getIntroText();
+    if (!text) return;
+
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = (preferredVoice && preferredVoice.lang) || 'es-ES';
+    utt.voice = preferredVoice || null;
+    utt.rate = parseFloat(rateCtrl.value || '1');
+
+    utt.onend = () => { currentUtterance = null; setButtons(false); };
+    utt.onerror = () => { currentUtterance = null; setButtons(false); };
+
+    currentUtterance = utt;
+    synth.speak(utt);
+    isPaused = false;
+    setButtons(true);
+  }
+
+  function pause() {
+    if (currentUtterance && !isPaused && synth.speaking) {
+      synth.pause();
+      isPaused = true;
+      // permitir reanudar
+      playBtn.disabled = false;
+    }
+  }
+
+  function stop() {
+    if (synth.speaking || synth.pending) synth.cancel();
+    currentUtterance = null;
+    isPaused = false;
+    setButtons(false);
+  }
+
+  // Listeners
+  playBtn.addEventListener('click',  play);
+  pauseBtn.addEventListener('click', pause);
+  stopBtn.addEventListener('click',  stop);
+
+  // Cambiar velocidad en caliente: reinicia si estaba leyendo
+  rateCtrl.addEventListener('change', () => {
+    const wasSpeaking = !!currentUtterance && !isPaused && synth.speaking;
+    if (wasSpeaking) {
+      stop();
+      setTimeout(play, 80);
+    }
+  });
+
+  // Atajos: Espacio = Play/Pause, Tab = Stop
+  document.addEventListener('keydown', (e) => {
+    const activePane = document.querySelector('.content-pane.active');
+    if (!activePane || activePane.id !== 'introduccion') return; // solo si estás en introducción
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+    if (e.code === 'Space') {
+      e.preventDefault();
+      if (currentUtterance && !isPaused && synth.speaking) { pause(); }
+      else { play(); }
+    }
+    if (e.code === 'Tab' && !e.shiftKey) {
+      stop();
+    }
+  });
+});
+</script>
+
+<script>
+// ==== Síntesis de voz para la sección "objetivos" ====
+document.addEventListener('DOMContentLoaded', function () {
+  const synth = window.speechSynthesis;
+  let voices = [], preferred = null;
+
+  function loadVoices() {
+    voices = synth.getVoices();
+    preferred = voices.find(v => v.name.includes('Paulina'))
+            || voices.find(v => v.lang.toLowerCase().startsWith('es'))
+            || voices[0] || null;
+  }
+  loadVoices();
+  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+
+  const controls = document.querySelector('.speech-controls[data-target="objetivos"]');
+  if (!controls) return;
+
+  const playBtn  = controls.querySelector('.play-btn');
+  const pauseBtn = controls.querySelector('.pause-btn');
+  const stopBtn  = controls.querySelector('.stop-btn');
+  const rateCtrl = controls.querySelector('.speech-rate');
+
+  let currentUtterance = null;
+  let isPaused = false;
+
+  function getObjetivosText() {
+    const section = document.getElementById('objetivos');
+    if (!section) return '';
+    const title = section.querySelector('h1, h2');
+    const parts = [];
+
+    if (title) {
+      const t = (title.textContent || '').trim();
+      if (t) parts.push(t + '. . . ');
+    }
+    const nodes = section.querySelectorAll('p, li, h3, h4, h5, h6, figcaption');
+    nodes.forEach(el => {
+      const t = (el.textContent || '').trim();
+      if (!t) return;
+      const isHead = /^H[3-6]$/.test(el.tagName);
+      parts.push(isHead ? t + '. . . ' : t + ' ');
+    });
+    return parts.join('').trim();
+  }
+
+  function setButtons(playing) {
+    playBtn.disabled  = playing && !isPaused;
+    pauseBtn.disabled = !playing;
+    stopBtn.disabled  = !playing;
+  }
+
+  function stop() {
+    if (synth.speaking || synth.pending) synth.cancel();
+    currentUtterance = null;
+    isPaused = false;
+    setButtons(false);
+  }
+
+  function play() {
+    if (currentUtterance && isPaused && synth.speaking) {
+      synth.resume();
+      isPaused = false;
+      setButtons(true);
+      return;
+    }
+    stop();
+
+    const text = getObjetivosText();
+    if (!text) return;
+
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang  = (preferred && preferred.lang) || 'es-ES';
+    utt.voice = preferred || null;
+    utt.rate  = parseFloat(rateCtrl?.value || '1');
+
+    utt.onend   = () => { currentUtterance = null; setButtons(false); };
+    utt.onerror = () => { currentUtterance = null; setButtons(false); };
+
+    currentUtterance = utt;
+    synth.speak(utt);
+    isPaused = false;
+    setButtons(true);
+  }
+
+  function pause() {
+    if (currentUtterance && !isPaused && synth.speaking) {
+      synth.pause();
+      isPaused = true;
+      playBtn.disabled = false;
+    }
+  }
+
+  playBtn.addEventListener('click',  play);
+  pauseBtn.addEventListener('click', pause);
+  stopBtn.addEventListener('click',  stop);
+
+  rateCtrl?.addEventListener('change', () => {
+    const wasSpeaking = !!currentUtterance && !isPaused && synth.speaking;
+    if (wasSpeaking) {
+      stop();
+      setTimeout(play, 80);
+    }
+  });
+
+  // Atajos solo cuando "Objetivos" está visible
+  document.addEventListener('keydown', (e) => {
+    const activePane = document.querySelector('.content-pane.active');
+    if (!activePane || activePane.id !== 'objetivos') return;
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+    if (e.code === 'Space') {
+      e.preventDefault();
+      if (currentUtterance && !isPaused && synth.speaking) { pause(); }
+      else { play(); }
+    }
+    if (e.code === 'Tab' && !e.shiftKey) {
+      stop();
+    }
+  });
+});
+</script>
+
+  
 </body>
 </html>

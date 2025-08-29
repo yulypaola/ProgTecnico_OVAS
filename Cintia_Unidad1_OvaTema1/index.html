@@ -782,256 +782,109 @@ document.querySelectorAll('figure img').forEach(img=>{
 });
 modal?.addEventListener('click',()=>modal.classList.remove('active'));
 </script>
-<script>
-// ==== Síntesis de voz para la sección "introduccion" ====
-// Basado en tu segundo OVA, simplificado y encapsulado.
-document.addEventListener('DOMContentLoaded', function() {
-  const synth = window.speechSynthesis;
-  let voices = [];
-  let preferredVoice = null; // Paulina (es-MX) si existe, o cualquier voz en español
-  const controls = document.querySelector('.speech-controls[data-target="introduccion"]');
-  if (!controls) return;
-
-  const playBtn  = controls.querySelector('.play-btn');
-  const pauseBtn = controls.querySelector('.pause-btn');
-  const stopBtn  = controls.querySelector('.stop-btn');
-  const rateCtrl = controls.querySelector('.speech-rate');
-
-  let currentUtterance = null;
-  let isPaused = false;
-
-  function loadVoices() {
-    voices = synth.getVoices();
-   // Intentar siempre seleccionar una voz femenina en español
-   preferredVoice = voices.find(v => v.name.includes('Paulina')) 
-              || voices.find(v => v.lang.toLowerCase().startsWith('es')) 
-              || voices[0] || null;
-  }
-  loadVoices();
-  if (synth.onvoiceschanged !== undefined) {
-    synth.onvoiceschanged = loadVoices;
-  }
-
-  // Toma el texto de la sección "introduccion"
-  function getIntroText() {
-    const section = document.getElementById('introduccion');
-    if (!section) return '';
-    const nodes = section.querySelectorAll('p, li, h1, h2, h3, h4, h5, h6');
-    if (!nodes.length) return section.textContent.trim();
-    let text = '';
-    nodes.forEach(el => {
-      const isHeading = /^H[1-6]$/.test(el.tagName);
-      const t = (el.textContent || '').trim();
-      if (!t) return;
-      text += isHeading ? t + '. . . ' : t + ' ';
-    });
-    return text.trim();
-  }
-
-  function setButtons(playing) {
-    playBtn.disabled  = playing && !isPaused;
-    pauseBtn.disabled = !playing;
-    stopBtn.disabled  = !playing;
-  }
-
-  function play() {
-    if (currentUtterance && isPaused) {
-      synth.resume();
-      isPaused = false;
-      setButtons(true);
-      return;
-    }
-
-    // detén cualquier lectura previa
-    stop();
-
-    const text = getIntroText();
-    if (!text) return;
-
-    const utt = new SpeechSynthesisUtterance(text);
-    utt.lang = (preferredVoice && preferredVoice.lang) || 'es-ES';
-    utt.voice = preferredVoice || null;
-    utt.rate = parseFloat(rateCtrl.value || '1');
-
-    utt.onend = () => { currentUtterance = null; setButtons(false); };
-    utt.onerror = () => { currentUtterance = null; setButtons(false); };
-
-    currentUtterance = utt;
-    synth.speak(utt);
-    isPaused = false;
-    setButtons(true);
-  }
-
-  function pause() {
-    if (currentUtterance && !isPaused && synth.speaking) {
-      synth.pause();
-      isPaused = true;
-      // permitir reanudar
-      playBtn.disabled = false;
-    }
-  }
-
-  function stop() {
-    if (synth.speaking || synth.pending) synth.cancel();
-    currentUtterance = null;
-    isPaused = false;
-    setButtons(false);
-  }
-
-  // Listeners
-  playBtn.addEventListener('click',  play);
-  pauseBtn.addEventListener('click', pause);
-  stopBtn.addEventListener('click',  stop);
-
-  // Cambiar velocidad en caliente: reinicia si estaba leyendo
-  rateCtrl.addEventListener('change', () => {
-    const wasSpeaking = !!currentUtterance && !isPaused && synth.speaking;
-    if (wasSpeaking) {
-      stop();
-      setTimeout(play, 80);
-    }
-  });
-
-  // Atajos: Espacio = Play/Pause, Tab = Stop
-  document.addEventListener('keydown', (e) => {
-    const activePane = document.querySelector('.content-pane.active');
-    if (!activePane || activePane.id !== 'introduccion') return; // solo si estás en introducción
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-
-    if (e.code === 'Space') {
-      e.preventDefault();
-      if (currentUtterance && !isPaused && synth.speaking) { pause(); }
-      else { play(); }
-    }
-    if (e.code === 'Tab' && !e.shiftKey) {
-      stop();
-    }
-  });
-});
-</script>
 
 <script>
-// ==== Síntesis de voz para la sección "objetivos" ====
-document.addEventListener('DOMContentLoaded', function () {
-  const synth = window.speechSynthesis;
-  let voices = [], preferred = null;
-
-  function loadVoices() {
-    voices = synth.getVoices();
-    preferred = voices.find(v => v.name.includes('Paulina'))
-            || voices.find(v => v.lang.toLowerCase().startsWith('es'))
-            || voices[0] || null;
-  }
-  loadVoices();
-  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
-
-  const controls = document.querySelector('.speech-controls[data-target="objetivos"]');
-  if (!controls) return;
-
-  const playBtn  = controls.querySelector('.play-btn');
-  const pauseBtn = controls.querySelector('.pause-btn');
-  const stopBtn  = controls.querySelector('.stop-btn');
-  const rateCtrl = controls.querySelector('.speech-rate');
-
-  let currentUtterance = null;
-  let isPaused = false;
-
-  function getObjetivosText() {
-    const section = document.getElementById('objetivos');
-    if (!section) return '';
-    const title = section.querySelector('h1, h2');
-    const parts = [];
-
-    if (title) {
-      const t = (title.textContent || '').trim();
-      if (t) parts.push(t + '. . . ');
-    }
-    const nodes = section.querySelectorAll('p, li, h3, h4, h5, h6, figcaption');
-    nodes.forEach(el => {
-      const t = (el.textContent || '').trim();
-      if (!t) return;
-      const isHead = /^H[3-6]$/.test(el.tagName);
-      parts.push(isHead ? t + '. . . ' : t + ' ');
+    // ===== TTS genérico por sección (una sola vez) =====
+    document.addEventListener('DOMContentLoaded', function () {
+      const synth = window.speechSynthesis;
+      let voices = [], preferred = null;
+    
+      function loadVoices() {
+        voices = synth.getVoices();
+        preferred = voices.find(v => v.name.includes('Paulina'))
+                 || voices.find(v => (v.lang||'').toLowerCase().startsWith('es'))
+                 || voices[0] || null;
+      }
+      loadVoices();
+      if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+    
+      // Para cada set de controles .speech-controls
+      document.querySelectorAll('.speech-controls').forEach(controls => {
+        const targetId = controls.dataset.target;               // <-- usa tu data-target correcto
+        const section  = document.getElementById(targetId);
+        if (!section) return;
+    
+        const playBtn  = controls.querySelector('.play-btn');
+        const pauseBtn = controls.querySelector('.pause-btn');
+        const stopBtn  = controls.querySelector('.stop-btn');
+        const rateCtrl = controls.querySelector('.speech-rate');
+    
+        let currentUtterance = null;
+        let isPaused = false;
+    
+        function getTextFromSection(sec) {
+          const nodes = sec.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption');
+          if (!nodes.length) return (sec.textContent||'').trim();
+          let text = '';
+          nodes.forEach(el => {
+            const t = (el.textContent||'').trim();
+            if (!t) return;
+            text += (/^H[1-6]$/.test(el.tagName) ? t + '. . . ' : t + ' ');
+          });
+          return text.trim();
+        }
+    
+        function setButtons(playing){
+          if (!playBtn || !pauseBtn || !stopBtn) return;
+          playBtn.disabled  = playing && !isPaused;
+          pauseBtn.disabled = !playing;
+          stopBtn.disabled  = !playing;
+        }
+    
+        function stop(){
+          if (synth.speaking || synth.pending) synth.cancel();
+          currentUtterance = null; isPaused = false; setButtons(false);
+        }
+    
+        function play(){
+          if (currentUtterance && isPaused && synth.speaking){
+            synth.resume(); isPaused = false; setButtons(true); return;
+          }
+          stop();
+          const text = getTextFromSection(section);
+          if (!text) return;
+          const utt = new SpeechSynthesisUtterance(text);
+          utt.lang  = (preferred && preferred.lang) || 'es-ES';
+          utt.voice = preferred || null;
+          utt.rate  = parseFloat(rateCtrl?.value || '1');
+    
+          utt.onend   = () => { currentUtterance = null; setButtons(false); };
+          utt.onerror = () => { currentUtterance = null; setButtons(false); };
+    
+          currentUtterance = utt;
+          synth.speak(utt);
+          isPaused = false; setButtons(true);
+        }
+    
+        function pause(){
+          if (currentUtterance && !isPaused && synth.speaking){
+            synth.pause(); isPaused = true; if (playBtn) playBtn.disabled = false;
+          }
+        }
+    
+        playBtn?.addEventListener('click',  play);
+        pauseBtn?.addEventListener('click', pause);
+        stopBtn?.addEventListener('click',  stop);
+    
+        rateCtrl?.addEventListener('change', () => {
+          const wasSpeaking = !!currentUtterance && !isPaused && synth.speaking;
+          if (wasSpeaking){ stop(); setTimeout(play, 80); }
+        });
+    
+        // Atajos: solo cuando la sección target está visible
+        document.addEventListener('keydown', (e) => {
+          const activePane = document.querySelector('.content-pane.active');
+          if (!activePane || activePane.id !== targetId) return;
+          if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    
+          if (e.code === 'Space') { e.preventDefault(); (currentUtterance && !isPaused && synth.speaking) ? pause() : play(); }
+          if (e.code === 'Tab' && !e.shiftKey) { stop(); }
+        });
+      });
     });
-    return parts.join('').trim();
-  }
-
-  function setButtons(playing) {
-    playBtn.disabled  = playing && !isPaused;
-    pauseBtn.disabled = !playing;
-    stopBtn.disabled  = !playing;
-  }
-
-  function stop() {
-    if (synth.speaking || synth.pending) synth.cancel();
-    currentUtterance = null;
-    isPaused = false;
-    setButtons(false);
-  }
-
-  function play() {
-    if (currentUtterance && isPaused && synth.speaking) {
-      synth.resume();
-      isPaused = false;
-      setButtons(true);
-      return;
-    }
-    stop();
-
-    const text = getObjetivosText();
-    if (!text) return;
-
-    const utt = new SpeechSynthesisUtterance(text);
-    utt.lang  = (preferred && preferred.lang) || 'es-ES';
-    utt.voice = preferred || null;
-    utt.rate  = parseFloat(rateCtrl?.value || '1');
-
-    utt.onend   = () => { currentUtterance = null; setButtons(false); };
-    utt.onerror = () => { currentUtterance = null; setButtons(false); };
-
-    currentUtterance = utt;
-    synth.speak(utt);
-    isPaused = false;
-    setButtons(true);
-  }
-
-  function pause() {
-    if (currentUtterance && !isPaused && synth.speaking) {
-      synth.pause();
-      isPaused = true;
-      playBtn.disabled = false;
-    }
-  }
-
-  playBtn.addEventListener('click',  play);
-  pauseBtn.addEventListener('click', pause);
-  stopBtn.addEventListener('click',  stop);
-
-  rateCtrl?.addEventListener('change', () => {
-    const wasSpeaking = !!currentUtterance && !isPaused && synth.speaking;
-    if (wasSpeaking) {
-      stop();
-      setTimeout(play, 80);
-    }
-  });
-
-  // Atajos solo cuando "Objetivos" está visible
-  document.addEventListener('keydown', (e) => {
-    const activePane = document.querySelector('.content-pane.active');
-    if (!activePane || activePane.id !== 'objetivos') return;
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-
-    if (e.code === 'Space') {
-      e.preventDefault();
-      if (currentUtterance && !isPaused && synth.speaking) { pause(); }
-      else { play(); }
-    }
-    if (e.code === 'Tab' && !e.shiftKey) {
-      stop();
-    }
-  });
-});
 </script>
+
+
 
   
 </body>

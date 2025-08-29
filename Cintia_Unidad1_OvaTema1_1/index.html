@@ -157,7 +157,7 @@
 
       
       <p class="mt-4 leading-relaxed">
-        🏠 <strong>¡Bienvenido!</strong> Imagina que vas a preparar una hamburguesa con tus amigos. Si sigues los pasos en orden, obtendrás el resultado esperado; si te saltas uno, el producto final cambia. Así funcionan los <strong>algoritmos</strong>: secuencias de pasos que llevan a un resultado.
+         <strong>¡Bienvenido!</strong> Imagina que vas a preparar una hamburguesa con tus amigos. Si sigues los pasos en orden, obtendrás el resultado esperado; si te saltas uno, el producto final cambia. Así funcionan los <strong>algoritmos</strong>: secuencias de pasos que llevan a un resultado.
       </p>
       <p class="mt-2 leading-relaxed">
         En programación, los algoritmos son la base de todo; de su claridad y precisión depende el funcionamiento correcto de cualquier software. Conocerlos permite transformar un problema en pasos claros que luego se traducen a un lenguaje de programación.
@@ -175,7 +175,7 @@
     <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
       <!-- Controles de lectura (TTS) -->
       <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-           data-target="introduccion">
+           data-target="objetivos">
         <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
           <span class="mr-1">▶️</span> Leer
         </button>
@@ -215,6 +215,36 @@
     <!-- Contenido -->
     <section id="contenido" class="content-pane">
       <div class="space-y-4">
+
+    <!-- Controles TTS para acordeón de CONTENIDO -->
+          <div class="flex justify-end">
+            <div class="space-y-1">
+              <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+                   data-mode="accordion" data-container="#contenido">
+                <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+                  <span class="mr-1">▶️</span> Leer
+                </button>
+                <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+                  <span class="mr-1">⏸️</span> Pausar
+                </button>
+                <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+                  <span class="mr-1">⏹️</span> Detener
+                </button>
+          
+                <div class="flex items-center ml-2">
+                  <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+                  <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+                </div>
+              </div>
+          
+              <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+                <strong>💡 Atajos:</strong>
+                <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+                <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+              </div>
+            </div>
+          </div>
+        
         <!-- A: Definición -->
         <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
           <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
@@ -356,7 +386,9 @@
               <li>Procesos locales agrícolas como el empaque de mangos: recolectar → lavar → seleccionar → pesar → almacenar.</li>
             </ul>
             <figure class="border rounded p-3">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Algotirmo resuelto. Proceso de empaque de mangos</figcaption>
+              
+              <figcaption class="font-semibold text-emerald-800 mb-2">Algoritmo resuelto. Proceso de empaque de mangos</figcaption>
+
               <img src="img/img07.png" class="w-full object-contain" alt="Proceso de empaque de mangos">
             </figure>
           </div>
@@ -445,7 +477,7 @@
     <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
       <!-- Controles de lectura (TTS) -->
       <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-           data-target="introduccion">
+           data-target="actividades">
         <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
           <span class="mr-1">▶️</span> Leer
         </button>
@@ -506,7 +538,7 @@
     <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
       <!-- Controles de lectura (TTS) -->
       <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-           data-target="introduccion">
+           data-target="evaluacion">
         <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
           <span class="mr-1">▶️</span> Leer
         </button>
@@ -549,7 +581,7 @@
     <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
       <!-- Controles de lectura (TTS) -->
       <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-           data-target="introduccion">
+           data-target="recursos">
         <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
           <span class="mr-1">▶️</span> Leer
         </button>
@@ -634,7 +666,7 @@
     <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
       <!-- Controles de lectura (TTS) -->
       <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-           data-target="introduccion">
+           data-target="bibliografia">
         <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
           <span class="mr-1">▶️</span> Leer
         </button>
@@ -782,203 +814,190 @@ document.querySelectorAll('figure img').forEach(img=>{
 });
 modal?.addEventListener('click',()=>modal.classList.remove('active'));
 </script>
+
 <script>
-// ==== Síntesis de voz para la sección "introduccion" ====
-// Basado en tu segundo OVA, simplificado y encapsulado.
-document.addEventListener('DOMContentLoaded', function() {
-  const synth = window.speechSynthesis;
-  let voices = [];
-  let preferredVoice = null; // Paulina (es-MX) si existe, o cualquier voz en español
-  const controls = document.querySelector('.speech-controls[data-target="introduccion"]');
-  if (!controls) return;
-
-  const playBtn  = controls.querySelector('.play-btn');
-  const pauseBtn = controls.querySelector('.pause-btn');
-  const stopBtn  = controls.querySelector('.stop-btn');
-  const rateCtrl = controls.querySelector('.speech-rate');
-
-  let currentUtterance = null;
-  let isPaused = false;
-
-  function loadVoices() {
-    voices = synth.getVoices();
-   // Intentar siempre seleccionar una voz femenina en español
-   preferredVoice = voices.find(v => v.name.includes('Paulina')) 
-              || voices.find(v => v.lang.toLowerCase().startsWith('es')) 
-              || voices[0] || null;
-  }
-  loadVoices();
-  if (synth.onvoiceschanged !== undefined) {
-    synth.onvoiceschanged = loadVoices;
-  }
-
-  // Toma el texto de la sección "introduccion"
-  function getIntroText() {
-    const section = document.getElementById('introduccion');
-    if (!section) return '';
-    const nodes = section.querySelectorAll('p, li, h1, h2, h3, h4, h5, h6');
-    if (!nodes.length) return section.textContent.trim();
-    let text = '';
-    nodes.forEach(el => {
-      const isHeading = /^H[1-6]$/.test(el.tagName);
-      const t = (el.textContent || '').trim();
-      if (!t) return;
-      text += isHeading ? t + '. . . ' : t + ' ';
+    // ===== TTS genérico por sección (una sola vez) =====
+    document.addEventListener('DOMContentLoaded', function () {
+      const synth = window.speechSynthesis;
+      let voices = [], preferred = null;
+    
+      function loadVoices() {
+        voices = synth.getVoices();
+        preferred = voices.find(v => v.name.includes('Paulina'))
+                 || voices.find(v => (v.lang||'').toLowerCase().startsWith('es'))
+                 || voices[0] || null;
+      }
+      loadVoices();
+      if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+    
+      // Para cada set de controles .speech-controls
+      document.querySelectorAll('.speech-controls').forEach(controls => {
+        const targetId = controls.dataset.target;               // <-- usa tu data-target correcto
+        const section  = document.getElementById(targetId);
+        if (!section) return;
+    
+        const playBtn  = controls.querySelector('.play-btn');
+        const pauseBtn = controls.querySelector('.pause-btn');
+        const stopBtn  = controls.querySelector('.stop-btn');
+        const rateCtrl = controls.querySelector('.speech-rate');
+    
+        let currentUtterance = null;
+        let isPaused = false;
+    
+        function getTextFromSection(sec) {
+          const nodes = sec.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption');
+          if (!nodes.length) return (sec.textContent||'').trim();
+          let text = '';
+          nodes.forEach(el => {
+            const t = (el.textContent||'').trim();
+            if (!t) return;
+            text += (/^H[1-6]$/.test(el.tagName) ? t + '. . . ' : t + ' ');
+          });
+          return text.trim();
+        }
+    
+        function setButtons(playing){
+          if (!playBtn || !pauseBtn || !stopBtn) return;
+          playBtn.disabled  = playing && !isPaused;
+          pauseBtn.disabled = !playing;
+          stopBtn.disabled  = !playing;
+        }
+    
+        function stop(){
+          if (synth.speaking || synth.pending) synth.cancel();
+          currentUtterance = null; isPaused = false; setButtons(false);
+        }
+    
+        function play(){
+          if (currentUtterance && isPaused && synth.speaking){
+            synth.resume(); isPaused = false; setButtons(true); return;
+          }
+          stop();
+          const text = getTextFromSection(section);
+          if (!text) return;
+          const utt = new SpeechSynthesisUtterance(text);
+          utt.lang  = (preferred && preferred.lang) || 'es-ES';
+          utt.voice = preferred || null;
+          utt.rate  = parseFloat(rateCtrl?.value || '1');
+    
+          utt.onend   = () => { currentUtterance = null; setButtons(false); };
+          utt.onerror = () => { currentUtterance = null; setButtons(false); };
+    
+          currentUtterance = utt;
+          synth.speak(utt);
+          isPaused = false; setButtons(true);
+        }
+    
+        function pause(){
+          if (currentUtterance && !isPaused && synth.speaking){
+            synth.pause(); isPaused = true; if (playBtn) playBtn.disabled = false;
+          }
+        }
+    
+        playBtn?.addEventListener('click',  play);
+        pauseBtn?.addEventListener('click', pause);
+        stopBtn?.addEventListener('click',  stop);
+    
+        rateCtrl?.addEventListener('change', () => {
+          const wasSpeaking = !!currentUtterance && !isPaused && synth.speaking;
+          if (wasSpeaking){ stop(); setTimeout(play, 80); }
+        });
+    
+        // Atajos: solo cuando la sección target está visible
+        document.addEventListener('keydown', (e) => {
+          const activePane = document.querySelector('.content-pane.active');
+          if (!activePane || activePane.id !== targetId) return;
+          if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    
+          if (e.code === 'Space') { e.preventDefault(); (currentUtterance && !isPaused && synth.speaking) ? pause() : play(); }
+          if (e.code === 'Tab' && !e.shiftKey) { stop(); }
+        });
+      });
     });
-    return text.trim();
-  }
-
-  function setButtons(playing) {
-    playBtn.disabled  = playing && !isPaused;
-    pauseBtn.disabled = !playing;
-    stopBtn.disabled  = !playing;
-  }
-
-  function play() {
-    if (currentUtterance && isPaused) {
-      synth.resume();
-      isPaused = false;
-      setButtons(true);
-      return;
-    }
-
-    // detén cualquier lectura previa
-    stop();
-
-    const text = getIntroText();
-    if (!text) return;
-
-    const utt = new SpeechSynthesisUtterance(text);
-    utt.lang = (preferredVoice && preferredVoice.lang) || 'es-ES';
-    utt.voice = preferredVoice || null;
-    utt.rate = parseFloat(rateCtrl.value || '1');
-
-    utt.onend = () => { currentUtterance = null; setButtons(false); };
-    utt.onerror = () => { currentUtterance = null; setButtons(false); };
-
-    currentUtterance = utt;
-    synth.speak(utt);
-    isPaused = false;
-    setButtons(true);
-  }
-
-  function pause() {
-    if (currentUtterance && !isPaused && synth.speaking) {
-      synth.pause();
-      isPaused = true;
-      // permitir reanudar
-      playBtn.disabled = false;
-    }
-  }
-
-  function stop() {
-    if (synth.speaking || synth.pending) synth.cancel();
-    currentUtterance = null;
-    isPaused = false;
-    setButtons(false);
-  }
-
-  // Listeners
-  playBtn.addEventListener('click',  play);
-  pauseBtn.addEventListener('click', pause);
-  stopBtn.addEventListener('click',  stop);
-
-  // Cambiar velocidad en caliente: reinicia si estaba leyendo
-  rateCtrl.addEventListener('change', () => {
-    const wasSpeaking = !!currentUtterance && !isPaused && synth.speaking;
-    if (wasSpeaking) {
-      stop();
-      setTimeout(play, 80);
-    }
-  });
-
-  // Atajos: Espacio = Play/Pause, Tab = Stop
-  document.addEventListener('keydown', (e) => {
-    const activePane = document.querySelector('.content-pane.active');
-    if (!activePane || activePane.id !== 'introduccion') return; // solo si estás en introducción
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-
-    if (e.code === 'Space') {
-      e.preventDefault();
-      if (currentUtterance && !isPaused && synth.speaking) { pause(); }
-      else { play(); }
-    }
-    if (e.code === 'Tab' && !e.shiftKey) {
-      stop();
-    }
-  });
-});
 </script>
 
-<script>
-// ==== Síntesis de voz para la sección "objetivos" ====
-document.addEventListener('DOMContentLoaded', function () {
+  <script>
+// ==== TTS para acordeón (usa un solo set de controles) ====
+document.addEventListener('DOMContentLoaded', () => {
   const synth = window.speechSynthesis;
   let voices = [], preferred = null;
+  const ctrl = document.querySelector('.speech-controls[data-mode="accordion"]');
+  if (!ctrl) return;
 
-  function loadVoices() {
+  function loadVoices(){
     voices = synth.getVoices();
     preferred = voices.find(v => v.name.includes('Paulina'))
-            || voices.find(v => v.lang.toLowerCase().startsWith('es'))
-            || voices[0] || null;
+             || voices.find(v => (v.lang||'').toLowerCase().startsWith('es'))
+             || voices[0] || null;
   }
   loadVoices();
   if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
 
-  const controls = document.querySelector('.speech-controls[data-target="objetivos"]');
-  if (!controls) return;
+  const containerSel = ctrl.getAttribute('data-container') || '#contenido';
+  const container = document.querySelector(containerSel);
+  if (!container) return;
 
-  const playBtn  = controls.querySelector('.play-btn');
-  const pauseBtn = controls.querySelector('.pause-btn');
-  const stopBtn  = controls.querySelector('.stop-btn');
-  const rateCtrl = controls.querySelector('.speech-rate');
+  const playBtn  = ctrl.querySelector('.play-btn');
+  const pauseBtn = ctrl.querySelector('.pause-btn');
+  const stopBtn  = ctrl.querySelector('.stop-btn');
+  const rateCtrl = ctrl.querySelector('.speech-rate');
 
-  let currentUtterance = null;
-  let isPaused = false;
+  let currentUtterance = null, isPaused = false;
 
-  function getObjetivosText() {
-    const section = document.getElementById('objetivos');
-    if (!section) return '';
-    const title = section.querySelector('h1, h2');
+  // Devuelve el <details> abierto; si ninguno, el primero
+  function getActiveDetails() {
+    return container.querySelector('details[open]') || container.querySelector('details');
+  }
+
+  // Toma texto del acordeón: título (summary) + contenido
+  function getDetailsText(det){
+    if (!det) return '';
     const parts = [];
-
-    if (title) {
-      const t = (title.textContent || '').trim();
+    const sum = det.querySelector(':scope > summary');
+    if (sum) {
+      const t = (sum.textContent||'').trim();
       if (t) parts.push(t + '. . . ');
     }
-    const nodes = section.querySelectorAll('p, li, h3, h4, h5, h6, figcaption');
-    nodes.forEach(el => {
-      const t = (el.textContent || '').trim();
-      if (!t) return;
-      const isHead = /^H[3-6]$/.test(el.tagName);
-      parts.push(isHead ? t + '. . . ' : t + ' ');
-    });
+    // Todo lo que no sea summary
+    const bodyNodes = det.querySelectorAll(':scope > :not(summary)');
+    if (bodyNodes.length){
+      bodyNodes.forEach(n=>{
+        // solo textos relevantes
+        n.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption').forEach(el=>{
+          const t = (el.textContent||'').trim();
+          if (t) parts.push(t + ' ');
+        });
+        // fallback si no hay hijos seleccionables
+        if (!n.querySelector('h1,h2,h3,h4,h5,h6,p,li,figcaption')){
+          const t = (n.textContent||'').trim();
+          if (t) parts.push(t + ' ');
+        }
+      });
+    } else {
+      const t = (det.textContent||'').trim();
+      if (t) parts.push(t);
+    }
     return parts.join('').trim();
   }
 
-  function setButtons(playing) {
+  function setButtons(playing){
     playBtn.disabled  = playing && !isPaused;
     pauseBtn.disabled = !playing;
     stopBtn.disabled  = !playing;
   }
 
-  function stop() {
+  function stop(){
     if (synth.speaking || synth.pending) synth.cancel();
-    currentUtterance = null;
-    isPaused = false;
-    setButtons(false);
+    currentUtterance = null; isPaused = false; setButtons(false);
   }
 
-  function play() {
-    if (currentUtterance && isPaused && synth.speaking) {
-      synth.resume();
-      isPaused = false;
-      setButtons(true);
-      return;
+  function play(){
+    if (currentUtterance && isPaused && synth.speaking){
+      synth.resume(); isPaused = false; setButtons(true); return;
     }
     stop();
-
-    const text = getObjetivosText();
+    const det = getActiveDetails();
+    const text = getDetailsText(det);
     if (!text) return;
 
     const utt = new SpeechSynthesisUtterance(text);
@@ -990,48 +1009,46 @@ document.addEventListener('DOMContentLoaded', function () {
     utt.onerror = () => { currentUtterance = null; setButtons(false); };
 
     currentUtterance = utt;
-    synth.speak(utt);
-    isPaused = false;
-    setButtons(true);
+    synth.speak(utt); isPaused = false; setButtons(true);
   }
 
-  function pause() {
-    if (currentUtterance && !isPaused && synth.speaking) {
-      synth.pause();
-      isPaused = true;
-      playBtn.disabled = false;
+  function pause(){
+    if (currentUtterance && !isPaused && synth.speaking){
+      synth.pause(); isPaused = true; playBtn.disabled = false;
     }
   }
 
+  // Eventos de botones
   playBtn.addEventListener('click',  play);
   pauseBtn.addEventListener('click', pause);
   stopBtn.addEventListener('click',  stop);
 
+  // Cambiar velocidad al vuelo
   rateCtrl?.addEventListener('change', () => {
     const wasSpeaking = !!currentUtterance && !isPaused && synth.speaking;
-    if (wasSpeaking) {
-      stop();
-      setTimeout(play, 80);
-    }
+    if (wasSpeaking){ stop(); setTimeout(play, 80); }
   });
 
-  // Atajos solo cuando "Objetivos" está visible
+  // Si el usuario abre otro acordeón, detén lectura
+  container.querySelectorAll('details').forEach(d=>{
+    d.addEventListener('toggle', () => {
+      if (d.open) stop(); // corta y deja listo para volver a "Leer"
+    });
+  });
+
+  // Atajos (solo si la pestaña "contenido" está visible)
   document.addEventListener('keydown', (e) => {
     const activePane = document.querySelector('.content-pane.active');
-    if (!activePane || activePane.id !== 'objetivos') return;
+    if (!activePane || activePane.id !== 'contenido') return;
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
-    if (e.code === 'Space') {
-      e.preventDefault();
-      if (currentUtterance && !isPaused && synth.speaking) { pause(); }
-      else { play(); }
-    }
-    if (e.code === 'Tab' && !e.shiftKey) {
-      stop();
-    }
+    if (e.code === 'Space') { e.preventDefault(); (currentUtterance && !isPaused && synth.speaking) ? pause() : play(); }
+    if (e.code === 'Tab' && !e.shiftKey) { stop(); }
+    if (e.code === 'Escape') { stop(); }
   });
 });
 </script>
+
 
   
 </body>

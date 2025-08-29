@@ -580,142 +580,66 @@
     <!-- Actividades -->
     <section id="actividades" class="content-pane">
       <!-- TTS sección: Introducción -->
-<div class="flex justify-end">
-  <div class="space-y-1">
-    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-         data-target="introduccion">
-      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-        <span class="mr-1">▶️</span> Leer
-      </button>
-      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏸️</span> Pausar
-      </button>
-      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏹️</span> Detener
-      </button>
-      <div class="flex items-center ml-2">
-        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-      </div>
-    </div>
-    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-    </div>
-  </div>
-</div>
+        <div class="flex justify-end">
+          <div class="space-y-1">
+            <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+                 data-target="introduccion">
+              <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+                <span class="mr-1">▶️</span> Leer
+              </button>
+              <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+                <span class="mr-1">⏸️</span> Pausar
+              </button>
+              <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+                <span class="mr-1">⏹️</span> Detener
+              </button>
+              <div class="flex items-center ml-2">
+                <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+                <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+              </div>
+            </div>
+            <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+              <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+              <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+            </div>
+          </div>
+        </div>
 
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Actividades</h2>
 
-<!-- ========== SITUACIÓN 1 ========== -->
-<article class="bg-white border rounded-lg shadow-sm p-5 mb-8">
-  <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 1</h3>
-  <p class="mb-4">
-    Un Cine necesita un sistema que permita mostrar el valor a cobrar por tiquete de entrada,
-    teniendo en cuenta que se aplica un <strong>descuento infantil del 20%</strong> si el niño es
-    <strong>menor de 12 años</strong>.
-  </p>
+      <!-- Situación 1 -->
+  <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5 mb-6">
+    <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 1</h3>
+    <p class="mb-3">
+      Escriba el pseudocódigo para un programa que determine si una persona es mayor de edad (18 años o más).
+    </p>
+    <textarea rows="8" class="w-full p-3 border rounded bg-white"
+      placeholder="Pseudocódigo…&#10;Algoritmo MayorDeEdad&#10;Leer edad&#10;Si edad &gt;= 18 Entonces&#10;    Escribir 'Mayor de edad'&#10;SiNo&#10;    Escribir 'Menor de edad'&#10;FinSi&#10;FinAlgoritmo"></textarea>
+  </article>
 
-  <!-- Grid 3 arriba / 2 abajo -->
-  <div class="grid md:grid-cols-3 gap-4">
-    <!-- Entradas -->
-    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-      <h4 class="font-bold text-emerald-800 mb-2">Entradas sugeridas</h4>
-      <ul class="list-disc ml-5 text-slate-700 mb-3">
-        <li>edad (entero)</li>
-        <li>precioBase (real)</li>
-      </ul>
-      <input class="a1 entrada w-full p-2 border rounded bg-white"
-             placeholder="Escribe aquí tus entradas…">
-    </div>
+  <!-- Situación 2 -->
+  <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5 mb-6">
+    <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 2</h3>
+    <p class="mb-3">
+      Un supermercado aplica descuentos así: Si el cliente compra más de 10 productos, obtiene 15% de descuento.
+      Si compra entre 5 y 10, obtiene 10%. Si compra menos de 5, no tiene descuento.
+      Diseñe el pseudocódigo con condicionales múltiples para este caso.
+    </p>
+    <textarea rows="10" class="w-full p-3 border rounded bg-white"
+      placeholder="Pseudocódigo…&#10;Algoritmo DescuentoSuper&#10;Leer cantidad, precioUnidad&#10;subtotal &lt;- cantidad * precioUnidad&#10;descuento &lt;- 0&#10;Si cantidad &gt; 10 Entonces&#10;    descuento &lt;- subtotal * 0.15&#10;SiNoSi cantidad &gt;= 5 Entonces&#10;    descuento &lt;- subtotal * 0.10&#10;FinSi&#10;total &lt;- subtotal - descuento&#10;Escribir total, descuento&#10;FinAlgoritmo"></textarea>
+  </article>
 
-    <!-- Restricciones -->
-    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-      <h4 class="font-bold text-blue-700 mb-2">Restricciones</h4>
-      <input class="a1 restricciones w-full p-2 border rounded bg-white"
-             placeholder="Ej.: edad ≥ 0; precioBase &gt; 0">
-    </div>
+  <!-- Situación 3 -->
+  <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5">
+    <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 3</h3>
+    <p class="mb-3">
+      Usando la estructura SEGÚN, diseñe un pseudocódigo que muestre el día de la semana según un número ingresado
+      (1 = lunes, 2 = martes, …, 7 = domingo).
+    </p>
+    <textarea rows="11" class="w-full p-3 border rounded bg-white"
+      placeholder="Pseudocódigo…&#10;Algoritmo DiaSegunNumero&#10;Leer n&#10;Segun n Hacer&#10;    1: Escribir 'Lunes'&#10;    2: Escribir 'Martes'&#10;    3: Escribir 'Miércoles'&#10;    4: Escribir 'Jueves'&#10;    5: Escribir 'Viernes'&#10;    6: Escribir 'Sábado'&#10;    7: Escribir 'Domingo'&#10;De Otro Modo: Escribir 'Número inválido'&#10;FinSegun&#10;FinAlgoritmo"></textarea>
+  </article>
 
-    <!-- Condición -->
-    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-      <h4 class="font-bold text-yellow-700 mb-2">Condición</h4>
-      <input class="a1 condicion w-full p-2 border rounded bg-white"
-             placeholder="Ej.: edad &lt; 12">
-    </div>
-
-    <!-- Proceso -->
-    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 md:col-span-2">
-      <h4 class="font-bold text-purple-700 mb-2">Proceso</h4>
-      <textarea rows="4" class="a1 proceso w-full p-2 border rounded bg-white"
-        placeholder="Pseudocódigo o fórmula…&#10;si (edad &lt; 12) entonces total = precioBase * 0.8&#10;si no total = precioBase"></textarea>
-    </div>
-
-    <!-- Salidas -->
-    <div class="bg-pink-50 border border-pink-200 rounded-lg p-4">
-      <h4 class="font-bold text-pink-700 mb-2">Salidas</h4>
-      <input class="a1 salidas w-full p-2 border rounded bg-white"
-             placeholder="Ej.: total a pagar">
-    </div>
-  </div>
-</article>
-
-<!-- ========== SITUACIÓN 2 ========== -->
-<article class="bg-white border rounded-lg shadow-sm p-5">
-  <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 2</h3>
-  <p class="mb-4">
-    Una tienda local aplica un <strong>descuento del 10%</strong> si el medio de pago es
-    igual a <strong>“efectivo”</strong>.
-  </p>
-
-  <div class="grid md:grid-cols-3 gap-4">
-    <!-- Entradas -->
-    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-      <h4 class="font-bold text-emerald-800 mb-2">Entradas sugeridas</h4>
-      <ul class="list-disc ml-5 text-slate-700 mb-3">
-        <li>subtotal (real)</li>
-        <li>medioPago (texto)</li>
-      </ul>
-      <input class="a2 entrada w-full p-2 border rounded bg-white"
-             placeholder="Escribe aquí tus entradas…">
-    </div>
-
-    <!-- Restricciones -->
-    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-      <h4 class="font-bold text-blue-700 mb-2">Restricciones</h4>
-      <input class="a2 restricciones w-full p-2 border rounded bg-white"
-             placeholder="Ej.: subtotal &gt; 0; medioPago permitido">
-    </div>
-
-    <!-- Condición -->
-    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-      <h4 class="font-bold text-yellow-700 mb-2">Condición</h4>
-      <input class="a2 condicion w-full p-2 border rounded bg-white"
-             placeholder='Ej.: medioPago == "efectivo"'>
-    </div>
-
-    <!-- Proceso -->
-    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 md:col-span-2">
-      <h4 class="font-bold text-purple-700 mb-2">Proceso</h4>
-      <textarea rows="4" class="a2 proceso w-full p-2 border rounded bg-white"
-        placeholder="Pseudocódigo o fórmula…&#10;si (medioPago == &quot;efectivo&quot;) entonces total = subtotal * 0.9&#10;si no total = subtotal"></textarea>
-    </div>
-
-    <!-- Salidas -->
-    <div class="bg-pink-50 border border-pink-200 rounded-lg p-4">
-      <h4 class="font-bold text-pink-700 mb-2">Salidas</h4>
-      <input class="a2 salidas w-full p-2 border rounded bg-white"
-             placeholder="Ej.: total a pagar, descuento">
-    </div>
-  </div>
-</article>
-
-<!-- Botón verificar -->
-<div class="mt-5">
-  <button id="check-acts"
-    class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded transition-colors">
-    Verificar
-  </button>
-  <div id="acts-result" class="mt-3 font-semibold"></div>
 
 </section>  <!-- ← cierre de la sección ACTIVIDADES -->
 

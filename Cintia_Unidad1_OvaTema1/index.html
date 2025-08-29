@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OVA: Tema 2 — Identificación y análisis de problemas para proponer soluciones lógicas</title>
+  <title>OVA: Tema 3 — Estructuras de control secuenciales y condicionales</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,7 +27,7 @@
     .modal-content img { max-width:100%; max-height:90vh; border:4px solid #fff; border-radius:4px; box-shadow:0 10px 25px rgba(0,0,0,.5); }
     .close-modal { position:absolute; top:-20px; right:-20px; background:#ef4444; color:#fff; border:none; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px; }
  
-  /* ====== Tooltips (estilos globales) ====== */
+  /* ====== Tooltips (estilos globales) ====oop== */
 .tooltip {
   position: relative;
   display: inline-block;
@@ -70,39 +70,15 @@
         <img src="img/logo.webp" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
       </div>
     </div>
-
-  <nav class="mt-6 flex-1" role="navigation" aria-label="Secciones del OVA">
-  <a href="#" class="sidebar-link active flex items-center py-3 px-6 font-medium text-slate-700"
-     data-target="introduccion" aria-label="Introducción">
-    <span class="mr-3 text-xl">🚀</span> Introducción
-  </a>
-  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-     data-target="objetivos" aria-label="Objetivos">
-    <span class="mr-3 text-xl">🎯</span> Objetivos
-  </a>
-  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-     data-target="contenido" aria-label="Contenido">
-    <span class="mr-3 text-xl">📚</span> Contenido
-  </a>
-  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-     data-target="actividades" aria-label="Actividades">
-    <span class="mr-3 text-xl">✍️</span> Actividades
-  </a>
-  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-     data-target="evaluacion" aria-label="Evaluación">
-    <span class="mr-3 text-xl">✔️</span> Evaluación
-  </a>
-  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-     data-target="recursos" aria-label="Recursos">
-    <span class="mr-3 text-xl">📖</span> Recursos
-  </a>
-  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-     data-target="bibliografia" aria-label="Bibliografía">
-    <span class="mr-3 text-xl">📚</span> Bibliografía
-  </a>
-</nav>
-
-    
+    <nav class="mt-6 flex-1">
+      <a href="#" class="sidebar-link active flex items-center py-3 px-6 font-medium text-slate-700" data-target="introduccion"><span class="mr-3 text-xl">🚀</span> Introducción</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="objetivos"><span class="mr-3 text-xl">🎯</span> Objetivos</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="contenido"><span class="mr-3 text-xl">📚</span> Contenido</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="actividades"><span class="mr-3 text-xl">✍️</span> Actividades</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="evaluacion"><span class="mr-3 text-xl">✔️</span> Evaluación</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="recursos"><span class="mr-3 text-xl">📖</span> Recursos</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="bibliografia"><span class="mr-3 text-xl">📚</span> Bibliografía</a>
+    </nav>
   </aside>
 
   <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50">
@@ -121,240 +97,172 @@
       </select>
     </div>
 
-    <!-- Intro -->
-    <section id="introduccion" class="content-pane active">
-     <!-- TTS sección: Introducción -->
-<div class="flex justify-end">
-  <div class="space-y-1">
-    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-         data-target="introduccion">
-      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-        <span class="mr-1">▶️</span> Leer
-      </button>
-      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏸️</span> Pausar
-      </button>
-      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏹️</span> Detener
-      </button>
-      <div class="flex items-center ml-2">
-        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-      </div>
-    </div>
-    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-    </div>
-  </div>
-</div>
+   <!-- Intro -->
+        <section id="introduccion" class="content-pane active">
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-800">
+            Estructuras de control secuenciales y condicionales
+          </h1>
 
-      
-      <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-800">Identificación y análisis de problemas para proponer soluciones lógicas</h1>
-      <p class="mt-4 leading-relaxed">
-        🏠 <strong>Antes de programar</strong>, es imprescindible comprender el problema: qué se recibe (entradas), qué se transforma/valida (proceso) y qué se espera obtener (salidas). Esto implica reconocer restricciones (límites, reglas del negocio, rangos válidos, requisitos de seguridad), elegir tipos de datos adecuados, nombrar variables y constantes con claridad y expresar operaciones y decisiones de forma precisa, usando prioridad de operadores y paréntesis.
-      </p>
-      <p class="mt-2 leading-relaxed">
-        El enfoque de esta guía conduce del enunciado en lenguaje natural al modelo lógico y, finalmente, a expresiones y decisiones listas para pseudocódigo o código.
-      </p>
-      <div class="mt-6 p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-lg">
-        <p class="text-emerald-900">Navega por el menú para explorar el objetivo, el contenido, las actividades, la evaluación y los recursos.</p>
-      </div>
-    </section>
+            <p class="mt-4 leading-relaxed">
+              💻 En programación, las <strong>estructuras de control</strong>  son como el mapa 🗺️ que guía a un programa. 
+              Sin estas estructuras, el programa solo podría ejecutar instrucciones una tras otra, sin tomar decisiones ni reaccionar a distintas situaciones.  
+              Con esta guía aprenderás paso a paso cómo funcionan las <strong>secuencias</strong> y las <strong>estructuras condicionales</strong> 🔎, 
+              para que puedas usarlas sin miedo y con confianza ✅.
+            </p>
+          
+          <div class="mt-6 p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-lg">
+            <p class="text-emerald-900">
+              Navega por el menú para explorar el objetivo, el contenido, las actividades, la evaluación y los recursos.
+            </p>
+          </div>
+        </section>
 
-    <!-- Objetivo -->
-    <section id="objetivos" class="content-pane">
-
-<!-- TTS sección: Objetivo -->
-<div class="flex justify-end">
-  <div class="space-y-1">
-    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-         data-target="objetivos">
-      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-        <span class="mr-1">▶️</span> Leer
-      </button>
-      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏸️</span> Pausar
-      </button>
-      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏹️</span> Detener
-      </button>
-      <div class="flex items-center ml-2">
-        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-      </div>
-    </div>
-    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-    </div>
-  </div>
-</div>
-
-      
-      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Objetivo</h2>
-     <p class="leading-relaxed">
-        🧠 <strong>Reconocer y aplicar</strong> herramientas básicas para describir problemas y proponer soluciones lógicas, identificando restricciones y condiciones, seleccionando tipos de datos, definiendo variables y constantes, y utilizando operadores aritméticos, relacionales y lógicos con su prioridad y el uso adecuado de paréntesis. Al finalizar, el estudiante elaborará expresiones y decisiones válidas para resolver problemas sencillos.
-      </p>
-
-    </section>
-
+   <!-- Objetivo -->
+        <section id="objetivos" class="content-pane">
+          <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Objetivo</h2>
+          <p class="leading-relaxed">
+            🧩 <strong>Comprender y dominar</strong> las estructuras de control básicas (secuenciales y condicionales) mediante explicaciones sencillas, ejemplos prácticos y ejercicios guiados en pseudocódigo. ✍️💡
+          </p>
+        </section>
+    
     <!-- Contenido -->
       <section id="contenido" class="content-pane">
-   
-      <!-- TTS para acordeón de CONTENIDO (lee solo el <details> abierto) -->
-        <div class="flex justify-end">
-        <div class="space-y-1">
-          <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-               data-mode="accordion" data-container="#contenido">
-            <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-              <span class="mr-1">▶️</span> Leer
-            </button>
-            <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-              <span class="mr-1">⏸️</span> Pausar
-            </button>
-            <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-              <span class="mr-1">⏹️</span> Detener
-            </button>
-            <div class="flex items-center ml-2">
-              <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-              <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-            </div>
-          </div>
-      
-          <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-            <strong>💡 Atajos:</strong>
-            <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-            <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-          </div>
-        </div>
-      </div>
-
-      
-        
-        <!-- A: Definición -->
+      <div class="space-y-4">
+        <!-- A: Estructuras de control secuenciales -->
         <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
           <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-            Operadores
+            Estructuras de control secuenciales
             <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
           </summary>
           <div class="px-4 pb-4 text-slate-700 space-y-3">
-            <p> Los <strong> operadores </strong> permiten calcular, comparar y (más adelante) construir decisiones. En esta unidad se usan de forma básica, con ejemplos claros y advertencias comunes.</p>
-            
-            </figure>
-           <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg">
-
-            <p>
-              Los 
-              <span class="tooltip"><strong>Operadores aritméticos</strong>
+         
+             <p class="mt-4 leading-relaxed">
+              Las 
+              <span class="tooltip">
+                <strong>estructuras de control secuenciales</strong>
                 <span class="tooltiptext">
-                  Se usan para construir expresiones numéricas; recuerda no dividir entre cero y distinguir entre división entera y real.
+                  Representan el flujo natural de la lógica: una acción ocurre después de otra.
                 </span>
-              </span>. 
-              Son símbolos que permiten realizar cálculos matemáticos con números, variables o constantes.
+              </span> 
+              son la forma más básica de organización en un algoritmo o programa. En ellas, las instrucciones se ejecutan una tras otra, en el mismo orden en que fueron escritas, sin condiciones ni repeticiones.
             </p>
-          
-          </div>
-
-
-            </figure>
-              
+            
+                     
             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Relación de Operadores aritméticos </figcaption>
+              <figcaption class="font-semibold text-emerald-800 mb-2"> Características de estructuras de control secuenciales </figcaption>
               <img src="img/img01.png" alt=" . " class="w-full object-contain rounded"/>
             </figure>
             <div class="p-4">
             
-            
-               <figcaption class="font-semibold text-emerald-800 mb-2">
-                <span class="tooltip">Cuidados frecuentes
-                  <span class="tooltiptext">
-                    Nunca dividas entre cero (provoca error de ejecución), distingue división entera y real (por ejemplo, 7/2 puede dar 3 o 3.5 según el lenguaje) y usa el módulo (%) con enteros, teniendo en cuenta que con números negativos su resultado puede variar según el lenguaje; atender estos puntos evita fallas comunes y resultados inesperados.
-                  </span>
-                </span>
-              </figcaption>
+
+         </figure>
+                <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg">
+                
+                  <p>
+                    📌 <span class="tooltip"><strong>Estructuras de control.</strong>
+                      <span class="tooltiptext">
+                        Aunque son limitadas, siempre estarán presentes, ya sea de manera independiente o combinadas con estructuras condicionales y repetitivas para resolver problemas más complejos.
+                      </span>
+                    </span>  
+                    — Las estructuras de control secuenciales constituyen el pilar de la programación, 
+                    pues aseguran que las instrucciones se ejecuten de forma ordenada y lógica. 
+                  </p>
+                
+                                  
+                </div>
+          </figure>
+
+              
+   <figcaption class="font-semibold text-emerald-800 mb-2">
+          En las estructuras secuenciales encontramos 
+          <span class="tooltip"><strong>Ventajas</strong>
+            <span class="tooltiptext">
+              Las ventajas de las estructuras secuanciales se reflejan en su simplicidad, ya que son fáciles de entender e implementar; en su valor como introducción a la programación, al ser útiles para aprender los fundamentos; y en la claridad que proporcionan al dar orden y lógica a los algoritmos.
+            </span>
+          </span>
+          y también algunas 
+          <span class="tooltip"><strong>Limitaciones</strong>
+            <span class="tooltiptext">
+              Limitaciones: la falta de lógica en los diagramas de flujo simples que no permiten tomar decisiones complejas, la ausencia de repetición automática de procesos, y la posible complejidad que surge cuando se aplican a problemas de mayor escala.
+            </span>
+          </span>.
+    </figcaption>
 
                
                <img src="img/img02.png" alt=" . " class="w-full object-contain rounded"/>
   
-              
-              <p class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg mb-4">
-                Los 
-                <span class="tooltip"><strong>Operadores relacionales</strong>
-                  <span class="tooltiptext">
-                    Con números comparan magnitudes; con texto la comparación puede depender de mayúsculas/minúsculas según el lenguaje. 
-                  </span>
-                </span>. 
-                Los operadores relacionales se usan para comparar dos valores (del mismo tipo) y el resultado siempre es Verdadero o Falso. 
-                Sirven para verificar igualdad, diferencia y orden: <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>.
-              </p>
-
-
+     
             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Relación de operadores relacionales. </figcaption>
+              <figcaption class="font-semibold text-emerald-800 mb-2">Ejemplos cotidianos donde se aplican estructuras de control secuenciales </figcaption>
               <img src="img/img03.png" alt=" . " class="w-full object-contain rounded"/>
             </figure>
 
-            <p class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg mb-4">
-              Los 
-              <span class="tooltip"><strong>Operadores lógicos</strong>
-                <span class="tooltiptext">
-                  Los principales operadores lógicos son: <br>
-                  <b>&amp;&amp; (AND):</b> verdadero solo si ambas condiciones lo son.<br>
-                  <b>|| (OR):</b> verdadero si al menos una condición lo es.<br>
-                  <b>! (NOT):</b> invierte el valor lógico (verdadero ↔ falso).
-                </span>
-              </span>. 
-              Los operadores lógicos trabajan con valores Verdadero/Falso y nos ayudan a decidir a partir de condiciones simples.
-            </p>
+           <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+                <figcaption class="font-semibold text-emerald-800 mb-2">
+                  Ejemplo en 
+                  <span class="tooltip"><strong>pseudocódigo</strong>
+                    <span class="tooltiptext">
+                      El pseudocódigo es una forma de escribir algoritmos usando un lenguaje intermedio, que combina palabras del lenguaje natural con estructuras básicas de programación.
+                    </span>
+                  </span> 
+                  - problemática: calcular área
+                </figcaption>
+                <img src="img/img04.png" alt=" . " class="w-full object-contain rounded"/>
+        </figure>
 
-            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Relación de operadores lógicos. </figcaption>
-              <img src="img/img04.png" alt=" . " class="w-full object-contain rounded"/>
-            </figure>
-                
+                          
                 
            
             </div>
           </div>
         </details>
 
-        <!-- B: Características -->
+        <!-- B: Estructuras de control condicionales -->
         <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
           <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-            Prioridad de operadores y uso de paréntesis 
+            Estructuras de control condicionales 
             <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
           </summary>
           <div class="px-4 pb-4 text-slate-700 space-y-3">
             
           <p>
-            Antes de evaluar una <strong>expresión</strong>, el computador sigue un orden de 
-            <span class="tooltip">prioridad
+            Las <strong>estructuras de control</strong> 
+            <span class="tooltip">condicionales
               <span class="tooltiptext">
-                Orden de evaluación: <br>
-                1. Multiplicación / División / Módulo <br>
-                2. Suma / Resta <br>
-                3. Comparaciones (relacionales) <br>
-                4. Negación lógica (!) <br>
-                5. AND (&&) y OR (||)
+                Estas condiciones  <br>
+                se expresan como proposiciones <br>
+                que pueden ser verdaderas <br>
+                (True) o falsas (False)
               </span>
             </span>. 
-            La siguiente figura lo resume; cuando tengas duda, usa paréntesis para dejar clara la intención de la operación inicial.
+             permiten que un programa tome decisiones según se cumpla o no una condición lógica.
           </p>
 
-            <figure class="mt-2">
-              <img src="img/img05.png" class="w-full object-contain" alt="Prioridades de los operadores">
+            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Estructuras condicionales en programación </figcaption>
+              <img src="img/img05.png" alt=" . " class="w-full object-contain rounded"/>
             </figure>
-            <p>
-              Regla práctica: usa paréntesis para dejar clara la intención. 
-              Por ejemplo, si tienes la ecuación: 
-              <span class="text-red-600 font-bold">a + b * c</span> 
-              para que se calcule primero a + b (usa paréntesis) así: 
-              <span class="text-red-600 font-bold">(a + b) * c</span>.
-            </p>
-  <!-- B: nuevo -->
+
+             <p class="mt-3 text-slate-700 leading-relaxed">
+                  Las <strong>estructuras condicionales</strong> permiten controlar el flujo de un programa al tomar decisiones
+                  basadas en condiciones lógicas. Estas pueden ser 
+                  <span class="tooltip"><em>simples</em>
+                    <span class="tooltiptext">
+                      Ejecutan una acción si se cumple la condición
+                    </span>
+                  </span>, 
+                  <span class="tooltip"><em>dobles</em>
+                    <span class="tooltiptext">
+                      Definen un camino cuando la condición es verdadera y otro cuando es falsa
+                    </span>
+                  </span> o 
+                  <span class="tooltip"><em>múltiples</em>
+                    <span class="tooltiptext">
+                      Permiten elegir entre varios casos posibles
+                    </span>
+                  </span>.
+              </p>
             
-      <!-- B: fin nuevo -->      
 
             <div class="grid sm:grid-cols-2 gap-4">
               
@@ -362,161 +270,204 @@
           </div>
         </details>
 
-        <!-- C: Ejemplos -->
+        <!-- 3  Condicional Simple (Si) -->
         <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
           <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-            Tipos de Datos
+            Condicional Simple (Si)
             <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
           </summary>
           <div class="px-4 pb-4 text-slate-700 space-y-3">
           
-           <p> En <strong> programación </strong> usamos tipos de datos primitivos para indicar qué clase de información puede guardar una variable o constante y qué operaciones se pueden hacer con ella. En lógica de programación trabajamos, principalmente, con los siguientes:</p>
-
+            <p class="mt-3 text-slate-700 leading-relaxed">
+              El <strong>condicional simple</strong> 
+              (<span class="text-red-600 font-bold">si</span>) 
+              ejecuta un bloque de instrucciones solo si se cumple una condición. 
+              Si no se cumple, continúa con la siguiente instrucción sin ejecutar el bloque.
+            </p>
+            
             <figure class="border rounded p-3">
-              <img src="img/img06.png" class="w-full object-contain" alt="Tipos de datos">
+              <img src="img/img06.png" class="w-full object-contain" alt="Condicional simple">
             </figure>
 
-                        
+             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+                  <figcaption class="font-semibold text-emerald-800 mb-2">
+                    Ejemplo. Verificar si un número es positivo 
+                    (<span class="tooltip">PSeInt
+                      <span class="tooltiptext">
+                        PSeInt es una herramienta educativa diseñada para aprender lógica de programación 
+                        mediante pseudocódigo, de forma sencilla e intuitiva.
+                      </span>
+                    </span>): 
+                  </figcaption>
+                  <img src="img/img07.png" alt="Ejemplo en PSeInt" class="w-full object-contain rounded"/>
+            </figure>
+
+            
             
           </div>
         </details>
 
-        <!-- D: Importancia -->
+     <!-- Condicional compuesto o doble (Si - sino)-->
         <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
           <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-            Variables y Constantes
+            Condicional compuesto o doble (Si - sino)
+            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
+          </summary>
+          <div class="px-4 pb-4 text-slate-700 space-y-3">
+          
+        <p class="mt-3 text-slate-700 leading-relaxed">
+            Cuando existen dos caminos posibles, usamos 
+            <span class="text-red-600 font-bold">si-sino</span> (if–else). 
+            Si la condición es verdadera, ejecuta el primer bloque; 
+            en caso contrario, ejecuta el bloque del 
+            <span class="text-red-600 font-bold">sino</span>.
+      </p>
+            
+            <figure class="border rounded p-3">
+              <img src="img/img08.png" class="w-full object-contain" alt="Tipos de datos">
+            </figure>
+
+              <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+                  <figcaption class="font-semibold text-emerald-800 mb-2">
+                    Ejemplo: Determinar si un estudiante aprueba - 
+                    (<span class="tooltip">PSeInt
+                      <span class="tooltiptext">
+                        PSeInt es una herramienta educativa diseñada para aprender lógica de programación 
+                        mediante pseudocódigo, de forma sencilla e intuitiva.
+                      </span>
+                    </span>): 
+                  </figcaption>
+                  <img src="img/img09.png" alt="Ejemplo en PSeInt" class="w-full object-contain rounded"/>
+            </figure>            
+            
+          </div>
+        </details>
+        
+
+        <!-- 3.2.3.	Condicionales múltiples  -->
+        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
+          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
+            Condicionales múltiples 
+            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
+          </summary>
+          <div class="px-4 pb-4 text-slate-700 space-y-3">
+
+           <p class="mt-3 text-slate-700 leading-relaxed">
+                Los <strong>condicionales múltiples</strong> permiten tomar decisiones cuando existen varias condiciones posibles. 
+                Se pueden implementar de dos formas:
+          </p>
+
+              <ul class="list-disc ml-6 space-y-2 text-slate-700">
+                <li>
+                  Mediante múltiples condicionales 
+                  <span class="tooltip text-green-600 font-bold">SI anidados
+                    <span class="tooltiptext">
+                      Donde cada condición se evalúa de forma secuencial.
+                    </span>
+                  </span>.
+                </li>
+                <li>
+                  Mediante la 
+                  <span class="tooltip text-green-600 font-bold">estructura SEGÚN
+                    <span class="tooltiptext">
+                      Facilita la lectura cuando se compara una misma variable contra diferentes valores.
+                    </span>
+                  </span>, que mejora la claridad del código.
+                </li>
+              </ul>
+
+          
+            <figure>
+              <img src="img/img10.png" class="w-full object-contain" alt="Cómo implementar condicionales múltiples">
+            </figure>
+          </div>
+        </details>
+
+         <!-- Condicionales múltiples con SI   -->
+        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
+          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
+            Condicionales múltiples con SI  
             <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
           </summary>
           <div class="px-4 pb-4 text-slate-700 space-y-3">
 
             <p class="mb-3">
-            En programación usamos <strong>identificadores</strong> para nombrar datos. Los dos más comunes son 
-            <em>variables</em> y <em>constantes</em>: según la necesidad, el valor puede cambiar o permanecer fijo.
-          </p>
+            Los <strong> condicionales múltiples con SI </strong> permiten evaluar diferentes escenarios de manera secuencial. En esta estructura, si la primera condición no se cumple, el programa pasa a revisar la siguiente y así sucesivamente, hasta encontrar una que sea verdadera o ejecutar el bloque final de lo contrario. 
+            </p>
           
-          <p class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg mb-3">
-            Una <span class="tooltip"><strong>variable</strong>
-              <span class="tooltiptext">
-                Su valor puede cambiar durante la ejecución.<br>
-                Ejemplos:<br>
-                <code>edad = 17 → 18</code><br>
-                <code>total = subtotal + iva</code><br>
-                <code>temperaturaHoy = 32; temperaturaManana = 31</code><br>
-                Suele ser numérica, de texto o lógica (V/F).
-              </span>
-            </span> es un identificador cuyo valor puede modificarse a lo largo del algoritmo.
-          </p>
-          
-          <p class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg">
-            Una <span class="tooltip"><strong>constante</strong>
-              <span class="tooltiptext">
-                Su valor NO cambia en todo el programa.<br>
-                Ejemplos:<br>
-                <code>PI = 3.1416</code>, <code>IVA = 0.19</code>, <code>MAX_ESTUDIANTES = 40</code>.<br>
-                Convención: escribir en MAYÚSCULAS con guion bajo.
-              </span>
-            </span> mantiene el mismo valor durante la ejecución (no se reasigna).
-          </p>
-
-          
-            <figure>
-              <img src="img/img07.png" class="w-full object-contain" alt="Consejos para identificadores">
+           <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Estructuras condicional múltiple con SI  </figcaption>
+              <img src="img/img11.png" alt=" . " class="w-full object-contain rounded"/>
             </figure>
+
+            <p class="mb-3">
+            Esta forma de anidar  <strong> condicionales </strong> es útil cuando se requiere comparar varias posibilidades que no pueden resolverse con una sola instrucción condicional. 
+            </p>
+
+             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Características condicionales condicional múltiples con si  </figcaption>
+              <img src="img/img12.png" alt=" . " class="w-full object-contain rounded"/>
+            </figure>
+
+            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+                  <figcaption class="font-semibold text-emerald-800 mb-2">
+                    Ejemplo de condicional múltiple con SI - 
+                    (<span class="tooltip">PSeInt
+                      <span class="tooltiptext">
+                        PSeInt es una herramienta educativa diseñada para aprender lógica de programación 
+                        mediante pseudocódigo, de forma sencilla e intuitiva.
+                      </span>
+                    </span>): 
+                  </figcaption>
+                  <img src="img/img13.png" alt="Ejemplo en PSeInt" class="w-full object-contain rounded"/>
+            </figure>        
+          
           </div>
         </details>
 
-        <!-- E: EPS -->
+        <!-- Condicionales múltiples con Según -->
         <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
           <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-            Identificación de restricciones y condiciones en un problema
+           Condicionales múltiples con Según 
             <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
           </summary>
+          <div class="px-4 pb-4 text-slate-700 space-y-3">
+
+            <p class="mt-3 text-slate-700 leading-relaxed">
+                    El condicional 
+                    <span class="tooltip text-red-600 font-bold">SEGÚN
+                      <span class="tooltiptext">
+                        Conocido en otros lenguajes como switch
+                      </span>
+                    </span> 
+                    permite evaluar una sola variable y compararla contra distintos valores posibles. 
+                    Según el valor que tome, se ejecuta un bloque de acciones.
+            </p>
           
-         <div class="grid md:grid-cols-2 gap-4">
-          <!-- Card 1 -->
-          <article
-            class="rounded-2xl p-6 shadow-lg bg-gradient-to-br from-emerald-500 to-emerald-600 text-white hover:shadow-xl transition-shadow">
-            <h3 class="text-xl font-extrabold mb-3">¿Qué buscamos?</h3>
-            <ul class="list-disc ml-5 space-y-2 marker:text-white">
-              <li><span class="font-semibold">Restricciones:</span> reglas que siempre deben cumplirse (rango, formato, opciones válidas, existencia del dato).</li>
-              <li><span class="font-semibold">Condición básica:</span> una comparación que activa una acción (sin combinar con “y/o” todavía).</li>
-              <li><span class="font-semibold">Comparadores:</span> operadores relacionales.</li>
-            </ul>
-          </article>
-        
-          <!-- Card 2 -->
-          <article
-            class="rounded-2xl p-6 shadow-lg bg-gradient-to-br from-indigo-500 to-sky-500 text-white hover:shadow-xl transition-shadow">
-            <h3 class="text-xl font-extrabold mb-3">¿Qué tener en cuenta?</h3>
-            <ul class="list-disc ml-5 space-y-2 marker:text-white">
-              <li><span class="font-semibold">Entradas:</span> qué datos llegan.</li>
-              <li><span class="font-semibold">Restricciones (mín. 2):</span> rango, formato u opciones permitidas.</li>
-              <li><span class="font-semibold">Condición (1 comparación):</span> qué evaluar para decidir una acción.</li>
-              <li><span class="font-semibold">Proceso:</span> operación sencilla (cálculo o asignación).</li>
-              <li><span class="font-semibold">Salidas + Mensajes:</span> qué mostrar/guardar; texto breve si se rompe una restricción.</li>
-            </ul>
-          </article>
-        </div>
+           <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Estructuras condicional SEGUN  </figcaption>
+              <img src="img/img14.png" alt=" . " class="w-full object-contain rounded"/>
+            </figure>
 
+             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Características condicional SEGUN  </figcaption>
+              <img src="img/img15.png" alt=" . " class="w-full object-contain rounded"/>
+            </figure>
 
-          <!-- Grid del ejemplo (3 columnas) -->
-<div class="grid md:grid-cols-3 gap-4 mt-4">
-
-  <!-- Enunciado ocupa las 3 columnas -->
-  <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-4 md:col-span-3">
-    <h3 class="font-bold text-emerald-800 mb-2">Ejemplo — Ejercicio práctico de un Parqueadero</h3>
-    <p class="text-slate-700">
-      Un parqueadero cobra por fracción de hora. Si el número de horas es mayor o igual que 8,
-      se debe aplicar al cliente un descuento de 1 hora. Eso significa que,
-      si el vehículo del cliente demora 10 horas en el parqueadero,
-      solo se le deben cobrar 9 horas.
-    </p>
-  </article>
-
-  <!-- Fila 1: 3 tarjetas -->
-  <article class="bg-emerald-50 border border-emerald-200 rounded-lg shadow-sm p-4">
-    <h3 class="font-bold text-emerald-700 mb-2">Entradas sugeridas</h3>
-    <ul class="list-disc ml-5 text-slate-700">
-      <li>horas (entero)</li>
-      <li>tarifaHora (entero)</li>
-    </ul>
-  </article>
-
-  <article class="bg-blue-50 border border-blue-200 rounded-lg shadow-sm p-4">
-    <h3 class="font-bold text-blue-700 mb-2">Restricciones</h3>
-    <ul class="list-disc ml-5 text-slate-700">
-      <li>horas ≥ 1</li>
-      <li>tarifaHora > 0</li>
-    </ul>
-  </article>
-
-  <article class="bg-yellow-50 border border-yellow-200 rounded-lg shadow-sm p-4">
-    <h3 class="font-bold text-yellow-700 mb-2">Condición</h3>
-    <p class="text-slate-700">
-      si <code>horas ≥ 8</code> entonces <code>descuento = tarifaHora</code>
-    </p>
-  </article>
-
-  <!-- Fila 2: Proceso (2 col) + Salidas (1 col) -->
-  <article class="bg-purple-50 border border-purple-200 rounded-lg shadow-sm p-4 md:col-span-2">
-    <h3 class="font-bold text-purple-700 mb-2">Proceso</h3>
-    <pre class="bg-white border rounded p-3 text-sm text-slate-800 whitespace-pre-wrap">
-subtotal = horas * tarifaHora
-descuento = 0
-si (horas >= 8) entonces
-    descuento = tarifaHora
-fin si
-total = subtotal - descuento
-    </pre>
-  </article>
-
-  <article class="bg-pink-50 border border-pink-200 rounded-lg shadow-sm p-4">
-    <h3 class="font-bold text-pink-700 mb-2">Salidas</h3>
-    <p class="text-slate-700"><code>total</code>, <code>descuento</code></p>
-  </article>
-
-</div>
-
+            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+                  <figcaption class="font-semibold text-emerald-800 mb-2">
+                    Ejemplo de condicional SEGUN - 
+                    (<span class="tooltip">PSeInt
+                      <span class="tooltiptext">
+                        PSeInt es una herramienta educativa diseñada para aprender lógica de programación 
+                        mediante pseudocódigo, de forma sencilla e intuitiva.
+                      </span>
+                    </span>): 
+                  </figcaption>
+                  <img src="img/img16.png" alt="Ejemplo en PSeInt" class="w-full object-contain rounded"/>
+            </figure>        
+          
+          </div>
 
           
         </details>
@@ -525,34 +476,6 @@ total = subtotal - descuento
 
     <!-- Actividades -->
     <section id="actividades" class="content-pane">
-
-<!-- TTS sección: actividades -->
-<div class="flex justify-end">
-  <div class="space-y-1">
-    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-         data-target="actividades">
-      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-        <span class="mr-1">▶️</span> Leer
-      </button>
-      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏸️</span> Pausar
-      </button>
-      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏹️</span> Detener
-      </button>
-      <div class="flex items-center ml-2">
-        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-      </div>
-    </div>
-    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-    </div>
-  </div>
-</div>
-
-      
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Actividades</h2>
 
 <!-- ========== SITUACIÓN 1 ========== -->
@@ -670,34 +593,6 @@ total = subtotal - descuento
 
     <!-- Evaluación (quiz) -->
     <section id="evaluacion" class="content-pane">
-
-<!-- TTS sección: evaluacion -->
-<div class="flex justify-end">
-  <div class="space-y-1">
-    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-         data-target="evaluacion">
-      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-        <span class="mr-1">▶️</span> Leer
-      </button>
-      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏸️</span> Pausar
-      </button>
-      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏹️</span> Detener
-      </button>
-      <div class="flex items-center ml-2">
-        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-      </div>
-    </div>
-    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-    </div>
-  </div>
-</div>
-
-      
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Evaluación</h2>
       <div class="bg-white p-5 rounded-lg shadow-md">
         <div id="quiz"></div>
@@ -708,34 +603,6 @@ total = subtotal - descuento
 
     <!-- Recursos (3 tarjetas como la imagen) -->
     <section id="recursos" class="content-pane">
-
-<!-- TTS sección: recursos -->
-<div class="flex justify-end">
-  <div class="space-y-1">
-    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-         data-target="recursos">
-      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-        <span class="mr-1">▶️</span> Leer
-      </button>
-      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏸️</span> Pausar
-      </button>
-      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏹️</span> Detener
-      </button>
-      <div class="flex items-center ml-2">
-        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-      </div>
-    </div>
-    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-    </div>
-  </div>
-</div>
-
-      
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-6">Recursos</h2>
       <div class="grid lg:grid-cols-3 gap-5">
         <!-- Card 1 -->
@@ -770,6 +637,19 @@ total = subtotal - descuento
         <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5 flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-2">
+                <h3 class="font-bold text-lg text-green-800 mb-2 pr-2">Programación basada en PSeInt</h3>
+                <span class="badge">Libro</span>
+            </div>
+                  <p class="text-slate-600 mb-4">Celi V., P. (2023).<i>Fundamentos de programación basados en PSeInt.</i> (1.ª ed.) [PDF]. ITQ.</p>
+                  <a href="https://itq.edu.ec/wp-content/uploads/2023/04/2023-04-19_fundamentos_de_programacion_basados_en_pseint.pdf" target="_blank" class="text-green-700 hover:text-green-900 underline block mb-4">Ver recurso</a>          </div>
+          <div class="mt-4 flex justify-end">
+                   <img src="img/06_progpseint.png" alt="QR Code" class="w-16 h-16">
+          </div>
+        </article>
+        <!-- Card 4 -->
+        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
               <h3 class="text-xl font-bold text-slate-900 leading-tight">Fundamentos de programación</h3>
               <span class="badge">Libro</span>
             </div>
@@ -785,34 +665,6 @@ total = subtotal - descuento
 
     <!-- Bibliografía -->
     <section id="bibliografia" class="content-pane">
-
-<!-- TTS sección: bibliografia -->
-<div class="flex justify-end">
-  <div class="space-y-1">
-    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-         data-target="bibliografia">
-      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-        <span class="mr-1">▶️</span> Leer
-      </button>
-      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏸️</span> Pausar
-      </button>
-      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏹️</span> Detener
-      </button>
-      <div class="flex items-center ml-2">
-        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-      </div>
-    </div>
-    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-    </div>
-  </div>
-</div>
-
-      
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Bibliografía</h2>
       <ul class="space-y-3">
         <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
@@ -843,20 +695,13 @@ total = subtotal - descuento
 const panes = document.querySelectorAll('.content-pane');
 const links = document.querySelectorAll('.sidebar-link');
 const mobileNav = document.getElementById('mobile-nav');
-
 function go(id){
   panes.forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  links.forEach(a=>{
-    const active = a.dataset.target===id;
-    a.classList.toggle('active', active);
-    a.setAttribute('aria-current', active ? 'page' : 'false'); // ← marca el link activo
-  });
+  links.forEach(a=>a.classList.toggle('active', a.dataset.target===id));
   if(mobileNav) mobileNav.value=id;
   window.scrollTo({top:0,behavior:'smooth'});
 }
-
-  
 links.forEach(a=>a.addEventListener('click', e=>{e.preventDefault(); go(a.dataset.target)}));
 if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
 
@@ -1067,231 +912,5 @@ document.querySelectorAll('figure img').forEach(img=>{
 });
 modal?.addEventListener('click',()=>modal.classList.remove('active'));
 </script>
-
-<script>
-// ==== TTS genérico (para .speech-controls con data-target) ====
-document.addEventListener('DOMContentLoaded', function () {
-  const synth = window.speechSynthesis;
-  let voices = [], preferred = null;
-
-  function loadVoices(){
-    voices = synth.getVoices();
-    preferred = voices.find(v => v.name.includes('Paulina'))
-             || voices.find(v => (v.lang||'').toLowerCase().startsWith('es'))
-             || voices[0] || null;
-  }
-  loadVoices();
-  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
-
-  document.querySelectorAll('.speech-controls[data-target]').forEach(controls => {
-    const targetId = controls.dataset.target;
-    const section  = document.getElementById(targetId);
-    if (!section) return;
-
-    const playBtn  = controls.querySelector('.play-btn');
-    const pauseBtn = controls.querySelector('.pause-btn');
-    const stopBtn  = controls.querySelector('.stop-btn');
-    const rateCtrl = controls.querySelector('.speech-rate');
-
-    let currentUtterance = null, isPaused = false;
-
-    function getTextFromSection(sec){
-      const nodes = sec.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption');
-      if (!nodes.length) return (sec.textContent||'').trim();
-      let text = '';
-      nodes.forEach(el=>{
-        const t=(el.textContent||'').trim();
-        if (!t) return;
-        text += (/^H[1-6]$/.test(el.tagName) ? t + '. . . ' : t + ' ');
-      });
-      return text.trim();
-    }
-    function setButtons(playing){
-      playBtn.disabled  = playing && !isPaused;
-      pauseBtn.disabled = !playing;
-      stopBtn.disabled  = !playing;
-    }
-    function stop(){
-      if (synth.speaking || synth.pending) synth.cancel();
-      currentUtterance=null; isPaused=false; setButtons(false);
-    }
-    function play(){
-      if (currentUtterance && isPaused && synth.speaking){
-        synth.resume(); isPaused=false; setButtons(true); return;
-      }
-      stop();
-      const text=getTextFromSection(section);
-      if (!text) return;
-      const utt=new SpeechSynthesisUtterance(text);
-      utt.lang  =(preferred && preferred.lang) || 'es-ES';
-      utt.voice = preferred || null;
-      utt.rate  = parseFloat(rateCtrl?.value || '1');
-      utt.onend   = ()=>{ currentUtterance=null; setButtons(false); };
-      utt.onerror = ()=>{ currentUtterance=null; setButtons(false); };
-      currentUtterance=utt; synth.speak(utt); isPaused=false; setButtons(true);
-    }
-    function pause(){
-      if (currentUtterance && !isPaused && synth.speaking){
-        synth.pause(); isPaused=true; playBtn.disabled=false;
-      }
-    }
-
-    playBtn?.addEventListener('click',  play);
-    pauseBtn?.addEventListener('click', pause);
-    stopBtn?.addEventListener('click',  stop);
-    rateCtrl?.addEventListener('change', ()=>{ if (currentUtterance && !isPaused && synth.speaking){ stop(); setTimeout(play,80);} });
-
-    // Atajos solo cuando está visible esa sección
-    document.addEventListener('keydown', (e)=>{
-      const activePane = document.querySelector('.content-pane.active');
-      if (!activePane || activePane.id !== targetId) return;
-      if (e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA') return;
-      if (e.code==='Space'){ e.preventDefault(); (currentUtterance && !isPaused && synth.speaking) ? pause() : play(); }
-      if (e.code==='Tab' && !e.shiftKey){ stop(); }
-    });
-  });
-});
-</script>
-
-<script>
-// ==== TTS para acordeón (lee solo el <details> abierto en #contenido) ====
-document.addEventListener('DOMContentLoaded', () => {
-  const synth = window.speechSynthesis;
-  let voices=[], preferred=null;
-  function loadVoices(){
-    voices = synth.getVoices();
-    preferred = voices.find(v=>v.name.includes('Paulina'))
-             || voices.find(v=>(v.lang||'').toLowerCase().startsWith('es'))
-             || voices[0] || null;
-  }
-  loadVoices();
-  if (synth.onvoiceschanged!==undefined) synth.onvoiceschanged=loadVoices;
-
-  const ctrl = document.querySelector('.speech-controls[data-mode="accordion"][data-container="#contenido"]');
-  if (!ctrl) return;
-  const container = document.querySelector('#contenido');
-
-  const playBtn  = ctrl.querySelector('.play-btn');
-  const pauseBtn = ctrl.querySelector('.pause-btn');
-  const stopBtn  = ctrl.querySelector('.stop-btn');
-  const rateCtrl = ctrl.querySelector('.speech-rate');
-
-  let currentUtterance=null, isPaused=false;
-
-  function getActiveDetails(){ return container.querySelector('details[open]') || container.querySelector('details'); }
-  function getDetailsText(det){
-    if (!det) return '';
-    const parts=[];
-    const sum=det.querySelector(':scope > summary');
-    if (sum){ const t=(sum.textContent||'').trim(); if (t) parts.push(t + '. . . '); }
-    const bodyNodes = det.querySelectorAll(':scope > :not(summary)');
-    if (bodyNodes.length){
-      bodyNodes.forEach(n=>{
-        n.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption').forEach(el=>{
-          const t=(el.textContent||'').trim(); if (t) parts.push(t + ' ');
-        });
-        if (!n.querySelector('h1,h2,h3,h4,h5,h6,p,li,figcaption')){
-          const t=(n.textContent||'').trim(); if (t) parts.push(t + ' ');
-        }
-      });
-    }else{
-      const t=(det.textContent||'').trim(); if (t) parts.push(t);
-    }
-    return parts.join('').trim();
-  }
-  function setButtons(playing){
-    playBtn.disabled  = playing && !isPaused;
-    pauseBtn.disabled = !playing;
-    stopBtn.disabled  = !playing;
-  }
-  function stop(){
-    if (synth.speaking || synth.pending) synth.cancel();
-    currentUtterance=null; isPaused=false; setButtons(false);
-  }
-  function play(){
-    if (currentUtterance && isPaused && synth.speaking){ synth.resume(); isPaused=false; setButtons(true); return; }
-    stop();
-    const det=getActiveDetails(); const text=getDetailsText(det);
-    if (!text) return;
-    const utt=new SpeechSynthesisUtterance(text);
-    utt.lang  =(preferred && preferred.lang) || 'es-ES';
-    utt.voice = preferred || null;
-    utt.rate  = parseFloat(rateCtrl?.value || '1');
-    utt.onend   = ()=>{ currentUtterance=null; setButtons(false); };
-    utt.onerror = ()=>{ currentUtterance=null; setButtons(false); };
-    currentUtterance=utt; synth.speak(utt); isPaused=false; setButtons(true);
-  }
-  function pause(){
-    if (currentUtterance && !isPaused && synth.speaking){ synth.pause(); isPaused=true; playBtn.disabled=false; }
-  }
-
-  playBtn.addEventListener('click',  play);
-  pauseBtn.addEventListener('click', pause);
-  stopBtn.addEventListener('click',  stop);
-  rateCtrl?.addEventListener('change', ()=>{ if (currentUtterance && !isPaused && synth.speaking){ stop(); setTimeout(play,80);} });
-
-  // Si se abre otro acordeón, corta la lectura
-  container.querySelectorAll('details').forEach(d=>{
-    d.addEventListener('toggle', ()=>{ if (d.open) stop(); });
-  });
-
-  // Atajos cuando "contenido" esté visible
-  document.addEventListener('keydown', (e)=>{
-    const activePane=document.querySelector('.content-pane.active');
-    if (!activePane || activePane.id!=='contenido') return;
-    if (e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA') return;
-    if (e.code==='Space'){ e.preventDefault(); (currentUtterance && !isPaused && synth.speaking) ? pause() : play(); }
-    if (e.code==='Tab' && !e.shiftKey){ stop(); }
-    if (e.code==='Escape'){ stop(); }
-  });
-});
-</script>
-
-  <script>
-// ==== Lee el título del link del sidebar al enfocarlo con TAB ====
-document.addEventListener('DOMContentLoaded', ()=>{
-  const synth=window.speechSynthesis;
-  let voices=[], preferred=null;
-  function loadVoices(){
-    voices=synth.getVoices();
-    preferred = voices.find(v=>v.name.includes('Paulina'))
-             || voices.find(v=>(v.lang||'').toLowerCase().startsWith('es'))
-             || voices[0] || null;
-  }
-  loadVoices();
-  if (synth.onvoiceschanged!==undefined) synth.onvoiceschanged=loadVoices;
-
-  function speak(text){
-    if (!text) return;
-    synth.cancel(); // interrumpe lecturas largas
-    const u=new SpeechSynthesisUtterance(text);
-    u.lang=(preferred && preferred.lang) || 'es-ES';
-    u.voice=preferred || null;
-    u.rate=1;
-    synth.speak(u);
-  }
-
-  document.querySelectorAll('aside .sidebar-link').forEach(link=>{
-    link.addEventListener('focus', ()=>{
-      speak(link.getAttribute('aria-label') || link.textContent.trim());
-    });
-    // opcional también al click
-    link.addEventListener('click', ()=>{
-      speak('Sección: ' + (link.getAttribute('aria-label') || link.textContent.trim()));
-    });
-  });
-
-  const mobile=document.getElementById('mobile-nav');
-  if (mobile){
-    mobile.addEventListener('change', ()=>{
-      const opt=mobile.options[mobile.selectedIndex];
-      speak(opt ? opt.textContent.trim() : '');
-    });
-  }
-});
-</script>
-
-  
-  
 </body>
 </html>

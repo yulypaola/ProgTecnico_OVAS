@@ -996,93 +996,52 @@ document.getElementById('check-acts')?.addEventListener('click', () => {
 
 
 // Quiz
+// Quiz
 const quizData = [
   {
-    q: "En el análisis de un problema, ¿qué representan las ENTRADAS?",
+    q: "¿Qué es un condicional en programación?",
     opts: [
-      "Los resultados finales que se esperan",
-      "Los datos iniciales necesarios para procesar",
-      "Las condiciones que limitan la solución",
-      "Los pasos intermedios del algoritmo"
+      "Una instrucción que se repite varias veces.",
+      "Una estructura que permite tomar decisiones según una condición.",
+      "Un tipo de variable que almacena valores lógicos.",
+      "Un ciclo infinito."
     ],
     a: 1
   },
   {
-    q: "¿Cuál de las siguientes NO es una característica de una restricción?",
-    opts: [
-      "Debe cumplirse siempre",
-      "Define un límite o condición",
-      "Se puede omitir sin afectar el resultado",
-      "Puede referirse a rangos válidos o formatos"
-    ],
-    a: 2
-  },
-  {
-    q: "Los operadores aritméticos se usan para…",
-    opts: [
-      "Comparar dos valores y devolver Verdadero/Falso",
-      "Conectar condiciones con Y/O",
-      "Realizar cálculos numéricos",
-      "Definir variables y constantes"
-    ],
-    a: 2
-  },
-  {
-    q: "¿Cuál es el resultado de la prioridad de operadores en: 2 + 3 * 4?",
-    opts: ["20", "14", "24", "12"],
-    a: 1
-  },
-  {
-    q: "¿Qué operador RELACIONAL representa 'menor o igual que'?",
-    opts: ["<=", ">=", "==", "!="],
+    q: "Verdadero o Falso: El condicional SI permite ejecutar un bloque de instrucciones únicamente si la condición es verdadera.",
+    opts: ["Verdadero","Falso"],
     a: 0
   },
   {
-    q: "El operador LÓGICO AND (&&) devuelve Verdadero si…",
+    q: "¿Cuál de las siguientes opciones corresponde a un condicional múltiple con SI?",
     opts: [
-      "Una de las condiciones es verdadera",
-      "Las dos condiciones son verdaderas",
-      "Ninguna condición es verdadera",
-      "Invierte el valor lógico de la condición"
+      "Una estructura donde se evalúa una sola variable con varios valores.",
+      "Una cadena de condicionales anidados donde se verifican varias condiciones.",
+      "Un ciclo que se repite mientras se cumpla una condición.",
+      "Una función que recibe varios parámetros."
     ],
     a: 1
   },
   {
-    q: "Para forzar que a + b se calcule antes que * c, ¿cómo debería escribirse?",
-    opts: ["a + b * c", "(a + b) * c", "a + (b * c)", "a + (b) * (c)"],
+    q: "En la estructura SEGÚN, la sección “De Otro Modo” es:",
+    opts: [
+      "Obligatoria y siempre debe estar presente.",
+      "Opcional y se ejecuta solo si ningún caso coincide.",
+      "Un ciclo dentro de la estructura.",
+      "Un comentario dentro del pseudocódigo."
+    ],
     a: 1
   },
   {
-    q: "Una VARIABLE se diferencia de una CONSTANTE porque…",
-    opts: [
-      "Su valor puede cambiar durante la ejecución",
-      "Su valor no puede cambiar",
-      "Se escribe siempre en mayúsculas",
-      "Solo almacena números enteros"
-    ],
+    q: "Verdadero o Falso: Un condicional anidado es cuando dentro de un SI se incluye otro SI para evaluar condiciones adicionales.",
+    opts: ["Verdadero","Falso"],
     a: 0
-  },
-  {
-    q: "En la estructura Entrada–Proceso–Salida, el PROCESO corresponde a…",
-    opts: [
-      "Los datos iniciales",
-      "Las transformaciones/operaciones sobre los datos",
-      "El resultado final mostrado",
-      "Las restricciones del negocio"
-    ],
-    a: 1
-  },
-  {
-    q: "¿Cuál de estas comparaciones es correcta para verificar si 'medioPago' es 'efectivo'?",
-    opts: [
-      "medioPago = \"efectivo\"",
-      "medioPago == \"efectivo\"",
-      "medioPago !== \"efectivo\"",
-      "medioPago >= \"efectivo\""
-    ],
-    a: 1
   }
 ];
+
+
+  
 const quiz = document.getElementById('quiz');
 if(quiz){
   quizData.forEach((it,i)=>{

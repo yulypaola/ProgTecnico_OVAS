@@ -120,34 +120,39 @@
 
     <!-- Intro -->
     <section id="introduccion" class="content-pane active">
-      <!-- Controles de lectura (TTS) arriba y a la derecha -->
-        <div class="flex justify-end">
-          <div class="speech-controls mb-2 p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm" data-target="introduccion">
-            <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-              <span class="mr-1">▶️</span> Leer
-            </button>
-            <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-              <span class="mr-1">⏸️</span> Pausar
-            </button>
-            <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-              <span class="mr-1">⏹️</span> Detener
-            </button>
-        
-            <div class="flex items-center ml-2">
-              <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-              <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
-            </div>
-          </div>
-        </div>
-    <!-- fin Controles de lectura (TTS) arriba y a la derecha -->
-    <!-- Crecordatorio de atajos-->
-       <div class="mt-1 flex justify-end">
-        <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full">
-            <strong>💡 Atajos de teclado:</strong> 
-            Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar, 
-            <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
+      <!-- Controles + Atajos juntos y alineados a la derecha -->
+  <div class="flex justify-end">
+    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
+      <!-- Controles de lectura (TTS) -->
+      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+           data-target="introduccion">
+        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+          <span class="mr-1">▶️</span> Leer
+        </button>
+        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏸️</span> Pausar
+        </button>
+        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏹️</span> Detener
+        </button>
+
+        <div class="flex items-center ml-2">
+          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
         </div>
       </div>
+
+      <!-- Atajos, misma columna, alineados a la derecha -->
+      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
+                  max-w-xl w-full ml-auto">
+        <strong>💡 Atajos de teclado:</strong>
+        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
+        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
+      </div>
+    </div>
+  </div>
+
+  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
      
       <h1 class="mt-3 text-2xl sm:text-3xl font-extrabold text-emerald-800"> Concepto de algoritmo y su importancia en la solución de problemas</h1>
 

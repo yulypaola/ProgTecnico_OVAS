@@ -70,15 +70,39 @@
         <img src="img/logo.webp" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
       </div>
     </div>
-    <nav class="mt-6 flex-1">
-      <a href="#" class="sidebar-link active flex items-center py-3 px-6 font-medium text-slate-700" data-target="introduccion"><span class="mr-3 text-xl">🚀</span> Introducción</a>
-      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="objetivos"><span class="mr-3 text-xl">🎯</span> Objetivos</a>
-      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="contenido"><span class="mr-3 text-xl">📚</span> Contenido</a>
-      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="actividades"><span class="mr-3 text-xl">✍️</span> Actividades</a>
-      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="evaluacion"><span class="mr-3 text-xl">✔️</span> Evaluación</a>
-      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="recursos"><span class="mr-3 text-xl">📖</span> Recursos</a>
-      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="bibliografia"><span class="mr-3 text-xl">📚</span> Bibliografía</a>
-    </nav>
+
+  <nav class="mt-6 flex-1" role="navigation" aria-label="Secciones del OVA">
+  <a href="#" class="sidebar-link active flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="introduccion" aria-label="Introducción">
+    <span class="mr-3 text-xl">🚀</span> Introducción
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="objetivos" aria-label="Objetivos">
+    <span class="mr-3 text-xl">🎯</span> Objetivos
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="contenido" aria-label="Contenido">
+    <span class="mr-3 text-xl">📚</span> Contenido
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="actividades" aria-label="Actividades">
+    <span class="mr-3 text-xl">✍️</span> Actividades
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="evaluacion" aria-label="Evaluación">
+    <span class="mr-3 text-xl">✔️</span> Evaluación
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="recursos" aria-label="Recursos">
+    <span class="mr-3 text-xl">📖</span> Recursos
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="bibliografia" aria-label="Bibliografía">
+    <span class="mr-3 text-xl">📚</span> Bibliografía
+  </a>
+</nav>
+
+    
   </aside>
 
   <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50">
@@ -99,6 +123,33 @@
 
     <!-- Intro -->
     <section id="introduccion" class="content-pane active">
+     <!-- TTS sección: Introducción -->
+<div class="flex justify-end">
+  <div class="space-y-1">
+    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+         data-target="introduccion">
+      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+        <span class="mr-1">▶️</span> Leer
+      </button>
+      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏸️</span> Pausar
+      </button>
+      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏹️</span> Detener
+      </button>
+      <div class="flex items-center ml-2">
+        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+      </div>
+    </div>
+    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+    </div>
+  </div>
+</div>
+
+      
       <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-800">Identificación y análisis de problemas para proponer soluciones lógicas</h1>
       <p class="mt-4 leading-relaxed">
         🏠 <strong>Antes de programar</strong>, es imprescindible comprender el problema: qué se recibe (entradas), qué se transforma/valida (proceso) y qué se espera obtener (salidas). Esto implica reconocer restricciones (límites, reglas del negocio, rangos válidos, requisitos de seguridad), elegir tipos de datos adecuados, nombrar variables y constantes con claridad y expresar operaciones y decisiones de forma precisa, usando prioridad de operadores y paréntesis.

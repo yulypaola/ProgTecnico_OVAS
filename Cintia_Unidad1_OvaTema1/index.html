@@ -813,13 +813,20 @@ total = subtotal - descuento
 const panes = document.querySelectorAll('.content-pane');
 const links = document.querySelectorAll('.sidebar-link');
 const mobileNav = document.getElementById('mobile-nav');
+
 function go(id){
   panes.forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  links.forEach(a=>a.classList.toggle('active', a.dataset.target===id));
+  links.forEach(a=>{
+    const active = a.dataset.target===id;
+    a.classList.toggle('active', active);
+    a.setAttribute('aria-current', active ? 'page' : 'false'); // ← marca el link activo
+  });
   if(mobileNav) mobileNav.value=id;
   window.scrollTo({top:0,behavior:'smooth'});
 }
+
+  
 links.forEach(a=>a.addEventListener('click', e=>{e.preventDefault(); go(a.dataset.target)}));
 if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
 

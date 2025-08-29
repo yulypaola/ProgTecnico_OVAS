@@ -909,6 +909,130 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
+
+<script>
+// ==== Síntesis de voz para la sección "objetivos" ====
+document.addEventListener('DOMContentLoaded', function () {
+  const synth = window.speechSynthesis;
+  let voices = [], preferred = null;
+
+  function loadVoices() {
+    voices = synth.getVoices();
+    preferred = voices.find(v => v.name.includes('Paulina'))
+            || voices.find(v => v.lang.toLowerCase().startsWith('es'))
+            || voices[0] || null;
+  }
+  loadVoices();
+  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+
+  const controls = document.querySelector('.speech-controls[data-target="objetivos"]');
+  if (!controls) return;
+
+  const playBtn  = controls.querySelector('.play-btn');
+  const pauseBtn = controls.querySelector('.pause-btn');
+  const stopBtn  = controls.querySelector('.stop-btn');
+  const rateCtrl = controls.querySelector('.speech-rate');
+
+  let currentUtterance = null;
+  let isPaused = false;
+
+  function getObjetivosText() {
+    const section = document.getElementById('objetivos');
+    if (!section) return '';
+    const title = section.querySelector('h1, h2');
+    const parts = [];
+
+    if (title) {
+      const t = (title.textContent || '').trim();
+      if (t) parts.push(t + '. . . ');
+    }
+    const nodes = section.querySelectorAll('p, li, h3, h4, h5, h6, figcaption');
+    nodes.forEach(el => {
+      const t = (el.textContent || '').trim();
+      if (!t) return;
+      const isHead = /^H[3-6]$/.test(el.tagName);
+      parts.push(isHead ? t + '. . . ' : t + ' ');
+    });
+    return parts.join('').trim();
+  }
+
+  function setButtons(playing) {
+    playBtn.disabled  = playing && !isPaused;
+    pauseBtn.disabled = !playing;
+    stopBtn.disabled  = !playing;
+  }
+
+  function stop() {
+    if (synth.speaking || synth.pending) synth.cancel();
+    currentUtterance = null;
+    isPaused = false;
+    setButtons(false);
+  }
+
+  function play() {
+    if (currentUtterance && isPaused && synth.speaking) {
+      synth.resume();
+      isPaused = false;
+      setButtons(true);
+      return;
+    }
+    stop();
+
+    const text = getObjetivosText();
+    if (!text) return;
+
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang  = (preferred && preferred.lang) || 'es-ES';
+    utt.voice = preferred || null;
+    utt.rate  = parseFloat(rateCtrl?.value || '1');
+
+    utt.onend   = () => { currentUtterance = null; setButtons(false); };
+    utt.onerror = () => { currentUtterance = null; setButtons(false); };
+
+    currentUtterance = utt;
+    synth.speak(utt);
+    isPaused = false;
+    setButtons(true);
+  }
+
+  function pause() {
+    if (currentUtterance && !isPaused && synth.speaking) {
+      synth.pause();
+      isPaused = true;
+      playBtn.disabled = false;
+    }
+  }
+
+  playBtn.addEventListener('click',  play);
+  pauseBtn.addEventListener('click', pause);
+  stopBtn.addEventListener('click',  stop);
+
+  rateCtrl?.addEventListener('change', () => {
+    const wasSpeaking = !!currentUtterance && !isPaused && synth.speaking;
+    if (wasSpeaking) {
+      stop();
+      setTimeout(play, 80);
+    }
+  });
+
+  // Atajos solo cuando "Objetivos" está visible
+  document.addEventListener('keydown', (e) => {
+    const activePane = document.querySelector('.content-pane.active');
+    if (!activePane || activePane.id !== 'objetivos') return;
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+    if (e.code === 'Space') {
+      e.preventDefault();
+      if (currentUtterance && !isPaused && synth.speaking) { pause(); }
+      else { play(); }
+    }
+    if (e.code === 'Tab' && !e.shiftKey) {
+      stop();
+    }
+  });
+});
+</script>
+
   
 </body>
 </html>

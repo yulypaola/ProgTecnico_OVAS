@@ -170,25 +170,39 @@
     <!-- Objetivo -->
     <section id="objetivos" class="content-pane">
         <!-- Controles de lectura (TTS) arriba y a la derecha -->
-        <div class="flex justify-end">
-          <div class="speech-controls mb-2 p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm" data-target="introduccion">
-            <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-              <span class="mr-1">▶️</span> Leer
-            </button>
-            <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-              <span class="mr-1">⏸️</span> Pausar
-            </button>
-            <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-              <span class="mr-1">⏹️</span> Detener
-            </button>
-        
-            <div class="flex items-center ml-2">
-              <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-              <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
-            </div>
-          </div>
+      <!-- Controles + Atajos juntos y alineados a la derecha -->
+  <div class="flex justify-end">
+    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
+      <!-- Controles de lectura (TTS) -->
+      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+           data-target="introduccion">
+        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+          <span class="mr-1">▶️</span> Leer
+        </button>
+        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏸️</span> Pausar
+        </button>
+        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏹️</span> Detener
+        </button>
+
+        <div class="flex items-center ml-2">
+          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
         </div>
-    <!-- fin Controles de lectura (TTS) arriba y a la derecha -->
+      </div>
+
+      <!-- Atajos, misma columna, alineados a la derecha -->
+      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
+                  max-w-xl w-full ml-auto">
+        <strong>💡 Atajos de teclado:</strong>
+        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
+        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
+      </div>
+    </div>
+  </div>
+
+  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Objetivo</h2>
 
       <p class="leading-relaxed">
@@ -426,6 +440,39 @@
 
     <!-- Actividades -->
       <section id="actividades" class="content-pane">
+        <!-- Controles + Atajos juntos y alineados a la derecha -->
+  <div class="flex justify-end">
+    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
+      <!-- Controles de lectura (TTS) -->
+      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+           data-target="introduccion">
+        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+          <span class="mr-1">▶️</span> Leer
+        </button>
+        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏸️</span> Pausar
+        </button>
+        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏹️</span> Detener
+        </button>
+
+        <div class="flex items-center ml-2">
+          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
+        </div>
+      </div>
+
+      <!-- Atajos, misma columna, alineados a la derecha -->
+      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
+                  max-w-xl w-full ml-auto">
+        <strong>💡 Atajos de teclado:</strong>
+        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
+        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
+      </div>
+    </div>
+  </div>
+
+  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Actividades</h2>
       <div class="space-y-6">
         <div class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5">
@@ -454,6 +501,39 @@
     
     <!-- Evaluación (quiz) -->
     <section id="evaluacion" class="content-pane">
+      <!-- Controles + Atajos juntos y alineados a la derecha -->
+  <div class="flex justify-end">
+    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
+      <!-- Controles de lectura (TTS) -->
+      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+           data-target="introduccion">
+        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+          <span class="mr-1">▶️</span> Leer
+        </button>
+        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏸️</span> Pausar
+        </button>
+        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏹️</span> Detener
+        </button>
+
+        <div class="flex items-center ml-2">
+          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
+        </div>
+      </div>
+
+      <!-- Atajos, misma columna, alineados a la derecha -->
+      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
+                  max-w-xl w-full ml-auto">
+        <strong>💡 Atajos de teclado:</strong>
+        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
+        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
+      </div>
+    </div>
+  </div>
+
+  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Evaluación</h2>
       <div class="bg-white p-5 rounded-lg shadow-md">
         <div id="quiz"></div>
@@ -464,6 +544,39 @@
 
     <!-- Recursos (3 tarjetas como la imagen) -->
     <section id="recursos" class="content-pane">
+    <!-- Controles + Atajos juntos y alineados a la derecha -->
+  <div class="flex justify-end">
+    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
+      <!-- Controles de lectura (TTS) -->
+      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+           data-target="introduccion">
+        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+          <span class="mr-1">▶️</span> Leer
+        </button>
+        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏸️</span> Pausar
+        </button>
+        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏹️</span> Detener
+        </button>
+
+        <div class="flex items-center ml-2">
+          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
+        </div>
+      </div>
+
+      <!-- Atajos, misma columna, alineados a la derecha -->
+      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
+                  max-w-xl w-full ml-auto">
+        <strong>💡 Atajos de teclado:</strong>
+        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
+        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
+      </div>
+    </div>
+  </div>
+
+  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-6">Recursos</h2>
       <div class="grid lg:grid-cols-3 gap-5">
         <!-- Card 1 -->
@@ -516,6 +629,39 @@
 
     <!-- Bibliografía -->
     <section id="bibliografia" class="content-pane">
+      <!-- Controles + Atajos juntos y alineados a la derecha -->
+  <div class="flex justify-end">
+    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
+      <!-- Controles de lectura (TTS) -->
+      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+           data-target="introduccion">
+        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+          <span class="mr-1">▶️</span> Leer
+        </button>
+        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏸️</span> Pausar
+        </button>
+        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+          <span class="mr-1">⏹️</span> Detener
+        </button>
+
+        <div class="flex items-center ml-2">
+          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
+        </div>
+      </div>
+
+      <!-- Atajos, misma columna, alineados a la derecha -->
+      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
+                  max-w-xl w-full ml-auto">
+        <strong>💡 Atajos de teclado:</strong>
+        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
+        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
+      </div>
+    </div>
+  </div>
+
+  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Bibliografía</h2>
       <ul class="space-y-3">
         <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">

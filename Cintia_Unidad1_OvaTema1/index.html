@@ -201,7 +201,37 @@
 
     <!-- Contenido -->
       <section id="contenido" class="content-pane">
-      <div class="space-y-4">
+   
+      <!-- TTS para acordeón de CONTENIDO (lee solo el <details> abierto) -->
+        <div class="flex justify-end">
+        <div class="space-y-1">
+          <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+               data-mode="accordion" data-container="#contenido">
+            <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+              <span class="mr-1">▶️</span> Leer
+            </button>
+            <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+              <span class="mr-1">⏸️</span> Pausar
+            </button>
+            <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+              <span class="mr-1">⏹️</span> Detener
+            </button>
+            <div class="flex items-center ml-2">
+              <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+              <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+            </div>
+          </div>
+      
+          <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+            <strong>💡 Atajos:</strong>
+            <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+            <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+          </div>
+        </div>
+      </div>
+
+      
+        
         <!-- A: Definición -->
         <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
           <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">

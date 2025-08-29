@@ -892,6 +892,59 @@ function go(id){
 links.forEach(a=>a.addEventListener('click', e=>{e.preventDefault(); go(a.dataset.target)}));
 if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
 
+
+/* ===== Lectura del menú: solo si está activada con el botón ===== */
+(() => {
+  const synth = window.speechSynthesis;
+  let voices = [];
+  function loadVoices(){ voices = synth.getVoices(); }
+  loadVoices();
+  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+
+  // estado guardado
+  let menuTtsEnabled = JSON.parse(localStorage.getItem('menuTtsEnabled') || 'false');
+  const ttsBtn = document.getElementById('menu-tts-toggle');
+
+  function updateTtsBtn(){
+    if(!ttsBtn) return;
+    ttsBtn.textContent = menuTtsEnabled ? '🔇 Desactivar voz del menú' : '🔈 Activar voz del menú';
+    ttsBtn.setAttribute('aria-pressed', menuTtsEnabled ? 'true' : 'false');
+  }
+  updateTtsBtn();
+
+  // click del botón
+  ttsBtn?.addEventListener('click', () => {
+    menuTtsEnabled = !menuTtsEnabled;
+    localStorage.setItem('menuTtsEnabled', JSON.stringify(menuTtsEnabled));
+    if(!menuTtsEnabled) synth.cancel();
+    updateTtsBtn();
+  });
+
+  // función para hablar
+  function speakMenu(text){
+    if(!menuTtsEnabled || !text) return;
+    try{
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang  = (voices.find(v => /es/i.test(v.lang))?.lang) || 'es-ES';
+      u.voice = voices.find(v => /Paulina/i.test(v.name))
+             || voices.find(v => /es/i.test(v.lang))
+             || null;
+      u.rate = 1.0;
+      synth.speak(u);
+    }catch(e){/* noop */}
+  }
+
+  // SOLO lee si está activado: al enfocar con Tab o pasar mouse
+  links.forEach(a => {
+    a.addEventListener('focus',      () => speakMenu(a.textContent.trim()));
+    a.addEventListener('mouseenter', () => speakMenu(a.textContent.trim()));
+  });
+})();
+
+
+
+  
 // Activities check (very lightweight rubric)
 
 // ====== Verificador de Actividades (S1: cine, S2: efectivo) ======

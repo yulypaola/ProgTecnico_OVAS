@@ -77,6 +77,40 @@
 
 
   html, body { height: 100%; overflow: hidden; }  
+
+    /* para indentación */
+              /* ===== Ritmo y padding global para los acordeones de #contenido ===== */
+              /* Asegura un padding uniforme en el título del acordeón */
+              #contenido details > summary{
+                padding: 1rem !important;               /* equivale a p-4 */
+              }
+              
+              /* Aplica padding al cuerpo del acordeón (lo que va tras el summary) */
+              #contenido details > :not(summary){
+                padding: .75rem 1rem 1rem !important;   /* pt-3 px-4 pb-4 */
+              }
+              
+              /* Ritmo vertical interno entre bloques (p, listas, figuras, etc.) */
+              #contenido details > :not(summary) :is(p, ul, ol, figure, table, div) + :is(p, ul, ol, figure, table, div){
+                margin-top: .75rem;                      /* ~ space-y-3 */
+              }
+              
+              /* Figuras con un pequeño margen superior consistente */
+              #contenido details figure{
+                margin-top: .5rem;
+              }
+              
+              /* Listas con sangría agradable */
+              #contenido details :is(ul, ol){
+                padding-left: 1.25rem;                   /* similar a ml-5/ml-6 */
+              }
+              
+              /* Quita el marcador nativo del summary en navegadores WebKit */
+              #contenido details > summary::-webkit-details-marker{
+                display: none;
+              }
+  /* para indentación */
+    
   </style>
 </head>
   

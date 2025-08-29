@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OVA: Tema 1 — Concepto de algoritmo e importancia</title>
+  <title>OVA: Tema 2 — Identificación y análisis de problemas para proponer soluciones lógicas</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,146 +26,62 @@
     .modal-content { max-width:90%; max-height:90%; position:relative; }
     .modal-content img { max-width:100%; max-height:90vh; border:4px solid #fff; border-radius:4px; box-shadow:0 10px 25px rgba(0,0,0,.5); }
     .close-modal { position:absolute; top:-20px; right:-20px; background:#ef4444; color:#fff; border:none; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px; }
-
-     /* ====== Tooltips (estilos globales) ====== */
-    .tooltip {
-      position: relative;
-      display: inline-block;
-      cursor: pointer;
-      font-weight: bold;
-      color: #006633; /* Verde oscuro */
-    }
-    .tooltip .tooltiptext {
-      visibility: hidden;
-      width: 280px;
-      background-color: #006633; /* Verde oscuro */
-      color: #ffffff;            /* Texto blanco */
-      text-align: left;
-      border-radius: 6px;
-      padding: 10px;
-      font-size: 14px;
-      font-weight: normal;
-      position: absolute;
-      z-index: 1;
-      bottom: 125%;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-      transition: opacity 0.4s;
-    }
-    .tooltip:hover .tooltiptext {
-      visibility: visible;
-      opacity: 1;
-    }
-
-/* --- FIX RÁPIDO DE LAYOUT EN DESKTOP --- */
-@media (min-width: 768px){
-  .min-h-screen.flex{           /* contenedor del aside + main */
-    display:flex !important;
-    flex-direction: row !important;
-    align-items:flex-start;
-  }
-  aside.w-64{                   /* menú lateral */
-    flex: 0 0 16rem !important; /* 256px */
-    max-width: 16rem !important;
-  }
-  main.flex-1{                  /* área de contenido */
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-  }
+ 
+  /* ====== Tooltips (estilos globales) ====== */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: bold;
+  color: #006633; /* Verde oscuro */
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 280px;
+  background-color: #006633; /* Verde oscuro */
+  color: #ffffff;            /* Texto blanco */
+  text-align: left;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: normal;
+  position: absolute;
+  z-index: 30;      /* sube la capa por si hay otros elementos encima */
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none; /* evita interferir con el hover */
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }
 
-
-  html, body { height: 100%; overflow: hidden; }  
-
-    /* para indentación */
-              /* ===== Ritmo y padding global para los acordeones de #contenido ===== */
-              /* Asegura un padding uniforme en el título del acordeón */
-              #contenido details > summary{
-                padding: 1rem !important;               /* equivale a p-4 */
-              }
-              
-              /* Aplica padding al cuerpo del acordeón (lo que va tras el summary) */
-              #contenido details > :not(summary){
-                padding: .75rem 1rem 1rem !important;   /* pt-3 px-4 pb-4 */
-              }
-              
-              /* Ritmo vertical interno entre bloques (p, listas, figuras, etc.) */
-              #contenido details > :not(summary) :is(p, ul, ol, figure, table, div) + :is(p, ul, ol, figure, table, div){
-                margin-top: .75rem;                      /* ~ space-y-3 */
-              }
-              
-              /* Figuras con un pequeño margen superior consistente */
-              #contenido details figure{
-                margin-top: .5rem;
-              }
-              
-              /* Listas con sangría agradable */
-              #contenido details :is(ul, ol){
-                padding-left: 1.25rem;                   /* similar a ml-5/ml-6 */
-              }
-              
-              /* Quita el marcador nativo del summary en navegadores WebKit */
-              #contenido details > summary::-webkit-details-marker{
-                display: none;
-              }
-  /* para indentación */
-    
+  
   </style>
 </head>
-  
 <body class="bg-slate-50">
 <div class="flex min-h-screen">
-  
-<aside class="w-64 bg-white shadow-lg hidden md:flex md:flex-col fixed top-0 left-0 h-screen overflow-y-auto">
-    
+  <aside class="w-64 bg-white shadow-lg flex-shrink-0 hidden md:flex md:flex-col">
     <div class="p-4">
       <div style="width:150px;height:150px" class="p-2 mx-auto flex items-center justify-center bg-white rounded-full shadow-lg border-2 border-green-500">
         <img src="img/logo.webp" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
       </div>
     </div>
-  
-  <nav class="mt-6 flex-1" role="navigation" aria-label="Secciones del OVA">
-        <a href="#" class="sidebar-link active flex items-center py-3 px-6 font-medium text-slate-700"
-           data-target="introduccion" aria-label="Introducción">
-          <span class="mr-3 text-xl">🚀</span> Introducción
-        </a>
-      
-        <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-           data-target="objetivos" aria-label="Objetivos">
-          <span class="mr-3 text-xl">🎯</span> Objetivos
-        </a>
-      
-        <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-           data-target="contenido" aria-label="Contenido">
-          <span class="mr-3 text-xl">📚</span> Contenido
-        </a>
-      
-        <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-           data-target="actividades" aria-label="Actividades">
-          <span class="mr-3 text-xl">✍️</span> Actividades
-        </a>
-      
-        <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-           data-target="evaluacion" aria-label="Evaluación">
-          <span class="mr-3 text-xl">✔️</span> Evaluación
-        </a>
-      
-        <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-           data-target="recursos" aria-label="Recursos">
-          <span class="mr-3 text-xl">📖</span> Recursos
-        </a>
-      
-        <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-           data-target="bibliografia" aria-label="Bibliografía">
-          <span class="mr-3 text-xl">📚</span> Bibliografía
-        </a>
-</nav>
-
-  
+    <nav class="mt-6 flex-1">
+      <a href="#" class="sidebar-link active flex items-center py-3 px-6 font-medium text-slate-700" data-target="introduccion"><span class="mr-3 text-xl">🚀</span> Introducción</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="objetivos"><span class="mr-3 text-xl">🎯</span> Objetivos</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="contenido"><span class="mr-3 text-xl">📚</span> Contenido</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="actividades"><span class="mr-3 text-xl">✍️</span> Actividades</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="evaluacion"><span class="mr-3 text-xl">✔️</span> Evaluación</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="recursos"><span class="mr-3 text-xl">📖</span> Recursos</a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="bibliografia"><span class="mr-3 text-xl">📚</span> Bibliografía</a>
+    </nav>
   </aside>
-<main class="flex-1 pt-4 px-4 sm:px-6 md:px-10 bg-gray-50 h-screen overflow-y-auto md:ml-64">
-    
+
+  <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50">
     <div class="md:hidden mb-6 flex flex-col items-center">
       <div style="width:100px;height:100px" class="p-2 flex items-center justify-center bg-white rounded-full shadow-lg mb-2">
         <img src="img/logo.webp" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
@@ -183,48 +99,12 @@
 
     <!-- Intro -->
     <section id="introduccion" class="content-pane active">
-      <!-- Controles + Atajos juntos y alineados a la derecha -->
-  <div class="flex justify-end">
-    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
-      <!-- Controles de lectura (TTS) -->
-      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-           data-target="introduccion">
-        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-          <span class="mr-1">▶️</span> Leer
-        </button>
-        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-          <span class="mr-1">⏸️</span> Pausar
-        </button>
-        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-          <span class="mr-1">⏹️</span> Detener
-        </button>
-
-        <div class="flex items-center ml-2">
-          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
-        </div>
-      </div>
-
-      <!-- Atajos, misma columna, alineados a la derecha -->
-      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
-                  max-w-xl w-full ml-auto">
-        <strong>💡 Atajos de teclado:</strong>
-        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
-        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
-      </div>
-    </div>
-  </div>
-
-  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
-     
-      <h1 class="mt-3 text-2xl sm:text-3xl font-extrabold text-emerald-800"> Concepto de algoritmo y su importancia en la solución de problemas</h1>
-
-      
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-800">Identificación y análisis de problemas para proponer soluciones lógicas</h1>
       <p class="mt-4 leading-relaxed">
-         <strong>¡Bienvenido!</strong> Imagina que vas a preparar una hamburguesa con tus amigos. Si sigues los pasos en orden, obtendrás el resultado esperado; si te saltas uno, el producto final cambia. Así funcionan los <strong>algoritmos</strong>: secuencias de pasos que llevan a un resultado.
+        🏠 <strong>Antes de programar</strong>, es imprescindible comprender el problema: qué se recibe (entradas), qué se transforma/valida (proceso) y qué se espera obtener (salidas). Esto implica reconocer restricciones (límites, reglas del negocio, rangos válidos, requisitos de seguridad), elegir tipos de datos adecuados, nombrar variables y constantes con claridad y expresar operaciones y decisiones de forma precisa, usando prioridad de operadores y paréntesis.
       </p>
       <p class="mt-2 leading-relaxed">
-        En programación, los algoritmos son la base de todo; de su claridad y precisión depende el funcionamiento correcto de cualquier software. Conocerlos permite transformar un problema en pasos claros que luego se traducen a un lenguaje de programación.
+        El enfoque de esta guía conduce del enunciado en lenguaje natural al modelo lógico y, finalmente, a expresiones y decisiones listas para pseudocódigo o código.
       </p>
       <div class="mt-6 p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-lg">
         <p class="text-emerald-900">Navega por el menú para explorar el objetivo, el contenido, las actividades, la evaluación y los recursos.</p>
@@ -233,241 +113,205 @@
 
     <!-- Objetivo -->
     <section id="objetivos" class="content-pane">
-        <!-- Controles de lectura (TTS) arriba y a la derecha -->
-      <!-- Controles + Atajos juntos y alineados a la derecha -->
-  <div class="flex justify-end">
-    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
-      <!-- Controles de lectura (TTS) -->
-      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-           data-target="objetivos">
-        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-          <span class="mr-1">▶️</span> Leer
-        </button>
-        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-          <span class="mr-1">⏸️</span> Pausar
-        </button>
-        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-          <span class="mr-1">⏹️</span> Detener
-        </button>
-
-        <div class="flex items-center ml-2">
-          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
-        </div>
-      </div>
-
-      <!-- Atajos, misma columna, alineados a la derecha -->
-      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
-                  max-w-xl w-full ml-auto">
-        <strong>💡 Atajos de teclado:</strong>
-        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
-        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
-      </div>
-    </div>
-  </div>
-
-  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Objetivo</h2>
+     <p class="leading-relaxed">
+        🧠 <strong>Reconocer y aplicar</strong> herramientas básicas para describir problemas y proponer soluciones lógicas, identificando restricciones y condiciones, seleccionando tipos de datos, definiendo variables y constantes, y utilizando operadores aritméticos, relacionales y lógicos con su prioridad y el uso adecuado de paréntesis. Al finalizar, el estudiante elaborará expresiones y decisiones válidas para resolver problemas sencillos.
+      </p>
 
-      <p class="leading-relaxed">
-  <strong>Comprender</strong> el concepto de algoritmo, sus características y su importancia en la solución de problemas, a partir de ejemplos cotidianos y tecnológicos. Reconocer su papel como base del pensamiento lógico y de la programación, y comenzar a representarlos en pasos secuenciales claros.
-</p>
-
-      
     </section>
 
     <!-- Contenido -->
-    <section id="contenido" class="content-pane">
+      <section id="contenido" class="content-pane">
       <div class="space-y-4">
-
-    <!-- Controles TTS para acordeón de CONTENIDO -->
-          <div class="flex justify-end">
-            <div class="space-y-1">
-              <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-                   data-mode="accordion" data-container="#contenido">
-                <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-                  <span class="mr-1">▶️</span> Leer
-                </button>
-                <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-                  <span class="mr-1">⏸️</span> Pausar
-                </button>
-                <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-                  <span class="mr-1">⏹️</span> Detener
-                </button>
-          
-                <div class="flex items-center ml-2">
-                  <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-                  <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-                </div>
-              </div>
-          
-              <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-                <strong>💡 Atajos:</strong>
-                <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-                <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-              </div>
-            </div>
-          </div>
-        
         <!-- A: Definición -->
         <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
           <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-            Definición de algoritmo
+            Operadores
             <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
           </summary>
           <div class="px-4 pb-4 text-slate-700 space-y-3">
-            <p>Un <strong>algoritmo</strong> es un conjunto finito de instrucciones u operaciones que se ejecutan en un orden específico para resolver un problema o realizar una tarea. Es como una receta: sigues las instrucciones y obtienes el resultado esperado.</p>
-          
-<!-- desde aqui inlui informacion-->
-<p>
-  <span class="tooltip">Algoritmo secuencial - Preparación de una hamburguesa
-    <span class="tooltiptext">
-      Un algoritmo secuencial es aquel en el que las instrucciones se ejecutan paso a paso en orden.
-    </span>
-  </span>
-</p>
-
+            <p> Los <strong> operadores </strong> permiten calcular, comparar y (más adelante) construir decisiones. En esta unidad se usan de forma básica, con ejemplos claros y advertencias comunes.</p>
             
-             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2"></figcaption>
-              <img src="img/img01.png" alt="Pasos para preparar una hamburguesa" class="w-full object-contain rounded"/>
             </figure>
+           <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg">
+
+            <p>
+              Los 
+              <span class="tooltip"><strong>Operadores aritméticos</strong>
+                <span class="tooltiptext">
+                  Se usan para construir expresiones numéricas; recuerda no dividir entre cero y distinguir entre división entera y real.
+                </span>
+              </span>. 
+              Son símbolos que permiten realizar cálculos matemáticos con números, variables o constantes.
+            </p>
+          
+          </div>
+
+
+            </figure>
+              
+            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Relación de Operadores aritméticos </figcaption>
+              <img src="img/img01.png" alt=" . " class="w-full object-contain rounded"/>
+            </figure>
+            <div class="p-4">
             
-<!-- hasta aqui inlui informacion-->            
             
-            <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg">
-              <p class="font-semibold text-emerald-900">Otro caso cotidiano de algoritmo secuencial: pasos para preparar café:</p>
-              <ol class="list-decimal ml-6">
-                <li>Calentar el agua.</li>
-                <li>Colocar café en el filtro.</li>
-                <li>Verter el agua caliente sobre el café.</li>
-                <li>Servir en una taza.</li>
-                <li>Endulzar y revolver.</li>
-              </ol>
+               <figcaption class="font-semibold text-emerald-800 mb-2">
+                <span class="tooltip">Cuidados frecuentes
+                  <span class="tooltiptext">
+                    Nunca dividas entre cero (provoca error de ejecución), distingue división entera y real (por ejemplo, 7/2 puede dar 3 o 3.5 según el lenguaje) y usa el módulo (%) con enteros, teniendo en cuenta que con números negativos su resultado puede variar según el lenguaje; atender estos puntos evita fallas comunes y resultados inesperados.
+                  </span>
+                </span>
+              </figcaption>
+
+               
+               <img src="img/img02.png" alt=" . " class="w-full object-contain rounded"/>
+  
+              
+              <p class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg mb-4">
+                Los 
+                <span class="tooltip"><strong>Operadores relacionales</strong>
+                  <span class="tooltiptext">
+                    Con números comparan magnitudes; con texto la comparación puede depender de mayúsculas/minúsculas según el lenguaje. 
+                  </span>
+                </span>. 
+                Los operadores relacionales se usan para comparar dos valores (del mismo tipo) y el resultado siempre es Verdadero o Falso. 
+                Sirven para verificar igualdad, diferencia y orden: <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>.
+              </p>
+
+
+            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Relación de operadores relacionales. </figcaption>
+              <img src="img/img03.png" alt=" . " class="w-full object-contain rounded"/>
+            </figure>
+
+            <p class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg mb-4">
+              Los 
+              <span class="tooltip"><strong>Operadores lógicos</strong>
+                <span class="tooltiptext">
+                  Los principales operadores lógicos son: <br>
+                  <b>&amp;&amp; (AND):</b> verdadero solo si ambas condiciones lo son.<br>
+                  <b>|| (OR):</b> verdadero si al menos una condición lo es.<br>
+                  <b>! (NOT):</b> invierte el valor lógico (verdadero ↔ falso).
+                </span>
+              </span>. 
+              Los operadores lógicos trabajan con valores Verdadero/Falso y nos ayudan a decidir a partir de condiciones simples.
+            </p>
+
+            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Relación de operadores lógicos. </figcaption>
+              <img src="img/img04.png" alt=" . " class="w-full object-contain rounded"/>
+            </figure>
+                
+                
+           
             </div>
           </div>
-<!-- se incluyen otros ejemplos-->  
-       <p>
-  <span class="tooltip">&#128221; Ver ejemplos de algoritmos secuenciales
-    <span class="tooltiptext">
-      <b>Ejemplo 1.</b> Lavarse las manos <br>
-      1. Abrir el grifo.<br>
-      2. Mojar las manos.<br>
-      3. Aplicar jabón.<br>
-      4. Frotar bien.<br>
-      5. Enjuagar y secar.<br><br>
-
-      <b>Ejemplo 2.</b> Encender un computador <br>
-      1. Conectar el cable de corriente.<br>
-      2. Presionar el botón de encendido.<br>
-      3. Esperar el inicio del sistema.<br>
-      4. Ingresar usuario y contraseña.<br>
-    </span>
-  </span>
-</p>
-
-<!-- se incluyen otros ejemplos-->            
         </details>
 
         <!-- B: Características -->
         <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
           <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-            Características de los algoritmos
+            Prioridad de operadores y uso de paréntesis 
             <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
           </summary>
-       
+          <div class="px-4 pb-4 text-slate-700 space-y-3">
+            
+          <p>
+            Antes de evaluar una <strong>expresión</strong>, el computador sigue un orden de 
+            <span class="tooltip">prioridad
+              <span class="tooltiptext">
+                Orden de evaluación: <br>
+                1. Multiplicación / División / Módulo <br>
+                2. Suma / Resta <br>
+                3. Comparaciones (relacionales) <br>
+                4. Negación lógica (!) <br>
+                5. AND (&&) y OR (||)
+              </span>
+            </span>. 
+            La siguiente figura lo resume; cuando tengas duda, usa paréntesis para dejar clara la intención de la operación inicial.
+          </p>
 
-
+            <figure class="mt-2">
+              <img src="img/img05.png" class="w-full object-contain" alt="Prioridades de los operadores">
+            </figure>
             <p>
-  Para que un algoritmo sea considerado correcto y útil no basta con que resuelva un problema, 
-  también debe cumplir con ciertas 
-  <span class="tooltip">características
-    <span class="tooltiptext">
-      Estas propiedades permiten que los algoritmos sean comprensibles, se ejecuten sin errores y puedan utilizarse en diferentes contextos de manera eficiente.
-    </span>
-  </span> 
-  que aseguren su claridad, precisión y aplicabilidad...
-</p>
-
+              Regla práctica: usa paréntesis para dejar clara la intención. 
+              Por ejemplo, si tienes la ecuación: 
+              <span class="text-red-600 font-bold">a + b * c</span> 
+              para que se calcule primero a + b (usa paréntesis) así: 
+              <span class="text-red-600 font-bold">(a + b) * c</span>.
+            </p>
+  <!-- B: nuevo -->
             
-
-            <figure class="mt-2">
-              <img src="img/img02.png" class="w-full object-contain" alt="Principales características de un buen algoritmo">
-            </figure>
-            
-<!-- modifico para mostrar conceptos cualitativos y cuantiotativod=s-->
-<p>
-  Además, los algoritmos pueden ser 
-  <span class="tooltip">cualitativos
-    <span class="tooltiptext">
-      Un algoritmo cualitativo se describe en palabras sin involucrar cálculos numéricos o matemáticos.
-    </span>
-  </span> 
-  (descritos en palabras) o 
-  <span class="tooltip">cuantitativos
-    <span class="tooltiptext">
-      Un algoritmo cuantitativo requiere cálculos numéricos para resolverse.
-    </span>
-  </span> 
-  (requieren cálculos numéricos).
-</p>
-
-          
-<!-- modifico para mostrar conceptos cualitativos y cuantiotativod=s-->
-       <p class="mt-3">Comparación de algoritmos <strong>cualitativos</strong> y <strong>cuantitativos</strong>.</p>
- 
-<!-- B: nuevo -->
-            <figure class="mt-2">
-              <img src="img/img03.png" class="w-full object-contain" alt="Comparación">
-            </figure>
       <!-- B: fin nuevo -->      
-            <p class="mt-3">A Continuación se visualiza un ejemplo <strong>cualitativo</strong> y <strong>cuantitativo</strong>.</p>
 
             <div class="grid sm:grid-cols-2 gap-4">
-              <figure class="border rounded p-3">
-                <figcaption class="font-semibold text-emerald-800 mb-2">Algoritmo cualitativo — Preparar una taza de café</figcaption>
-                <img src="img/img04.png" class="w-full object-contain" alt="Algoritmo cualitativo">
-              </figure>
-              <figure class="border rounded p-3">
-                <figcaption class="font-semibold text-emerald-800 mb-2">Algoritmo cuantitativo — Calcular el promedio de 3 notas</figcaption>
-                <img src="img/img05.png" class="w-full object-contain" alt="Algoritmo cuantitativo">
-              </figure>
-            
+              
+            </div>
           </div>
         </details>
 
         <!-- C: Ejemplos -->
         <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
           <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-            Ejemplos de algoritmos (vida diaria y programación)
+            Tipos de Datos
             <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
           </summary>
           <div class="px-4 pb-4 text-slate-700 space-y-3">
-            <ul class="list-disc ml-6 space-y-1">
-              <li>Seguir una receta de cocina.</li>
-              <li>Encender y utilizar un computador.</li>
-              <li>Calcular el subtotal de una compra (precio × cantidad).</li>
-              <li>Procesos locales agrícolas como el empaque de mangos: recolectar → lavar → seleccionar → pesar → almacenar.</li>
-            </ul>
-            <figure class="border rounded p-3">
-              
-              <figcaption class="font-semibold text-emerald-800 mb-2">Algoritmo resuelto. Proceso de empaque de mangos</figcaption>
+          
+           <p> En <strong> programación </strong> usamos tipos de datos primitivos para indicar qué clase de información puede guardar una variable o constante y qué operaciones se pueden hacer con ella. En lógica de programación trabajamos, principalmente, con los siguientes:</p>
 
-              <img src="img/img07.png" class="w-full object-contain" alt="Proceso de empaque de mangos">
+            <figure class="border rounded p-3">
+              <img src="img/img06.png" class="w-full object-contain" alt="Tipos de datos">
             </figure>
+
+                        
+            
           </div>
         </details>
 
         <!-- D: Importancia -->
         <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
           <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-            Importancia de los algoritmos
+            Variables y Constantes
             <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
           </summary>
           <div class="px-4 pb-4 text-slate-700 space-y-3">
-            <p>Los algoritmos constituyen la base del pensamiento lógico y de la programación. Permiten resolver problemas de manera ordenada, precisa y eficiente en la vida cotidiana, la producción agropecuaria y los sistemas informáticos.</p>
+
+            <p class="mb-3">
+            En programación usamos <strong>identificadores</strong> para nombrar datos. Los dos más comunes son 
+            <em>variables</em> y <em>constantes</em>: según la necesidad, el valor puede cambiar o permanecer fijo.
+          </p>
+          
+          <p class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg mb-3">
+            Una <span class="tooltip"><strong>variable</strong>
+              <span class="tooltiptext">
+                Su valor puede cambiar durante la ejecución.<br>
+                Ejemplos:<br>
+                <code>edad = 17 → 18</code><br>
+                <code>total = subtotal + iva</code><br>
+                <code>temperaturaHoy = 32; temperaturaManana = 31</code><br>
+                Suele ser numérica, de texto o lógica (V/F).
+              </span>
+            </span> es un identificador cuyo valor puede modificarse a lo largo del algoritmo.
+          </p>
+          
+          <p class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg">
+            Una <span class="tooltip"><strong>constante</strong>
+              <span class="tooltiptext">
+                Su valor NO cambia en todo el programa.<br>
+                Ejemplos:<br>
+                <code>PI = 3.1416</code>, <code>IVA = 0.19</code>, <code>MAX_ESTUDIANTES = 40</code>.<br>
+                Convención: escribir en MAYÚSCULAS con guion bajo.
+              </span>
+            </span> mantiene el mismo valor durante la ejecución (no se reasigna).
+          </p>
+
+          
             <figure>
-              <img src="img/img08.png" class="w-full object-contain" alt="Beneficios de mejora de procesos">
+              <img src="img/img07.png" class="w-full object-contain" alt="Consejos para identificadores">
             </figure>
           </div>
         </details>
@@ -475,161 +319,220 @@
         <!-- E: EPS -->
         <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
           <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-            Estructura Entrada – Proceso – Salida (E-P-S)
+            Identificación de restricciones y condiciones en un problema
             <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
           </summary>
-          <div class="px-4 pb-4 text-slate-700 space-y-3">
-            <p>Todo algoritmo puede entenderse como un sistema que recibe información (<strong>entrada</strong>), la transforma (<strong>proceso</strong>) y genera un <strong>resultado</strong> (<strong>salida</strong>).</p>
-            <figure class="border rounded p-3">
-              <img src="img/img09.png" class="w-full object-contain" alt="Estructura Entrada Proceso Salida">
-            </figure>
+          
+         <div class="grid md:grid-cols-2 gap-4">
+          <!-- Card 1 -->
+          <article
+            class="rounded-2xl p-6 shadow-lg bg-gradient-to-br from-emerald-500 to-emerald-600 text-white hover:shadow-xl transition-shadow">
+            <h3 class="text-xl font-extrabold mb-3">¿Qué buscamos?</h3>
+            <ul class="list-disc ml-5 space-y-2 marker:text-white">
+              <li><span class="font-semibold">Restricciones:</span> reglas que siempre deben cumplirse (rango, formato, opciones válidas, existencia del dato).</li>
+              <li><span class="font-semibold">Condición básica:</span> una comparación que activa una acción (sin combinar con “y/o” todavía).</li>
+              <li><span class="font-semibold">Comparadores:</span> operadores relacionales.</li>
+            </ul>
+          </article>
+        
+          <!-- Card 2 -->
+          <article
+            class="rounded-2xl p-6 shadow-lg bg-gradient-to-br from-indigo-500 to-sky-500 text-white hover:shadow-xl transition-shadow">
+            <h3 class="text-xl font-extrabold mb-3">¿Qué tener en cuenta?</h3>
+            <ul class="list-disc ml-5 space-y-2 marker:text-white">
+              <li><span class="font-semibold">Entradas:</span> qué datos llegan.</li>
+              <li><span class="font-semibold">Restricciones (mín. 2):</span> rango, formato u opciones permitidas.</li>
+              <li><span class="font-semibold">Condición (1 comparación):</span> qué evaluar para decidir una acción.</li>
+              <li><span class="font-semibold">Proceso:</span> operación sencilla (cálculo o asignación).</li>
+              <li><span class="font-semibold">Salidas + Mensajes:</span> qué mostrar/guardar; texto breve si se rompe una restricción.</li>
+            </ul>
+          </article>
+        </div>
 
-            
-      <div class="grid sm:grid-cols-2 gap-4">
-  <!-- Ejemplo 1 -->
-  <article class="rounded-xl border border-emerald-200 bg-white p-4 shadow-sm">
-    <h3 class="text-emerald-800 font-semibold text-lg">Ejemplo 1 — Jugo de mango</h3>
 
-    <div class="mt-3 grid sm:grid-cols-3 gap-3">
-      <div class="rounded-lg border border-emerald-100 p-3">
-        <span class="text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Entrada</span>
-        <p class="text-sm text-slate-700 mt-1">Mangos, agua, azúcar</p>
-      </div>
-      <div class="rounded-lg border border-emerald-100 p-3">
-        <span class="text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Proceso</span>
-        <p class="text-sm text-slate-700 mt-1">Pelar, cortar y licuar</p>
-      </div>
-      <div class="rounded-lg border border-emerald-100 p-3">
-        <span class="text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Salida</span>
-        <p class="text-sm text-slate-700 mt-1">Vaso de jugo</p>
-      </div>
-    </div>
+          <!-- Grid del ejemplo (3 columnas) -->
+<div class="grid md:grid-cols-3 gap-4 mt-4">
+
+  <!-- Enunciado ocupa las 3 columnas -->
+  <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-4 md:col-span-3">
+    <h3 class="font-bold text-emerald-800 mb-2">Ejemplo — Ejercicio práctico de un Parqueadero</h3>
+    <p class="text-slate-700">
+      Un parqueadero cobra por fracción de hora. Si el número de horas es mayor o igual que 8,
+      se debe aplicar al cliente un descuento de 1 hora. Eso significa que,
+      si el vehículo del cliente demora 10 horas en el parqueadero,
+      solo se le deben cobrar 9 horas.
+    </p>
   </article>
 
-  <!-- Ejemplo 2 -->
-  <article class="rounded-xl border border-emerald-200 bg-white p-4 shadow-sm">
-    <h3 class="text-emerald-800 font-semibold text-lg">Ejemplo 2 — Subtotal de compra</h3>
-
-    <div class="mt-3 grid sm:grid-cols-3 gap-3">
-      <div class="rounded-lg border border-emerald-100 p-3">
-        <span class="text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Entrada</span>
-        <p class="text-sm text-slate-700 mt-1">Precio, cantidad</p>
-      </div>
-      <div class="rounded-lg border border-emerald-100 p-3">
-        <span class="text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Proceso</span>
-        <p class="text-sm text-slate-700 mt-1">Precio × cantidad</p>
-      </div>
-      <div class="rounded-lg border border-emerald-100 p-3">
-        <span class="text-[11px] font-semibold uppercase tracking-wide text-emerald-700">Salida</span>
-        <p class="text-sm text-slate-700 mt-1">Subtotal mostrado</p>
-      </div>
-    </div>
+  <!-- Fila 1: 3 tarjetas -->
+  <article class="bg-emerald-50 border border-emerald-200 rounded-lg shadow-sm p-4">
+    <h3 class="font-bold text-emerald-700 mb-2">Entradas sugeridas</h3>
+    <ul class="list-disc ml-5 text-slate-700">
+      <li>horas (entero)</li>
+      <li>tarifaHora (entero)</li>
+    </ul>
   </article>
+
+  <article class="bg-blue-50 border border-blue-200 rounded-lg shadow-sm p-4">
+    <h3 class="font-bold text-blue-700 mb-2">Restricciones</h3>
+    <ul class="list-disc ml-5 text-slate-700">
+      <li>horas ≥ 1</li>
+      <li>tarifaHora > 0</li>
+    </ul>
+  </article>
+
+  <article class="bg-yellow-50 border border-yellow-200 rounded-lg shadow-sm p-4">
+    <h3 class="font-bold text-yellow-700 mb-2">Condición</h3>
+    <p class="text-slate-700">
+      si <code>horas ≥ 8</code> entonces <code>descuento = tarifaHora</code>
+    </p>
+  </article>
+
+  <!-- Fila 2: Proceso (2 col) + Salidas (1 col) -->
+  <article class="bg-purple-50 border border-purple-200 rounded-lg shadow-sm p-4 md:col-span-2">
+    <h3 class="font-bold text-purple-700 mb-2">Proceso</h3>
+    <pre class="bg-white border rounded p-3 text-sm text-slate-800 whitespace-pre-wrap">
+subtotal = horas * tarifaHora
+descuento = 0
+si (horas >= 8) entonces
+    descuento = tarifaHora
+fin si
+total = subtotal - descuento
+    </pre>
+  </article>
+
+  <article class="bg-pink-50 border border-pink-200 rounded-lg shadow-sm p-4">
+    <h3 class="font-bold text-pink-700 mb-2">Salidas</h3>
+    <p class="text-slate-700"><code>total</code>, <code>descuento</code></p>
+  </article>
+
 </div>
 
 
-            
-          </div>
+          
         </details>
       </div>
     </section>
 
     <!-- Actividades -->
-      <section id="actividades" class="content-pane">
-        <!-- Controles + Atajos juntos y alineados a la derecha -->
-  <div class="flex justify-end">
-    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
-      <!-- Controles de lectura (TTS) -->
-      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-           data-target="actividades">
-        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-          <span class="mr-1">▶️</span> Leer
-        </button>
-        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-          <span class="mr-1">⏸️</span> Pausar
-        </button>
-        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-          <span class="mr-1">⏹️</span> Detener
-        </button>
+    <section id="actividades" class="content-pane">
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Actividades</h2>
 
-        <div class="flex items-center ml-2">
-          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
-        </div>
-      </div>
+<!-- ========== SITUACIÓN 1 ========== -->
+<article class="bg-white border rounded-lg shadow-sm p-5 mb-8">
+  <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 1</h3>
+  <p class="mb-4">
+    Un Cine necesita un sistema que permita mostrar el valor a cobrar por tiquete de entrada,
+    teniendo en cuenta que se aplica un <strong>descuento infantil del 20%</strong> si el niño es
+    <strong>menor de 12 años</strong>.
+  </p>
 
-      <!-- Atajos, misma columna, alineados a la derecha -->
-      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
-                  max-w-xl w-full ml-auto">
-        <strong>💡 Atajos de teclado:</strong>
-        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
-        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
-      </div>
+  <!-- Grid 3 arriba / 2 abajo -->
+  <div class="grid md:grid-cols-3 gap-4">
+    <!-- Entradas -->
+    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+      <h4 class="font-bold text-emerald-800 mb-2">Entradas sugeridas</h4>
+      <ul class="list-disc ml-5 text-slate-700 mb-3">
+        <li>edad (entero)</li>
+        <li>precioBase (real)</li>
+      </ul>
+      <input class="a1 entrada w-full p-2 border rounded bg-white"
+             placeholder="Escribe aquí tus entradas…">
+    </div>
+
+    <!-- Restricciones -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <h4 class="font-bold text-blue-700 mb-2">Restricciones</h4>
+      <input class="a1 restricciones w-full p-2 border rounded bg-white"
+             placeholder="Ej.: edad ≥ 0; precioBase &gt; 0">
+    </div>
+
+    <!-- Condición -->
+    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+      <h4 class="font-bold text-yellow-700 mb-2">Condición</h4>
+      <input class="a1 condicion w-full p-2 border rounded bg-white"
+             placeholder="Ej.: edad &lt; 12">
+    </div>
+
+    <!-- Proceso -->
+    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 md:col-span-2">
+      <h4 class="font-bold text-purple-700 mb-2">Proceso</h4>
+      <textarea rows="4" class="a1 proceso w-full p-2 border rounded bg-white"
+        placeholder="Pseudocódigo o fórmula…&#10;si (edad &lt; 12) entonces total = precioBase * 0.8&#10;si no total = precioBase"></textarea>
+    </div>
+
+    <!-- Salidas -->
+    <div class="bg-pink-50 border border-pink-200 rounded-lg p-4">
+      <h4 class="font-bold text-pink-700 mb-2">Salidas</h4>
+      <input class="a1 salidas w-full p-2 border rounded bg-white"
+             placeholder="Ej.: total a pagar">
     </div>
   </div>
+</article>
 
-  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
-      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Actividades</h2>
-      <div class="space-y-6">
-        <div class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5">
-          <p class="font-semibold text-emerald-700 mb-2">Situación 1</p>
-          <p class="mb-3">Un agricultor desea saber cuántos bultos de yuca puede vender si cada bulto pesa 50 kg y su cosecha total fue de 750 kg. Completa E-P-S:</p>
-          <div class="grid sm:grid-cols-3 gap-3">
-            <input data-ans="entrada" placeholder="Entrada" class="act-1 p-2 border rounded bg-white">
-            <input data-ans="proceso" placeholder="Proceso" class="act-1 p-2 border rounded bg-white">
-            <input data-ans="salida" placeholder="Salida" class="act-1 p-2 border rounded bg-white">
-          </div>
-        </div>
-        <div class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5">
-          <p class="font-semibold text-emerald-700 mb-2">Situación 2</p>
-          <p class="mb-3">Tienda virtual con 5% de descuento si cantidad &gt; 10. Completa E-P-S:</p>
-          <div class="grid sm:grid-cols-3 gap-3">
-            <input data-ans="entrada" placeholder="Entrada" class="act-2 p-2 border rounded bg-white">
-            <input data-ans="proceso" placeholder="Proceso" class="act-2 p-2 border rounded bg-white">
-            <input data-ans="salida" placeholder="Salida" class="act-2 p-2 border rounded bg-white">
-          </div>
-        </div>
-      </div>
-      <button id="check-acts" class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded transition-colors">Verificar</button>
-      <div id="acts-result" class="mt-3 font-semibold"></div>
-    </section>
+<!-- ========== SITUACIÓN 2 ========== -->
+<article class="bg-white border rounded-lg shadow-sm p-5">
+  <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 2</h3>
+  <p class="mb-4">
+    Una tienda local aplica un <strong>descuento del 10%</strong> si el medio de pago es
+    igual a <strong>“efectivo”</strong>.
+  </p>
 
-    
+  <div class="grid md:grid-cols-3 gap-4">
+    <!-- Entradas -->
+    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+      <h4 class="font-bold text-emerald-800 mb-2">Entradas sugeridas</h4>
+      <ul class="list-disc ml-5 text-slate-700 mb-3">
+        <li>subtotal (real)</li>
+        <li>medioPago (texto)</li>
+      </ul>
+      <input class="a2 entrada w-full p-2 border rounded bg-white"
+             placeholder="Escribe aquí tus entradas…">
+    </div>
+
+    <!-- Restricciones -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <h4 class="font-bold text-blue-700 mb-2">Restricciones</h4>
+      <input class="a2 restricciones w-full p-2 border rounded bg-white"
+             placeholder="Ej.: subtotal &gt; 0; medioPago permitido">
+    </div>
+
+    <!-- Condición -->
+    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+      <h4 class="font-bold text-yellow-700 mb-2">Condición</h4>
+      <input class="a2 condicion w-full p-2 border rounded bg-white"
+             placeholder='Ej.: medioPago == "efectivo"'>
+    </div>
+
+    <!-- Proceso -->
+    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 md:col-span-2">
+      <h4 class="font-bold text-purple-700 mb-2">Proceso</h4>
+      <textarea rows="4" class="a2 proceso w-full p-2 border rounded bg-white"
+        placeholder="Pseudocódigo o fórmula…&#10;si (medioPago == &quot;efectivo&quot;) entonces total = subtotal * 0.9&#10;si no total = subtotal"></textarea>
+    </div>
+
+    <!-- Salidas -->
+    <div class="bg-pink-50 border border-pink-200 rounded-lg p-4">
+      <h4 class="font-bold text-pink-700 mb-2">Salidas</h4>
+      <input class="a2 salidas w-full p-2 border rounded bg-white"
+             placeholder="Ej.: total a pagar, descuento">
+    </div>
+  </div>
+</article>
+
+<!-- Botón verificar -->
+<div class="mt-5">
+  <button id="check-acts"
+    class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded transition-colors">
+    Verificar
+  </button>
+  <div id="acts-result" class="mt-3 font-semibold"></div>
+
+</section>  <!-- ← cierre de la sección ACTIVIDADES -->
+
+
     <!-- Evaluación (quiz) -->
     <section id="evaluacion" class="content-pane">
-      <!-- Controles + Atajos juntos y alineados a la derecha -->
-  <div class="flex justify-end">
-    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
-      <!-- Controles de lectura (TTS) -->
-      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-           data-target="evaluacion">
-        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-          <span class="mr-1">▶️</span> Leer
-        </button>
-        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-          <span class="mr-1">⏸️</span> Pausar
-        </button>
-        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-          <span class="mr-1">⏹️</span> Detener
-        </button>
-
-        <div class="flex items-center ml-2">
-          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
-        </div>
-      </div>
-
-      <!-- Atajos, misma columna, alineados a la derecha -->
-      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
-                  max-w-xl w-full ml-auto">
-        <strong>💡 Atajos de teclado:</strong>
-        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
-        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
-      </div>
-    </div>
-  </div>
-
-  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Evaluación</h2>
       <div class="bg-white p-5 rounded-lg shadow-md">
         <div id="quiz"></div>
@@ -640,39 +543,6 @@
 
     <!-- Recursos (3 tarjetas como la imagen) -->
     <section id="recursos" class="content-pane">
-    <!-- Controles + Atajos juntos y alineados a la derecha -->
-  <div class="flex justify-end">
-    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
-      <!-- Controles de lectura (TTS) -->
-      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-           data-target="recursos">
-        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-          <span class="mr-1">▶️</span> Leer
-        </button>
-        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-          <span class="mr-1">⏸️</span> Pausar
-        </button>
-        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-          <span class="mr-1">⏹️</span> Detener
-        </button>
-
-        <div class="flex items-center ml-2">
-          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
-        </div>
-      </div>
-
-      <!-- Atajos, misma columna, alineados a la derecha -->
-      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
-                  max-w-xl w-full ml-auto">
-        <strong>💡 Atajos de teclado:</strong>
-        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
-        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
-      </div>
-    </div>
-  </div>
-
-  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-6">Recursos</h2>
       <div class="grid lg:grid-cols-3 gap-5">
         <!-- Card 1 -->
@@ -720,44 +590,8 @@
       </div>
     </section>
 
-    
-    
-
     <!-- Bibliografía -->
     <section id="bibliografia" class="content-pane">
-      <!-- Controles + Atajos juntos y alineados a la derecha -->
-  <div class="flex justify-end">
-    <div class="space-y-1"> <!-- separa botones y atajos con 4px aprox. -->
-      <!-- Controles de lectura (TTS) -->
-      <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-           data-target="bibliografia">
-        <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-          <span class="mr-1">▶️</span> Leer
-        </button>
-        <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-          <span class="mr-1">⏸️</span> Pausar
-        </button>
-        <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-          <span class="mr-1">⏹️</span> Detener
-        </button>
-
-        <div class="flex items-center ml-2">
-          <label for="speech-rate-introduccion" class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-          <input type="range" class="speech-rate w-24" id="speech-rate-introduccion" min="0.5" max="2" step="0.1" value="1">
-        </div>
-      </div>
-
-      <!-- Atajos, misma columna, alineados a la derecha -->
-      <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right
-                  max-w-xl w-full ml-auto">
-        <strong>💡 Atajos de teclado:</strong>
-        Presiona <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> para reproducir/pausar,
-        <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> para detener
-      </div>
-    </div>
-  </div>
-
-  <!-- deja tu título debajo; con margen para separarlo de la franja azul -->
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Bibliografía</h2>
       <ul class="space-y-3">
         <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
@@ -788,57 +622,180 @@
 const panes = document.querySelectorAll('.content-pane');
 const links = document.querySelectorAll('.sidebar-link');
 const mobileNav = document.getElementById('mobile-nav');
-  
 function go(id){
   panes.forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-
-  links.forEach(a=>{
-    a.classList.toggle('active', a.dataset.target===id);
-    a.setAttribute('aria-current', a.dataset.target===id ? 'page' : 'false'); // ← nuevo
-  });
-  
+  links.forEach(a=>a.classList.toggle('active', a.dataset.target===id));
   if(mobileNav) mobileNav.value=id;
-  
-document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
-  
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 links.forEach(a=>a.addEventListener('click', e=>{e.preventDefault(); go(a.dataset.target)}));
 if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
 
 // Activities check (very lightweight rubric)
-document.getElementById('check-acts')?.addEventListener('click',()=>{
-  let correct = 0, total=0;
-  document.querySelectorAll('.act-1,.act-2').forEach(inp=>{
-    total++;
-    const v = inp.value.toLowerCase();
-    const kind = inp.classList.contains('act-1')? '1':'2';
-    let ok=false;
-    if(kind==='1'){ // yuca / bultos
-      if(inp.dataset.ans==='entrada') ok = v.includes('cosecha')||v.includes('750')||v.includes('50')||v.includes('kg');
-      if(inp.dataset.ans==='proceso') ok = v.includes('divid')||v.includes('750/50')||v.includes('750 ÷ 50');
-      if(inp.dataset.ans==='salida') ok = v.includes('15')||v.includes('bult');
-    }else{ // descuento 5% si cantidad>10
-      if(inp.dataset.ans==='entrada') ok = v.includes('precio')&&v.includes('cantidad');
-      if(inp.dataset.ans==='proceso') ok = v.includes('subtotal')||v.includes('precio*cantidad')||v.includes('descuento')||v.includes('5%')||v.includes('0.05');
-      if(inp.dataset.ans==='salida') ok = v.includes('total')||v.includes('valor final')||v.includes('a pagar');
-    }
-    inp.classList.toggle('border-green-500', ok);
-    inp.classList.toggle('border-red-500', !ok);
-    if(ok) correct++;
-  });
+
+// ====== Verificador de Actividades (S1: cine, S2: efectivo) ======
+document.getElementById('check-acts')?.addEventListener('click', () => {
+  let correct = 0, total = 0;
+
+  // Helper: evalúa si el texto contiene TODAS las palabras clave (al menos una variante por grupo)
+  const hasAll = (txt, keywords) => {
+    txt = txt.toLowerCase();
+    return keywords.every(group =>
+      group.some(k => txt.includes(k))
+    );
+  };
+
+  // -------- Situación 1 (Cine) --------
+  // Entradas
+  total++;
+  if (hasAll(document.querySelector('.a1.entrada')?.value || '', [
+      ['edad'], ['precio', 'preciobase'] ])) correct++;
+
+  // Restricciones
+  total++;
+  if (hasAll(document.querySelector('.a1.restricciones')?.value || '', [
+      ['edad','>=','mayor','igual','0'], ['precio','preciobase','>','mayor','0'] ])) correct++;
+
+  // Condición
+  total++;
+  if (hasAll(document.querySelector('.a1.condicion')?.value || '', [
+      ['edad','<','menor','12'] ])) correct++;
+
+  // Proceso
+  total++;
+  if (hasAll(document.querySelector('.a1.proceso')?.value || '', [
+      ['si','if'], ['edad','<','menor','12'], ['precio','preciobase','*','0.8','20%'] ])) correct++;
+
+  // Salidas
+  total++;
+  if (hasAll(document.querySelector('.a1.salidas')?.value || '', [
+      ['total','pagar','valor'] ])) correct++;
+
+
+
+  // -------- Situación 2 (Tienda) --------
+  // Entradas
+  total++;
+  if (hasAll(document.querySelector('.a2.entrada')?.value || '', [
+      ['subtotal'], ['medio','pago','mediopago'] ])) correct++;
+
+  // Restricciones
+  total++;
+  if (hasAll(document.querySelector('.a2.restricciones')?.value || '', [
+      ['subtotal','>','mayor','0'] ])) correct++;
+
+  // Condición
+  total++;
+  if (hasAll(document.querySelector('.a2.condicion')?.value || '', [
+      ['medio','pago','mediopago'], ['efectivo','"efectivo"','=='] ])) correct++;
+
+  // Proceso
+  total++;
+  if (hasAll(document.querySelector('.a2.proceso')?.value || '', [
+      ['si','if'], ['efectivo'], ['subtotal','*','0.9','10%'] ])) correct++;
+
+  // Salidas
+  total++;
+  if (hasAll(document.querySelector('.a2.salidas')?.value || '', [
+      ['total','pagar'], ['descuento'] ])) correct++;
+
+  // Resultado
   const res = document.getElementById('acts-result');
   res.textContent = `Respuestas correctas: ${correct} de ${total}.`;
-  res.className = 'mt-3 font-semibold ' + (correct/total>=0.7 ? 'text-emerald-700':'text-red-700');
+  res.className = 'mt-3 font-semibold ' + (correct/total >= 0.7 ? 'text-emerald-700' : 'text-red-700');
+  window.scrollTo({ top: res.offsetTop - 80, behavior: 'smooth' });
 });
 
+
+
 // Quiz
-const quizData=[
-  {q:'¿Qué es un algoritmo?', opts:['Una secuencia finita y ordenada de pasos para resolver un problema.','El código fuente de un programa.','Una base de datos.','Una imagen.'], a:0},
-  {q:'¿Qué diferencia a un algoritmo de un programa?', opts:['Ninguna.','El algoritmo describe pasos; el programa implementa esos pasos en un lenguaje.','El algoritmo siempre es más corto que el programa.','El programa es una idea y el algoritmo es el código.'], a:1},
-  {q:'Marca la opción que NO es característica esencial de un buen algoritmo:', opts:['Finito','Definido','Infinito','Eficiente'], a:2},
-  {q:'En la estructura E-P-S, “proceso” corresponde a…', opts:['Datos que ingresan','Transformaciones y operaciones','Resultado final','Validaciones del LMS'], a:1},
-  {q:'En una compra en línea, ¿cuál sería la salida del algoritmo “subtotal”?', opts:['Precio','Cantidad','Subtotal','Descuento'], a:2}
+const quizData = [
+  {
+    q: "En el análisis de un problema, ¿qué representan las ENTRADAS?",
+    opts: [
+      "Los resultados finales que se esperan",
+      "Los datos iniciales necesarios para procesar",
+      "Las condiciones que limitan la solución",
+      "Los pasos intermedios del algoritmo"
+    ],
+    a: 1
+  },
+  {
+    q: "¿Cuál de las siguientes NO es una característica de una restricción?",
+    opts: [
+      "Debe cumplirse siempre",
+      "Define un límite o condición",
+      "Se puede omitir sin afectar el resultado",
+      "Puede referirse a rangos válidos o formatos"
+    ],
+    a: 2
+  },
+  {
+    q: "Los operadores aritméticos se usan para…",
+    opts: [
+      "Comparar dos valores y devolver Verdadero/Falso",
+      "Conectar condiciones con Y/O",
+      "Realizar cálculos numéricos",
+      "Definir variables y constantes"
+    ],
+    a: 2
+  },
+  {
+    q: "¿Cuál es el resultado de la prioridad de operadores en: 2 + 3 * 4?",
+    opts: ["20", "14", "24", "12"],
+    a: 1
+  },
+  {
+    q: "¿Qué operador RELACIONAL representa 'menor o igual que'?",
+    opts: ["<=", ">=", "==", "!="],
+    a: 0
+  },
+  {
+    q: "El operador LÓGICO AND (&&) devuelve Verdadero si…",
+    opts: [
+      "Una de las condiciones es verdadera",
+      "Las dos condiciones son verdaderas",
+      "Ninguna condición es verdadera",
+      "Invierte el valor lógico de la condición"
+    ],
+    a: 1
+  },
+  {
+    q: "Para forzar que a + b se calcule antes que * c, ¿cómo debería escribirse?",
+    opts: ["a + b * c", "(a + b) * c", "a + (b * c)", "a + (b) * (c)"],
+    a: 1
+  },
+  {
+    q: "Una VARIABLE se diferencia de una CONSTANTE porque…",
+    opts: [
+      "Su valor puede cambiar durante la ejecución",
+      "Su valor no puede cambiar",
+      "Se escribe siempre en mayúsculas",
+      "Solo almacena números enteros"
+    ],
+    a: 0
+  },
+  {
+    q: "En la estructura Entrada–Proceso–Salida, el PROCESO corresponde a…",
+    opts: [
+      "Los datos iniciales",
+      "Las transformaciones/operaciones sobre los datos",
+      "El resultado final mostrado",
+      "Las restricciones del negocio"
+    ],
+    a: 1
+  },
+  {
+    q: "¿Cuál de estas comparaciones es correcta para verificar si 'medioPago' es 'efectivo'?",
+    opts: [
+      "medioPago = \"efectivo\"",
+      "medioPago == \"efectivo\"",
+      "medioPago !== \"efectivo\"",
+      "medioPago >= \"efectivo\""
+    ],
+    a: 1
+  }
 ];
 const quiz = document.getElementById('quiz');
 if(quiz){
@@ -869,12 +826,10 @@ if(quiz){
     out.className='mt-3 text-lg font-bold ' + (pct>=0.7?'text-emerald-700':'text-red-700');
     // report to SCORM if available
     if(window.SCORM12) SCORM12.setScore(pct);
-    
-document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
-    
+    window.scrollTo({top:0,behavior:'smooth'});
   });
 }
-
+// ===== Zoom ligero de imágenes de <figure> =====
 // Lightweight image zoom for figures with images (click to open)
 const modal=document.getElementById('imgModal');
 const modalImg=document.getElementById('imgModalSrc');
@@ -884,293 +839,5 @@ document.querySelectorAll('figure img').forEach(img=>{
 });
 modal?.addEventListener('click',()=>modal.classList.remove('active'));
 </script>
-
-<script>
-    // ===== TTS genérico por sección (una sola vez) =====
-    document.addEventListener('DOMContentLoaded', function () {
-      const synth = window.speechSynthesis;
-      let voices = [], preferred = null;
-    
-      function loadVoices() {
-        voices = synth.getVoices();
-        preferred = voices.find(v => v.name.includes('Paulina'))
-                 || voices.find(v => (v.lang||'').toLowerCase().startsWith('es'))
-                 || voices[0] || null;
-      }
-      loadVoices();
-      if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
-    
-      // Para cada set de controles .speech-controls
-      document.querySelectorAll('.speech-controls').forEach(controls => {
-        const targetId = controls.dataset.target;               // <-- usa tu data-target correcto
-        const section  = document.getElementById(targetId);
-        if (!section) return;
-    
-        const playBtn  = controls.querySelector('.play-btn');
-        const pauseBtn = controls.querySelector('.pause-btn');
-        const stopBtn  = controls.querySelector('.stop-btn');
-        const rateCtrl = controls.querySelector('.speech-rate');
-    
-        let currentUtterance = null;
-        let isPaused = false;
-    
-        function getTextFromSection(sec) {
-          const nodes = sec.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption');
-          if (!nodes.length) return (sec.textContent||'').trim();
-          let text = '';
-          nodes.forEach(el => {
-            const t = (el.textContent||'').trim();
-            if (!t) return;
-            text += (/^H[1-6]$/.test(el.tagName) ? t + '. . . ' : t + ' ');
-          });
-          return text.trim();
-        }
-    
-        function setButtons(playing){
-          if (!playBtn || !pauseBtn || !stopBtn) return;
-          playBtn.disabled  = playing && !isPaused;
-          pauseBtn.disabled = !playing;
-          stopBtn.disabled  = !playing;
-        }
-    
-        function stop(){
-          if (synth.speaking || synth.pending) synth.cancel();
-          currentUtterance = null; isPaused = false; setButtons(false);
-        }
-    
-        function play(){
-          if (currentUtterance && isPaused && synth.speaking){
-            synth.resume(); isPaused = false; setButtons(true); return;
-          }
-          stop();
-          const text = getTextFromSection(section);
-          if (!text) return;
-          const utt = new SpeechSynthesisUtterance(text);
-          utt.lang  = (preferred && preferred.lang) || 'es-ES';
-          utt.voice = preferred || null;
-          utt.rate  = parseFloat(rateCtrl?.value || '1');
-    
-          utt.onend   = () => { currentUtterance = null; setButtons(false); };
-          utt.onerror = () => { currentUtterance = null; setButtons(false); };
-    
-          currentUtterance = utt;
-          synth.speak(utt);
-          isPaused = false; setButtons(true);
-        }
-    
-        function pause(){
-          if (currentUtterance && !isPaused && synth.speaking){
-            synth.pause(); isPaused = true; if (playBtn) playBtn.disabled = false;
-          }
-        }
-    
-        playBtn?.addEventListener('click',  play);
-        pauseBtn?.addEventListener('click', pause);
-        stopBtn?.addEventListener('click',  stop);
-    
-        rateCtrl?.addEventListener('change', () => {
-          const wasSpeaking = !!currentUtterance && !isPaused && synth.speaking;
-          if (wasSpeaking){ stop(); setTimeout(play, 80); }
-        });
-    
-        // Atajos: solo cuando la sección target está visible
-        document.addEventListener('keydown', (e) => {
-          const activePane = document.querySelector('.content-pane.active');
-          if (!activePane || activePane.id !== targetId) return;
-          if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    
-          if (e.code === 'Space') { e.preventDefault(); (currentUtterance && !isPaused && synth.speaking) ? pause() : play(); }
-          if (e.code === 'Tab' && !e.shiftKey) { stop(); }
-        });
-      });
-    });
-</script>
-
-  <script>
-// ==== TTS para acordeón (usa un solo set de controles) ====
-document.addEventListener('DOMContentLoaded', () => {
-  const synth = window.speechSynthesis;
-  let voices = [], preferred = null;
-  const ctrl = document.querySelector('.speech-controls[data-mode="accordion"]');
-  if (!ctrl) return;
-
-  function loadVoices(){
-    voices = synth.getVoices();
-    preferred = voices.find(v => v.name.includes('Paulina'))
-             || voices.find(v => (v.lang||'').toLowerCase().startsWith('es'))
-             || voices[0] || null;
-  }
-  loadVoices();
-  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
-
-  const containerSel = ctrl.getAttribute('data-container') || '#contenido';
-  const container = document.querySelector(containerSel);
-  if (!container) return;
-
-  const playBtn  = ctrl.querySelector('.play-btn');
-  const pauseBtn = ctrl.querySelector('.pause-btn');
-  const stopBtn  = ctrl.querySelector('.stop-btn');
-  const rateCtrl = ctrl.querySelector('.speech-rate');
-
-  let currentUtterance = null, isPaused = false;
-
-  // Devuelve el <details> abierto; si ninguno, el primero
-  function getActiveDetails() {
-    return container.querySelector('details[open]') || container.querySelector('details');
-  }
-
-  // Toma texto del acordeón: título (summary) + contenido
-  function getDetailsText(det){
-    if (!det) return '';
-    const parts = [];
-    const sum = det.querySelector(':scope > summary');
-    if (sum) {
-      const t = (sum.textContent||'').trim();
-      if (t) parts.push(t + '. . . ');
-    }
-    // Todo lo que no sea summary
-    const bodyNodes = det.querySelectorAll(':scope > :not(summary)');
-    if (bodyNodes.length){
-      bodyNodes.forEach(n=>{
-        // solo textos relevantes
-        n.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption').forEach(el=>{
-          const t = (el.textContent||'').trim();
-          if (t) parts.push(t + ' ');
-        });
-        // fallback si no hay hijos seleccionables
-        if (!n.querySelector('h1,h2,h3,h4,h5,h6,p,li,figcaption')){
-          const t = (n.textContent||'').trim();
-          if (t) parts.push(t + ' ');
-        }
-      });
-    } else {
-      const t = (det.textContent||'').trim();
-      if (t) parts.push(t);
-    }
-    return parts.join('').trim();
-  }
-
-  function setButtons(playing){
-    playBtn.disabled  = playing && !isPaused;
-    pauseBtn.disabled = !playing;
-    stopBtn.disabled  = !playing;
-  }
-
-  function stop(){
-    if (synth.speaking || synth.pending) synth.cancel();
-    currentUtterance = null; isPaused = false; setButtons(false);
-  }
-
-  function play(){
-    if (currentUtterance && isPaused && synth.speaking){
-      synth.resume(); isPaused = false; setButtons(true); return;
-    }
-    stop();
-    const det = getActiveDetails();
-    const text = getDetailsText(det);
-    if (!text) return;
-
-    const utt = new SpeechSynthesisUtterance(text);
-    utt.lang  = (preferred && preferred.lang) || 'es-ES';
-    utt.voice = preferred || null;
-    utt.rate  = parseFloat(rateCtrl?.value || '1');
-
-    utt.onend   = () => { currentUtterance = null; setButtons(false); };
-    utt.onerror = () => { currentUtterance = null; setButtons(false); };
-
-    currentUtterance = utt;
-    synth.speak(utt); isPaused = false; setButtons(true);
-  }
-
-  function pause(){
-    if (currentUtterance && !isPaused && synth.speaking){
-      synth.pause(); isPaused = true; playBtn.disabled = false;
-    }
-  }
-
-  // Eventos de botones
-  playBtn.addEventListener('click',  play);
-  pauseBtn.addEventListener('click', pause);
-  stopBtn.addEventListener('click',  stop);
-
-  // Cambiar velocidad al vuelo
-  rateCtrl?.addEventListener('change', () => {
-    const wasSpeaking = !!currentUtterance && !isPaused && synth.speaking;
-    if (wasSpeaking){ stop(); setTimeout(play, 80); }
-  });
-
-  // Si el usuario abre otro acordeón, detén lectura
-  container.querySelectorAll('details').forEach(d=>{
-    d.addEventListener('toggle', () => {
-      if (d.open) stop(); // corta y deja listo para volver a "Leer"
-    });
-  });
-
-  // Atajos (solo si la pestaña "contenido" está visible)
-  document.addEventListener('keydown', (e) => {
-    const activePane = document.querySelector('.content-pane.active');
-    if (!activePane || activePane.id !== 'contenido') return;
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-
-    if (e.code === 'Space') { e.preventDefault(); (currentUtterance && !isPaused && synth.speaking) ? pause() : play(); }
-    if (e.code === 'Tab' && !e.shiftKey) { stop(); }
-    if (e.code === 'Escape') { stop(); }
-  });
-});
-</script>
-
-  
-<script>//Lee el título del link enfocado con TAB (y también al hacer click si quieres)
-document.addEventListener('DOMContentLoaded', () => {
-  const synth = window.speechSynthesis;
-  let voices = [], preferred = null;
-
-  function loadVoices(){
-    voices = synth.getVoices();
-    preferred = voices.find(v => v.name.includes('Paulina'))
-             || voices.find(v => (v.lang||'').toLowerCase().startsWith('es'))
-             || voices[0] || null;
-  }
-  loadVoices();
-  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
-
-  const INTERRUPT_READING = true; // si está en true, interrumpe cualquier lectura larga actual
-
-  function speakNow(text){
-    if (!text) return;
-    if (INTERRUPT_READING) synth.cancel();
-    const utt = new SpeechSynthesisUtterance(text);
-    utt.lang  = (preferred && preferred.lang) || 'es-ES';
-    utt.voice = preferred || null;
-    utt.rate  = 1; // velocidad de anuncio
-    synth.speak(utt);
-  }
-
-  // Leer al enfocar con TAB los items del menú lateral
-  document.querySelectorAll('aside .sidebar-link').forEach(link=>{
-    link.addEventListener('focus', () => {
-      const label = link.getAttribute('aria-label') || link.textContent.trim();
-      speakNow(label);
-    });
-
-    // (Opcional) también leer al hacer click con mouse/Enter
-    link.addEventListener('click', () => {
-      const label = link.getAttribute('aria-label') || link.textContent.trim();
-      speakNow('Sección: ' + label);
-    });
-  });
-
-  // (Opcional) leer selección en el menú móvil
-  const mobile = document.getElementById('mobile-nav');
-  if (mobile){
-    mobile.addEventListener('change', () => {
-      const opt = mobile.options[mobile.selectedIndex];
-      speakNow(opt ? opt.textContent.trim() : '');
-    });
-  }
-});
-</script>
-
-  
 </body>
 </html>

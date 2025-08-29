@@ -70,15 +70,38 @@
         <img src="img/logo.webp" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
       </div>
     </div>
-    <nav class="mt-6 flex-1">
-      <a href="#" class="sidebar-link active flex items-center py-3 px-6 font-medium text-slate-700" data-target="introduccion"><span class="mr-3 text-xl">🚀</span> Introducción</a>
-      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="objetivos"><span class="mr-3 text-xl">🎯</span> Objetivos</a>
-      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="contenido"><span class="mr-3 text-xl">📚</span> Contenido</a>
-      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="actividades"><span class="mr-3 text-xl">✍️</span> Actividades</a>
-      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="evaluacion"><span class="mr-3 text-xl">✔️</span> Evaluación</a>
-      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="recursos"><span class="mr-3 text-xl">📖</span> Recursos</a>
-      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="bibliografia"><span class="mr-3 text-xl">📚</span> Bibliografía</a>
-    </nav>
+<nav class="mt-6 flex-1" role="navigation" aria-label="Secciones del OVA">
+  <a href="#" class="sidebar-link active flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="introduccion" aria-label="Introducción">
+    <span class="mr-3 text-xl">🚀</span> Introducción
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="objetivos" aria-label="Objetivos">
+    <span class="mr-3 text-xl">🎯</span> Objetivos
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="contenido" aria-label="Contenido">
+    <span class="mr-3 text-xl">📚</span> Contenido
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="actividades" aria-label="Actividades">
+    <span class="mr-3 text-xl">✍️</span> Actividades
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="evaluacion" aria-label="Evaluación">
+    <span class="mr-3 text-xl">✔️</span> Evaluación
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="recursos" aria-label="Recursos">
+    <span class="mr-3 text-xl">📖</span> Recursos
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="bibliografia" aria-label="Bibliografía">
+    <span class="mr-3 text-xl">📚</span> Bibliografía
+  </a>
+</nav>
+
+    
   </aside>
 
   <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50">
@@ -99,6 +122,33 @@
 
    <!-- Intro -->
         <section id="introduccion" class="content-pane active">
+<!-- TTS sección: Introducción -->
+<div class="flex justify-end">
+  <div class="space-y-1">
+    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+         data-target="introduccion">
+      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+        <span class="mr-1">▶️</span> Leer
+      </button>
+      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏸️</span> Pausar
+      </button>
+      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏹️</span> Detener
+      </button>
+      <div class="flex items-center ml-2">
+        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+      </div>
+    </div>
+    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+    </div>
+  </div>
+</div>
+
+          
           <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-800">
             Estructuras de control secuenciales y condicionales
           </h1>
@@ -119,6 +169,33 @@
 
    <!-- Objetivo -->
         <section id="objetivos" class="content-pane">
+<!-- TTS sección: Introducción -->
+<div class="flex justify-end">
+  <div class="space-y-1">
+    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+         data-target="objetivos">
+      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+        <span class="mr-1">▶️</span> Leer
+      </button>
+      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏸️</span> Pausar
+      </button>
+      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏹️</span> Detener
+      </button>
+      <div class="flex items-center ml-2">
+        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+      </div>
+    </div>
+    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+    </div>
+  </div>
+</div>
+
+          
           <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Objetivo</h2>
           <p class="leading-relaxed">
             🧩 <strong>Comprender y dominar</strong> las estructuras de control básicas (secuenciales y condicionales) mediante explicaciones sencillas, ejemplos prácticos y ejercicios guiados en pseudocódigo. ✍️💡
@@ -129,6 +206,32 @@
       <section id="contenido" class="content-pane">
       <div class="space-y-4">
         <!-- A: Estructuras de control secuenciales -->
+        <!-- TTS para acordeón de CONTENIDO (lee solo el <details> abierto) -->
+<div class="flex justify-end">
+  <div class="space-y-1">
+    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+         data-mode="accordion" data-container="#contenido">
+      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+        <span class="mr-1">▶️</span> Leer
+      </button>
+      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏸️</span> Pausar
+      </button>
+      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏹️</span> Detener
+      </button>
+      <div class="flex items-center ml-2">
+        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+      </div>
+    </div>
+    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+    </div>
+  </div>
+</div>
+
         <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
           <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
             Estructuras de control secuenciales
@@ -476,6 +579,32 @@
 
     <!-- Actividades -->
     <section id="actividades" class="content-pane">
+      <!-- TTS sección: Introducción -->
+<div class="flex justify-end">
+  <div class="space-y-1">
+    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+         data-target="introduccion">
+      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+        <span class="mr-1">▶️</span> Leer
+      </button>
+      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏸️</span> Pausar
+      </button>
+      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏹️</span> Detener
+      </button>
+      <div class="flex items-center ml-2">
+        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+      </div>
+    </div>
+    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+    </div>
+  </div>
+</div>
+
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Actividades</h2>
 
 <!-- ========== SITUACIÓN 1 ========== -->
@@ -593,6 +722,32 @@
 
     <!-- Evaluación (quiz) -->
     <section id="evaluacion" class="content-pane">
+      <!-- TTS sección: Introducción -->
+<div class="flex justify-end">
+  <div class="space-y-1">
+    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+         data-target="evaluacion">
+      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+        <span class="mr-1">▶️</span> Leer
+      </button>
+      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏸️</span> Pausar
+      </button>
+      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏹️</span> Detener
+      </button>
+      <div class="flex items-center ml-2">
+        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+      </div>
+    </div>
+    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+    </div>
+  </div>
+</div>
+
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Evaluación</h2>
       <div class="bg-white p-5 rounded-lg shadow-md">
         <div id="quiz"></div>
@@ -603,6 +758,32 @@
 
     <!-- Recursos (3 tarjetas como la imagen) -->
     <section id="recursos" class="content-pane">
+      <!-- TTS sección: Introducción -->
+<div class="flex justify-end">
+  <div class="space-y-1">
+    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+         data-target="recursos">
+      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+        <span class="mr-1">▶️</span> Leer
+      </button>
+      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏸️</span> Pausar
+      </button>
+      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏹️</span> Detener
+      </button>
+      <div class="flex items-center ml-2">
+        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+      </div>
+    </div>
+    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+    </div>
+  </div>
+</div>
+
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-6">Recursos</h2>
       <div class="grid lg:grid-cols-3 gap-5">
         <!-- Card 1 -->
@@ -665,6 +846,32 @@
 
     <!-- Bibliografía -->
     <section id="bibliografia" class="content-pane">
+      <!-- TTS sección: Introducción -->
+<div class="flex justify-end">
+  <div class="space-y-1">
+    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+         data-target="bibliografia">
+      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+        <span class="mr-1">▶️</span> Leer
+      </button>
+      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏸️</span> Pausar
+      </button>
+      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏹️</span> Detener
+      </button>
+      <div class="flex items-center ml-2">
+        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+      </div>
+    </div>
+    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+    </div>
+  </div>
+</div>
+
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Bibliografía</h2>
       <ul class="space-y-3">
         <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
@@ -698,10 +905,16 @@ const mobileNav = document.getElementById('mobile-nav');
 function go(id){
   panes.forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  links.forEach(a=>a.classList.toggle('active', a.dataset.target===id));
+  links.forEach(a=>{
+    const active = a.dataset.target===id;
+    a.classList.toggle('active', active);
+    a.setAttribute('aria-current', active ? 'page' : 'false');
+  });
   if(mobileNav) mobileNav.value=id;
   window.scrollTo({top:0,behavior:'smooth'});
 }
+
+  
 links.forEach(a=>a.addEventListener('click', e=>{e.preventDefault(); go(a.dataset.target)}));
 if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
 
@@ -912,5 +1125,225 @@ document.querySelectorAll('figure img').forEach(img=>{
 });
 modal?.addEventListener('click',()=>modal.classList.remove('active'));
 </script>
+
+<script>
+// ==== TTS genérico (para .speech-controls con data-target) ====
+document.addEventListener('DOMContentLoaded', function () {
+  const synth = window.speechSynthesis;
+  let voices = [], preferred = null;
+
+  function loadVoices(){
+    voices = synth.getVoices();
+    preferred = voices.find(v => v.name.includes('Paulina'))
+             || voices.find(v => (v.lang||'').toLowerCase().startsWith('es'))
+             || voices[0] || null;
+  }
+  loadVoices();
+  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+
+  document.querySelectorAll('.speech-controls[data-target]').forEach(controls => {
+    const targetId = controls.dataset.target;
+    const section  = document.getElementById(targetId);
+    if (!section) return;
+
+    const playBtn  = controls.querySelector('.play-btn');
+    const pauseBtn = controls.querySelector('.pause-btn');
+    const stopBtn  = controls.querySelector('.stop-btn');
+    const rateCtrl = controls.querySelector('.speech-rate');
+
+    let currentUtterance = null, isPaused = false;
+
+    function getTextFromSection(sec){
+      const nodes = sec.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption,pre');
+      if (!nodes.length) return (sec.textContent||'').trim();
+      let text = '';
+      nodes.forEach(el=>{
+        const t=(el.textContent||'').trim();
+        if (!t) return;
+        text += (/^H[1-6]$/.test(el.tagName) ? t + '. . . ' : t + ' ');
+      });
+      return text.trim();
+    }
+    function setButtons(playing){
+      playBtn.disabled  = playing && !isPaused;
+      pauseBtn.disabled = !playing;
+      stopBtn.disabled  = !playing;
+    }
+    function stop(){
+      if (synth.speaking || synth.pending) synth.cancel();
+      currentUtterance=null; isPaused=false; setButtons(false);
+    }
+    function play(){
+      if (currentUtterance && isPaused && synth.speaking){
+        synth.resume(); isPaused=false; setButtons(true); return;
+      }
+      stop();
+      const text=getTextFromSection(section);
+      if (!text) return;
+      const utt=new SpeechSynthesisUtterance(text);
+      utt.lang  =(preferred && preferred.lang) || 'es-ES';
+      utt.voice = preferred || null;
+      utt.rate  = parseFloat(rateCtrl?.value || '1');
+      utt.onend   = ()=>{ currentUtterance=null; setButtons(false); };
+      utt.onerror = ()=>{ currentUtterance=null; setButtons(false); };
+      currentUtterance=utt; synth.speak(utt); isPaused=false; setButtons(true);
+    }
+    function pause(){
+      if (currentUtterance && !isPaused && synth.speaking){
+        synth.pause(); isPaused=true; playBtn.disabled=false;
+      }
+    }
+
+    playBtn?.addEventListener('click',  play);
+    pauseBtn?.addEventListener('click', pause);
+    stopBtn?.addEventListener('click',  stop);
+    rateCtrl?.addEventListener('change', ()=>{ if (currentUtterance && !isPaused && synth.speaking){ stop(); setTimeout(play,80);} });
+
+    // Atajos: solo cuando la sección está visible
+    document.addEventListener('keydown', (e)=>{
+      const activePane = document.querySelector('.content-pane.active');
+      if (!activePane || activePane.id !== targetId) return;
+      if (e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA') return;
+      if (e.code==='Space'){ e.preventDefault(); (currentUtterance && !isPaused && synth.speaking) ? pause() : play(); }
+      if (e.code==='Tab' && !e.shiftKey){ stop(); }
+    });
+  });
+});
+</script>
+
+  <script>
+// ==== TTS para acordeón (lee solo el <details> abierto en #contenido) ====
+document.addEventListener('DOMContentLoaded', () => {
+  const synth = window.speechSynthesis;
+  let voices=[], preferred=null;
+  function loadVoices(){
+    voices = synth.getVoices();
+    preferred = voices.find(v=>v.name.includes('Paulina'))
+             || voices.find(v=>(v.lang||'').toLowerCase().startsWith('es'))
+             || voices[0] || null;
+  }
+  loadVoices();
+  if (synth.onvoiceschanged!==undefined) synth.onvoiceschanged=loadVoices;
+
+  const ctrl = document.querySelector('.speech-controls[data-mode="accordion"][data-container="#contenido"]');
+  if (!ctrl) return;
+  const container = document.querySelector('#contenido');
+
+  const playBtn  = ctrl.querySelector('.play-btn');
+  const pauseBtn = ctrl.querySelector('.pause-btn');
+  const stopBtn  = ctrl.querySelector('.stop-btn');
+  const rateCtrl = ctrl.querySelector('.speech-rate');
+
+  let currentUtterance=null, isPaused=false;
+
+  function getActiveDetails(){ return container.querySelector('details[open]') || container.querySelector('details'); }
+  function getDetailsText(det){
+    if (!det) return '';
+    const parts=[];
+    const sum=det.querySelector(':scope > summary');
+    if (sum){ const t=(sum.textContent||'').trim(); if (t) parts.push(t + '. . . '); }
+    const bodyNodes = det.querySelectorAll(':scope > :not(summary)');
+    if (bodyNodes.length){
+      bodyNodes.forEach(n=>{
+        n.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption,pre').forEach(el=>{
+          const t=(el.textContent||'').trim(); if (t) parts.push(t + ' ');
+        });
+        if (!n.querySelector('h1,h2,h3,h4,h5,h6,p,li,figcaption,pre')){
+          const t=(n.textContent||'').trim(); if (t) parts.push(t + ' ');
+        }
+      });
+    }else{
+      const t=(det.textContent||'').trim(); if (t) parts.push(t);
+    }
+    return parts.join('').trim();
+  }
+  function setButtons(playing){
+    playBtn.disabled  = playing && !isPaused;
+    pauseBtn.disabled = !playing;
+    stopBtn.disabled  = !playing;
+  }
+  function stop(){
+    if (synth.speaking || synth.pending) synth.cancel();
+    currentUtterance=null; isPaused=false; setButtons(false);
+  }
+  function play(){
+    if (currentUtterance && isPaused && synth.speaking){ synth.resume(); isPaused=false; setButtons(true); return; }
+    stop();
+    const det=getActiveDetails(); const text=getDetailsText(det);
+    if (!text) return;
+    const utt=new SpeechSynthesisUtterance(text);
+    utt.lang  =(preferred && preferred.lang) || 'es-ES';
+    utt.voice = preferred || null;
+    utt.rate  = parseFloat(rateCtrl?.value || '1');
+    utt.onend   = ()=>{ currentUtterance=null; setButtons(false); };
+    utt.onerror = ()=>{ currentUtterance=null; setButtons(false); };
+    currentUtterance=utt; synth.speak(utt); isPaused=false; setButtons(true);
+  }
+  function pause(){
+    if (currentUtterance && !isPaused && synth.speaking){ synth.pause(); isPaused=true; playBtn.disabled=false; }
+  }
+
+  playBtn.addEventListener('click',  play);
+  pauseBtn.addEventListener('click', pause);
+  stopBtn.addEventListener('click',  stop);
+  rateCtrl?.addEventListener('change', ()=>{ if (currentUtterance && !isPaused && synth.speaking){ stop(); setTimeout(play,80);} });
+
+  // Si se abre otro acordeón, corta la lectura
+  container.querySelectorAll('details').forEach(d=>{
+    d.addEventListener('toggle', ()=>{ if (d.open) stop(); });
+  });
+
+  // Atajos cuando "contenido" esté visible
+  document.addEventListener('keydown', (e)=>{
+    const activePane=document.querySelector('.content-pane.active');
+    if (!activePane || activePane.id!=='contenido') return;
+    if (e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA') return;
+    if (e.code==='Space'){ e.preventDefault(); (currentUtterance && !isPaused && synth.speaking) ? pause() : play(); }
+    if (e.code==='Tab' && !e.shiftKey){ stop(); }
+    if (e.code==='Escape'){ stop(); }
+  });
+});
+</script>
+
+  <script>
+// ==== Lee el título del link del sidebar al enfocarlo con TAB ====
+document.addEventListener('DOMContentLoaded', ()=>{
+  const synth=window.speechSynthesis;
+  let voices=[], preferred=null;
+  function loadVoices(){
+    voices=synth.getVoices();
+    preferred = voices.find(v=>v.name.includes('Paulina'))
+             || voices.find(v=>(v.lang||'').toLowerCase().startsWith('es'))
+             || voices[0] || null;
+  }
+  loadVoices();
+  if (synth.onvoiceschanged!==undefined) synth.onvoiceschanged=loadVoices;
+
+  function speak(text){
+    if (!text) return;
+    synth.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang=(preferred && preferred.lang) || 'es-ES';
+    u.voice=preferred || null;
+    u.rate=1;
+    synth.speak(u);
+  }
+
+  document.querySelectorAll('aside .sidebar-link').forEach(link=>{
+    link.addEventListener('focus', ()=>{ speak(link.getAttribute('aria-label') || link.textContent.trim()); });
+    link.addEventListener('click', ()=>{ speak('Sección: ' + (link.getAttribute('aria-label') || link.textContent.trim())); });
+  });
+
+  const mobile=document.getElementById('mobile-nav');
+  if (mobile){
+    mobile.addEventListener('change', ()=>{
+      const opt=mobile.options[mobile.selectedIndex];
+      speak(opt ? opt.textContent.trim() : '');
+    });
+  }
+});
+</script>
+
+  
 </body>
 </html>

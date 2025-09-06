@@ -58,6 +58,17 @@
   visibility: visible;
   opacity: 1;
 }
+/* Bocina redonda (toggle TTS) */
+.tts-fab{
+  width:64px; height:64px; border-radius:9999px;
+  background:#10b981; color:#fff; border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:28px; line-height:1;
+  box-shadow:0 8px 18px rgba(16,185,129,.35);
+  transition:transform .15s ease, background .2s ease;
+}
+.tts-fab:hover{ transform:translateY(-1px); }
+.tts-fab.muted{ background:#9ca3af; }   /* gris cuando está desactivada */
 
   
   </style>
@@ -102,15 +113,20 @@
     <span class="mr-3 text-xl">📚</span> Bibliografía
   </a>
 </nav>
-<div class="mt-2 p-3 border-t border-emerald-100">
-  <button id="menu-tts-toggle" type="button" aria-pressed="false"
-          class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-3 py-2 rounded-md shadow">
-    🔈 Activar voz del menú
+
+   <div class="mt-4 p-4 border-t border-emerald-100">
+  <!-- Bocina redonda -->
+  <button id="menu-tts-toggle"
+          type="button"
+          aria-pressed="false"
+          class="tts-fab muted"
+          title="Voz desactivada"
+          aria-label="Voz desactivada">
+    🔇
   </button>
-  <p class="text-xs text-slate-500 mt-2">
-    Lee los títulos al enfocar (Tab) o pasar el mouse (solo si está activado).
-  </p>
 </div>
+
+
     
   </aside>
 <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50 max-h-screen overflow-y-auto">
@@ -874,47 +890,44 @@
 </div>
 
 <script>
-// Navigation
-const panes = document.querySelectorAll('.content-pane');
-const links = document.querySelectorAll('.sidebar-link');
-const mobileNav = document.getElementById('mobile-nav');
-function go(id){
-  panes.forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  links.forEach(a=>{
-    const active = a.dataset.target===id;
-    a.classList.toggle('active', active);
-    a.setAttribute('aria-current', active ? 'page' : 'false');
-  });
-  if(mobileNav) mobileNav.value=id;
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-  
-links.forEach(a=>a.addEventListener('click', e=>{e.preventDefault(); go(a.dataset.target)}));
-if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
-
-
-/* ===== Lectura del menú: solo si está activada con el botón ===== */
+/* === Navegación + voz SOLO al hacer clic === */
 (() => {
+  const panes = document.querySelectorAll('.content-pane');
+  const links = document.querySelectorAll('.sidebar-link');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  function go(id){
+    panes.forEach(p=>p.classList.remove('active'));
+    document.getElementById(id)?.classList.add('active');
+    links.forEach(a=>{
+      const active = a.dataset.target===id;
+      a.classList.toggle('active', active);
+      a.setAttribute('aria-current', active ? 'page' : 'false');
+    });
+    if(mobileNav) mobileNav.value=id;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // ===== TTS (toggle con bocina) =====
   const synth = window.speechSynthesis;
   let voices = [];
   function loadVoices(){ voices = synth.getVoices(); }
   loadVoices();
   if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
 
-  // estado guardado
   let menuTtsEnabled = JSON.parse(localStorage.getItem('menuTtsEnabled') || 'false');
   const ttsBtn = document.getElementById('menu-tts-toggle');
 
   function updateTtsBtn(){
     if(!ttsBtn) return;
-    ttsBtn.textContent = menuTtsEnabled ? '🔇 Desactivar voz del menú' : '🔈 Activar voz del menú';
+    ttsBtn.classList.toggle('muted', !menuTtsEnabled);
     ttsBtn.setAttribute('aria-pressed', menuTtsEnabled ? 'true' : 'false');
+    ttsBtn.setAttribute('aria-label', menuTtsEnabled ? 'Voz activada' : 'Voz desactivada');
+    ttsBtn.title = menuTtsEnabled ? 'Voz activada' : 'Voz desactivada';
+    ttsBtn.textContent = menuTtsEnabled ? '🔊' : '🔇';
   }
   updateTtsBtn();
 
-  // click del botón
   ttsBtn?.addEventListener('click', () => {
     menuTtsEnabled = !menuTtsEnabled;
     localStorage.setItem('menuTtsEnabled', JSON.stringify(menuTtsEnabled));
@@ -922,31 +935,46 @@ if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
     updateTtsBtn();
   });
 
-  // función para hablar
   function speakMenu(text){
     if(!menuTtsEnabled || !text) return;
     try{
       synth.cancel();
       const u = new SpeechSynthesisUtterance(text);
-      u.lang  = (voices.find(v => /es/i.test(v.lang))?.lang) || 'es-ES';
-      u.voice = voices.find(v => /Paulina/i.test(v.name))
-             || voices.find(v => /es/i.test(v.lang))
-             || null;
+      const v = voices.find(v => /es/i.test(v.lang)) || null;
+      if (v) u.voice = v, u.lang = v.lang; else u.lang = 'es-ES';
       u.rate = 1.0;
       synth.speak(u);
-    }catch(e){/* noop */}
+    }catch(e){}
   }
 
-  // SOLO lee si está activado: al enfocar con Tab o pasar mouse
+  // ===== Un SOLO listener: navega + lee (si está activado) =====
   links.forEach(a => {
-    a.addEventListener('focus',      () => speakMenu(a.textContent.trim()));
-    a.addEventListener('mouseenter', () => speakMenu(a.textContent.trim()));
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = a.dataset.target;
+      if (id) go(id);
+
+      // Toma aria-label para no leer el emoji
+      const label = a.getAttribute('aria-label') || a.textContent.replace(/\s+/g,' ').trim();
+      speakMenu(label);
+    });
+  });
+
+  // Mobile select
+  mobileNav?.addEventListener('change', e => {
+    go(e.target.value);
+    // También lee en móvil si está activado
+    const opt = e.target.selectedOptions[0];
+    const label = (opt?.textContent || '').replace(/\s+/g,' ').trim();
+    speakMenu(label);
   });
 })();
+</script>
 
 
 
   
+<script>
 // Activities check (very lightweight rubric)
 
 // ====== Verificador de Actividades (S1: cine, S2: efectivo) ======
@@ -1293,45 +1321,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-  <script>
-// ==== Lee el título del link del sidebar al enfocarlo con TAB ====
-document.addEventListener('DOMContentLoaded', ()=>{
-  const synth=window.speechSynthesis;
-  let voices=[], preferred=null;
-  function loadVoices(){
-    voices=synth.getVoices();
-    preferred = voices.find(v=>v.name.includes('Paulina'))
-             || voices.find(v=>(v.lang||'').toLowerCase().startsWith('es'))
-             || voices[0] || null;
-  }
-  loadVoices();
-  if (synth.onvoiceschanged!==undefined) synth.onvoiceschanged=loadVoices;
-
-  function speak(text){
-    if (!text) return;
-    synth.cancel();
-    const u=new SpeechSynthesisUtterance(text);
-    u.lang=(preferred && preferred.lang) || 'es-ES';
-    u.voice=preferred || null;
-    u.rate=1;
-    synth.speak(u);
-  }
-
-  document.querySelectorAll('aside .sidebar-link').forEach(link=>{
-    link.addEventListener('focus', ()=>{ speak(link.getAttribute('aria-label') || link.textContent.trim()); });
-    link.addEventListener('click', ()=>{ speak('Sección: ' + (link.getAttribute('aria-label') || link.textContent.trim())); });
-  });
-
-  const mobile=document.getElementById('mobile-nav');
-  if (mobile){
-    mobile.addEventListener('change', ()=>{
-      const opt=mobile.options[mobile.selectedIndex];
-      speak(opt ? opt.textContent.trim() : '');
-    });
-  }
-});
-</script>
-
+ 
   
 </body>
 </html>

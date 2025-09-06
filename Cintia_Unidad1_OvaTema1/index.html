@@ -936,13 +936,14 @@ if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
       synth.speak(u);
     }catch(e){/* noop */}
   }
-
-  // SOLO lee si está activado: al enfocar con Tab o pasar mouse
-  links.forEach(a => {
-    a.addEventListener('focus',      () => speakMenu(a.textContent.trim()));
-    a.addEventListener('mouseenter', () => speakMenu(a.textContent.trim()));
+// SOLO lee si está activado: **al hacer clic**
+links.forEach(a => {
+  a.addEventListener('click', () => {
+    const label = a.getAttribute('aria-label') || a.textContent.trim();
+    speakMenu(label); // usa aria-label: no lee el emoji/imagen
   });
-})();
+});
+  
 
 
 

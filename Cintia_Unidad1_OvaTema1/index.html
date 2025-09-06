@@ -1293,45 +1293,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-  <script>
-// ==== Lee el título del link del sidebar al enfocarlo con TAB ====
-document.addEventListener('DOMContentLoaded', ()=>{
-  const synth=window.speechSynthesis;
-  let voices=[], preferred=null;
-  function loadVoices(){
-    voices=synth.getVoices();
-    preferred = voices.find(v=>v.name.includes('Paulina'))
-             || voices.find(v=>(v.lang||'').toLowerCase().startsWith('es'))
-             || voices[0] || null;
-  }
-  loadVoices();
-  if (synth.onvoiceschanged!==undefined) synth.onvoiceschanged=loadVoices;
-
-  function speak(text){
-    if (!text) return;
-    synth.cancel();
-    const u=new SpeechSynthesisUtterance(text);
-    u.lang=(preferred && preferred.lang) || 'es-ES';
-    u.voice=preferred || null;
-    u.rate=1;
-    synth.speak(u);
-  }
-
-  document.querySelectorAll('aside .sidebar-link').forEach(link=>{
-    link.addEventListener('focus', ()=>{ speak(link.getAttribute('aria-label') || link.textContent.trim()); });
-    link.addEventListener('click', ()=>{ speak('Sección: ' + (link.getAttribute('aria-label') || link.textContent.trim())); });
-  });
-
-  const mobile=document.getElementById('mobile-nav');
-  if (mobile){
-    mobile.addEventListener('change', ()=>{
-      const opt=mobile.options[mobile.selectedIndex];
-      speak(opt ? opt.textContent.trim() : '');
-    });
-  }
-});
-</script>
-
+ 
   
 </body>
 </html>

@@ -100,7 +100,15 @@
     <span class="mr-3 text-xl">📚</span> Bibliografía
   </a>
 </nav>
-
+<div class="mt-2 p-3 border-t border-emerald-100">
+  <button id="menu-tts-toggle" type="button" aria-pressed="false"
+          class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-3 py-2 rounded-md shadow">
+    🔈 Activar voz del menú
+  </button>
+  <p class="text-xs text-slate-500 mt-2">
+    Lee los títulos al enfocar (Tab) o pasar el mouse (solo si está activado).
+  </p>
+</div>
     
   </aside>
 
@@ -154,10 +162,10 @@
           </h1>
 
             <p class="mt-4 leading-relaxed">
-              💻 En programación, las <strong>estructuras de control</strong>  son como el mapa 🗺️ que guía a un programa. 
+              En programación, las <strong>estructuras de control</strong>  son como el mapa que guía a un programa. 
               Sin estas estructuras, el programa solo podría ejecutar instrucciones una tras otra, sin tomar decisiones ni reaccionar a distintas situaciones.  
-              Con esta guía aprenderás paso a paso cómo funcionan las <strong>secuencias</strong> y las <strong>estructuras condicionales</strong> 🔎, 
-              para que puedas usarlas sin miedo y con confianza ✅.
+              Con esta guía aprenderás paso a paso cómo funcionan las <strong>secuencias</strong> y las <strong>estructuras condicionales</strong>, 
+              para que puedas usarlas sin miedo y con confianza.
             </p>
           
           <div class="mt-6 p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-lg">
@@ -198,7 +206,7 @@
           
           <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Objetivo</h2>
           <p class="leading-relaxed">
-            🧩 <strong>Comprender y dominar</strong> las estructuras de control básicas (secuenciales y condicionales) mediante explicaciones sencillas, ejemplos prácticos y ejercicios guiados en pseudocódigo. ✍️💡
+            <strong>Comprender y dominar</strong> las estructuras de control básicas (secuenciales y condicionales) mediante explicaciones sencillas, ejemplos prácticos y ejercicios guiados en pseudocódigo.
           </p>
         </section>
     
@@ -262,7 +270,7 @@
                 <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg">
                 
                   <p>
-                    📌 <span class="tooltip"><strong>Estructuras de control.</strong>
+                     <span class="tooltip"><strong>Estructuras de control.</strong>
                       <span class="tooltiptext">
                         Aunque son limitadas, siempre estarán presentes, ya sea de manera independiente o combinadas con estructuras condicionales y repetitivas para resolver problemas más complejos.
                       </span>
@@ -574,148 +582,114 @@
 
           
         </details>
+ <!-- ejemplosn -->
+        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
+          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
+           Ejercicios Prácticos con estructuras condicionales  
+            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
+          </summary>
+          <div class="px-4 pb-4 text-slate-700 space-y-3">
+
+            <p class="mt-3 text-slate-700 leading-relaxed">
+                    Las estructuras de control condicionales permiten que un programa tome decisiones según se cumpla o no una condición lógica. Estas condiciones se expresan como proposiciones que pueden 
+            </p>
+             <p class="mt-3 text-slate-700 leading-relaxed">
+                    Enunciado 1. Un cine necesita calcular el valor a cobrar por tiquete. Si el cliente es menor de 12 años recibe 20% de descuento sobre el precio base. 
+            </p>
+           <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Desarrollo:  </figcaption>
+              <img src="img/img17.png" alt=" . " class="w-full object-contain rounded"/>
+            </figure>
+
+             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Pseudocódigo   </figcaption>
+              <img src="img/img17_01.png" alt=" . " class="w-full object-contain rounded"/>
+            </figure>
+
+             <p class="mt-3 text-slate-700 leading-relaxed">
+                    Enunciado 2. Un restaurante aplica descuentos según el día de la semana: (lunes (1): 10%, martes (2): 15%, miércoles (3): 20%, Otros días: sin descuento). Calcular el total a pagar para una cuenta dada. 
+            </p>
+           <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Desarrollo:  </figcaption>
+              <img src="img/img18.png" alt=" . " class="w-full object-contain rounded"/>
+            </figure>
+
+             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Pseudocódigo   </figcaption>
+              <img src="img/img18_01.png" alt=" . " class="w-full object-contain rounded"/>
+            </figure> 
+          
+          </div>
+
+          
+        </details>
+        
       </div>
     </section>
 
     <!-- Actividades -->
     <section id="actividades" class="content-pane">
       <!-- TTS sección: Introducción -->
-<div class="flex justify-end">
-  <div class="space-y-1">
-    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-         data-target="introduccion">
-      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-        <span class="mr-1">▶️</span> Leer
-      </button>
-      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏸️</span> Pausar
-      </button>
-      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏹️</span> Detener
-      </button>
-      <div class="flex items-center ml-2">
-        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-      </div>
-    </div>
-    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-    </div>
-  </div>
-</div>
+        <div class="flex justify-end">
+          <div class="space-y-1">
+            <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+                 data-target="introduccion">
+              <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+                <span class="mr-1">▶️</span> Leer
+              </button>
+              <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+                <span class="mr-1">⏸️</span> Pausar
+              </button>
+              <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+                <span class="mr-1">⏹️</span> Detener
+              </button>
+              <div class="flex items-center ml-2">
+                <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+                <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+              </div>
+            </div>
+            <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+              <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+              <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+            </div>
+          </div>
+        </div>
 
       <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Actividades</h2>
 
-<!-- ========== SITUACIÓN 1 ========== -->
-<article class="bg-white border rounded-lg shadow-sm p-5 mb-8">
-  <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 1</h3>
-  <p class="mb-4">
-    Un Cine necesita un sistema que permita mostrar el valor a cobrar por tiquete de entrada,
-    teniendo en cuenta que se aplica un <strong>descuento infantil del 20%</strong> si el niño es
-    <strong>menor de 12 años</strong>.
-  </p>
+      <!-- Situación 1 -->
+  <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5 mb-6">
+    <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 1</h3>
+    <p class="mb-3">
+      Escriba el pseudocódigo para un programa que determine si una persona es mayor de edad (18 años o más).
+    </p>
+    <textarea rows="8" class="w-full p-3 border rounded bg-white"
+      placeholder="Pseudocódigo…&#10;Algoritmo MayorDeEdad&#10;Leer edad&#10;Si edad &gt;= 18 Entonces&#10;    Escribir 'Mayor de edad'&#10;SiNo&#10;    Escribir 'Menor de edad'&#10;FinSi&#10;FinAlgoritmo"></textarea>
+  </article>
 
-  <!-- Grid 3 arriba / 2 abajo -->
-  <div class="grid md:grid-cols-3 gap-4">
-    <!-- Entradas -->
-    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-      <h4 class="font-bold text-emerald-800 mb-2">Entradas sugeridas</h4>
-      <ul class="list-disc ml-5 text-slate-700 mb-3">
-        <li>edad (entero)</li>
-        <li>precioBase (real)</li>
-      </ul>
-      <input class="a1 entrada w-full p-2 border rounded bg-white"
-             placeholder="Escribe aquí tus entradas…">
-    </div>
+  <!-- Situación 2 -->
+  <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5 mb-6">
+    <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 2</h3>
+    <p class="mb-3">
+      Un supermercado aplica descuentos así: Si el cliente compra más de 10 productos, obtiene 15% de descuento.
+      Si compra entre 5 y 10, obtiene 10%. Si compra menos de 5, no tiene descuento.
+      Diseñe el pseudocódigo con condicionales múltiples para este caso.
+    </p>
+    <textarea rows="10" class="w-full p-3 border rounded bg-white"
+      placeholder="Pseudocódigo…&#10;Algoritmo DescuentoSuper&#10;Leer cantidad, precioUnidad&#10;subtotal &lt;- cantidad * precioUnidad&#10;descuento &lt;- 0&#10;Si cantidad &gt; 10 Entonces&#10;    descuento &lt;- subtotal * 0.15&#10;SiNoSi cantidad &gt;= 5 Entonces&#10;    descuento &lt;- subtotal * 0.10&#10;FinSi&#10;total &lt;- subtotal - descuento&#10;Escribir total, descuento&#10;FinAlgoritmo"></textarea>
+  </article>
 
-    <!-- Restricciones -->
-    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-      <h4 class="font-bold text-blue-700 mb-2">Restricciones</h4>
-      <input class="a1 restricciones w-full p-2 border rounded bg-white"
-             placeholder="Ej.: edad ≥ 0; precioBase &gt; 0">
-    </div>
+  <!-- Situación 3 -->
+  <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5">
+    <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 3</h3>
+    <p class="mb-3">
+      Usando la estructura SEGÚN, diseñe un pseudocódigo que muestre el día de la semana según un número ingresado
+      (1 = lunes, 2 = martes, …, 7 = domingo).
+    </p>
+    <textarea rows="11" class="w-full p-3 border rounded bg-white"
+      placeholder="Pseudocódigo…&#10;Algoritmo DiaSegunNumero&#10;Leer n&#10;Segun n Hacer&#10;    1: Escribir 'Lunes'&#10;    2: Escribir 'Martes'&#10;    3: Escribir 'Miércoles'&#10;    4: Escribir 'Jueves'&#10;    5: Escribir 'Viernes'&#10;    6: Escribir 'Sábado'&#10;    7: Escribir 'Domingo'&#10;De Otro Modo: Escribir 'Número inválido'&#10;FinSegun&#10;FinAlgoritmo"></textarea>
+  </article>
 
-    <!-- Condición -->
-    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-      <h4 class="font-bold text-yellow-700 mb-2">Condición</h4>
-      <input class="a1 condicion w-full p-2 border rounded bg-white"
-             placeholder="Ej.: edad &lt; 12">
-    </div>
-
-    <!-- Proceso -->
-    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 md:col-span-2">
-      <h4 class="font-bold text-purple-700 mb-2">Proceso</h4>
-      <textarea rows="4" class="a1 proceso w-full p-2 border rounded bg-white"
-        placeholder="Pseudocódigo o fórmula…&#10;si (edad &lt; 12) entonces total = precioBase * 0.8&#10;si no total = precioBase"></textarea>
-    </div>
-
-    <!-- Salidas -->
-    <div class="bg-pink-50 border border-pink-200 rounded-lg p-4">
-      <h4 class="font-bold text-pink-700 mb-2">Salidas</h4>
-      <input class="a1 salidas w-full p-2 border rounded bg-white"
-             placeholder="Ej.: total a pagar">
-    </div>
-  </div>
-</article>
-
-<!-- ========== SITUACIÓN 2 ========== -->
-<article class="bg-white border rounded-lg shadow-sm p-5">
-  <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 2</h3>
-  <p class="mb-4">
-    Una tienda local aplica un <strong>descuento del 10%</strong> si el medio de pago es
-    igual a <strong>“efectivo”</strong>.
-  </p>
-
-  <div class="grid md:grid-cols-3 gap-4">
-    <!-- Entradas -->
-    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-      <h4 class="font-bold text-emerald-800 mb-2">Entradas sugeridas</h4>
-      <ul class="list-disc ml-5 text-slate-700 mb-3">
-        <li>subtotal (real)</li>
-        <li>medioPago (texto)</li>
-      </ul>
-      <input class="a2 entrada w-full p-2 border rounded bg-white"
-             placeholder="Escribe aquí tus entradas…">
-    </div>
-
-    <!-- Restricciones -->
-    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-      <h4 class="font-bold text-blue-700 mb-2">Restricciones</h4>
-      <input class="a2 restricciones w-full p-2 border rounded bg-white"
-             placeholder="Ej.: subtotal &gt; 0; medioPago permitido">
-    </div>
-
-    <!-- Condición -->
-    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-      <h4 class="font-bold text-yellow-700 mb-2">Condición</h4>
-      <input class="a2 condicion w-full p-2 border rounded bg-white"
-             placeholder='Ej.: medioPago == "efectivo"'>
-    </div>
-
-    <!-- Proceso -->
-    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 md:col-span-2">
-      <h4 class="font-bold text-purple-700 mb-2">Proceso</h4>
-      <textarea rows="4" class="a2 proceso w-full p-2 border rounded bg-white"
-        placeholder="Pseudocódigo o fórmula…&#10;si (medioPago == &quot;efectivo&quot;) entonces total = subtotal * 0.9&#10;si no total = subtotal"></textarea>
-    </div>
-
-    <!-- Salidas -->
-    <div class="bg-pink-50 border border-pink-200 rounded-lg p-4">
-      <h4 class="font-bold text-pink-700 mb-2">Salidas</h4>
-      <input class="a2 salidas w-full p-2 border rounded bg-white"
-             placeholder="Ej.: total a pagar, descuento">
-    </div>
-  </div>
-</article>
-
-<!-- Botón verificar -->
-<div class="mt-5">
-  <button id="check-acts"
-    class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded transition-colors">
-    Verificar
-  </button>
-  <div id="acts-result" class="mt-3 font-semibold"></div>
 
 </section>  <!-- ← cierre de la sección ACTIVIDADES -->
 
@@ -918,6 +892,59 @@ function go(id){
 links.forEach(a=>a.addEventListener('click', e=>{e.preventDefault(); go(a.dataset.target)}));
 if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
 
+
+/* ===== Lectura del menú: solo si está activada con el botón ===== */
+(() => {
+  const synth = window.speechSynthesis;
+  let voices = [];
+  function loadVoices(){ voices = synth.getVoices(); }
+  loadVoices();
+  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+
+  // estado guardado
+  let menuTtsEnabled = JSON.parse(localStorage.getItem('menuTtsEnabled') || 'false');
+  const ttsBtn = document.getElementById('menu-tts-toggle');
+
+  function updateTtsBtn(){
+    if(!ttsBtn) return;
+    ttsBtn.textContent = menuTtsEnabled ? '🔇 Desactivar voz del menú' : '🔈 Activar voz del menú';
+    ttsBtn.setAttribute('aria-pressed', menuTtsEnabled ? 'true' : 'false');
+  }
+  updateTtsBtn();
+
+  // click del botón
+  ttsBtn?.addEventListener('click', () => {
+    menuTtsEnabled = !menuTtsEnabled;
+    localStorage.setItem('menuTtsEnabled', JSON.stringify(menuTtsEnabled));
+    if(!menuTtsEnabled) synth.cancel();
+    updateTtsBtn();
+  });
+
+  // función para hablar
+  function speakMenu(text){
+    if(!menuTtsEnabled || !text) return;
+    try{
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang  = (voices.find(v => /es/i.test(v.lang))?.lang) || 'es-ES';
+      u.voice = voices.find(v => /Paulina/i.test(v.name))
+             || voices.find(v => /es/i.test(v.lang))
+             || null;
+      u.rate = 1.0;
+      synth.speak(u);
+    }catch(e){/* noop */}
+  }
+
+  // SOLO lee si está activado: al enfocar con Tab o pasar mouse
+  links.forEach(a => {
+    a.addEventListener('focus',      () => speakMenu(a.textContent.trim()));
+    a.addEventListener('mouseenter', () => speakMenu(a.textContent.trim()));
+  });
+})();
+
+
+
+  
 // Activities check (very lightweight rubric)
 
 // ====== Verificador de Actividades (S1: cine, S2: efectivo) ======
@@ -996,93 +1023,52 @@ document.getElementById('check-acts')?.addEventListener('click', () => {
 
 
 // Quiz
+// Quiz
 const quizData = [
   {
-    q: "En el análisis de un problema, ¿qué representan las ENTRADAS?",
+    q: "¿Qué es un condicional en programación?",
     opts: [
-      "Los resultados finales que se esperan",
-      "Los datos iniciales necesarios para procesar",
-      "Las condiciones que limitan la solución",
-      "Los pasos intermedios del algoritmo"
+      "Una instrucción que se repite varias veces.",
+      "Una estructura que permite tomar decisiones según una condición.",
+      "Un tipo de variable que almacena valores lógicos.",
+      "Un ciclo infinito."
     ],
     a: 1
   },
   {
-    q: "¿Cuál de las siguientes NO es una característica de una restricción?",
-    opts: [
-      "Debe cumplirse siempre",
-      "Define un límite o condición",
-      "Se puede omitir sin afectar el resultado",
-      "Puede referirse a rangos válidos o formatos"
-    ],
-    a: 2
-  },
-  {
-    q: "Los operadores aritméticos se usan para…",
-    opts: [
-      "Comparar dos valores y devolver Verdadero/Falso",
-      "Conectar condiciones con Y/O",
-      "Realizar cálculos numéricos",
-      "Definir variables y constantes"
-    ],
-    a: 2
-  },
-  {
-    q: "¿Cuál es el resultado de la prioridad de operadores en: 2 + 3 * 4?",
-    opts: ["20", "14", "24", "12"],
-    a: 1
-  },
-  {
-    q: "¿Qué operador RELACIONAL representa 'menor o igual que'?",
-    opts: ["<=", ">=", "==", "!="],
+    q: "Verdadero o Falso: El condicional SI permite ejecutar un bloque de instrucciones únicamente si la condición es verdadera.",
+    opts: ["Verdadero","Falso"],
     a: 0
   },
   {
-    q: "El operador LÓGICO AND (&&) devuelve Verdadero si…",
+    q: "¿Cuál de las siguientes opciones corresponde a un condicional múltiple con SI?",
     opts: [
-      "Una de las condiciones es verdadera",
-      "Las dos condiciones son verdaderas",
-      "Ninguna condición es verdadera",
-      "Invierte el valor lógico de la condición"
+      "Una estructura donde se evalúa una sola variable con varios valores.",
+      "Una cadena de condicionales anidados donde se verifican varias condiciones.",
+      "Un ciclo que se repite mientras se cumpla una condición.",
+      "Una función que recibe varios parámetros."
     ],
     a: 1
   },
   {
-    q: "Para forzar que a + b se calcule antes que * c, ¿cómo debería escribirse?",
-    opts: ["a + b * c", "(a + b) * c", "a + (b * c)", "a + (b) * (c)"],
+    q: "En la estructura SEGÚN, la sección “De Otro Modo” es:",
+    opts: [
+      "Obligatoria y siempre debe estar presente.",
+      "Opcional y se ejecuta solo si ningún caso coincide.",
+      "Un ciclo dentro de la estructura.",
+      "Un comentario dentro del pseudocódigo."
+    ],
     a: 1
   },
   {
-    q: "Una VARIABLE se diferencia de una CONSTANTE porque…",
-    opts: [
-      "Su valor puede cambiar durante la ejecución",
-      "Su valor no puede cambiar",
-      "Se escribe siempre en mayúsculas",
-      "Solo almacena números enteros"
-    ],
+    q: "Verdadero o Falso: Un condicional anidado es cuando dentro de un SI se incluye otro SI para evaluar condiciones adicionales.",
+    opts: ["Verdadero","Falso"],
     a: 0
-  },
-  {
-    q: "En la estructura Entrada–Proceso–Salida, el PROCESO corresponde a…",
-    opts: [
-      "Los datos iniciales",
-      "Las transformaciones/operaciones sobre los datos",
-      "El resultado final mostrado",
-      "Las restricciones del negocio"
-    ],
-    a: 1
-  },
-  {
-    q: "¿Cuál de estas comparaciones es correcta para verificar si 'medioPago' es 'efectivo'?",
-    opts: [
-      "medioPago = \"efectivo\"",
-      "medioPago == \"efectivo\"",
-      "medioPago !== \"efectivo\"",
-      "medioPago >= \"efectivo\""
-    ],
-    a: 1
   }
 ];
+
+
+  
 const quiz = document.getElementById('quiz');
 if(quiz){
   quizData.forEach((it,i)=>{

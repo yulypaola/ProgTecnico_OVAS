@@ -922,7 +922,7 @@ if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
     updateTtsBtn();
   });
 
-  // función para hablar
+  // función para hablar SOLO el texto (sin emoji), usando aria-label
   function speakMenu(text){
     if(!menuTtsEnabled || !text) return;
     try{
@@ -934,15 +934,19 @@ if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
              || null;
       u.rate = 1.0;
       synth.speak(u);
-    }catch(e){/* noop */}
+    }catch(e){}
   }
-// SOLO lee si está activado: **al hacer clic**
-links.forEach(a => {
-  a.addEventListener('click', () => {
-    const label = a.getAttribute('aria-label') || a.textContent.trim();
-    speakMenu(label); // usa aria-label: no lee el emoji/imagen
+
+  // SOLO lee si está activado: al hacer clic
+  const links = document.querySelectorAll('.sidebar-link');
+  links.forEach(a => {
+    a.addEventListener('click', () => {
+      const label = a.getAttribute('aria-label') || a.textContent.trim();
+      speakMenu(label);
+    });
   });
-});
+})();
+
   
 
 

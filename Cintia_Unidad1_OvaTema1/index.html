@@ -887,98 +887,87 @@
 </div>
 
 <script>
-// Navigation
-const panes = document.querySelectorAll('.content-pane');
-const links = document.querySelectorAll('.sidebar-link');
-const mobileNav = document.getElementById('mobile-nav');
-function go(id){
-  panes.forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  links.forEach(a=>{
-    const active = a.dataset.target===id;
-    a.classList.toggle('active', active);
-    a.setAttribute('aria-current', active ? 'page' : 'false');
-  });
-  if(mobileNav) mobileNav.value=id;
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-  
-links.forEach(a=>a.addEventListener('click', e=>{e.preventDefault(); go(a.dataset.target)}));
-if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
-
-
-<script>
-/* ===== Lectura del menú (clic) + botones sincronizados ===== */
+/* === Navegación + voz SOLO al hacer clic === */
 (() => {
+  const panes = document.querySelectorAll('.content-pane');
+  const links = document.querySelectorAll('.sidebar-link');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  function go(id){
+    panes.forEach(p=>p.classList.remove('active'));
+    document.getElementById(id)?.classList.add('active');
+    links.forEach(a=>{
+      const active = a.dataset.target===id;
+      a.classList.toggle('active', active);
+      a.setAttribute('aria-current', active ? 'page' : 'false');
+    });
+    if(mobileNav) mobileNav.value=id;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // ===== TTS (toggle con bocina) =====
   const synth = window.speechSynthesis;
   let voices = [];
-  const links   = document.querySelectorAll('.sidebar-link');
-  const btnRect = document.getElementById('menu-tts-toggle');
-  const btnBig  = document.getElementById('menu-tts-round');
-
   function loadVoices(){ voices = synth.getVoices(); }
   loadVoices();
   if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
 
-  // Estado persistente (por defecto, apagado)
   let menuTtsEnabled = JSON.parse(localStorage.getItem('menuTtsEnabled') || 'false');
+  const ttsBtn = document.getElementById('menu-tts-toggle');
 
-  function renderButtons(){
-    const icon  = menuTtsEnabled ? '🔊' : '🔈';
-    const label = menuTtsEnabled ? 'Desactivar voz del menú' : 'Activar voz del menú';
-
-    if (btnRect){
-      btnRect.setAttribute('aria-pressed', menuTtsEnabled ? 'true' : 'false');
-      btnRect.innerHTML = `<span aria-hidden="true">${icon}</span> <span class="ml-2">${label}</span>`;
-    }
-    if (btnBig){
-      btnBig.setAttribute('aria-pressed', menuTtsEnabled ? 'true' : 'false');
-      btnBig.textContent = icon;
-      btnBig.title = label;
-      // color visual (opcional)
-      btnBig.classList.toggle('bg-emerald-600',  menuTtsEnabled);
-      btnBig.classList.toggle('bg-slate-400',   !menuTtsEnabled);
-      btnBig.classList.toggle('hover:bg-emerald-700',  menuTtsEnabled);
-      btnBig.classList.toggle('hover:bg-slate-500',   !menuTtsEnabled);
-    }
+  function updateTtsBtn(){
+    if(!ttsBtn) return;
+    ttsBtn.classList.toggle('muted', !menuTtsEnabled);
+    ttsBtn.setAttribute('aria-pressed', menuTtsEnabled ? 'true' : 'false');
+    ttsBtn.setAttribute('aria-label', menuTtsEnabled ? 'Voz activada' : 'Voz desactivada');
+    ttsBtn.title = menuTtsEnabled ? 'Voz activada' : 'Voz desactivada';
+    ttsBtn.textContent = menuTtsEnabled ? '🔊' : '🔇';
   }
-  renderButtons();
+  updateTtsBtn();
 
-  function toggleState(){
+  ttsBtn?.addEventListener('click', () => {
     menuTtsEnabled = !menuTtsEnabled;
     localStorage.setItem('menuTtsEnabled', JSON.stringify(menuTtsEnabled));
-    if (!menuTtsEnabled) synth.cancel();
-    renderButtons();
-  }
-  btnRect?.addEventListener('click', toggleState);
-  btnBig ?.addEventListener('click', toggleState);
+    if(!menuTtsEnabled) synth.cancel();
+    updateTtsBtn();
+  });
 
-  function speakMenu(label){
-    if (!menuTtsEnabled || !label) return;
+  function speakMenu(text){
+    if(!menuTtsEnabled || !text) return;
     try{
       synth.cancel();
-      const u = new SpeechSynthesisUtterance(label);
-      const v = voices.find(v => /Paulina/i.test(v.name))
-             || voices.find(v => /(^es-|^es$)/i.test(v.lang))
-             || null;
-      u.lang  = (v?.lang) || 'es-ES';
-      u.voice = v || null;
-      u.rate  = 1.0;
+      const u = new SpeechSynthesisUtterance(text);
+      const v = voices.find(v => /es/i.test(v.lang)) || null;
+      if (v) u.voice = v, u.lang = v.lang; else u.lang = 'es-ES';
+      u.rate = 1.0;
       synth.speak(u);
     }catch(e){}
   }
 
-  // Solo lee al hacer clic en el menú, tomando aria-label (no lee el emoji)
+  // ===== Un SOLO listener: navega + lee (si está activado) =====
   links.forEach(a => {
-    a.addEventListener('click', () => {
-      const label = a.getAttribute('aria-label') || a.textContent.trim();
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = a.dataset.target;
+      if (id) go(id);
+
+      // Toma aria-label para no leer el emoji
+      const label = a.getAttribute('aria-label') || a.textContent.replace(/\s+/g,' ').trim();
       speakMenu(label);
     });
   });
 
-})();   // ← CIERRA AQUÍ
-</script>   <!-- ← CIERRA EL SCRIPT COMPLETO -->
+  // Mobile select
+  mobileNav?.addEventListener('change', e => {
+    go(e.target.value);
+    // También lee en móvil si está activado
+    const opt = e.target.selectedOptions[0];
+    const label = (opt?.textContent || '').replace(/\s+/g,' ').trim();
+    speakMenu(label);
+  });
+})();
+</script>
+
 
 
   

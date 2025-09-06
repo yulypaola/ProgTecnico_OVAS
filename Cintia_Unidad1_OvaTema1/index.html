@@ -102,15 +102,28 @@
     <span class="mr-3 text-xl">📚</span> Bibliografía
   </a>
 </nav>
-<div class="mt-2 p-3 border-t border-emerald-100">
+
+    <div class="mt-2 p-3 border-t border-emerald-100">
+  <!-- Bocina grande (opcional) -->
+  <div class="flex justify-center mb-3">
+    <button id="menu-tts-round" type="button" aria-pressed="false"
+            class="w-16 h-16 rounded-full bg-emerald-600 text-white text-3xl grid place-items-center shadow hover:bg-emerald-700"
+            title="Activar voz del menú">
+      🔈
+    </button>
+  </div>
+
+  <!-- Botón rectangular con texto -->
   <button id="menu-tts-toggle" type="button" aria-pressed="false"
           class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-3 py-2 rounded-md shadow">
-    🔈 Activar voz del menú
+    <!-- El JS pondrá el ícono y el texto correctos -->
   </button>
- <p class="text-xs text-slate-500 mt-2">
-  Lee los títulos al hacer clic (solo si está activado).
-</p>
+
+  <p class="text-xs text-slate-500 mt-2">
+    Lee los títulos al hacer clic (solo si está activado).
+  </p>
 </div>
+
     
   </aside>
 <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50 max-h-screen overflow-y-auto">
@@ -895,50 +908,68 @@ links.forEach(a=>a.addEventListener('click', e=>{e.preventDefault(); go(a.datase
 if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
 
 
-/* ===== Lectura del menú: solo si está activada con el botón ===== */
+<script>
+/* ===== Lectura del menú (clic) + botones sincronizados ===== */
 (() => {
   const synth = window.speechSynthesis;
   let voices = [];
+  const links   = document.querySelectorAll('.sidebar-link');
+  const btnRect = document.getElementById('menu-tts-toggle');
+  const btnBig  = document.getElementById('menu-tts-round');
+
   function loadVoices(){ voices = synth.getVoices(); }
   loadVoices();
   if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
 
-  // estado guardado
+  // Estado persistente (por defecto, apagado)
   let menuTtsEnabled = JSON.parse(localStorage.getItem('menuTtsEnabled') || 'false');
-  const ttsBtn = document.getElementById('menu-tts-toggle');
 
-  function updateTtsBtn(){
-    if(!ttsBtn) return;
-    ttsBtn.textContent = menuTtsEnabled ? '🔇 Desactivar voz del menú' : '🔈 Activar voz del menú';
-    ttsBtn.setAttribute('aria-pressed', menuTtsEnabled ? 'true' : 'false');
+  function renderButtons(){
+    const icon  = menuTtsEnabled ? '🔊' : '🔈';
+    const label = menuTtsEnabled ? 'Desactivar voz del menú' : 'Activar voz del menú';
+
+    if (btnRect){
+      btnRect.setAttribute('aria-pressed', menuTtsEnabled ? 'true' : 'false');
+      btnRect.innerHTML = `<span aria-hidden="true">${icon}</span> <span class="ml-2">${label}</span>`;
+    }
+    if (btnBig){
+      btnBig.setAttribute('aria-pressed', menuTtsEnabled ? 'true' : 'false');
+      btnBig.textContent = icon;
+      btnBig.title = label;
+      // color visual (opcional)
+      btnBig.classList.toggle('bg-emerald-600',  menuTtsEnabled);
+      btnBig.classList.toggle('bg-slate-400',   !menuTtsEnabled);
+      btnBig.classList.toggle('hover:bg-emerald-700',  menuTtsEnabled);
+      btnBig.classList.toggle('hover:bg-slate-500',   !menuTtsEnabled);
+    }
   }
-  updateTtsBtn();
+  renderButtons();
 
-  // click del botón
-  ttsBtn?.addEventListener('click', () => {
+  function toggleState(){
     menuTtsEnabled = !menuTtsEnabled;
     localStorage.setItem('menuTtsEnabled', JSON.stringify(menuTtsEnabled));
-    if(!menuTtsEnabled) synth.cancel();
-    updateTtsBtn();
-  });
+    if (!menuTtsEnabled) synth.cancel();
+    renderButtons();
+  }
+  btnRect?.addEventListener('click', toggleState);
+  btnBig ?.addEventListener('click', toggleState);
 
-  // función para hablar SOLO el texto (sin emoji), usando aria-label
-  function speakMenu(text){
-    if(!menuTtsEnabled || !text) return;
+  function speakMenu(label){
+    if (!menuTtsEnabled || !label) return;
     try{
       synth.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang  = (voices.find(v => /es/i.test(v.lang))?.lang) || 'es-ES';
-      u.voice = voices.find(v => /Paulina/i.test(v.name))
-             || voices.find(v => /es/i.test(v.lang))
+      const u = new SpeechSynthesisUtterance(label);
+      const v = voices.find(v => /Paulina/i.test(v.name))
+             || voices.find(v => /(^es-|^es$)/i.test(v.lang))
              || null;
-      u.rate = 1.0;
+      u.lang  = (v?.lang) || 'es-ES';
+      u.voice = v || null;
+      u.rate  = 1.0;
       synth.speak(u);
     }catch(e){}
   }
 
-  // SOLO lee si está activado: al hacer clic
-  const links = document.querySelectorAll('.sidebar-link');
+  // Solo lee al hacer clic en el menú, tomando aria-label (no lee el emoji)
   links.forEach(a => {
     a.addEventListener('click', () => {
       const label = a.getAttribute('aria-label') || a.textContent.trim();
@@ -946,6 +977,7 @@ if(mobileNav) mobileNav.addEventListener('change', e=>go(e.target.value));
     });
   });
 })();
+</script>
 
   
 

@@ -103,26 +103,18 @@
   </a>
 </nav>
 
-    <div class="mt-2 p-3 border-t border-emerald-100">
-  <!-- Bocina grande (opcional) -->
-  <div class="flex justify-center mb-3">
-    <button id="menu-tts-round" type="button" aria-pressed="false"
-            class="w-16 h-16 rounded-full bg-emerald-600 text-white text-3xl grid place-items-center shadow hover:bg-emerald-700"
-            title="Activar voz del menú">
-      🔈
-    </button>
-  </div>
-
-  <!-- Botón rectangular con texto -->
-  <button id="menu-tts-toggle" type="button" aria-pressed="false"
-          class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-3 py-2 rounded-md shadow">
-    <!-- El JS pondrá el ícono y el texto correctos -->
+   <div class="mt-4 p-4 border-t border-emerald-100">
+  <!-- Bocina redonda -->
+  <button id="menu-tts-toggle"
+          type="button"
+          aria-pressed="false"
+          class="tts-fab muted"
+          title="Voz desactivada"
+          aria-label="Voz desactivada">
+    🔇
   </button>
-
-  <p class="text-xs text-slate-500 mt-2">
-    Lee los títulos al hacer clic (solo si está activado).
-  </p>
 </div>
+
 
     
   </aside>

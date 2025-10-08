@@ -1,0 +1,81 @@
+{
+  "pageCount": 18,
+  "pages": [
+    {
+      "src": "./images/page-1-25730f50.webp"
+    },
+    {
+      "src": "./images/page-2-272eb226.webp"
+    },
+    {
+      "src": "./images/page-3-67903e8f.webp"
+    },
+    {
+      "src": "./images/page-4-f5e4eaab.webp"
+    },
+    {
+      "src": "./images/page-5-fdad10b8.webp"
+    },
+    {
+      "src": "./images/page-6-ec5deafe.webp"
+    },
+    {
+      "src": "./images/page-7-d9e139fd.webp"
+    },
+    {
+      "src": "./images/page-8-c99f536a.webp"
+    },
+    {
+      "src": "./images/page-9-5c800f5c.webp"
+    },
+    {
+      "src": "./images/page-10-1f800be0.webp"
+    },
+    {
+      "src": "./images/page-11-bdbbbe60.webp"
+    },
+    {
+      "src": "./images/page-12-a61a4a9d.webp"
+    },
+    {
+      "src": "./images/page-13-bb91e8ca.webp"
+    },
+    {
+      "src": "./images/page-14-5ebd65cb.webp"
+    },
+    {
+      "src": "./images/page-15-58fa4a81.webp"
+    },
+    {
+      "src": "./images/page-16-75fe9908.webp"
+    },
+    {
+      "src": "./images/page-17-9ccd90e1.webp"
+    },
+    {
+      "src": "./images/page-18-ed12a07f.webp"
+    }
+  ],
+  "generatedAt": "2025-10-08T14:50:41.951Z",
+  "source": "OK_Guia_Unidad1_Tema3_Condicionales.pdf",
+  "integrity": {
+    "images/page-1-25730f50.webp": "25730f50",
+    "images/page-2-272eb226.webp": "272eb226",
+    "images/page-3-67903e8f.webp": "67903e8f",
+    "images/page-4-f5e4eaab.webp": "f5e4eaab",
+    "images/page-5-fdad10b8.webp": "fdad10b8",
+    "images/page-6-ec5deafe.webp": "ec5deafe",
+    "images/page-7-d9e139fd.webp": "d9e139fd",
+    "images/page-8-c99f536a.webp": "c99f536a",
+    "images/page-9-5c800f5c.webp": "5c800f5c",
+    "images/page-10-1f800be0.webp": "1f800be0",
+    "images/page-11-bdbbbe60.webp": "bdbbbe60",
+    "images/page-12-a61a4a9d.webp": "a61a4a9d",
+    "images/page-13-bb91e8ca.webp": "bb91e8ca",
+    "images/page-14-5ebd65cb.webp": "5ebd65cb",
+    "images/page-15-58fa4a81.webp": "58fa4a81",
+    "images/page-16-75fe9908.webp": "75fe9908",
+    "images/page-17-9ccd90e1.webp": "9ccd90e1",
+    "images/page-18-ed12a07f.webp": "ed12a07f"
+  }
+}

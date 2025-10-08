@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OK_Guia_Unidad1_Tema3_Condicionales.pdf — E-Flip Generator</title>
+    <link rel="preload" as="image" href="./images/page-1-25730f50.webp" />
+    <meta name="eflip-integrity" content="eyJpbWFnZXMvcGFnZS0xLTI1NzMwZjUwLndlYnAiOiIyNTczMGY1MCIsImltYWdlcy9wYWdlLTItMjcyZWIyMjYud2VicCI6IjI3MmViMjI2IiwiaW1hZ2VzL3BhZ2UtMy02NzkwM2U4Zi53ZWJwIjoiNjc5MDNlOGYiLCJpbWFnZXMvcGFnZS00LWY1ZTRlYWFiLndlYnAiOiJmNWU0ZWFhYiIsImltYWdlcy9wYWdlLTUtZmRhZDEwYjgud2VicCI6ImZkYWQxMGI4IiwiaW1hZ2VzL3BhZ2UtNi1lYzVkZWFmZS53ZWJwIjoiZWM1ZGVhZmUiLCJpbWFnZXMvcGFnZS03LWQ5ZTEzOWZkLndlYnAiOiJkOWUxMzlmZCIsImltYWdlcy9wYWdlLTgtYzk5ZjUzNmEud2VicCI6ImM5OWY1MzZhIiwiaW1hZ2VzL3BhZ2UtOS01YzgwMGY1Yy53ZWJwIjoiNWM4MDBmNWMiLCJpbWFnZXMvcGFnZS0xMC0xZjgwMGJlMC53ZWJwIjoiMWY4MDBiZTAiLCJpbWFnZXMvcGFnZS0xMS1iZGJiYmU2MC53ZWJwIjoiYmRiYmJlNjAiLCJpbWFnZXMvcGFnZS0xMi1hNjFhNGE5ZC53ZWJwIjoiYTYxYTRhOWQiLCJpbWFnZXMvcGFnZS0xMy1iYjkxZThjYS53ZWJwIjoiYmI5MWU4Y2EiLCJpbWFnZXMvcGFnZS0xNC01ZWJkNjVjYi53ZWJwIjoiNWViZDY1Y2IiLCJpbWFnZXMvcGFnZS0xNS01OGZhNGE4MS53ZWJwIjoiNThmYTRhODEiLCJpbWFnZXMvcGFnZS0xNi03NWZlOTkwOC53ZWJwIjoiNzVmZTk5MDgiLCJpbWFnZXMvcGFnZS0xNy05Y2NkOTBlMS53ZWJwIjoiOWNjZDkwZTEiLCJpbWFnZXMvcGFnZS0xOC1lZDEyYTA3Zi53ZWJwIjoiZWQxMmEwN2YifQ==">
+    <style>
+      html, body { height: 100%; margin: 0; background: #0b0f19; color: #e5e7eb; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, sans-serif; }
+      .wrap { display: flex; align-items: center; justify-content: center; height: 100%; padding: 16px; box-sizing: border-box; }
+      #book { position: relative; width: auto; height: auto; max-width: 95vw; max-height: 90vh; box-shadow: 0 12px 34px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.03), inset 0 24px 48px rgba(0,0,0,.18); background: #111827; border-radius: 16px; overflow: hidden; touch-action: none; }
+      #book::after { content: ''; position: absolute; top: 4%; bottom: 4%; left: 50%; width: 3px; transform: translateX(-50%); background: linear-gradient(to bottom, transparent, rgba(0,0,0,.4), transparent); opacity: .25; pointer-events: none; filter: blur(.2px); }
+      #book[data-mode="single"]::after { display: none; }
+      .loading { text-align: center; opacity: .8; }
+      .controls { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; background: rgba(15,23,42,.92); padding: 8px 12px; border-radius: 999px; backdrop-filter: blur(8px); z-index: 10000; border: 1px solid rgba(255,255,255,.08); box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+      .btn { color: #ffffff; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.2); padding: 6px 10px; border-radius: 10px; cursor: pointer; }
+      .btn:disabled { opacity: .5; cursor: not-allowed; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div id="book"><div class="loading">Cargando…</div></div>
+    </div>
+    <div class="controls">
+      <button id="prev" class="btn">◀︎</button>
+      <span id="status"></span>
+      <button id="next" class="btn">▶︎</button>
+    </div>
+    <script src="./vendor/jquery.min.js"></script>
+    <script src="./vendor/turn.min.js"></script>
+    <script data-pages='["images/page-1-25730f50.webp","images/page-2-272eb226.webp","images/page-3-67903e8f.webp","images/page-4-f5e4eaab.webp","images/page-5-fdad10b8.webp","images/page-6-ec5deafe.webp","images/page-7-d9e139fd.webp","images/page-8-c99f536a.webp","images/page-9-5c800f5c.webp","images/page-10-1f800be0.webp","images/page-11-bdbbbe60.webp","images/page-12-a61a4a9d.webp","images/page-13-bb91e8ca.webp","images/page-14-5ebd65cb.webp","images/page-15-58fa4a81.webp","images/page-16-75fe9908.webp","images/page-17-9ccd90e1.webp","images/page-18-ed12a07f.webp"]' data-integrity='{"images/page-1-25730f50.webp":"25730f50","images/page-2-272eb226.webp":"272eb226","images/page-3-67903e8f.webp":"67903e8f","images/page-4-f5e4eaab.webp":"f5e4eaab","images/page-5-fdad10b8.webp":"fdad10b8","images/page-6-ec5deafe.webp":"ec5deafe","images/page-7-d9e139fd.webp":"d9e139fd","images/page-8-c99f536a.webp":"c99f536a","images/page-9-5c800f5c.webp":"5c800f5c","images/page-10-1f800be0.webp":"1f800be0","images/page-11-bdbbbe60.webp":"bdbbbe60","images/page-12-a61a4a9d.webp":"a61a4a9d","images/page-13-bb91e8ca.webp":"bb91e8ca","images/page-14-5ebd65cb.webp":"5ebd65cb","images/page-15-58fa4a81.webp":"58fa4a81","images/page-16-75fe9908.webp":"75fe9908","images/page-17-9ccd90e1.webp":"9ccd90e1","images/page-18-ed12a07f.webp":"ed12a07f"}'>
+      (async function(){
+        const imgs = JSON.parse(document.currentScript.getAttribute('data-pages'));
+        const first = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = imgs[0]; });
+        const ratio = first.naturalHeight / first.naturalWidth;
+        const container = document.getElementById('book');
+        container.innerHTML = '';
+
+        function mount(){
+          const book = document.getElementById('book');
+          imgs.forEach((src, idx) => {
+            const page = document.createElement('div');
+            if (idx === 0 || idx === imgs.length - 1) page.className = 'hard';
+            const img = document.createElement('img');
+            img.src = src; img.alt = '';
+            img.style.width = '100%'; img.style.height = '100%'; img.style.objectFit = 'contain'; img.style.background = 'transparent'; img.style.boxSizing = 'border-box';
+            img.setAttribute('draggable', 'false');
+            page.appendChild(img);
+            book.appendChild(page);
+          });
+          const $ = window.jQuery;
+          const isMobile = () => window.innerWidth < 992;
+          const maxBookW = () => Math.min(window.innerWidth * 0.95, 1400);
+          const compute = () => {
+            const maxW = maxBookW();
+            const controls = document.querySelector('.controls');
+            const availableH = Math.max(200, window.innerHeight - (controls?.offsetHeight || 0) - 24);
+            const maxPageWByWidth = isMobile() ? maxW : Math.floor(maxW / 2);
+            const maxPageWByHeight = Math.round(availableH / ratio);
+            const pageWidth = Math.max(180, Math.min(maxPageWByWidth, maxPageWByHeight));
+            const bookWidth = isMobile() ? pageWidth : pageWidth * 2;
+            const bookHeight = Math.round(pageWidth * ratio);
+            return { pageWidth, bookWidth, bookHeight };
+          };
+          const s0 = compute();
+          $(book).turn({ width: s0.bookWidth, height: s0.bookHeight, display: isMobile() ? 'single' : 'double', autoCenter: true, elevation: 80, acceleration: true, turnCorners: 'bl,br,tl,tr', duration: 800, gradients: true });
+          book.setAttribute('data-mode', isMobile() ? 'single' : 'double');
+          const onResize = () => {
+            const s = compute();
+            try { $(book).turn('display', isMobile() ? 'single' : 'double'); } catch {}
+            try { $(book).turn('size', s.bookWidth, s.bookHeight); } catch {}
+            try { $(book).turn('center'); } catch {}
+            book.setAttribute('data-mode', isMobile() ? 'single' : 'double');
+            try {
+              const status = document.getElementById('status');
+              const c = $(book).turn('page');
+              status.textContent = c + ' / ' + imgs.length;
+            } catch {}
+          };
+          window.addEventListener('resize', onResize);
+          window.addEventListener('orientationchange', onResize);
+          const prev = document.getElementById('prev');
+          const next = document.getElementById('next');
+          const status = document.getElementById('status');
+          function updateStatus(){ const c = $(book).turn('page'); status.textContent = c + ' / ' + imgs.length; prev.disabled = c <= 1; next.disabled = c >= imgs.length; }
+          updateStatus();
+          // Ajustar inmediatamente tras montar por si cambió el layout
+          onResize();
+          $(book).bind('turned', updateStatus);
+          prev.onclick = () => { $(book).turn('previous'); };
+          next.onclick = () => { $(book).turn('next'); };
+        }
+
+        mount();
+        // Marcas de agua dinámicas (superior derecha e inferior izquierda)
+        (function dynamicWatermarks(){
+          const TOP_ID = 'eflip-wm-top';
+          const BOT_ID = 'eflip-wm-bot';
+          function createTop(){
+            if (document.getElementById(TOP_ID)) return;
+            const host = document.createElement('div'); host.id = TOP_ID; host.style.position='fixed'; host.style.top='12px'; host.style.right='12px'; host.style.zIndex='10001'; host.style.pointerEvents='none';
+            const shadow = host.attachShadow ? host.attachShadow({ mode: 'closed' }) : null;
+            const wrap = document.createElement('div');
+            wrap.innerHTML = '<style>.wm{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:12px;background:rgba(15,23,42,.78);color:#e2e8f0;font:600 12px/1.2 system-ui,-apple-system,Segoe UI,Roboto;letter-spacing:.2px;border:1px solid rgba(255,255,255,.09);box-shadow:0 6px 20px rgba(0,0,0,.25)}</style><div class="wm">E‑Flip Generator <small style="opacity:.8;font-weight:500">Static</small></div>';
+            (shadow||host).appendChild(wrap);
+            document.body.appendChild(host);
+          }
+          function createBot(){
+            if (document.getElementById(BOT_ID)) return;
+            const host = document.createElement('div'); host.id = BOT_ID; host.style.position='fixed'; host.style.left='12px'; host.style.bottom='12px'; host.style.zIndex='10001'; host.style.pointerEvents='none';
+            const shadow = host.attachShadow ? host.attachShadow({ mode: 'closed' }) : null;
+            const wrap = document.createElement('div');
+            wrap.innerHTML = '<style>.wm{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:12px;background:rgba(15,23,42,.78);color:#e2e8f0;font:600 12px/1.2 system-ui,-apple-system,Segoe UI,Roboto;letter-spacing:.2px;border:1px solid rgba(255,255,255,.09);box-shadow:0 6px 20px rgba(0,0,0,.25)}</style><div class="wm"><small style="opacity:.8;font-weight:500">by</small> Eduar Barón Espitia</div>';
+            (shadow||host).appendChild(wrap);
+            document.body.appendChild(host);
+          }
+          createTop(); createBot();
+          const mo = new MutationObserver(() => { if (!document.getElementById(TOP_ID)) createTop(); if (!document.getElementById(BOT_ID)) createBot(); });
+          mo.observe(document.documentElement, { childList:true, subtree:true });
+          setInterval(() => { if (!document.getElementById(TOP_ID)) createTop(); if (!document.getElementById(BOT_ID)) createBot(); }, 4000);
+        })();
+      })();
+    </script>
+  </body>
+</html>

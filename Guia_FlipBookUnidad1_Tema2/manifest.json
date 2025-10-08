@@ -1,0 +1,73 @@
+{
+  "pageCount": 16,
+  "pages": [
+    {
+      "src": "./images/page-1-c69413b4.webp"
+    },
+    {
+      "src": "./images/page-2-272eb226.webp"
+    },
+    {
+      "src": "./images/page-3-b376bc70.webp"
+    },
+    {
+      "src": "./images/page-4-df83bf42.webp"
+    },
+    {
+      "src": "./images/page-5-a5f6d265.webp"
+    },
+    {
+      "src": "./images/page-6-06296272.webp"
+    },
+    {
+      "src": "./images/page-7-e5a1be18.webp"
+    },
+    {
+      "src": "./images/page-8-530aacca.webp"
+    },
+    {
+      "src": "./images/page-9-8d5807aa.webp"
+    },
+    {
+      "src": "./images/page-10-5aa28d3f.webp"
+    },
+    {
+      "src": "./images/page-11-b7c6ec1f.webp"
+    },
+    {
+      "src": "./images/page-12-c5dd1dc0.webp"
+    },
+    {
+      "src": "./images/page-13-746b1823.webp"
+    },
+    {
+      "src": "./images/page-14-a7ad5536.webp"
+    },
+    {
+      "src": "./images/page-15-ae1ef532.webp"
+    },
+    {
+      "src": "./images/page-16-c91bf21b.webp"
+    }
+  ],
+  "generatedAt": "2025-10-08T14:32:25.915Z",
+  "source": "OK_Guia_Unidad1_Tema2_IdentificacionProblemas.pdf",
+  "integrity": {
+    "images/page-1-c69413b4.webp": "c69413b4",
+    "images/page-2-272eb226.webp": "272eb226",
+    "images/page-3-b376bc70.webp": "b376bc70",
+    "images/page-4-df83bf42.webp": "df83bf42",
+    "images/page-5-a5f6d265.webp": "a5f6d265",
+    "images/page-6-06296272.webp": "06296272",
+    "images/page-7-e5a1be18.webp": "e5a1be18",
+    "images/page-8-530aacca.webp": "530aacca",
+    "images/page-9-8d5807aa.webp": "8d5807aa",
+    "images/page-10-5aa28d3f.webp": "5aa28d3f",
+    "images/page-11-b7c6ec1f.webp": "b7c6ec1f",
+    "images/page-12-c5dd1dc0.webp": "c5dd1dc0",
+    "images/page-13-746b1823.webp": "746b1823",
+    "images/page-14-a7ad5536.webp": "a7ad5536",
+    "images/page-15-ae1ef532.webp": "ae1ef532",
+    "images/page-16-c91bf21b.webp": "c91bf21b"
+  }
+}

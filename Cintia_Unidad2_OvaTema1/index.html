@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OVA: Unidad 2 — Estructuras de control iterativas (bucles)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    .sidebar-link { transition: all .3s ease; border-left: 4px solid transparent; }
+    .sidebar-link.active, .sidebar-link:hover { background:#e6f4ea; color:#166534; border-left-color:#22c55e; }
+    .content-pane { display:none; animation:fadeIn .5s ease-in-out; }
+    .content-pane.active { display:block; }
+    @keyframes fadeIn { from {opacity:0; transform:translateY(20px)} to {opacity:1; transform:translateY(0)} }
+    .quiz-option:hover { background:#f0fdf4; }
+    .quiz-option.selected { background:#dcfce7; border-color:#22c55e; }
+
+    /* Tooltip */
+    .tooltip { position: relative; display:inline-block; cursor:pointer; font-weight:600; color:#0f5132; }
+    .tooltip .tooltiptext {
+      visibility:hidden; width:280px; background:#0f5132; color:#fff; text-align:left; border-radius:6px; padding:10px; font-size:14px; font-weight:400;
+      position:absolute; z-index:30; bottom:125%; left:50%; transform:translateX(-50%); opacity:0; transition:opacity .35s; pointer-events:none;
+    }
+    .tooltip:hover .tooltiptext { visibility:visible; opacity:1; }
+
+    /* TTS FAB */
+    .tts-fab{ width:64px; height:64px; border-radius:9999px; background:#10b981; color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:28px; box-shadow:0 8px 18px rgba(16,185,129,.35); }
+    .tts-fab.muted{ background:#9ca3af; }
+  </style>
+</head>
+<body class="bg-slate-50">
+
+<div class="flex h-screen">
+  <!-- ASIDE -->
+  <aside class="w-64 bg-white shadow-lg flex-shrink-0 hidden md:flex md:flex-col md:sticky md:top-0 md:h-screen md:overflow-y-auto border-r">
+    <div class="p-4">
+      <div style="width:150px;height:150px" class="p-2 mx-auto flex items-center justify-center bg-white rounded-full shadow-lg border-2 border-green-500">
+        <img src="img/logo.webp" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy"/>
+      </div>
+    </div>
+
+    <nav class="mt-6 flex-1" role="navigation" aria-label="Secciones del OVA">
+      <a href="#" class="sidebar-link active flex items-center py-3 px-6 font-medium text-slate-700" data-target="introduccion" aria-label="Introducción">
+        <span class="mr-3 text-xl">🚀</span> Introducción
+      </a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="objetivos" aria-label="Objetivos">
+        <span class="mr-3 text-xl">🎯</span> Objetivos
+      </a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="contenido" aria-label="Contenido">
+        <span class="mr-3 text-xl">📚</span> Contenido
+      </a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="actividades" aria-label="Actividades">
+        <span class="mr-3 text-xl">✍️</span> Actividades
+      </a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="evaluacion" aria-label="Evaluación">
+        <span class="mr-3 text-xl">✔️</span> Evaluación
+      </a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="recursos" aria-label="Recursos">
+        <span class="mr-3 text-xl">📖</span> Recursos
+      </a>
+      <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700" data-target="bibliografia" aria-label="Bibliografía">
+        <span class="mr-3 text-xl">📚</span> Bibliografía
+      </a>
+    </nav>
+
+    <div class="aside-tts border-t border-emerald-100 p-4">
+      <button id="menu-tts-toggle" type="button" aria-pressed="false" class="tts-fab muted" title="Voz desactivada" aria-label="Voz desactivada">🔇</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50 max-h-screen overflow-y-auto">
+
+    <!-- Logo móvil -->
+    <div class="md:hidden mb-6 flex flex-col items-center">
+      <div style="width:100px;height:100px" class="p-2 flex items-center justify-center bg-white rounded-full shadow-lg mb-2">
+        <img src="img/logo.webp" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy"/>
+      </div>
+      <select id="mobile-nav" class="w-full mt-2 p-2 border rounded-md bg-white shadow-sm">
+        <option value="introduccion">🚀 Introducción</option>
+        <option value="objetivos">🎯 Objetivos</option>
+        <option value="contenido">📚 Contenido</option>
+        <option value="actividades">✍️ Actividades</option>
+        <option value="evaluacion">✔️ Evaluación</option>
+        <option value="recursos">📖 Recursos</option>
+        <option value="bibliografia">📚 Bibliografía</option>
+      </select>
+    </div>
+
+    <!-- INTRODUCCIÓN -->
+    <section id="introduccion" class="content-pane active">
+      <div class="flex justify-end">
+        <div class="space-y-1">
+          <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm" data-target="introduccion">
+            <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center"><span class="mr-1">▶️</span> Leer</button>
+            <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled><span class="mr-1">⏸️</span> Pausar</button>
+            <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled><span class="mr-1">⏹️</span> Detener</button>
+            <div class="flex items-center ml-2">
+              <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+              <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1"/>
+            </div>
+          </div>
+          <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+            <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar · <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+          </div>
+        </div>
+      </div>
+
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-800">Unidad 2: Estructuras de control iterativas (bucles)</h1>
+      <p class="mt-4 leading-relaxed">
+        Las <strong>estructuras iterativas</strong> permiten repetir un conjunto de instrucciones de manera controlada mientras se cumpla una condición o durante un número definido de veces. 
+        En esta unidad aprenderás a utilizar los ciclos <strong>Para (For)</strong>, <strong>Mientras (While)</strong> y <strong>Repetir Mientras Que (Do–While)</strong>, así como a controlar las repeticiones con <em>contador</em>, <em>acumulador</em> y <em>centinela</em>. 
+        Verás ejemplos prácticos en <span class="tooltip">PSeInt<span class="tooltiptext">Herramienta educativa para escribir y ejecutar pseudocódigo.</span></span> y realizarás actividades para afianzar el aprendizaje.
+      </p>
+
+      <div class="mt-6 p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-lg">
+        <p class="text-emerald-900">
+          Usa el menú para navegar por objetivo, contenido, actividades, evaluación y recursos.
+        </p>
+      </div>
+    </section>
+
+    <!-- OBJETIVOS -->
+    <section id="objetivos" class="content-pane">
+      <div class="flex justify-end">
+        <div class="space-y-1">
+          <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm" data-target="objetivos">
+            <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center"><span class="mr-1">▶️</span> Leer</button>
+            <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled><span class="mr-1">⏸️</span> Pausar</button>
+            <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled><span class="mr-1">⏹️</span> Detener</button>
+            <div class="flex items-center ml-2">
+              <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+              <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1"/>
+            </div>
+          </div>
+          <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+            <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar · <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+          </div>
+        </div>
+      </div>
+
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Objetivo</h2>
+      <p class="leading-relaxed">
+        Desarrollar competencias en el manejo de técnicas de control de bucles, comprendiendo el uso de <strong>centinelas</strong>, <strong>contadores</strong> y <strong>acumuladores</strong>, mediante ejemplos prácticos que faciliten la resolución eficiente de problemas de iteración.
+      </p>
+    </section>
+
+    <!-- CONTENIDO -->
+    <section id="contenido" class="content-pane">
+      <!-- TTS del acordeón -->
+      <div class="flex justify-end">
+        <div class="space-y-1">
+          <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm" data-mode="accordion" data-container="#contenido">
+            <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center"><span class="mr-1">▶️</span> Leer</button>
+            <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled><span class="mr-1">⏸️</span> Pausar</button>
+            <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled><span class="mr-1">⏹️</span> Detener</button>
+            <div class="flex items-center ml-2">
+              <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+              <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1"/>
+            </div>
+          </div>
+          <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+            <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar · <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+
+        <!-- 3.1 Concepto de iteración -->
+        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm" open>
+          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
+            3.1 Concepto de iteración
+            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
+          </summary>
+          <div class="px-4 pb-4 text-slate-700 space-y-3">
+            <p>
+              La <strong>iteración</strong> es el proceso de ejecutar repetidamente un conjunto de instrucciones de forma controlada hasta que se cumpla una condición o se alcance un número específico de repeticiones. 
+              Permite automatizar tareas repetitivas y optimizar el código al evitar duplicación de instrucciones.
+            </p>
+            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Figura 1. Ejemplo cotidiano de iteración: preparar jugo para 5 personas</figcaption>
+              <img src="img/Figura 1.png" alt="Ilustración de pasos repetidos para preparar jugo a varias personas" class="w-full object-contain rounded"/>
+            </figure>
+          </div>
+        </details>
+
+        <!-- 3.2 Diferencia entre secuencial, condicional e iterativa -->
+        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
+          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
+            3.2 Diferencia entre ejecución secuencial, condicional e iterativa
+            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
+          </summary>
+          <div class="px-4 pb-4 text-slate-700 space-y-3">
+            <p>
+              La <strong>ejecución secuencial</strong> sigue las instrucciones en el orden escrito; la <strong>condicional</strong> permite tomar decisiones según se cumpla una condición; 
+              la <strong>iterativa</strong> repite instrucciones múltiples veces hasta cumplir una condición o agotar un conteo.
+            </p>
+            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Figura 2. Comparación entre ejecución secuencial, condicional e iterativa</figcaption>
+              <img src="img/Figura 2.png" alt="Tabla comparativa de secuencial, condicional e iterativa" class="w-full object-contain rounded"/>
+            </figure>
+
+            <p>
+              A continuación se observan ejemplos de cada caso en <em>PSeInt</em>, para visualizar su sintaxis y salida.
+            </p>
+            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Figura 3. Ejemplos en PSeInt: secuencial, condicional e iterativa</figcaption>
+              <img src="img/Figura 3.png" alt="Capturas con ejemplos en PSeInt: secuencial, condicional e iterativa" class="w-full object-contain rounded"/>
+            </figure>
+          </div>
+        </details>
+
+        <!-- 3.3 Tipos de ciclos repetitivos -->
+        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
+          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
+            3.3 Tipos de ciclos repetitivos (Para, Mientras, Repetir Mientras Que)
+            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
+          </summary>
+          <div class="px-4 pb-4 text-slate-700 space-y-6">
+            <p>
+              En programación estructurada existen tres ciclos fundamentales: <strong>Para (For)</strong>, <strong>Mientras (While)</strong> y <strong>Repetir Mientras Que (Do–While)</strong>. 
+              Cada uno controla la repetición de manera distinta, según el momento de evaluación de la condición y el tipo de tarea a automatizar.
+            </p>
+
+            <!-- 3.3.1 Para -->
+            <article class="space-y-3">
+              <h4 class="text-xl font-bold text-emerald-800">3.3.1 Ciclo Para (For)</h4>
+              <p>Se emplea cuando se conoce el número de repeticiones. Estructura en PSeInt:</p>
+              <pre class="bg-slate-900 text-slate-100 p-4 rounded overflow-auto"><code>Para variable = valor_inicial Hasta valor_final Con Paso incremento Hacer
+   // Instrucciones
+FinPara</code></pre>
+              <p>Componentes: <strong>inicio</strong> (ej. <code>i = 1</code>), <strong>condición de fin</strong> (ej. <code>Hasta 10</code>), <strong>actualizador</strong> (ej. <code>Con Paso 1</code>).</p>
+              <pre class="bg-slate-900 text-slate-100 p-4 rounded overflow-auto"><code>Proceso TablaDelCinco
+   Definir i, r Como Entero
+   Para i = 1 Hasta 10 Con Paso 1 Hacer
+      r = 5 * i
+      Escribir "5 x ", i, " = ", r
+   FinPara
+FinProceso</code></pre>
+              <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+                <figcaption class="font-semibold text-emerald-800 mb-2">Figura 4. Ejemplo de ciclo Para (PSeInt)</figcaption>
+                <img src="img/Figura 4.png" alt="Ejemplo de ciclo Para en PSeInt" class="w-full object-contain rounded"/>
+              </figure>
+            </article>
+
+            <!-- 3.3.2 Mientras -->
+            <article class="space-y-3">
+              <h4 class="text-xl font-bold text-emerald-800">3.3.2 Ciclo Mientras (While)</h4>
+              <p>Repite un bloque <em>mientras</em> la condición sea verdadera. Útil cuando no conocemos cuántas repeticiones habrá.</p>
+              <pre class="bg-slate-900 text-slate-100 p-4 rounded overflow-auto"><code>Mientras (condición) Hacer
+   // Instrucciones
+FinMientras</code></pre>
+              <pre class="bg-slate-900 text-slate-100 p-4 rounded overflow-auto"><code>Proceso CicloMientras
+   Definir i Como Entero
+   i = 1
+   Mientras i <= 5 Hacer
+      Escribir "Número: ", i
+      i = i + 1
+   FinMientras
+FinProceso</code></pre>
+              <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+                <figcaption class="font-semibold text-emerald-800 mb-2">Figura 5. Ejemplo de ciclo Mientras (PSeInt) y salida</figcaption>
+                <img src="img/Figura 5.png" alt="Ejemplo de ciclo Mientras en PSeInt y su ejecución" class="w-full object-contain rounded"/>
+              </figure>
+            </article>
+
+            <!-- 3.3.3 Repetir Mientras Que -->
+            <article class="space-y-3">
+              <h4 class="text-xl font-bold text-emerald-800">3.3.3 Ciclo Repetir Mientras Que (Do–While)</h4>
+              <p>Ejecuta el bloque al menos una vez; la condición se evalúa al final.</p>
+              <pre class="bg-slate-900 text-slate-100 p-4 rounded overflow-auto"><code>Repetir
+   // Instrucciones
+Hasta Que (condición)</code></pre>
+              <pre class="bg-slate-900 text-slate-100 p-4 rounded overflow-auto"><code>Proceso CicloRepetir
+   Definir numero Como Entero
+   Repetir
+      Escribir "Ingrese un número mayor que cero:"
+      Leer numero
+   Hasta Que numero > 0
+   Escribir "Número válido: ", numero
+FinProceso</code></pre>
+              <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+                <figcaption class="font-semibold text-emerald-800 mb-2">Figura 6. Ejemplo de ciclo Repetir Mientras Que (PSeInt)</figcaption>
+                <img src="img/Figura 6.png" alt="Ejemplo de ciclo Repetir Mientras Que en PSeInt" class="w-full object-contain rounded"/>
+              </figure>
+            </article>
+          </div>
+        </details>
+
+        
+
+        <!-- 3.6 Control de ciclos: contador, acumulador, centinela -->
+     
+      </div>
+    </section>
+
+    <!-- ACTIVIDADES -->
+    <section id="actividades" class="content-pane">
+      <div class="flex justify-end">
+        <div class="space-y-1">
+          <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm" data-target="actividades">
+            <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center"><span class="mr-1">▶️</span> Leer</button>
+            <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled><span class="mr-1">⏸️</span> Pausar</button>
+            <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled><span class="mr-1">⏹️</span> Detener</button>
+            <div class="flex items-center ml-2">
+              <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+              <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1"/>
+            </div>
+          </div>
+          <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+            <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar · <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+          </div>
+        </div>
+      </div>
+
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Actividades</h2>
+
+      <!-- Actividad complementaria -->
+      <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5 mb-6">
+        <h3 class="text-xl font-bold text-emerald-700 mb-2">Actividad: promedio con centinela</h3>
+        <p class="mb-3">
+          Diseña un algoritmo en <em>PSeInt</em> que registre las notas (0 a 5) de varios estudiantes y termine cuando se ingrese una nota negativa (centinela).
+          Utiliza un <strong>acumulador</strong> para sumar las notas y un <strong>contador</strong> para llevar el total de estudiantes. Al final, muestra el número de estudiantes y el promedio general.
+        </p>
+        <textarea rows="10" class="w-full p-3 border rounded bg-white" placeholder="Escribe aquí tu pseudocódigo…"></textarea>
+      </article>
+    </section>
+
+    <!-- EVALUACIÓN -->
+    <section id="evaluacion" class="content-pane">
+      <div class="flex justify-end">
+        <div class="space-y-1">
+          <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm" data-target="evaluacion">
+            <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center"><span class="mr-1">▶️</span> Leer</button>
+            <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled><span class="mr-1">⏸️</span> Pausar</button>
+            <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled><span class="mr-1">⏹️</span> Detener</button>
+            <div class="flex items-center ml-2">
+              <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+              <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1"/>
+            </div>
+          </div>
+          <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+            <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar · <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+          </div>
+        </div>
+      </div>
+
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Evaluación</h2>
+      <div class="bg-white p-5 rounded-lg shadow-md">
+        <div id="quiz"></div>
+        <button id="quiz-submit" class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded transition-colors">Finalizar</button>
+        <div id="quiz-result" class="mt-3 text-lg font-bold"></div>
+      </div>
+    </section>
+
+    <!-- RECURSOS -->
+    <section id="recursos" class="content-pane">
+      <div class="flex justify-end">
+        <div class="space-y-1">
+          <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm" data-target="recursos">
+            <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center"><span class="mr-1">▶️</span> Leer</button>
+            <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled><span class="mr-1">⏸️</span> Pausar</button>
+            <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled><span class="mr-1">⏹️</span> Detener</button>
+            <div class="flex items-center ml-2">
+              <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+              <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1"/>
+            </div>
+          </div>
+          <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+            <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar · <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+          </div>
+        </div>
+      </div>
+
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-6">Recursos</h2>
+      <div class="grid lg:grid-cols-3 gap-5">
+        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5">
+          <h3 class="text-xl font-bold text-slate-900 leading-tight">Lógica de programación</h3>
+          <p class="text-sm text-slate-700 mt-2"><strong>Trejos Buriticá, O. I.</strong> (2023). <em>Lógica de programación</em>. Ediciones de la U.</p>
+          <a href="https://www.edicionesdelau.com/" target="_blank" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
+        </article>
+
+        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5">
+          <h3 class="text-xl font-bold text-slate-900 leading-tight">Solucionario en pseudocódigo</h3>
+          <p class="text-sm text-slate-700 mt-2"><strong>Trejos Buriticá, O. I.</strong> (2021). <em>Lógica de programación: solucionario en pseudocódigo. Ejercicios resueltos</em>. Ediciones de la U.</p>
+          <a href="https://www.edicionesdelau.com/" target="_blank" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
+        </article>
+
+        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5">
+          <h3 class="text-xl font-bold text-slate-900 leading-tight">Fundamentos de programación usando PSeInt</h3>
+          <p class="text-sm text-slate-700 mt-2"><strong>García Santillán, I.</strong> (Ed.). (2014). <em>Fundamentos de programación usando PSeInt</em>. UPDCA.</p>
+          <a href="#" target="_blank" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- BIBLIOGRAFÍA -->
+    <section id="bibliografia" class="content-pane">
+      <div class="flex justify-end">
+        <div class="space-y-1">
+          <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm" data-target="bibliografia">
+            <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center"><span class="mr-1">▶️</span> Leer</button>
+            <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled><span class="mr-1">⏸️</span> Pausar</button>
+            <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled><span class="mr-1">⏹️</span> Detener</button>
+            <div class="flex items-center ml-2">
+              <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+              <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1"/>
+            </div>
+          </div>
+          <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+            <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar · <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+          </div>
+        </div>
+      </div>
+
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Bibliografía</h2>
+      <ul class="space-y-3">
+        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+          Trejos Buriticá, O. I. (2023). <em>Lógica de programación</em>. Ediciones de la U.
+        </li>
+        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+          Trejos Buriticá, O. I. (2021). <em>Lógica de programación: solucionario en pseudocódigo. Ejercicios resueltos</em>. Ediciones de la U.
+        </li>
+        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+          García Santillán, I. (Ed.). (2014). <em>Fundamentos de programación usando PSeInt</em>. Unidad de Producción y Difusión Científica y Académica.
+        </li>
+        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+          GeeksforGeeks. (2025, enero 8). <em>Iteration statements in programming</em>. GeeksforGeeks.
+        </li>
+        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+          Programiz. (2024). <em>Do while loop in programming</em>.
+        </li>
+      </ul>
+
+      <footer class="mt-10 pt-6 border-t text-center text-slate-600">
+        <p class="font-medium">Unicórdoba, calidad, innovación e inclusión para la transformación del territorio.</p>
+        <a class="text-emerald-700 underline" href="https://www.unicordoba.edu.co" target="_blank">www.unicordoba.edu.co</a>
+      </footer>
+    </section>
+
+  </main>
+</div>
+
+<!-- Modal de imagen -->
+<div id="imgModal" class="fixed inset-0 bg-black/80 hidden place-items-center z-[1000]">
+  <img id="imgModalSrc" src="" alt="Vista ampliada" class="max-w-[92vw] max-h-[92vh] border-4 border-white rounded shadow-2xl"/>
+</div>
+
+<script>
+(() => {
+  const panes = document.querySelectorAll('.content-pane');
+  const links = document.querySelectorAll('.sidebar-link');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  function go(id){
+    panes.forEach(p=>p.classList.remove('active'));
+    document.getElementById(id)?.classList.add('active');
+    links.forEach(a=>{
+      const active = a.dataset.target===id;
+      a.classList.toggle('active', active);
+      a.setAttribute('aria-current', active ? 'page' : 'false');
+    });
+    if(mobileNav) mobileNav.value=id;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // TTS (toggle)
+  const synth = window.speechSynthesis;
+  let voices = [];
+  function loadVoices(){ voices = synth.getVoices(); }
+  loadVoices();
+  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+
+  let menuTtsEnabled = JSON.parse(localStorage.getItem('menuTtsEnabled') || 'false');
+  const ttsBtn = document.getElementById('menu-tts-toggle');
+
+  function updateTtsBtn(){
+    if(!ttsBtn) return;
+    ttsBtn.classList.toggle('muted', !menuTtsEnabled);
+    ttsBtn.setAttribute('aria-pressed', menuTtsEnabled ? 'true' : 'false');
+    ttsBtn.setAttribute('aria-label', menuTtsEnabled ? 'Voz activada' : 'Voz desactivada');
+    ttsBtn.title = menuTtsEnabled ? 'Voz activada' : 'Voz desactivada';
+    ttsBtn.textContent = menuTtsEnabled ? '🔊' : '🔇';
+  }
+  updateTtsBtn();
+
+  ttsBtn?.addEventListener('click', () => {
+    menuTtsEnabled = !menuTtsEnabled;
+    localStorage.setItem('menuTtsEnabled', JSON.stringify(menuTtsEnabled));
+    if(!menuTtsEnabled) synth.cancel();
+    updateTtsBtn();
+  });
+
+  function speakMenu(text){
+    if(!menuTtsEnabled || !text) return;
+    try{
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      const v = voices.find(v => /es/i.test(v.lang)) || null;
+      if (v) u.voice = v, u.lang = v.lang; else u.lang = 'es-ES';
+      u.rate = 1.0;
+      synth.speak(u);
+    }catch(e){}
+  }
+
+  links.forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = a.dataset.target;
+      if (id) go(id);
+      const label = a.getAttribute('aria-label') || a.textContent.replace(/\s+/g,' ').trim();
+      speakMenu(label);
+    });
+  });
+
+  mobileNav?.addEventListener('change', e => {
+    go(e.target.value);
+    const opt = e.target.selectedOptions[0];
+    const label = (opt?.textContent || '').replace(/\s+/g,' ').trim();
+    speakMenu(label);
+  });
+})();
+</script>
+
+<script>
+// Zoom ligero de figuras
+const modal = document.getElementById('imgModal');
+const modalImg = document.getElementById('imgModalSrc');
+document.querySelectorAll('figure img').forEach(img=>{
+  img.classList.add('cursor-zoom-in');
+  img.addEventListener('click', ()=>{ modal.classList.remove('hidden'); modalImg.src = img.src; });
+});
+modal?.addEventListener('click', ()=>modal.classList.add('hidden'));
+</script>
+
+<script>
+// ===== Evaluación: 6 preguntas tipo Saber Pro =====
+const quizData = [
+  { q: "¿Qué es una iteración en programación?", opts: [
+      "Una instrucción que se ejecuta solo una vez.",
+      "Un mecanismo para repetir un bloque bajo una condición o un número de veces.",
+      "Una forma de declarar variables globales.",
+      "Un método para capturar errores."
+    ], a: 1
+  },
+  { q: "Salida del siguiente código (PSeInt):\n\nProceso ContadorBasico\n  Definir i Como Entero\n  i = 1\n  Mientras i <= 3 Hacer\n    Escribir \"Iteración \", i\n    i = i + 1\n  FinMientras\nFinProceso", opts: [
+      "Iteración 1, Iteración 2, Iteración 3",
+      "Iteración 0, Iteración 1, Iteración 2",
+      "Iteración 1, Iteración 2, Iteración 3, Iteración 4",
+      "Iteración 2, Iteración 3, Iteración 4"
+    ], a: 0
+  },
+  { q: "En un ciclo Repetir Mientras Que, ¿qué característica lo diferencia del Mientras?", opts: [
+      "Se evalúa la condición antes de entrar al bloque.",
+      "Siempre termina después de 3 iteraciones.",
+      "Ejecuta el bloque al menos una vez y evalúa al final.",
+      "No permite leer datos del usuario."
+    ], a: 2
+  },
+  { q: "¿Qué imprimirá este código?\n\nProceso RangoYpaso\n  Definir i Como Entero\n  Para i = 2 Hasta 10 Con Paso 3 Hacer\n    Escribir i\n  FinPara\nFinProceso", opts: [
+      "2, 3, 4, 5, 6, 7, 8, 9, 10",
+      "2, 5, 8",
+      "2, 5, 8, 11",
+      "3, 6, 9"
+    ], a: 1
+  },
+  { q: "En bucles anidados, si el externo itera 2 veces y el interno 3 veces, ¿cuántas líneas se imprimen?", opts: [
+      "3", "5", "6", "9"
+    ], a: 2
+  },
+  { q: "¿Qué mostrará el programa?\n\nProceso Calculo\n  Definir i, suma Como Entero\n  suma = 0\n  Para i = 5 Hasta 1 Con Paso -2 Hacer\n    suma = suma + i\n  FinPara\n  Escribir \"Suma total: \", suma\nFinProceso", opts: [
+      "Suma total: 9", "Suma total: 6", "Suma total: 8", "Suma total: 12"
+    ], a: 0
+  }
+];
+
+const quiz = document.getElementById('quiz');
+if(quiz){
+  quizData.forEach((it,i)=>{
+    const wrap = document.createElement('div'); wrap.className='mb-5';
+    wrap.innerHTML = `<p class='font-semibold mb-2 whitespace-pre-line'>${i+1}. ${it.q}</p>`;
+    it.opts.forEach((op,idx)=>{
+      const d=document.createElement('div');
+      d.className='quiz-option p-3 border-2 border-slate-200 rounded-lg cursor-pointer mb-2';
+      d.textContent=op;
+      d.addEventListener('click',()=>{
+        wrap.querySelectorAll('.quiz-option').forEach(x=>x.classList.remove('selected'));
+        d.classList.add('selected');
+      });
+      wrap.appendChild(d);
+    });
+    quiz.appendChild(wrap);
+  });
+  document.getElementById('quiz-submit').addEventListener('click',()=>{
+    let score=0;
+    [...quiz.children].forEach((block,i)=>{
+      const sel = block.querySelector('.quiz-option.selected'); 
+      if(sel && sel.textContent===quizData[i].opts[quizData[i].a]) score++;
+    });
+    const pct = score/quizData.length;
+    const out=document.getElementById('quiz-result');
+    out.textContent = `Puntaje: ${score}/${quizData.length} (${Math.round(pct*100)}%).`;
+    out.className='mt-3 text-lg font-bold ' + (pct>=0.7?'text-emerald-700':'text-red-700');
+    if(window.SCORM12) SCORM12.setScore(pct);
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+}
+</script>
+
+<!-- TTS secciones (lee titulares y párrafos/figcaptions) -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const synth = window.speechSynthesis;
+  let voices = [], preferred = null;
+
+  function loadVoices(){
+    voices = synth.getVoices();
+    preferred = voices.find(v => v.name.includes('Paulina'))
+             || voices.find(v => (v.lang||'').toLowerCase().startsWith('es'))
+             || voices[0] || null;
+  }
+  loadVoices();
+  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+
+  document.querySelectorAll('.speech-controls[data-target]').forEach(controls => {
+    const targetId = controls.dataset.target;
+    const section  = document.getElementById(targetId);
+    if (!section) return;
+
+    const playBtn  = controls.querySelector('.play-btn');
+    const pauseBtn = controls.querySelector('.pause-btn');
+    const stopBtn  = controls.querySelector('.stop-btn');
+    const rateCtrl = controls.querySelector('.speech-rate');
+
+    let currentUtterance = null, isPaused = false;
+
+    function getTextFromSection(sec){
+      const nodes = sec.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption,pre');
+      if (!nodes.length) return (sec.textContent||'').trim();
+      let text = '';
+      nodes.forEach(el=>{
+        const t=(el.textContent||'').trim();
+        if (!t) return;
+        text += (/^H[1-6]$/.test(el.tagName) ? t + '. . . ' : t + ' ');
+      });
+      return text.trim();
+    }
+    function setButtons(playing){
+      playBtn.disabled  = playing && !isPaused;
+      pauseBtn.disabled = !playing;
+      stopBtn.disabled  = !playing;
+    }
+    function stop(){
+      if (synth.speaking || synth.pending) synth.cancel();
+      currentUtterance=null; isPaused=false; setButtons(false);
+    }
+    function play(){
+      if (currentUtterance && isPaused && synth.speaking){
+        synth.resume(); isPaused=false; setButtons(true); return;
+      }
+      stop();
+      const text=getTextFromSection(section);
+      if (!text) return;
+      const utt=new SpeechSynthesisUtterance(text);
+      utt.lang  =(preferred && preferred.lang) || 'es-ES';
+      utt.voice = preferred || null;
+      utt.rate  = parseFloat(rateCtrl?.value || '1');
+      utt.onend   = ()=>{ currentUtterance=null; setButtons(false); };
+      utt.onerror = ()=>{ currentUtterance=null; setButtons(false); };
+      currentUtterance=utt; synth.speak(utt); isPaused=false; setButtons(true);
+    }
+    function pause(){
+      if (currentUtterance && !isPaused && synth.speaking){
+        synth.pause(); isPaused=true; playBtn.disabled=false;
+      }
+    }
+
+    playBtn?.addEventListener('click',  play);
+    pauseBtn?.addEventListener('click', pause);
+    stopBtn?.addEventListener('click',  stop);
+    rateCtrl?.addEventListener('change', ()=>{ if (currentUtterance && !isPaused && synth.speaking){ stop(); setTimeout(play,80);} });
+
+    // Atajos con la sección visible
+    document.addEventListener('keydown', (e)=>{
+      const activePane = document.querySelector('.content-pane.active');
+      if (!activePane || activePane.id !== targetId) return;
+      if (e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA') return;
+      if (e.code==='Space'){ e.preventDefault(); (currentUtterance && !isPaused && synth.speaking) ? pause() : play(); }
+      if (e.code==='Tab' && !e.shiftKey){ stop(); }
+    });
+  });
+});
+</script>
+
+<!-- TTS acordeón (lee solo el details abierto) -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const synth = window.speechSynthesis;
+  let voices=[], preferred=null;
+  function loadVoices(){
+    voices = synth.getVoices();
+    preferred = voices.find(v=>v.name.includes('Paulina'))
+             || voices.find(v=>(v.lang||'').toLowerCase().startsWith('es'))
+             || voices[0] || null;
+  }
+  loadVoices();
+  if (synth.onvoiceschanged!==undefined) synth.onvoiceschanged=loadVoices;
+
+  const ctrl = document.querySelector('.speech-controls[data-mode="accordion"][data-container="#contenido"]');
+  if (!ctrl) return;
+  const container = document.querySelector('#contenido');
+
+  const playBtn  = ctrl.querySelector('.play-btn');
+  const pauseBtn = ctrl.querySelector('.pause-btn');
+  const stopBtn  = ctrl.querySelector('.stop-btn');
+  const rateCtrl = ctrl.querySelector('.speech-rate');
+
+  let currentUtterance=null, isPaused=false;
+
+  function getActiveDetails(){ return container.querySelector('details[open]') || container.querySelector('details'); }
+  function getDetailsText(det){
+    if (!det) return '';
+    const parts=[];
+    const sum=det.querySelector(':scope > summary');
+    if (sum){ const t=(sum.textContent||'').trim(); if (t) parts.push(t + '. . . '); }
+    const bodyNodes = det.querySelectorAll(':scope > :not(summary)');
+    if (bodyNodes.length){
+      bodyNodes.forEach(n=>{
+        n.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption,pre').forEach(el=>{
+          const t=(el.textContent||'').trim(); if (t) parts.push(t + ' ');
+        });
+        if (!n.querySelector('h1,h2,h3,h4,h5,h6,p,li,figcaption,pre')){
+          const t=(n.textContent||'').trim(); if (t) parts.push(t + ' ');
+        }
+      });
+    }else{
+      const t=(det.textContent||'').trim(); if (t) parts.push(t);
+    }
+    return parts.join('').trim();
+  }
+  function setButtons(playing){
+    playBtn.disabled  = playing && !isPaused;
+    pauseBtn.disabled = !playing;
+    stopBtn.disabled  = !playing;
+  }
+  function stop(){
+    if (synth.speaking || synth.pending) synth.cancel();
+    currentUtterance=null; isPaused=false; setButtons(false);
+  }
+  function play(){
+    if (currentUtterance && isPaused && synth.speaking){ synth.resume(); isPaused=false; setButtons(true); return; }
+    stop();
+    const det=getActiveDetails(); const text=getDetailsText(det);
+    if (!text) return;
+    const utt=new SpeechSynthesisUtterance(text);
+    utt.lang  =(preferred && preferred.lang) || 'es-ES';
+    utt.voice = preferred || null;
+    utt.rate  = parseFloat(rateCtrl?.value || '1');
+    utt.onend   = ()=>{ currentUtterance=null; setButtons(false); };
+    utt.onerror = ()=>{ currentUtterance=null; setButtons(false); };
+    currentUtterance=utt; synth.speak(utt); isPaused=false; setButtons(true);
+  }
+  function pause(){ if (currentUtterance && !isPaused && synth.speaking){ synth.pause(); isPaused=true; playBtn.disabled=false; } }
+
+  playBtn.addEventListener('click',  play);
+  pauseBtn.addEventListener('click', pause);
+  stopBtn.addEventListener('click',  stop);
+  rateCtrl?.addEventListener('change', ()=>{ if (currentUtterance && !isPaused && synth.speaking){ stop(); setTimeout(play,80);} });
+
+  container.querySelectorAll('details').forEach(d=>{ d.addEventListener('toggle', ()=>{ if (d.open) stop(); }); });
+
+  document.addEventListener('keydown', (e)=>{
+    const activePane=document.querySelector('.content-pane.active');
+    if (!activePane || activePane.id!=='contenido') return;
+    if (e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA') return;
+    if (e.code==='Space'){ e.preventDefault(); (currentUtterance && !isPaused && synth.speaking) ? pause() : play(); }
+    if (e.code==='Tab' && !e.shiftKey){ stop(); }
+    if (e.code==='Escape'){ stop(); }
+  });
+});
+</script>
+
+</body>
+</html>
+

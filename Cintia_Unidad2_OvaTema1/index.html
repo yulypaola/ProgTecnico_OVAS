@@ -205,14 +205,15 @@
               <figcaption class="font-semibold text-emerald-800 mb-2">Figura 2. Comparación entre ejecución secuencial, condicional e iterativa</figcaption>
               <img src="img/Figura 2.png" alt="Tabla comparativa de secuencial, condicional e iterativa" class="w-full object-contain rounded"/>
             </figure>
-
             <p>
-             Para comprender mejor cómo se representan en la práctica los diferentes tipos de ejecución dentro de un algoritmo, podemos observar su aplicación en PSeInt, una herramienta que facilita la escritura y visualización de pseudocódigo. En los siguientes ejemplos se muestra cómo se verían en este entorno las estructuras secuencial, condicional e iterativa, permitiendo identificar con claridad el orden de ejecución, las decisiones lógicas y los ciclos repetitivos que caracterizan a cada una.
+               Para comprender mejor cómo se representan en la práctica los diferentes tipos de ejecución dentro de un algoritmo, podemos observar su aplicación en PSeInt, una herramienta que facilita la escritura y visualización de pseudocódigo. En los siguientes ejemplos se muestra cómo se verían en este entorno las estructuras secuencial, condicional e iterativa, permitiendo identificar con claridad el orden de ejecución, las decisiones lógicas y los ciclos repetitivos que caracterizan a cada una.
             </p>
             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
               <figcaption class="font-semibold text-emerald-800 mb-2">Figura 3. Ejemplos en PSeInt: secuencial, condicional e iterativa</figcaption>
               <img src="img/Figura 3.png" alt="Capturas con ejemplos en PSeInt: secuencial, condicional e iterativa" class="w-full object-contain rounded"/>
             </figure>
+            <p>
+              Como se aprecia en los ejemplos, cada estructura cumple un propósito específico dentro del diseño de algoritmos: la secuencia organiza las instrucciones de manera lineal, la condición permite tomar decisiones lógicas, y la iteración facilita la repetición controlada de procesos. Comprender y aplicar correctamente estas tres formas de ejecución es fundamental para desarrollar programas eficientes y estructurados. A partir de esta base, en el siguiente apartado se profundizará en el uso práctico de las estructuras iterativas, sus tipos y la forma en que contribuyen a la automatización de tareas dentro de un programa.            </p>
           </div>
         </details>
 
@@ -227,13 +228,26 @@
               En programación estructurada existen tres ciclos fundamentales: <strong>Para (For)</strong>, <strong>Mientras (While)</strong> y <strong>Repetir Mientras Que (Do–While)</strong>. 
               Cada uno controla la repetición de manera distinta, según el momento de evaluación de la condición y el tipo de tarea a automatizar.
             </p>
-
+            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Figura 1. ¿Qué tipo de bucle usar?</figcaption>
+              <img src="img/Figura 41.png" alt="¿Qué tipo de bucle usar?" class="w-full object-contain rounded"/>
+            </figure>
             <!-- 3.3.1 Para -->
             <article class="space-y-3">
               <h4 class="text-xl font-bold text-emerald-800">3.3.1 Ciclo Para (For)</h4>
               <p>Se emplea cuando se conoce el número de repeticiones. Estructura en PSeInt:</p>
               <pre class="bg-slate-900 text-slate-100 p-4 rounded overflow-auto"><code>Para variable = valor_inicial Hasta valor_final Con Paso incremento Hacer
-   // Instrucciones
+            <p>
+              Este tipo de ciclo se basa en tres elementos esenciales que son el inicializador, la finalización y el actualizador, como se indica a continuación.
+            </p>
+            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
+              <figcaption class="font-semibold text-emerald-800 mb-2">Figura 1. Elementos esenciales del ciclo for.</figcaption>
+              <img src="img/Figura 42.png" alt="Elementos esenciales del ciclo for" class="w-full object-contain rounded"/>
+            </figure>  
+             <p> 
+                A continuación, se presenta un ejemplo en PseInt que muestra cómo generar la tabla del 5:
+             </p>
+    // Instrucciones
 FinPara</code></pre>
               <p>Componentes: <strong>inicio</strong> (ej. <code>i = 1</code>), <strong>condición de fin</strong> (ej. <code>Hasta 10</code>), <strong>actualizador</strong> (ej. <code>Con Paso 1</code>).</p>
               <pre class="bg-slate-900 text-slate-100 p-4 rounded overflow-auto"><code>Proceso TablaDelCinco

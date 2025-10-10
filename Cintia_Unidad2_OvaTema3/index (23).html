@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OVA: Tema 3 — Estructuras de control secuenciales y condicionales</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    .sidebar-link { transition: all .3s ease; border-left: 4px solid transparent; }
+    .sidebar-link.active, .sidebar-link:hover { background:#e6f4ea; color:#166534; border-left-color:#22c55e; }
+    .content-pane { display:none; animation:fadeIn .5s ease-in-out; }
+    .content-pane.active { display:block; }
+    @keyframes fadeIn { from {opacity:0; transform:translateY(20px)} to {opacity:1; transform:translateY(0)} }
+    .quiz-option:hover { background:#f0fdf4; }
+    .quiz-option.selected { background:#dcfce7; border-color:#22c55e; }
+    .image-container { position:relative; overflow:hidden; max-width:50%; margin:0 auto; }
+    .image-container img { width:100%; height:auto; }
+    .zoom-btn { position:absolute; top:10px; right:10px; background:rgba(34,197,94,.95); color:#fff; border:none; border-radius:8px; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px; opacity:0; transition:opacity .3s, transform .3s; z-index:10; box-shadow:0 4px 8px rgba(0,0,0,.2); }
+    @media (max-width: 768px) { .image-container { max-width:80%; } .zoom-btn { opacity:.9; width:44px; height:44px; font-size:22px; } }
+    .image-container:hover .zoom-btn { opacity:1; transform:scale(1.05); }
+    .zoom-btn:hover { background:rgba(34,197,94,1); transform:scale(1.15)!important; }
+    .image-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.9); z-index:1000; justify-content:center; align-items:center; opacity:0; transition:opacity .3s; }
+    .image-modal.active { display:flex; opacity:1; }
+    .modal-content { max-width:95%; max-height:95%; position:relative; }
+    .modal-content img { max-width:100%; max-height:95vh; border:4px solid #fff; border-radius:8px; box-shadow:0 10px 30px rgba(0,0,0,.7); }
+    .close-modal { position:absolute; top:-15px; right:-15px; background:#ef4444; color:#fff; border:none; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px; box-shadow:0 4px 8px rgba(0,0,0,.3); }
+    .close-modal:hover { background:#dc2626; transform:scale(1.1); }
+    .highlight { background:linear-gradient(180deg, transparent 60%, #fef08a 60%); font-weight:600; padding:0 2px; }
+ 
+  /* ====== Tooltips (estilos globales) ====oop== */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: bold;
+  color: #006633; /* Verde oscuro */
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 280px;
+  background-color: #006633; /* Verde oscuro */
+  color: #ffffff;            /* Texto blanco */
+  text-align: left;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: normal;
+  position: absolute;
+  z-index: 30;      /* sube la capa por si hay otros elementos encima */
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none; /* evita interferir con el hover */
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+/* Bocina redonda (toggle TTS) */
+.tts-fab{
+  width:64px; height:64px; border-radius:9999px;
+  background:#10b981; color:#fff; border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:28px; line-height:1;
+  box-shadow:0 8px 18px rgba(16,185,129,.35);
+  transition:transform .15s ease, background .2s ease;
+}
+.tts-fab:hover{ transform:translateY(-1px); }
+.tts-fab.muted{ background:#9ca3af; }   /* gris cuando está desactivada */
+
+
+  </style>
+</head>
+<body class="bg-slate-50">
+
+  <div class="flex h-screen">
+  <aside class="w-64 bg-white shadow-lg flex-shrink-0 hidden md:flex md:flex-col md:sticky md:top-0 md:h-screen md:overflow-y-auto border-r">
+
+    <div class="p-4">
+      <div style="width:150px;height:150px" class="p-2 mx-auto flex items-center justify-center bg-white rounded-full shadow-lg border-2 border-green-500">
+        <img src="img/logoCINTIA.png" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
+      </div>
+    </div>
+<nav class="mt-6 flex-1" role="navigation" aria-label="Secciones del OVA">
+  <a href="#" class="sidebar-link active flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="introduccion" aria-label="Introducción">
+    <span class="mr-3 text-xl">🚀</span> Introducción
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="objetivos" aria-label="Objetivos">
+    <span class="mr-3 text-xl">🎯</span> Objetivos
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="contenido" aria-label="Contenido">
+    <span class="mr-3 text-xl">📚</span> Contenido
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="actividades" aria-label="Actividades">
+    <span class="mr-3 text-xl">✍️</span> Actividades
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="evaluacion" aria-label="Evaluación">
+    <span class="mr-3 text-xl">✔️</span> Evaluación
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="recursos" aria-label="Recursos">
+    <span class="mr-3 text-xl">📖</span> Recursos
+  </a>
+  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
+     data-target="bibliografia" aria-label="Bibliografía">
+    <span class="mr-3 text-xl">📚</span> Bibliografía
+  </a>
+</nav>
+
+   <!-- Bocina fija dentro del aside, arriba del borde inferior y a la derecha -->
+<div class="aside-tts border-t border-emerald-100">
+  <button id="menu-tts-toggle"
+          type="button"
+          aria-pressed="false"
+          class="tts-fab muted"
+          title="Voz desactivada"
+          aria-label="Voz desactivada">
+    🔇
+  </button>
+</div>
+
+
+
+    
+  </aside>
+<main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50 max-h-screen overflow-y-auto">
+
+    <div class="md:hidden mb-6 flex flex-col items-center">
+      <div style="width:100px;height:100px" class="p-2 flex items-center justify-center bg-white rounded-full shadow-lg mb-2">
+        <img src="img/logo.webp" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
+      </div>
+      <select id="mobile-nav" class="w-full mt-2 p-2 border rounded-md bg-white shadow-sm">
+        <option value="introduccion">🚀 Introducción</option>
+        <option value="objetivos">🎯 Objetivos</option>
+        <option value="contenido">📚 Contenido</option>
+        <option value="actividades">✍️ Actividades</option>
+        <option value="evaluacion">✔️ Evaluación</option>
+        <option value="recursos">📖 Recursos</option>
+        <option value="bibliografia">📚 Bibliografía</option>
+      </select>
+    </div>
+
+   <!-- Intro -->
+        <section id="introduccion" class="content-pane active">
+<!-- TTS sección: Introducción -->
+<div class="flex justify-end">
+  <div class="space-y-1">
+    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+         data-target="introduccion">
+      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+        <span class="mr-1">▶️</span> Leer
+      </button>
+      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏸️</span> Pausar
+      </button>
+      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏹️</span> Detener
+      </button>
+      <div class="flex items-center ml-2">
+        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+      </div>
+    </div>
+    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+    </div>
+  </div>
+</div>
+
+          
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-800 flex items-center">
+            🔄 Uso de bucles en la resolución de problemas
+          </h1>
+
+            <div class="mt-6 space-y-6">
+              <div class="bg-white rounded-xl p-6 shadow-md border-l-4 border-emerald-500">
+                <p class="text-lg leading-relaxed text-slate-700">
+                  🔁 En programación, los <span class="highlight">ciclos o bucles</span> son <strong class="text-emerald-700">estructuras que permiten ejecutar repetidamente</strong> un conjunto de instrucciones hasta que se cumpla una <span class="highlight">condición específica</span>. Son esenciales para <strong class="text-emerald-700">automatizar tareas</strong>, procesar <span class="highlight">grandes cantidades de datos</span> y resolver problemas donde intervienen <span class="highlight">repeticiones lógicas</span>.
+                </p>
+              </div>
+
+              <div class="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-6 shadow-md border-2 border-emerald-200">
+                <div class="flex items-start space-x-4">
+                  <div class="text-4xl flex-shrink-0">🎯</div>
+                  <div>
+                    <h3 class="font-bold text-emerald-900 text-xl mb-3">Resolución de problemas con ciclos</h3>
+                    <p class="text-lg leading-relaxed text-slate-700">
+                      La <span class="highlight">resolución de problemas con ciclos</span> implica combinar correctamente los bucles con <strong class="text-emerald-700">contadores</strong>, <strong class="text-emerald-700">acumuladores</strong> y <strong class="text-emerald-700">centinelas</strong>, de manera que los programas sean <span class="highlight">eficientes</span>, <span class="highlight">claros</span> y <span class="highlight">funcionales</span>.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-3 gap-4">
+                <div class="bg-white rounded-lg p-5 shadow-md border-2 border-blue-200 hover:border-blue-400 transition-all">
+                  <div class="text-3xl mb-3 text-center">🔢</div>
+                  <h4 class="font-bold text-blue-900 text-center mb-2">Contadores</h4>
+                  <p class="text-sm text-slate-700 text-center">Llevan el registro del número de repeticiones</p>
+                </div>
+                <div class="bg-white rounded-lg p-5 shadow-md border-2 border-purple-200 hover:border-purple-400 transition-all">
+                  <div class="text-3xl mb-3 text-center">➕</div>
+                  <h4 class="font-bold text-purple-900 text-center mb-2">Acumuladores</h4>
+                  <p class="text-sm text-slate-700 text-center">Guardan y suman valores progresivamente</p>
+                </div>
+                <div class="bg-white rounded-lg p-5 shadow-md border-2 border-cyan-200 hover:border-cyan-400 transition-all">
+                  <div class="text-3xl mb-3 text-center">🛑</div>
+                  <h4 class="font-bold text-cyan-900 text-center mb-2">Centinelas</h4>
+                  <p class="text-sm text-slate-700 text-center">Señales que indican cuándo detener el ciclo</p>
+                </div>
+              </div>
+            </div>
+          
+          <div class="mt-6 p-4 bg-amber-50 border-l-4 border-amber-500 rounded-r-lg">
+            <div class="flex items-start">
+              <span class="text-2xl mr-3">💡</span>
+              <p class="text-amber-900">
+                Navega por el menú para explorar el <strong>objetivo</strong>, el <strong>contenido</strong>, las <strong>actividades</strong>, la <strong>evaluación</strong> y los <strong>recursos</strong>.
+              </p>
+            </div>
+          </div>
+        </section>
+
+   <!-- Objetivo -->
+        <section id="objetivos" class="content-pane">
+<!-- TTS sección: Introducción -->
+<div class="flex justify-end">
+  <div class="space-y-1">
+    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+         data-target="objetivos">
+      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+        <span class="mr-1">▶️</span> Leer
+      </button>
+      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏸️</span> Pausar
+      </button>
+      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏹️</span> Detener
+      </button>
+      <div class="flex items-center ml-2">
+        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+      </div>
+    </div>
+    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+    </div>
+  </div>
+</div>
+
+          
+          <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Objetivo</h2>
+          <p class="leading-relaxed">
+            <strong>Comprender y dominar</strong> las estructuras de control básicas (secuenciales y condicionales) mediante explicaciones sencillas, ejemplos prácticos y ejercicios guiados en pseudocódigo.
+          </p>
+        </section>
+    
+    <!-- Contenido -->
+    <section id="contenido" class="content-pane">
+      <div class="space-y-6">
+        <!-- TTS para acordeón de CONTENIDO -->
+        <div class="flex justify-end">
+          <div class="space-y-1">
+            <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+                 data-mode="accordion" data-container="#contenido">
+              <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+                <span class="mr-1">▶️</span> Leer
+              </button>
+              <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+                <span class="mr-1">⏸️</span> Pausar
+              </button>
+              <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+                <span class="mr-1">⏹️</span> Detener
+              </button>
+              <div class="flex items-center ml-2">
+                <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+                <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+              </div>
+            </div>
+            <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+              <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+              <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+            </div>
+          </div>
+        </div>
+
+        <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-6">Contenido</h2>
+
+        <!-- Tarjeta 1: Uso de bucles en la resolución de problemas -->
+        <article class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl shadow-lg border-2 border-emerald-200 overflow-hidden">
+          <div class="p-6 md:p-8">
+            <div class="flex items-center mb-4">
+              <div class="bg-emerald-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold mr-4">
+                1
+              </div>
+              <h3 class="text-2xl font-bold text-emerald-800">Uso de bucles en la resolución de problemas</h3>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 shadow-md mb-6">
+              <p class="text-lg leading-relaxed text-slate-700">
+                🔁 Los bucles <span class="highlight">'Para'</span>, <span class="highlight">'Mientras'</span> y 
+                <span class="highlight">'Repetir Mientras Que'</span> permiten realizar <strong class="text-emerald-700">repeticiones controladas</strong>. 
+                Su elección depende del <span class="highlight">tipo de problema</span> y de si se conoce o no el <span class="highlight">número de iteraciones</span> requeridas.
+              </p>
+            </div>
+
+            <!-- Espacio para imagen 1 -->
+            <!-- Imagen: Diagrama de bucles -->
+            <figure class="image-container rounded-xl overflow-hidden shadow-lg border-2 border-emerald-200 hover:border-emerald-400 transition-all duration-300">
+              <button class="zoom-btn" onclick="openImageModal(this.nextElementSibling.src)" title="Ampliar imagen">🔍</button>
+              <img src="img/0.jpg" 
+                   alt="Diagrama de bucles en programación" 
+                   class="w-full h-auto object-contain bg-white"
+                   loading="lazy">
+              <figcaption class="bg-emerald-50 px-4 py-3 text-center text-sm text-emerald-800 font-medium border-t border-emerald-200">
+                📊 Diagrama de bucles en programación
+              </figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <!-- Tarjeta 2: Los ciclos en programación -->
+        <article class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg border-2 border-blue-200 overflow-hidden">
+          <div class="p-6 md:p-8">
+            <div class="flex items-center mb-4">
+              <div class="bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold mr-4">
+                2
+              </div>
+              <h3 class="text-2xl font-bold text-blue-800">Los ciclos en programación</h3>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 shadow-md mb-6">
+              <p class="text-lg leading-relaxed text-slate-700">
+                🔄 Los <span class="highlight">ciclos</span> son <strong class="text-blue-700">estructuras de control fundamentales</strong> en la programación que 
+                permiten <span class="highlight">ejecutar un bloque de código repetidamente</span>. Son esenciales para <strong class="text-blue-700">automatizar tareas</strong> que requieren la misma 
+                operación en múltiples elementos o hasta que se cumpla una <span class="highlight">condición específica</span>.
+              </p>
+            </div>
+
+            <!-- Imagen: Ejemplos de ciclos -->
+            <figure class="image-container rounded-xl overflow-hidden shadow-lg border-2 border-blue-200 hover:border-blue-400 transition-all duration-300">
+              <button class="zoom-btn" onclick="openImageModal(this.nextElementSibling.src)" title="Ampliar imagen">🔍</button>
+              <img src="img/1.jpg" 
+                   alt="Ejemplos de ciclos y estructuras repetitivas" 
+                   class="w-full h-auto object-contain bg-white"
+                   loading="lazy">
+              <figcaption class="bg-blue-50 px-4 py-3 text-center text-sm text-blue-800 font-medium border-t border-blue-200">
+                🔄 Ejemplos de ciclos y estructuras repetitivas
+              </figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <!-- Ejemplo 1: Bucle Para -->
+        <article class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow-lg border-2 border-purple-200 overflow-hidden">
+          <div class="p-6 md:p-8">
+            <div class="flex items-center mb-4">
+              <div class="bg-purple-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold mr-4">
+                📝
+              </div>
+              <h3 class="text-2xl font-bold text-purple-800">Ejemplo 1: Mostrar los números del 1 al 10 usando un bucle Para</h3>
+            </div>
+
+            <!-- Imagen: Ejemplo bucle Para -->
+            <figure class="image-container rounded-xl overflow-hidden shadow-lg border-2 border-purple-200 hover:border-purple-400 transition-all duration-300">
+              <button class="zoom-btn" onclick="openImageModal(this.nextElementSibling.src)" title="Ampliar imagen">🔍</button>
+              <img src="img/2.jpg" 
+                   alt="Código del bucle Para mostrando números del 1 al 10" 
+                   class="w-full h-auto object-contain bg-white"
+                   loading="lazy">
+              <figcaption class="bg-purple-50 px-4 py-3 text-center text-sm text-purple-800 font-medium border-t border-purple-200">
+                💻 Código del bucle Para mostrando números del 1 al 10
+              </figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <!-- Tarjeta 3: Uso de contadores y acumuladores -->
+        <article class="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl shadow-lg border-2 border-orange-200 overflow-hidden">
+          <div class="p-6 md:p-8">
+            <div class="flex items-center mb-4">
+              <div class="bg-orange-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold mr-4">
+                3
+              </div>
+              <h3 class="text-2xl font-bold text-orange-800">Uso de contadores y acumuladores</h3>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 shadow-md mb-6 space-y-4">
+              <p class="text-lg leading-relaxed text-slate-700">
+                🔢 Las estructuras repetitivas como los bucles (<span class="highlight">Para</span>, 
+                <span class="highlight">Mientras</span>, <span class="highlight">Repetir Mientras Que</span>) 
+                suelen necesitar <strong class="text-orange-700">variables especiales</strong> que registren el progreso del ciclo o guarden resultados parciales.
+                Estas variables son los <span class="highlight">contadores</span> y los <span class="highlight">acumuladores</span>.
+              </p>
+              
+              <p class="text-lg leading-relaxed text-slate-700">
+                ✅ Ambos desempeñan un <strong class="text-orange-700">papel fundamental</strong> en la lógica de control de los programas, especialmente cuando se 
+                requiere <span class="highlight">llevar la cuenta</span> o <span class="highlight">sumar valores</span> dentro de un proceso repetitivo.
+              </p>
+
+              <div class="bg-gradient-to-r from-orange-100 to-red-100 rounded-lg p-5 border-l-4 border-orange-500">
+                <h4 class="font-bold text-orange-900 text-xl mb-3">🔢 ¿Qué es un contador?</h4>
+                <p class="text-slate-700 mb-3">
+                  Un <span class="highlight">contador</span> es una <strong>variable</strong> que lleva el <span class="highlight">registro del número de repeticiones</span> realizadas 
+                  dentro de un ciclo o del número de veces que ha ocurrido un determinado evento.
+                </p>
+                
+                <p class="text-slate-700 font-semibold mb-2">📌 Por lo general:</p>
+                <ul class="list-disc list-inside space-y-2 text-slate-700 ml-4">
+                  <li>• Se <span class="highlight">inicializa</span> en <code class="bg-white px-2 py-1 rounded text-orange-700 font-mono">0</code> o <code class="bg-white px-2 py-1 rounded text-orange-700 font-mono">1</code>.</li>
+                  <li>• <span class="highlight">Aumenta o disminuye</span> en cada iteración del bucle.</li>
+                  <li>• Su principal propósito es <span class="highlight">contar</span> cuántas veces se ejecuta una acción o cuántos elementos se han procesado.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Imagen: Diagrama de contadores -->
+            <figure class="image-container rounded-xl overflow-hidden shadow-lg border-2 border-orange-200 hover:border-orange-400 transition-all duration-300 mb-6">
+              <button class="zoom-btn" onclick="openImageModal(this.nextElementSibling.src)" title="Ampliar imagen">🔍</button>
+              <img src="img/3.jpg" 
+                   alt="Diagrama explicativo de contadores" 
+                   class="w-full h-auto object-contain bg-white"
+                   loading="lazy">
+              <figcaption class="bg-orange-50 px-4 py-3 text-center text-sm text-orange-800 font-medium border-t border-orange-200">
+                🔢 Diagrama explicativo de contadores
+              </figcaption>
+            </figure>
+
+            <!-- Características principales -->
+            <div class="bg-white rounded-xl p-6 shadow-md mb-6">
+              <h4 class="font-bold text-orange-900 text-xl mb-4 flex items-center">
+                <span class="bg-orange-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm mr-3">✓</span>
+                Características principales
+              </h4>
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-orange-50 rounded-lg p-4 border border-orange-200">
+                  <p class="text-slate-700">
+                    <span class="font-semibold text-orange-700">•</span> Se incrementa con una constante, normalmente <code class="bg-white px-2 py-1 rounded text-orange-700 font-mono">1</code>.
+                  </p>
+                </div>
+                <div class="bg-orange-50 rounded-lg p-4 border border-orange-200">
+                  <p class="text-slate-700">
+                    <span class="font-semibold text-orange-700">•</span> Se usa para controlar el número de ejecuciones.
+                  </p>
+                </div>
+                <div class="bg-orange-50 rounded-lg p-4 border border-orange-200">
+                  <p class="text-slate-700">
+                    <span class="font-semibold text-orange-700">•</span> No almacena resultados acumulativos, solo cuenta repeticiones.
+                  </p>
+                </div>
+                <div class="bg-orange-50 rounded-lg p-4 border border-orange-200">
+                  <p class="text-slate-700">
+                    <span class="font-semibold text-orange-700">•</span> Puede actuar como variable de control de un bucle <strong>Para</strong> o <strong>Mientras</strong>.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ejemplo en pseudocódigo -->
+            <div class="bg-gradient-to-r from-slate-700 to-slate-800 rounded-xl p-6 shadow-md mb-6">
+              <h4 class="font-bold text-white text-xl mb-3 flex items-center">
+                <span class="mr-2">💻</span> Ejemplo en pseudocódigo
+              </h4>
+            </div>
+
+            <!-- Imagen: Pseudocódigo con contador -->
+            <figure class="image-container rounded-xl overflow-hidden shadow-lg border-2 border-orange-200 hover:border-orange-400 transition-all duration-300">
+              <button class="zoom-btn" onclick="openImageModal(this.nextElementSibling.src)" title="Ampliar imagen">🔍</button>
+              <img src="img/4.jpg" 
+                   alt="Ejemplo de pseudocódigo con contador" 
+                   class="w-full h-auto object-contain bg-white"
+                   loading="lazy">
+              <figcaption class="bg-orange-50 px-4 py-3 text-center text-sm text-orange-800 font-medium border-t border-orange-200">
+                📝 Ejemplo de pseudocódigo con contador
+              </figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <!-- Tarjeta 4: Uso de centinelas -->
+        <article class="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl shadow-lg border-2 border-cyan-200 overflow-hidden">
+          <div class="p-6 md:p-8">
+            <div class="flex items-center mb-4">
+              <div class="bg-cyan-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold mr-4">
+                4
+              </div>
+              <h3 class="text-2xl font-bold text-cyan-800">Uso de centinelas para detener ciclos</h3>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 shadow-md mb-6 space-y-4">
+              <p class="text-lg leading-relaxed text-slate-700">
+                🛑 El uso de <span class="highlight">centinelas</span> es una <strong class="text-cyan-700">técnica muy común</strong> en programación para 
+                controlar la <span class="highlight">finalización de un ciclo</span>. Un centinela es un <span class="highlight">valor especial</span> que el usuario ingresa o que se 
+                establece en el programa para <strong class="text-cyan-700">indicar el final</strong> de un proceso repetitivo.
+              </p>
+              
+              <div class="bg-gradient-to-r from-cyan-100 to-blue-100 rounded-lg p-5 border-l-4 border-cyan-500">
+                <p class="text-slate-700">
+                  💡 En otras palabras, el centinela actúa como una <span class="highlight">señal o marcador</span> que 
+                  le dice al algoritmo que debe <strong class="text-cyan-700">detener la repetición del ciclo</strong>, sin necesidad de conocer de antemano cuántas 
+                  veces se repetirá la acción.
+                </p>
+              </div>
+            </div>
+
+            <!-- Imagen: Diagrama de centinelas -->
+            <figure class="image-container rounded-xl overflow-hidden shadow-lg border-2 border-cyan-200 hover:border-cyan-400 transition-all duration-300 mb-6">
+              <button class="zoom-btn" onclick="openImageModal(this.nextElementSibling.src)" title="Ampliar imagen">🔍</button>
+              <img src="img/5.jpg" 
+                   alt="Diagrama conceptual de centinelas" 
+                   class="w-full h-auto object-contain bg-white"
+                   loading="lazy">
+              <figcaption class="bg-cyan-50 px-4 py-3 text-center text-sm text-cyan-800 font-medium border-t border-cyan-200">
+                🛑 Diagrama conceptual de centinelas
+              </figcaption>
+            </figure>
+
+            <!-- Cuándo usar centinelas -->
+            <div class="bg-white rounded-xl p-6 shadow-md mb-6">
+              <h4 class="font-bold text-cyan-900 text-xl mb-4 flex items-center">
+                <span class="bg-cyan-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm mr-3">?</span>
+                ¿Cuándo usar centinelas?
+              </h4>
+              <p class="text-lg leading-relaxed text-slate-700 mb-4">
+                📊 Esta técnica se usa con frecuencia cuando <span class="highlight">no se sabe cuántos datos se van a procesar</span>. 
+                Por ejemplo, cuando un usuario puede ingresar una <strong class="text-cyan-700">cantidad variable</strong> de números, nombres, edades, notas, etc., 
+                y no queremos pedirle previamente cuántos datos introducirá.
+              </p>
+              <p class="text-lg leading-relaxed text-slate-700">
+                ⏸️ El programa <strong class="text-cyan-700">continúa ejecutando el ciclo</strong> hasta que se introduce el <span class="highlight">valor centinela</span>, 
+                momento en el que el ciclo <span class="highlight">se detiene</span> y el programa pasa a ejecutar las instrucciones siguientes (como mostrar 
+                resultados, realizar cálculos, etc.).
+              </p>
+            </div>
+
+            <!-- Imagen: Flujo con centinela -->
+            <figure class="image-container rounded-xl overflow-hidden shadow-lg border-2 border-cyan-200 hover:border-cyan-400 transition-all duration-300">
+              <button class="zoom-btn" onclick="openImageModal(this.nextElementSibling.src)" title="Ampliar imagen">🔍</button>
+              <img src="img/6.jpg" 
+                   alt="Flujo de ejecución con centinela" 
+                   class="w-full h-auto object-contain bg-white"
+                   loading="lazy">
+              <figcaption class="bg-cyan-50 px-4 py-3 text-center text-sm text-cyan-800 font-medium border-t border-cyan-200">
+                ➡️ Flujo de ejecución con centinela
+              </figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <!-- Ejemplo 3: Pedir números hasta 0 -->
+        <article class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl shadow-lg border-2 border-indigo-200 overflow-hidden">
+          <div class="p-6 md:p-8">
+            <div class="flex items-center mb-4">
+              <div class="bg-indigo-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold mr-4">
+                📝
+              </div>
+              <h3 class="text-2xl font-bold text-indigo-800">Ejemplo 3: Pedir números hasta que el usuario digite 0</h3>
+            </div>
+
+            <div class="bg-gradient-to-r from-indigo-700 to-purple-700 rounded-xl p-6 shadow-md mb-6">
+              <h4 class="font-bold text-white text-xl mb-2 flex items-center">
+                <span class="mr-2">💻</span> Pseudocódigo:
+              </h4>
+            </div>
+
+            <!-- Imagen: Ejemplo con centinela 0 -->
+            <figure class="image-container rounded-xl overflow-hidden shadow-lg border-2 border-indigo-200 hover:border-indigo-400 transition-all duration-300">
+              <button class="zoom-btn" onclick="openImageModal(this.nextElementSibling.src)" title="Ampliar imagen">🔍</button>
+              <img src="img/7.jpg" 
+                   alt="Pseudocódigo del ejemplo con centinela (0)" 
+                   class="w-full h-auto object-contain bg-white"
+                   loading="lazy">
+              <figcaption class="bg-indigo-50 px-4 py-3 text-center text-sm text-indigo-800 font-medium border-t border-indigo-200">
+                💻 Pseudocódigo del ejemplo con centinela (0)
+              </figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <!-- Tarjeta 5: Problemas combinados con ciclos -->
+        <article class="bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl shadow-lg border-2 border-rose-200 overflow-hidden">
+          <div class="p-6 md:p-8">
+            <div class="flex items-center mb-4">
+              <div class="bg-rose-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold mr-4">
+                5
+              </div>
+              <h3 class="text-2xl font-bold text-rose-800">Problemas combinados con ciclos</h3>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 shadow-md mb-6 space-y-4">
+              <p class="text-lg leading-relaxed text-slate-700">
+                🔧 En programación, los <span class="highlight">problemas combinados con ciclos</span> aparecen cuando 
+                se requiere <strong class="text-rose-700">repetir una serie de instrucciones</strong> varias veces, mientras se controlan y registran los resultados 
+                que se van generando en cada repetición. En estos casos se utilizan de manera conjunta <span class="highlight">tres herramientas muy 
+                importantes</span>: el <strong class="text-rose-700">contador</strong>, el <strong class="text-rose-700">acumulador</strong> 
+                y el <strong class="text-rose-700">centinela</strong>.
+              </p>
+
+              <!-- Grid de las tres herramientas -->
+              <div class="grid md:grid-cols-3 gap-4 my-6">
+                <div class="bg-gradient-to-br from-rose-100 to-pink-100 rounded-lg p-5 border-2 border-rose-300 text-center">
+                  <div class="text-4xl mb-3">🔢</div>
+                  <h5 class="font-bold text-rose-900 text-lg mb-2">Contador</h5>
+                  <p class="text-sm text-slate-700">Lleva un control exacto del número de veces que se ejecuta el ciclo</p>
+                </div>
+                <div class="bg-gradient-to-br from-rose-100 to-pink-100 rounded-lg p-5 border-2 border-rose-300 text-center">
+                  <div class="text-4xl mb-3">➕</div>
+                  <h5 class="font-bold text-rose-900 text-lg mb-2">Acumulador</h5>
+                  <p class="text-sm text-slate-700">Guarda resultados parciales y los suma progresivamente</p>
+                </div>
+                <div class="bg-gradient-to-br from-rose-100 to-pink-100 rounded-lg p-5 border-2 border-rose-300 text-center">
+                  <div class="text-4xl mb-3">🛑</div>
+                  <h5 class="font-bold text-rose-900 text-lg mb-2">Centinela</h5>
+                  <p class="text-sm text-slate-700">Señal especial que indica cuándo debe detenerse el ciclo</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Imagen: Tres herramientas combinadas -->
+            <figure class="image-container rounded-xl overflow-hidden shadow-lg border-2 border-rose-200 hover:border-rose-400 transition-all duration-300 mb-6">
+              <button class="zoom-btn" onclick="openImageModal(this.nextElementSibling.src)" title="Ampliar imagen">🔍</button>
+              <img src="img/8.jpg" 
+                   alt="Diagrama de las tres herramientas combinadas" 
+                   class="w-full h-auto object-contain bg-white"
+                   loading="lazy">
+              <figcaption class="bg-rose-50 px-4 py-3 text-center text-sm text-rose-800 font-medium border-t border-rose-200">
+                🔧 Diagrama de las tres herramientas combinadas
+              </figcaption>
+            </figure>
+
+            <!-- Aplicación práctica -->
+            <div class="bg-white rounded-xl p-6 shadow-md mb-6">
+              <h4 class="font-bold text-rose-900 text-xl mb-4 flex items-center">
+                <span class="bg-rose-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm mr-3">✓</span>
+                Aplicación práctica
+              </h4>
+              <p class="text-lg leading-relaxed text-slate-700 mb-4">
+                🎯 La <span class="highlight">combinación de estos tres elementos</span> hace posible resolver <strong class="text-rose-700">problemas más realistas y complejos</strong>. Por ejemplo, 
+                al registrar calificaciones de varios estudiantes, el <span class="highlight">centinela</span> puede 
+                indicar cuándo detener la lectura de notas, el <span class="highlight">contador</span> puede registrar 
+                cuántas calificaciones válidas se ingresaron y el <span class="highlight">acumulador</span> puede sumar 
+                todas ellas para luego calcular el <strong class="text-rose-700">promedio general</strong>.
+              </p>
+            </div>
+
+            <!-- Cómo funciona -->
+            <div class="bg-gradient-to-r from-rose-100 to-pink-100 rounded-lg p-6 border-l-4 border-rose-500 mb-6">
+              <h4 class="font-bold text-rose-900 text-xl mb-3">¿Cómo funciona?</h4>
+              <p class="text-slate-700 mb-3">
+                📌 Este tipo de estructura se utiliza cuando <span class="highlight">no se conoce de antemano el número de datos</span> que se 
+                van a procesar. El programa depende entonces del <strong class="text-rose-700">valor centinela</strong> para terminar el ciclo.
+              </p>
+              <p class="text-slate-700">
+                ➡️ A medida que los datos son introducidos, el <span class="highlight">contador incrementa su valor en una unidad</span> 
+                y el <span class="highlight">acumulador suma el dato actual al total acumulado</span>. Una vez se introduce 
+                el valor centinela, el programa realiza los <strong class="text-rose-700">cálculos finales</strong> con los datos obtenidos.
+              </p>
+            </div>
+
+            <!-- Imagen: Flujo completo -->
+            <figure class="image-container rounded-xl overflow-hidden shadow-lg border-2 border-rose-200 hover:border-rose-400 transition-all duration-300">
+              <button class="zoom-btn" onclick="openImageModal(this.nextElementSibling.src)" title="Ampliar imagen">🔍</button>
+              <img src="img/9.jpg" 
+                   alt="Ejemplo de flujo completo con las tres herramientas" 
+                   class="w-full h-auto object-contain bg-white"
+                   loading="lazy">
+              <figcaption class="bg-rose-50 px-4 py-3 text-center text-sm text-rose-800 font-medium border-t border-rose-200">
+                📊 Ejemplo de flujo completo con las tres herramientas
+              </figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <!-- Ejemplo 4: Suma y promedio con centinela -->
+        <article class="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-2xl shadow-lg border-2 border-teal-200 overflow-hidden">
+          <div class="p-6 md:p-8">
+            <div class="flex items-center mb-4">
+              <div class="bg-teal-600 text-white rounded-full w-12 h-12 flex items-center justify-center text-xl font-bold mr-4">
+                📝
+              </div>
+              <h3 class="text-2xl font-bold text-teal-800">Ejemplo: Calcular la suma y el promedio de varios números hasta que el usuario digite -1</h3>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-md mb-6">
+              <div class="flex items-start space-x-4">
+                <div class="bg-teal-100 rounded-full p-3 flex-shrink-0">
+                  <svg class="w-8 h-8 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-bold text-teal-900 text-lg mb-2">Descripción del problema</h4>
+                  <p class="text-slate-700">
+                    💡 Este ejemplo combina las <span class="highlight">tres herramientas</span>: <strong class="text-teal-700">contador</strong> (para contar números ingresados), 
+                    <strong class="text-teal-700">acumulador</strong> (para sumar los valores) y <strong class="text-teal-700">centinela</strong> 
+                    (el valor <span class="highlight">-1</span> que detiene el ciclo).
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Imagen: Ejemplo suma y promedio -->
+            <figure class="image-container rounded-xl overflow-hidden shadow-lg border-2 border-teal-200 hover:border-teal-400 transition-all duration-300">
+              <button class="zoom-btn" onclick="openImageModal(this.nextElementSibling.src)" title="Ampliar imagen">🔍</button>
+              <img src="img/10.jpg" 
+                   alt="Pseudocódigo completo del ejemplo con suma y promedio" 
+                   class="w-full h-auto object-contain bg-white"
+                   loading="lazy">
+              <figcaption class="bg-teal-50 px-4 py-3 text-center text-sm text-teal-800 font-medium border-t border-teal-200">
+                ➕ Pseudocódigo completo del ejemplo con suma y promedio
+              </figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <!-- Nota informativa adicional -->
+        <div class="bg-amber-50 border-l-4 border-amber-500 rounded-r-lg p-5 shadow-sm">
+          <div class="flex items-start">
+            <span class="text-3xl mr-3">💡</span>
+            <div>
+              <h4 class="font-bold text-amber-900 mb-2">Nota importante</h4>
+              <p class="text-amber-800">
+                Los espacios para imágenes están listos para recibir los diagramas y ejemplos visuales que complementarán 
+                el contenido teórico. Puedes agregar las imágenes cuando estén disponibles.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Actividades -->
+    <section id="actividades" class="content-pane">
+      <!-- TTS sección: Introducción -->
+        <div class="flex justify-end">
+          <div class="space-y-1">
+            <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+                 data-target="introduccion">
+              <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+                <span class="mr-1">▶️</span> Leer
+              </button>
+              <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+                <span class="mr-1">⏸️</span> Pausar
+              </button>
+              <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+                <span class="mr-1">⏹️</span> Detener
+              </button>
+              <div class="flex items-center ml-2">
+                <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+                <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+              </div>
+            </div>
+            <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+              <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+              <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+            </div>
+          </div>
+        </div>
+
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Actividades</h2>
+
+      <!-- Actividad 1 -->
+  <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5 mb-6">
+    <h3 class="text-xl font-bold text-emerald-700 mb-2">🔢 Actividad 1: Tabla de multiplicar (bucle Para)</h3>
+    <p class="mb-3">
+      Crea un programa que muestre la tabla de multiplicar de un número ingresado por el usuario.
+    </p>
+    <textarea rows="14" class="w-full p-3 border rounded bg-white font-mono text-sm" placeholder="Proceso Tabla_Multiplicar&#10;    Definir numero, i, resultado Como Entero&#10; &#10;    Escribir 'Ingrese un número para ver su tabla de multiplicar:'&#10;    Leer numero&#10; &#10;    Para i <- 1 Hasta 10 Hacer&#10;        resultado <- numero * i&#10;        Escribir numero, ' x ', i, ' = ', resultado&#10;    FinPara&#10; &#10;    Escribir 'Fin de la tabla.'&#10;FinProceso"></textarea>
+  </article>
+
+  <!-- Actividad 2 -->
+  <article class="bg-white border-l-4 border-blue-500 rounded-lg shadow-sm p-5 mb-6">
+    <h3 class="text-xl font-bold text-blue-700 mb-2">➕ Actividad 2: Suma de números (bucle Mientras y acumulador)</h3>
+    <p class="mb-3">
+      Crea un programa que pida números hasta ingresar 0 y calcule la suma total.
+    </p>
+    <textarea rows="16" class="w-full p-3 border rounded bg-white font-mono text-sm" placeholder="Proceso Suma_Numeros&#10;    Definir numero, suma Como Entero&#10; &#10;    suma <- 0&#10; &#10;    Escribir 'Ingrese números para sumar (0 para terminar):'&#10;    Leer numero&#10; &#10;    Mientras numero <> 0 Hacer&#10;        suma <- suma + numero&#10;        Leer numero&#10;    FinMientras&#10; &#10;    Escribir 'La suma total es: ', suma&#10;FinProceso"></textarea>
+  </article>
+
+  <!-- Actividad 3 -->
+  <article class="bg-white border-l-4 border-purple-500 rounded-lg shadow-sm p-5 mb-6">
+    <h3 class="text-xl font-bold text-purple-700 mb-2">📊 Actividad 3: Promedio de notas (centinela y acumulador)</h3>
+    <p class="mb-3">
+      Diseña un programa que lea notas hasta un valor negativo y muestre el promedio.
+    </p>
+    <textarea rows="22" class="w-full p-3 border rounded bg-white font-mono text-sm" placeholder="Proceso Promedio_Notas&#10;    Definir nota, suma, promedio Como Real&#10;    Definir contador Como Entero&#10; &#10;    suma <- 0&#10;    contador <- 0&#10; &#10;    Escribir 'Ingrese una nota (valor negativo para finalizar):'&#10;    Leer nota&#10; &#10;    Mientras nota >= 0 Hacer&#10;        suma <- suma + nota&#10;        contador <- contador + 1&#10;        Leer nota&#10;    FinMientras&#10; &#10;    Si contador > 0 Entonces&#10;        promedio <- suma / contador&#10;        Escribir 'Promedio de notas: ', promedio&#10;    Sino&#10;        Escribir 'No se ingresaron notas válidas.'&#10;    FinSi&#10;FinProceso"></textarea>
+  </article>
+
+  <!-- Actividad 4 -->
+  <article class="bg-white border-l-4 border-orange-500 rounded-lg shadow-sm p-5 mb-6">
+    <h3 class="text-xl font-bold text-orange-700 mb-2">🔄 Actividad 4: Menú de operaciones (Repetir Mientras Que)</h3>
+    <p class="mb-3">
+      Crea un menú con opciones de operaciones matemáticas básicas.
+    </p>
+    <textarea rows="44" class="w-full p-3 border rounded bg-white font-mono text-sm" placeholder="Proceso Menu_Operaciones&#10;    Definir opcion, a, b, resultado Como Real&#10; &#10;    Repetir&#10;        Escribir '===== MENÚ DE OPERACIONES ====='&#10;        Escribir '1. Sumar'&#10;        Escribir '2. Restar'&#10;        Escribir '3. Multiplicar'&#10;        Escribir '4. Dividir'&#10;        Escribir '5. Salir'&#10;        Escribir 'Seleccione una opción:'&#10;        Leer opcion&#10; &#10;        Segun opcion Hacer&#10;            1:&#10;                Escribir 'Ingrese dos números:'&#10;                Leer a, b&#10;                resultado <- a + b&#10;                Escribir 'Resultado de la suma: ', resultado&#10;            2:&#10;                Escribir 'Ingrese dos números:'&#10;                Leer a, b&#10;                resultado <- a - b&#10;                Escribir 'Resultado de la resta: ', resultado&#10;            3:&#10;                Escribir 'Ingrese dos números:'&#10;                Leer a, b&#10;                resultado <- a * b&#10;                Escribir 'Resultado de la multiplicación: ', resultado&#10;            4:&#10;                Escribir 'Ingrese dos números:'&#10;                Leer a, b&#10;                Si b <> 0 Entonces&#10;                    resultado <- a / b&#10;                    Escribir 'Resultado de la división: ', resultado&#10;                Sino&#10;                    Escribir 'Error: no se puede dividir entre cero.'&#10;                FinSi&#10;            5:&#10;                Escribir 'Saliendo del programa...'&#10;            De Otro Modo:&#10;                Escribir 'Opción no válida, intente de nuevo.'&#10;        FinSegun&#10;    Hasta Que opcion = 5&#10;FinProceso"></textarea>
+  </article>
+
+  <!-- Actividad 5 -->
+  <article class="bg-white border-l-4 border-teal-500 rounded-lg shadow-sm p-5">
+    <h3 class="text-xl font-bold text-teal-700 mb-2">🔢 Actividad 5: Contar números pares (contador)</h3>
+    <p class="mb-3">
+      Realiza un programa que cuente cuántos números pares hay entre 1 y 100.
+    </p>
+    <textarea rows="13" class="w-full p-3 border rounded bg-white font-mono text-sm" placeholder="Proceso Contar_Pares&#10;    Definir contador, i Como Entero&#10; &#10;    contador <- 0&#10; &#10;    Para i <- 1 Hasta 100 Hacer&#10;        Si i MOD 2 = 0 Entonces&#10;            contador <- contador + 1&#10;        FinSi&#10;    FinPara&#10; &#10;    Escribir 'Cantidad de números pares entre 1 y 100: ', contador&#10;FinProceso"></textarea>
+  </article>
+
+
+</section>  <!-- ← cierre de la sección ACTIVIDADES -->
+
+
+    <!-- Evaluación (quiz) -->
+    <section id="evaluacion" class="content-pane">
+      <!-- TTS sección: Introducción -->
+<div class="flex justify-end">
+  <div class="space-y-1">
+    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+         data-target="evaluacion">
+      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+        <span class="mr-1">▶️</span> Leer
+      </button>
+      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏸️</span> Pausar
+      </button>
+      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏹️</span> Detener
+      </button>
+      <div class="flex items-center ml-2">
+        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+      </div>
+    </div>
+    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+    </div>
+  </div>
+</div>
+
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Evaluación</h2>
+      <div class="bg-white p-5 rounded-lg shadow-md">
+        <div id="quiz"></div>
+        <button id="quiz-submit" class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded transition-colors">Finalizar</button>
+        <div id="quiz-result" class="mt-3 text-lg font-bold"></div>
+      </div>
+    </section>
+
+    <!-- Recursos (3 tarjetas como la imagen) -->
+    <section id="recursos" class="content-pane">
+      <!-- TTS sección: Introducción -->
+<div class="flex justify-end">
+  <div class="space-y-1">
+    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+         data-target="recursos">
+      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+        <span class="mr-1">▶️</span> Leer
+      </button>
+      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏸️</span> Pausar
+      </button>
+      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏹️</span> Detener
+      </button>
+      <div class="flex items-center ml-2">
+        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+      </div>
+    </div>
+    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+    </div>
+  </div>
+</div>
+
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-6">Recursos</h2>
+      <div class="grid lg:grid-cols-3 gap-5">
+        <!-- Card 1 -->
+        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-xl font-bold text-slate-900 leading-tight">Lógica de programación</h3>
+              <span class="badge">Libro</span>
+            </div>
+            <p class="text-sm text-slate-700"><strong>Trejos Buriticá, O. I.</strong> (2023). <em>Lógica de programación</em>. Ediciones de la U.</p>
+            <a href="https://www.edicionesdelau.com/" target="_blank" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
+          </div>
+          <div class="mt-4 flex justify-end">
+            <img src="img/qr-code 1.png" alt="QR Lógica de programación" class="w-20 h-20 object-contain">
+          </div>
+        </article>
+        <!-- Card 2 -->
+        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-xl font-bold text-slate-900 leading-tight">Solucionario en pseudocódigo</h3>
+              <span class="badge">Libro</span>
+            </div>
+            <p class="text-sm text-slate-700"><strong>Trejos Buriticá, O. I.</strong> (2021). <em>Lógica de programación: solucionario en pseudocódigo. Ejercicios resueltos</em>. Ediciones de la U.</p>
+            <a href="https://www.edicionesdelau.com/" target="_blank" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
+          </div>
+          <div class="mt-4 flex justify-end">
+            <img src="img/qr-code 2.png" alt="QR Solucionario en pseudocódigo" class="w-20 h-20 object-contain">
+          </div>
+        </article>
+        <!-- Card 3 -->
+        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="font-bold text-lg text-green-800 mb-2 pr-2">Programación basada en PSeInt</h3>
+                <span class="badge">Libro</span>
+            </div>
+                  <p class="text-slate-600 mb-4">Celi V., P. (2023).<i>Fundamentos de programación basados en PSeInt.</i> (1.ª ed.) [PDF]. ITQ.</p>
+                  <a href="https://itq.edu.ec/wp-content/uploads/2023/04/2023-04-19_fundamentos_de_programacion_basados_en_pseint.pdf" target="_blank" class="text-green-700 hover:text-green-900 underline block mb-4">Ver recurso</a>          </div>
+          <div class="mt-4 flex justify-end">
+                   <img src="img/qr-code 3.png" alt="QR Code" class="w-16 h-16">
+          </div>
+        </article>
+        <!-- Card 4 -->
+        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-xl font-bold text-slate-900 leading-tight">Fundamentos de programación</h3>
+              <span class="badge">Libro</span>
+            </div>
+            <p class="text-sm text-slate-700"><strong>García Santillán, I.</strong> (Ed.). (2014). <em>Fundamentos de programación usando PSeInt</em>. Unidad de Producción y Difusión Científica y Académica.</p>
+            <a href="#" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
+          </div>
+          <div class="mt-4 flex justify-end">
+            <img src="img/qr-code 4.png" alt="QR Fundamentos de programación" class="w-20 h-20 object-contain">
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Bibliografía -->
+    <section id="bibliografia" class="content-pane">
+      <!-- TTS sección: Introducción -->
+<div class="flex justify-end">
+  <div class="space-y-1">
+    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
+         data-target="bibliografia">
+      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
+        <span class="mr-1">▶️</span> Leer
+      </button>
+      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏸️</span> Pausar
+      </button>
+      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
+        <span class="mr-1">⏹️</span> Detener
+      </button>
+      <div class="flex items-center ml-2">
+        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
+        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
+      </div>
+    </div>
+    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
+      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
+      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
+    </div>
+  </div>
+</div>
+
+      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Bibliografía</h2>
+      <ul class="space-y-3">
+        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+          Joyanes Aguilar, L. (2013). <em>Fundamentos de programación</em> (4.ª ed.). McGraw-Hill.
+        </li>
+        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+          MDN Web Docs. (s. f.). <em>Loops and iteration</em>. Mozilla Developer Network. https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Loops_and_iteration
+        </li>
+        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+          Sebesta, R. W. (2011). <em>Conceptos de lenguajes de programación</em> (9.ª ed.). Pearson Educación.
+        </li>
+        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
+          W3Schools. (s. f.). <em>Python loops</em>. https://www.w3schools.com/python/python_for_loops.asp
+        </li>
+      </ul>
+      <footer class="mt-10 pt-6 border-t text-center text-slate-600">
+        <p class="font-medium">Unicórdoba, calidad, innovación e inclusión para la transformación del territorio.</p>
+        <a class="text-emerald-700 underline" href="https://www.unicordoba.edu.co" target="_blank">www.unicordoba.edu.co</a>
+      </footer>
+    </section>
+  </main>
+</div>
+
+<!-- Image modal -->
+<div id="imgModal" class="image-modal">
+  <img id="imgModalSrc" src="" alt="Vista ampliada" class="max-w-[92vw] max-h-[92vh] border-4 border-white rounded shadow-2xl"/>
+</div>
+
+<script>
+/* === Navegación + voz SOLO al hacer clic === */
+(() => {
+  const panes = document.querySelectorAll('.content-pane');
+  const links = document.querySelectorAll('.sidebar-link');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  function go(id){
+    panes.forEach(p=>p.classList.remove('active'));
+    document.getElementById(id)?.classList.add('active');
+    links.forEach(a=>{
+      const active = a.dataset.target===id;
+      a.classList.toggle('active', active);
+      a.setAttribute('aria-current', active ? 'page' : 'false');
+    });
+    if(mobileNav) mobileNav.value=id;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // ===== TTS (toggle con bocina) =====
+  const synth = window.speechSynthesis;
+  let voices = [];
+  function loadVoices(){ voices = synth.getVoices(); }
+  loadVoices();
+  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+
+  let menuTtsEnabled = JSON.parse(localStorage.getItem('menuTtsEnabled') || 'false');
+  const ttsBtn = document.getElementById('menu-tts-toggle');
+
+  function updateTtsBtn(){
+    if(!ttsBtn) return;
+    ttsBtn.classList.toggle('muted', !menuTtsEnabled);
+    ttsBtn.setAttribute('aria-pressed', menuTtsEnabled ? 'true' : 'false');
+    ttsBtn.setAttribute('aria-label', menuTtsEnabled ? 'Voz activada' : 'Voz desactivada');
+    ttsBtn.title = menuTtsEnabled ? 'Voz activada' : 'Voz desactivada';
+    ttsBtn.textContent = menuTtsEnabled ? '🔊' : '🔇';
+  }
+  updateTtsBtn();
+
+  ttsBtn?.addEventListener('click', () => {
+    menuTtsEnabled = !menuTtsEnabled;
+    localStorage.setItem('menuTtsEnabled', JSON.stringify(menuTtsEnabled));
+    if(!menuTtsEnabled) synth.cancel();
+    updateTtsBtn();
+  });
+
+  function speakMenu(text){
+    if(!menuTtsEnabled || !text) return;
+    try{
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      const v = voices.find(v => /es/i.test(v.lang)) || null;
+      if (v) u.voice = v, u.lang = v.lang; else u.lang = 'es-ES';
+      u.rate = 1.0;
+      synth.speak(u);
+    }catch(e){}
+  }
+
+  // ===== Un SOLO listener: navega + lee (si está activado) =====
+  links.forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = a.dataset.target;
+      if (id) go(id);
+
+      // Toma aria-label para no leer el emoji
+      const label = a.getAttribute('aria-label') || a.textContent.replace(/\s+/g,' ').trim();
+      speakMenu(label);
+    });
+  });
+
+  // Mobile select
+  mobileNav?.addEventListener('change', e => {
+    go(e.target.value);
+    // También lee en móvil si está activado
+    const opt = e.target.selectedOptions[0];
+    const label = (opt?.textContent || '').replace(/\s+/g,' ').trim();
+    speakMenu(label);
+  });
+})();
+</script>
+
+
+
+  
+<script>
+// Activities check (very lightweight rubric)
+
+// ====== Verificador de Actividades (S1: cine, S2: efectivo) ======
+document.getElementById('check-acts')?.addEventListener('click', () => {
+  let correct = 0, total = 0;
+
+  // Helper: evalúa si el texto contiene TODAS las palabras clave (al menos una variante por grupo)
+  const hasAll = (txt, keywords) => {
+    txt = txt.toLowerCase();
+    return keywords.every(group =>
+      group.some(k => txt.includes(k))
+    );
+  };
+
+  // -------- Situación 1 (Cine) --------
+  // Entradas
+  total++;
+  if (hasAll(document.querySelector('.a1.entrada')?.value || '', [
+      ['edad'], ['precio', 'preciobase'] ])) correct++;
+
+  // Restricciones
+  total++;
+  if (hasAll(document.querySelector('.a1.restricciones')?.value || '', [
+      ['edad','>=','mayor','igual','0'], ['precio','preciobase','>','mayor','0'] ])) correct++;
+
+  // Condición
+  total++;
+  if (hasAll(document.querySelector('.a1.condicion')?.value || '', [
+      ['edad','<','menor','12'] ])) correct++;
+
+  // Proceso
+  total++;
+  if (hasAll(document.querySelector('.a1.proceso')?.value || '', [
+      ['si','if'], ['edad','<','menor','12'], ['precio','preciobase','*','0.8','20%'] ])) correct++;
+
+  // Salidas
+  total++;
+  if (hasAll(document.querySelector('.a1.salidas')?.value || '', [
+      ['total','pagar','valor'] ])) correct++;
+
+
+
+  // -------- Situación 2 (Tienda) --------
+  // Entradas
+  total++;
+  if (hasAll(document.querySelector('.a2.entrada')?.value || '', [
+      ['subtotal'], ['medio','pago','mediopago'] ])) correct++;
+
+  // Restricciones
+  total++;
+  if (hasAll(document.querySelector('.a2.restricciones')?.value || '', [
+      ['subtotal','>','mayor','0'] ])) correct++;
+
+  // Condición
+  total++;
+  if (hasAll(document.querySelector('.a2.condicion')?.value || '', [
+      ['medio','pago','mediopago'], ['efectivo','"efectivo"','=='] ])) correct++;
+
+  // Proceso
+  total++;
+  if (hasAll(document.querySelector('.a2.proceso')?.value || '', [
+      ['si','if'], ['efectivo'], ['subtotal','*','0.9','10%'] ])) correct++;
+
+  // Salidas
+  total++;
+  if (hasAll(document.querySelector('.a2.salidas')?.value || '', [
+      ['total','pagar'], ['descuento'] ])) correct++;
+
+  // Resultado
+  const res = document.getElementById('acts-result');
+  res.textContent = `Respuestas correctas: ${correct} de ${total}.`;
+  res.className = 'mt-3 font-semibold ' + (correct/total >= 0.7 ? 'text-emerald-700' : 'text-red-700');
+  window.scrollTo({ top: res.offsetTop - 80, behavior: 'smooth' });
+});
+
+
+
+// Quiz sobre bucles, contadores, acumuladores y centinelas
+const quizData = [
+  {
+    q: "(Comprension) En programacion, un contador se utiliza principalmente para:",
+    opts: [
+      "A. Guardar la suma de varios valores.",
+      "B. Controlar el numero de veces que se ejecuta un ciclo.",
+      "C. Almacenar datos de entrada del usuario.",
+      "D. Terminar un ciclo al cumplirse una condicion."
+    ],
+    a: 1
+  },
+  {
+    q: "(Comprension) Un acumulador se diferencia de un contador porque:",
+    opts: [
+      "A. Disminuye su valor en cada ciclo.",
+      "B. Solo cuenta cuantas repeticiones hay.",
+      "C. Guarda y actualiza un valor que cambia en cada iteracion.",
+      "D. No puede ser usado dentro de un ciclo."
+    ],
+    a: 2
+  },
+  {
+    q: "(Comprension) Un centinela en un ciclo se usa para:",
+    opts: [
+      "A. Indicar el inicio de una secuencia de instrucciones.",
+      "B. Senalar cuando detener la repeticion.",
+      "C. Aumentar el numero de repeticiones.",
+      "D. Reemplazar el uso del contador."
+    ],
+    a: 1
+  },
+  {
+    q: "(Aplicacion) Si un programa debe leer numeros hasta que el usuario ingrese '0', que estructura se debe usar?",
+    opts: [
+      "A. Un contador.",
+      "B. Un acumulador.",
+      "C. Un centinela.",
+      "D. Un ciclo fijo."
+    ],
+    a: 2
+  },
+  {
+    q: "(Aplicacion) En un ciclo Mientras, si queremos sumar todas las notas ingresadas por el usuario, que tipo de variable debemos usar?",
+    opts: [
+      "A. Contador.",
+      "B. Centinela.",
+      "C. Acumulador.",
+      "D. Constante."
+    ],
+    a: 2
+  },
+  {
+    q: "(AplicaciÃ³n) En el siguiente fragmento de cÃ³digo en pseudocÃ³digo:\ncontador â† 0\nMientras contador < 4 Hacer\n    Escribir 'IteraciÃ³n nÃºmero:', contador + 1\n    contador â† contador + 1\nFinMientras\nÂ¿CuÃ¡ntas veces se ejecutarÃ¡ el ciclo?",
+    opts: [
+      "A. 3 veces.",
+      "B. 4 veces.",
+      "C. 5 veces.",
+      "D. Depende del valor inicial del contador."
+    ],
+    a: 1
+  },
+  {
+    q: "(Analisis) Si un programa acumula la suma de numeros y se detiene al ingresar '-1', cual de las siguientes afirmaciones es correcta?",
+    opts: [
+      "A. '-1' hace parte de la suma total.",
+      "B. '-1' funciona como centinela y no se suma.",
+      "C. El contador no se actualiza despues de '-1'.",
+      "D. El ciclo nunca se detiene."
+    ],
+    a: 1
+  },
+  {
+    q: "(Analisis) Que sucederia si en un ciclo con centinela nunca se ingresa el valor de parada?",
+    opts: [
+      "A. El programa se detendra automaticamente.",
+      "B. El ciclo se ejecutara indefinidamente.",
+      "C. El contador forzara la detencion.",
+      "D. El acumulador se reiniciara."
+    ],
+    a: 1
+  },
+  {
+    q: "(Analisis) En un programa que usa contador, acumulador y centinela a la vez, el orden correcto de ejecucion es:",
+    opts: [
+      "A. Leer â†’ Comprobar centinela â†’ Procesar â†’ Incrementar contador.",
+      "B. Leer â†’ Incrementar contador â†’ Comprobar centinela â†’ Procesar.",
+      "C. Comprobar centinela â†’ Procesar â†’ Leer â†’ Incrementar contador.",
+      "D. Procesar â†’ Leer â†’ Comprobar centinela â†’ Incrementar contador."
+    ],
+    a: 0
+  },
+  {
+    q: "(Comprension) Que sucede si olvidamos inicializar un contador antes de usarlo en un ciclo?",
+    opts: [
+      "A. El programa funciona igual.",
+      "B. Se genera un error o resultados incorrectos.",
+      "C. El centinela lo reemplaza automaticamente.",
+      "D. Se inicializa en cero por defecto."
+    ],
+    a: 1
+  }
+];
+
+
+
+  
+const quiz = document.getElementById('quiz');
+if(quiz){
+  quizData.forEach((it,i)=>{
+    const wrap = document.createElement('div'); wrap.className='mb-5';
+    wrap.innerHTML = `<p class='font-semibold mb-2'>${i+1}. ${it.q}</p>`;
+    it.opts.forEach((op,idx)=>{
+      const d=document.createElement('div');
+      d.className='quiz-option p-3 border-2 border-slate-200 rounded-lg cursor-pointer mb-2';
+      d.textContent=op;
+      d.addEventListener('click',()=>{
+        wrap.querySelectorAll('.quiz-option').forEach(x=>x.classList.remove('selected'));
+        d.classList.add('selected');
+      });
+      wrap.appendChild(d);
+    });
+    quiz.appendChild(wrap);
+  });
+  document.getElementById('quiz-submit').addEventListener('click',()=>{
+    let score=0, answered=0;
+    [...quiz.children].forEach((block,i)=>{
+      const sel = block.querySelector('.quiz-option.selected'); 
+      if(sel){ answered++; if(sel.textContent===quizData[i].opts[quizData[i].a]) score++; }
+    });
+    const pct = score/quizData.length;
+    const out=document.getElementById('quiz-result');
+    out.textContent = `Puntaje: ${score}/${quizData.length} (${Math.round(pct*100)}%).`;
+    out.className='mt-3 text-lg font-bold ' + (pct>=0.7?'text-emerald-700':'text-red-700');
+    // report to SCORM if available
+    if(window.SCORM12) SCORM12.setScore(pct);
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+}
+// ===== Función para abrir modal de zoom =====
+function openImageModal(src) {
+  const modal = document.getElementById('imgModal');
+  const modalImg = document.getElementById('imgModalSrc');
+  if (modal && modalImg) {
+    modalImg.src = src;
+    modal.classList.add('active');
+  }
+}
+
+// ===== Zoom de imágenes al hacer clic =====
+const modal=document.getElementById('imgModal');
+const modalImg=document.getElementById('imgModalSrc');
+document.querySelectorAll('figure img').forEach(img=>{
+  img.classList.add('cursor-zoom-in');
+  img.addEventListener('click',()=>{ modal.classList.add('active'); modalImg.src=img.src; });
+});
+modal?.addEventListener('click',()=>modal.classList.remove('active'));
+</script>
+
+<script>
+// ==== TTS genérico (para .speech-controls con data-target) ====
+document.addEventListener('DOMContentLoaded', function () {
+  const synth = window.speechSynthesis;
+  let voices = [], preferred = null;
+
+  function loadVoices(){
+    voices = synth.getVoices();
+    preferred = voices.find(v => v.name.includes('Paulina'))
+             || voices.find(v => (v.lang||'').toLowerCase().startsWith('es'))
+             || voices[0] || null;
+  }
+  loadVoices();
+  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+
+  document.querySelectorAll('.speech-controls[data-target]').forEach(controls => {
+    const targetId = controls.dataset.target;
+    const section  = document.getElementById(targetId);
+    if (!section) return;
+
+    const playBtn  = controls.querySelector('.play-btn');
+    const pauseBtn = controls.querySelector('.pause-btn');
+    const stopBtn  = controls.querySelector('.stop-btn');
+    const rateCtrl = controls.querySelector('.speech-rate');
+
+    let currentUtterance = null, isPaused = false;
+
+    function getTextFromSection(sec){
+      const nodes = sec.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption,pre');
+      if (!nodes.length) return (sec.textContent||'').trim();
+      let text = '';
+      nodes.forEach(el=>{
+        const t=(el.textContent||'').trim();
+        if (!t) return;
+        text += (/^H[1-6]$/.test(el.tagName) ? t + '. . . ' : t + ' ');
+      });
+      return text.trim();
+    }
+    function setButtons(playing){
+      playBtn.disabled  = playing && !isPaused;
+      pauseBtn.disabled = !playing;
+      stopBtn.disabled  = !playing;
+    }
+    function stop(){
+      if (synth.speaking || synth.pending) synth.cancel();
+      currentUtterance=null; isPaused=false; setButtons(false);
+    }
+    function play(){
+      if (currentUtterance && isPaused && synth.speaking){
+        synth.resume(); isPaused=false; setButtons(true); return;
+      }
+      stop();
+      const text=getTextFromSection(section);
+      if (!text) return;
+      const utt=new SpeechSynthesisUtterance(text);
+      utt.lang  =(preferred && preferred.lang) || 'es-ES';
+      utt.voice = preferred || null;
+      utt.rate  = parseFloat(rateCtrl?.value || '1');
+      utt.onend   = ()=>{ currentUtterance=null; setButtons(false); };
+      utt.onerror = ()=>{ currentUtterance=null; setButtons(false); };
+      currentUtterance=utt; synth.speak(utt); isPaused=false; setButtons(true);
+    }
+    function pause(){
+      if (currentUtterance && !isPaused && synth.speaking){
+        synth.pause(); isPaused=true; playBtn.disabled=false;
+      }
+    }
+
+    playBtn?.addEventListener('click',  play);
+    pauseBtn?.addEventListener('click', pause);
+    stopBtn?.addEventListener('click',  stop);
+    rateCtrl?.addEventListener('change', ()=>{ if (currentUtterance && !isPaused && synth.speaking){ stop(); setTimeout(play,80);} });
+
+    // Atajos: solo cuando la sección está visible
+    document.addEventListener('keydown', (e)=>{
+      const activePane = document.querySelector('.content-pane.active');
+      if (!activePane || activePane.id !== targetId) return;
+      if (e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA') return;
+      if (e.code==='Space'){ e.preventDefault(); (currentUtterance && !isPaused && synth.speaking) ? pause() : play(); }
+      if (e.code==='Tab' && !e.shiftKey){ stop(); }
+    });
+  });
+});
+</script>
+
+  <script>
+// ==== TTS para acordeón (lee solo el <details> abierto en #contenido) ====
+document.addEventListener('DOMContentLoaded', () => {
+  const synth = window.speechSynthesis;
+  let voices=[], preferred=null;
+  function loadVoices(){
+    voices = synth.getVoices();
+    preferred = voices.find(v=>v.name.includes('Paulina'))
+             || voices.find(v=>(v.lang||'').toLowerCase().startsWith('es'))
+             || voices[0] || null;
+  }
+  loadVoices();
+  if (synth.onvoiceschanged!==undefined) synth.onvoiceschanged=loadVoices;
+
+  const ctrl = document.querySelector('.speech-controls[data-mode="accordion"][data-container="#contenido"]');
+  if (!ctrl) return;
+  const container = document.querySelector('#contenido');
+
+  const playBtn  = ctrl.querySelector('.play-btn');
+  const pauseBtn = ctrl.querySelector('.pause-btn');
+  const stopBtn  = ctrl.querySelector('.stop-btn');
+  const rateCtrl = ctrl.querySelector('.speech-rate');
+
+  let currentUtterance=null, isPaused=false;
+
+  function getActiveDetails(){ return container.querySelector('details[open]') || container.querySelector('details'); }
+  function getDetailsText(det){
+    if (!det) return '';
+    const parts=[];
+    const sum=det.querySelector(':scope > summary');
+    if (sum){ const t=(sum.textContent||'').trim(); if (t) parts.push(t + '. . . '); }
+    const bodyNodes = det.querySelectorAll(':scope > :not(summary)');
+    if (bodyNodes.length){
+      bodyNodes.forEach(n=>{
+        n.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption,pre').forEach(el=>{
+          const t=(el.textContent||'').trim(); if (t) parts.push(t + ' ');
+        });
+        if (!n.querySelector('h1,h2,h3,h4,h5,h6,p,li,figcaption,pre')){
+          const t=(n.textContent||'').trim(); if (t) parts.push(t + ' ');
+        }
+      });
+    }else{
+      const t=(det.textContent||'').trim(); if (t) parts.push(t);
+    }
+    return parts.join('').trim();
+  }
+  function setButtons(playing){
+    playBtn.disabled  = playing && !isPaused;
+    pauseBtn.disabled = !playing;
+    stopBtn.disabled  = !playing;
+  }
+  function stop(){
+    if (synth.speaking || synth.pending) synth.cancel();
+    currentUtterance=null; isPaused=false; setButtons(false);
+  }
+  function play(){
+    if (currentUtterance && isPaused && synth.speaking){ synth.resume(); isPaused=false; setButtons(true); return; }
+    stop();
+    const det=getActiveDetails(); const text=getDetailsText(det);
+    if (!text) return;
+    const utt=new SpeechSynthesisUtterance(text);
+    utt.lang  =(preferred && preferred.lang) || 'es-ES';
+    utt.voice = preferred || null;
+    utt.rate  = parseFloat(rateCtrl?.value || '1');
+    utt.onend   = ()=>{ currentUtterance=null; setButtons(false); };
+    utt.onerror = ()=>{ currentUtterance=null; setButtons(false); };
+    currentUtterance=utt; synth.speak(utt); isPaused=false; setButtons(true);
+  }
+  function pause(){
+    if (currentUtterance && !isPaused && synth.speaking){ synth.pause(); isPaused=true; playBtn.disabled=false; }
+  }
+
+  playBtn.addEventListener('click',  play);
+  pauseBtn.addEventListener('click', pause);
+  stopBtn.addEventListener('click',  stop);
+  rateCtrl?.addEventListener('change', ()=>{ if (currentUtterance && !isPaused && synth.speaking){ stop(); setTimeout(play,80);} });
+
+  // Si se abre otro acordeón, corta la lectura
+  container.querySelectorAll('details').forEach(d=>{
+    d.addEventListener('toggle', ()=>{ if (d.open) stop(); });
+  });
+
+  // Atajos cuando "contenido" esté visible
+  document.addEventListener('keydown', (e)=>{
+    const activePane=document.querySelector('.content-pane.active');
+    if (!activePane || activePane.id!=='contenido') return;
+    if (e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA') return;
+    if (e.code==='Space'){ e.preventDefault(); (currentUtterance && !isPaused && synth.speaking) ? pause() : play(); }
+    if (e.code==='Tab' && !e.shiftKey){ stop(); }
+    if (e.code==='Escape'){ stop(); }
+  });
+});
+</script>
+
+ 
+  
+</body>
+</html>

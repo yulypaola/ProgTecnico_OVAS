@@ -229,7 +229,7 @@
               Cada uno controla la repetición de manera distinta, según el momento de evaluación de la condición y el tipo de tarea a automatizar.
             </p>
             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Figura 1. ¿Qué tipo de bucle usar?</figcaption>
+              <figcaption class="font-semibold text-emerald-800 mb-2">Figura 4. ¿Qué tipo de bucle usar?</figcaption>
               <img src="img/Figura 41.png" alt="¿Qué tipo de bucle usar?" class="w-full object-contain rounded"/>
             </figure>
             <!-- 3.3.1 Para -->
@@ -244,13 +244,11 @@ FinPara</code></pre>
                 Este tipo de ciclo se basa en tres elementos esenciales que son el inicializador, la finalización y el actualizador, como se indica a continuación.
              </p>
               <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Figura 1. Elementos esenciales del ciclo for</figcaption>
+              <figcaption class="font-semibold text-emerald-800 mb-2">Figura 5. Elementos esenciales del ciclo for</figcaption>
               <img src="img/Figura 42.png" alt="Elementos esenciales del ciclo for" class="w-full object-contain rounded"/>
             </figure>
               
-             <p> 
-                A continuación, se presenta un ejemplo en PseInt que muestra cómo generar la tabla del 5:
-             </p>
+            
               <p>Componentes: <strong>inicio</strong> (ej. <code>i = 1</code>), <strong>condición de fin</strong> (ej. <code>Hasta 10</code>), <strong>actualizador</strong> (ej. <code>Con Paso 1</code>).</p>
               <pre class="bg-slate-900 text-slate-100 p-4 rounded overflow-auto"><code>Proceso TablaDelCinco
    Definir i, r Como Entero
@@ -259,8 +257,11 @@ FinPara</code></pre>
       Escribir "5 x ", i, " = ", r
    FinPara
 FinProceso</code></pre>
+               <p> 
+                A continuación, se presenta un ejemplo en PseInt que muestra cómo generar la tabla del 5:
+             </p>
               <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-                <figcaption class="font-semibold text-emerald-800 mb-2">Figura 4. Ejemplo de ciclo Para (PSeInt)</figcaption>
+                <figcaption class="font-semibold text-emerald-800 mb-2">Figura 6. Ejemplo de ciclo Para (PSeInt)</figcaption>
                 <img src="img/Figura 4.png" alt="Ejemplo de ciclo Para en PSeInt" class="w-full object-contain rounded"/>
               </figure>
             </article>
@@ -268,7 +269,7 @@ FinProceso</code></pre>
             <!-- 3.3.2 Mientras -->
             <article class="space-y-3">
               <h4 class="text-xl font-bold text-emerald-800">3.3.2 Ciclo Mientras (While)</h4>
-              <p>Repite un bloque <em>mientras</em> la condición sea verdadera. Útil cuando no conocemos cuántas repeticiones habrá.</p>
+              <p>Repite un bloque <em>mientras</em> la condición sea verdadera. Es ideal para situaciones en las que no se conoce con exactitud cuántas veces debe repetirse el proceso, ya que la cantidad de iteraciones depende del cumplimiento de una condición lógica. A diferencia del ciclo Para, que se controla mediante un contador, el ciclo Mientras se basa en la evaluación de una expresión booleana que determina si el bloque de instrucciones continúa ejecutándose o si finaliza. Según GeeksforGeeks (2025), esta estructura se utiliza ampliamente en algoritmos de control, validación de datos y procesos donde la repetición depende del estado de una variable o entrada del usuario.</p>
               <pre class="bg-slate-900 text-slate-100 p-4 rounded overflow-auto"><code>Mientras (condición) Hacer
    // Instrucciones
 FinMientras</code></pre>
@@ -281,7 +282,7 @@ FinMientras</code></pre>
    FinMientras
 FinProceso</code></pre>
               <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-                <figcaption class="font-semibold text-emerald-800 mb-2">Figura 5. Ejemplo de ciclo Mientras (PSeInt) y salida</figcaption>
+                <figcaption class="font-semibold text-emerald-800 mb-2">Figura 7. Ejemplo de ciclo Mientras (PSeInt) y salida</figcaption>
                 <img src="img/Figura 5.png" alt="Ejemplo de ciclo Mientras en PSeInt y su ejecución" class="w-full object-contain rounded"/>
               </figure>
             </article>
@@ -289,7 +290,7 @@ FinProceso</code></pre>
             <!-- 3.3.3 Repetir Mientras Que -->
             <article class="space-y-3">
               <h4 class="text-xl font-bold text-emerald-800">3.3.3 Ciclo Repetir Mientras Que (Do–While)</h4>
-              <p>Ejecuta el bloque al menos una vez; la condición se evalúa al final.</p>
+              <p>El ciclo Repetir Mientras Que ejecuta un bloque de instrucciones al menos una vez, independientemente de si la condición es verdadera o falsa en la primera evaluación. Esto se debe a que la condición se verifica al final del ciclo, no al inicio, lo que lo diferencia del ciclo Mientras, donde la evaluación se realiza antes de entrar al bloque. De acuerdo con Programiz (2024), este tipo de bucle es ideal cuando se desea asegurar una primera ejecución antes de validar la condición, como en procesos de validación de entrada de datos o en la simulación de menús interactivos que deben mostrarse al menos una vez.</p>
               <pre class="bg-slate-900 text-slate-100 p-4 rounded overflow-auto"><code>Repetir
    // Instrucciones
 Hasta Que (condición)</code></pre>
@@ -302,7 +303,7 @@ Hasta Que (condición)</code></pre>
    Escribir "Número válido: ", numero
 FinProceso</code></pre>
               <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-                <figcaption class="font-semibold text-emerald-800 mb-2">Figura 6. Ejemplo de ciclo Repetir Mientras Que (PSeInt)</figcaption>
+                <figcaption class="font-semibold text-emerald-800 mb-2">Figura 8. Ejemplo de ciclo Repetir Mientras Que (PSeInt)</figcaption>
                 <img src="img/Figura 6.png" alt="Ejemplo de ciclo Repetir Mientras Que en PSeInt" class="w-full object-contain rounded"/>
               </figure>
             </article>

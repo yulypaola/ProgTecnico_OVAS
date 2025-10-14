@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guia_Unidad2_Tema1_BuclesNew — Visor</title>
+
+  <!-- Preload primera página para calcular proporción -->
+  <link rel="preload" as="image" href="./images/page-1-b5f394ad.webp" />
+
+  <style>
+    :root{
+      --bg:#0b0f19; --panel:#0f172a; --text:#e5e7eb; --muted:#94a3b8;
+      --ring:rgba(255,255,255,.10); --btn:rgba(255,255,255,.08); --btn-bd:rgba(255,255,255,.18);
+    }
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial,sans-serif}
+    .wrap{display:flex;align-items:center;justify-content:center;height:100%;padding:16px;box-sizing:border-box}
+    #book{
+      position:relative;width:auto;height:auto;max-width:95vw;max-height:90vh;
+      box-shadow:0 12px 34px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.03), inset 0 24px 48px rgba(0,0,0,.18);
+      background:#111827;border-radius:16px;overflow:hidden;touch-action:none;
+    }
+    #book::after{content:'';position:absolute;top:4%;bottom:4%;left:50%;width:3px;transform:translateX(-50%);
+      background:linear-gradient(to bottom,transparent,rgba(0,0,0,.4),transparent);opacity:.25;pointer-events:none;filter:blur(.2px)}
+    #book[data-mode="single"]::after{display:none}
+    .loading{text-align:center;opacity:.8;padding:18px}
+    .controls{
+      position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+      display:flex;gap:10px;align-items:center;background:rgba(15,23,42,.92);
+      padding:8px 12px;border-radius:999px;backdrop-filter:blur(8px);z-index:10000;
+      border:1px solid var(--ring);box-shadow:0 8px 24px rgba(0,0,0,.35)
+    }
+    .btn{color:#fff;background:var(--btn);border:1px solid var(--btn-bd);padding:6px 10px;border-radius:10px;cursor:pointer}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    #status{min-width:72px;text-align:center;color:var(--muted);font-weight:600}
+
+    /* Visor (lupa) */
+    .viewer{
+      position:fixed;inset:0;background:rgba(2,6,23,.92);display:none;align-items:center;justify-content:center;
+      z-index:11000
+    }
+    .viewer.open{display:flex}
+    .viewer__img-wrap{position:relative;overflow:hidden;max-width:95vw;max-height:92vh;cursor:grab;border-radius:14px;border:1px solid var(--ring);background:#0b1220}
+    .viewer__img-wrap:active{cursor:grabbing}
+    .viewer__img{user-select:none;pointer-events:none;transform-origin:0 0;will-change:transform;display:block}
+    .viewer__bar{
+      position:fixed;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:10px;align-items:center;
+      background:rgba(15,23,42,.92);padding:8px 12px;border-radius:999px;border:1px solid var(--ring)
+    }
+    .viewer__close{position:fixed;top:16px;right:16px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="book"><div class="loading">Cargando…</div></div>
+  </div>
+
+  <!-- Barra de controles -->
+  <div class="controls">
+    <button id="prev" class="btn" title="Página anterior (←)">◀︎</button>
+    <span id="status">– / –</span>
+    <button id="next" class="btn" title="Página siguiente (→)">▶︎</button>
+    <button id="auto" class="btn" title="Auto pasar páginas">Auto ▷</button>
+    <button id="zoom" class="btn" title="Lupa / Ver en detalle">🔍</button>
+  </div>
+
+  <!-- Visor (lupa) -->
+  <div id="viewer" class="viewer" aria-hidden="true">
+    <div class="viewer__bar">
+      <button id="zOut" class="btn">−</button>
+      <button id="zFit" class="btn">Ajustar</button>
+      <button id="zIn" class="btn">+</button>
+    </div>
+    <button id="vClose" class="btn viewer__close">Cerrar ✕</button>
+    <div id="vWrap" class="viewer__img-wrap">
+      <img id="vImg" class="viewer__img" src="" alt="">
+    </div>
+  </div>
+
+  <!-- libs -->
+  <script src="./vendor/jquery.min.js"></script>
+  <script src="./vendor/turn.min.js"></script>
+
+  <!-- páginas e integridad -->
+  <script
+    data-pages='["images/page-1-b5f394ad.webp","images/page-2-93c23f05.webp","images/page-3-f6e96339.webp","images/page-4-916565ee.webp","images/page-5-ba24b5b5.webp","images/page-6-4ec23e65.webp","images/page-7-f4884f6a.webp","images/page-8-a17c6862.webp","images/page-9-4a966a91.webp","images/page-10-bc484d47.webp","images/page-11-e041a910.webp","images/page-12-f97c0412.webp","images/page-13-e9552365.webp","images/page-14-a204c2c4.webp"]'>
+  (async function(){
+    const imgs = JSON.parse(document.currentScript.getAttribute('data-pages'));
+
+    // precalcular ratio
+    const first = await new Promise((res, rej) => { const i = new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=imgs[0]; });
+    const ratio = first.naturalHeight / first.naturalWidth;
+
+    const container = document.getElementById('book');
+    container.innerHTML = '';
+
+    function mount(){
+      const book = document.getElementById('book');
+
+      // crear páginas
+      imgs.forEach((src, idx) => {
+        const page = document.createElement('div');
+        if (idx === 0 || idx === imgs.length - 1) page.className = 'hard';
+        const img = document.createElement('img');
+        img.src = src; img.alt = '';
+        img.style.width='100%'; img.style.height='100%'; img.style.objectFit='contain';
+        img.draggable = false;
+        page.appendChild(img);
+        book.appendChild(page);
+      });
+
+      const $ = window.jQuery;
+      const isMobile = () => window.innerWidth < 992;
+      const maxBookW = () => Math.min(window.innerWidth * 0.95, 1400);
+      const compute = () => {
+        const maxW = maxBookW();
+        const controls = document.querySelector('.controls');
+        const availableH = Math.max(200, window.innerHeight - (controls?.offsetHeight || 0) - 24);
+        const maxPageWByWidth = isMobile() ? maxW : Math.floor(maxW / 2);
+        const maxPageWByHeight = Math.round(availableH / ratio);
+        const pageWidth = Math.max(180, Math.min(maxPageWByWidth, maxPageWByHeight));
+        const bookWidth = isMobile() ? pageWidth : pageWidth * 2;
+        const bookHeight = Math.round(pageWidth * ratio);
+        return { pageWidth, bookWidth, bookHeight };
+      };
+
+      const s0 = compute();
+      $(book).turn({
+        width: s0.bookWidth, height: s0.bookHeight,
+        display: isMobile() ? 'single' : 'double',
+        autoCenter: true, elevation: 80, acceleration: true,
+        turnCorners: 'bl,br,tl,tr', duration: 800, gradients: true
+      });
+      book.setAttribute('data-mode', isMobile() ? 'single' : 'double');
+
+      // UI + estado
+      const prev = document.getElementById('prev');
+      const next = document.getElementById('next');
+      const status = document.getElementById('status');
+      function updateStatus(){
+        const c = $(book).turn('page');
+        status.textContent = c + ' / ' + imgs.length;
+        prev.disabled = c <= 1; next.disabled = c >= imgs.length;
+      }
+      updateStatus();
+
+      // redimensionar
+      const onResize = () => {
+        const s = compute();
+        try { $(book).turn('display', isMobile() ? 'single' : 'double'); } catch {}
+        try { $(book).turn('size', s.bookWidth, s.bookHeight); } catch {}
+        try { $(book).turn('center'); } catch {}
+        book.setAttribute('data-mode', isMobile() ? 'single' : 'double');
+        updateStatus();
+      };
+      window.addEventListener('resize', onResize);
+      window.addEventListener('orientationchange', onResize);
+
+      // navegación
+      prev.onclick = () => $(book).turn('previous');
+      next.onclick = () => $(book).turn('next');
+      $(book).bind('turned', updateStatus);
+
+      // clic en zonas (izq/der) para navegar
+      book.addEventListener('click', (e)=>{
+        const rect = book.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        if (x < rect.width/2) $(book).turn('previous'); else $(book).turn('next');
+      });
+
+      // teclas ← →
+      window.addEventListener('keydown', (e)=>{
+        if (e.key === 'ArrowLeft') { e.preventDefault(); $(book).turn('previous'); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); $(book).turn('next'); }
+      });
+
+      // rueda: si estamos en modo “single”, rueda = navegar
+      book.addEventListener('wheel', (e)=>{
+        if (Math.abs(e.deltaY) < 3) return;
+        if (isMobile()) return;
+        e.preventDefault();
+        if (e.deltaY > 0) $(book).turn('next'); else $(book).turn('previous');
+      }, {passive:false});
+
+      // AUTO pasar páginas
+      const autoBtn = document.getElementById('auto');
+      let autoTimer = null;
+      function startAuto(){
+        stopAuto();
+        autoTimer = setInterval(()=>{
+          const p = $(book).turn('page');
+          if (p >= imgs.length) { stopAuto(); return; }
+          $(book).turn('next');
+        }, 5000); // cada 5 s
+        autoBtn.textContent = 'Auto ⏸';
+        autoBtn.dataset.active = '1';
+      }
+      function stopAuto(){
+        if (autoTimer) clearInterval(autoTimer);
+        autoTimer = null;
+        autoBtn.textContent = 'Auto ▷';
+        delete autoBtn.dataset.active;
+      }
+      // comienza en automático (puedes desactivar cambiando la línea siguiente)
+      startAuto();
+      autoBtn.onclick = ()=> autoTimer ? stopAuto() : startAuto();
+
+      // al interactuar manualmente, pausamos auto
+      ['click','keydown','wheel','touchstart','pointerdown'].forEach(ev=>{
+        book.addEventListener(ev, ()=>{ if (autoTimer) stopAuto(); }, {passive:true});
+      });
+
+      // LUPA (visor)
+      const viewer = document.getElementById('viewer');
+      const vWrap = document.getElementById('vWrap');
+      const vImg  = document.getElementById('vImg');
+      const btnZoom = document.getElementById('zoom');
+      const btnClose = document.getElementById('vClose');
+      const zIn = document.getElementById('zIn');
+      const zOut = document.getElementById('zOut');
+      const zFit = document.getElementById('zFit');
+
+      let scale = 1, origin = {x:0,y:0}, pan = {x:0,y:0}, dragging=false, start={x:0,y:0};
+
+      function setTransform(){
+        vImg.style.transform = `translate(${pan.x}px, ${pan.y}px) scale(${scale})`;
+      }
+      function fitToScreen(){
+        // ajustar imagen al contenedor
+        const cw = vWrap.clientWidth, ch = vWrap.clientHeight;
+        const iw = vImg.naturalWidth, ih = vImg.naturalHeight;
+        const s = Math.min(cw/iw, ch/ih);
+        scale = Math.max(1, s); // al menos 1x
+        pan = {x: Math.max(0,(cw - iw*scale)/2), y: Math.max(0,(ch - ih*scale)/2)};
+        setTransform();
+      }
+      function openViewerForCurrent(){
+        const p = $(book).turn('page');
+        const curr = book.querySelector(`div:nth-child(${p}) img`);
+        if (!curr) return;
+        vImg.src = curr.src;
+        viewer.classList.add('open');
+        viewer.setAttribute('aria-hidden','false');
+        // al cargar la imagen, ajustar
+        if (vImg.complete) fitToScreen(); else vImg.onload = fitToScreen;
+      }
+      function closeViewer(){
+        viewer.classList.remove('open');
+        viewer.setAttribute('aria-hidden','true');
+      }
+
+      btnZoom.onclick = openViewerForCurrent;
+      btnClose.onclick = closeViewer;
+      viewer.addEventListener('click', (e)=>{
+        // cerrar si clic fuera del área de imagen
+        if (e.target === viewer) closeViewer();
+      });
+
+      // zoom +/−
+      zIn.onclick = ()=>{ scale = Math.min(scale*1.25, 8); setTransform(); };
+      zOut.onclick = ()=>{ scale = Math.max(scale/1.25, 0.5); setTransform(); };
+      zFit.onclick = ()=> fitToScreen();
+
+      // doble clic para alternar 1x / 2x
+      vWrap.addEventListener('dblclick', ()=>{
+        if (scale <= 1.01) { scale = 2; } else { scale = 1; }
+        setTransform();
+      });
+
+      // arrastrar para mover
+      vWrap.addEventListener('pointerdown', (e)=>{ dragging=true; start={x:e.clientX - pan.x, y:e.clientY - pan.y}; vWrap.setPointerCapture(e.pointerId); });
+      vWrap.addEventListener('pointermove', (e)=>{ if(!dragging) return; pan.x = e.clientX - start.x; pan.y = e.clientY - start.y; setTransform(); });
+      vWrap.addEventListener('pointerup', ()=> dragging=false);
+      vWrap.addEventListener('pointercancel', ()=> dragging=false);
+
+      // rueda para zoom (en visor)
+      vWrap.addEventListener('wheel', (e)=>{
+        e.preventDefault();
+        const factor = e.deltaY > 0 ? 1/1.15 : 1.15;
+        const prev = scale;
+        scale = Math.min(8, Math.max(0.5, scale*factor));
+        // mantener punto bajo el cursor
+        const rect = vWrap.getBoundingClientRect();
+        const cx = e.clientX - rect.left - pan.x;
+        const cy = e.clientY - rect.top  - pan.y;
+        pan.x -= (cx)*(scale/prev - 1);
+        pan.y -= (cy)*(scale/prev - 1);
+        setTransform();
+      }, {passive:false});
+    }
+
+    mount();
+
+    /* IMPORTANTE: Se eliminaron por completo las marcas de agua y cualquier
+       código que las recreara. */
+  })();
+  </script>
+</body>
+</html>

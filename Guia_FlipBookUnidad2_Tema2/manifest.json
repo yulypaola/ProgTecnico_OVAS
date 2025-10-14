@@ -1,0 +1,69 @@
+{
+  "pageCount": 15,
+  "pages": [
+    {
+      "src": "./images/page-1-95e7444b.webp"
+    },
+    {
+      "src": "./images/page-2-ec55b011.webp"
+    },
+    {
+      "src": "./images/page-3-6b48c76b.webp"
+    },
+    {
+      "src": "./images/page-4-e0dd0147.webp"
+    },
+    {
+      "src": "./images/page-5-c74c8579.webp"
+    },
+    {
+      "src": "./images/page-6-cb86d2db.webp"
+    },
+    {
+      "src": "./images/page-7-1baac7ac.webp"
+    },
+    {
+      "src": "./images/page-8-075e093b.webp"
+    },
+    {
+      "src": "./images/page-9-a659a61b.webp"
+    },
+    {
+      "src": "./images/page-10-efa2a914.webp"
+    },
+    {
+      "src": "./images/page-11-4f3f1121.webp"
+    },
+    {
+      "src": "./images/page-12-22eda9fd.webp"
+    },
+    {
+      "src": "./images/page-13-a703b6f6.webp"
+    },
+    {
+      "src": "./images/page-14-87a8cf00.webp"
+    },
+    {
+      "src": "./images/page-15-ae7ddc82.webp"
+    }
+  ],
+  "generatedAt": "2025-10-14T05:13:37.735Z",
+  "source": "Guia_Unidad2_Tema2.pdf",
+  "integrity": {
+    "images/page-1-95e7444b.webp": "95e7444b",
+    "images/page-2-ec55b011.webp": "ec55b011",
+    "images/page-3-6b48c76b.webp": "6b48c76b",
+    "images/page-4-e0dd0147.webp": "e0dd0147",
+    "images/page-5-c74c8579.webp": "c74c8579",
+    "images/page-6-cb86d2db.webp": "cb86d2db",
+    "images/page-7-1baac7ac.webp": "1baac7ac",
+    "images/page-8-075e093b.webp": "075e093b",
+    "images/page-9-a659a61b.webp": "a659a61b",
+    "images/page-10-efa2a914.webp": "efa2a914",
+    "images/page-11-4f3f1121.webp": "4f3f1121",
+    "images/page-12-22eda9fd.webp": "22eda9fd",
+    "images/page-13-a703b6f6.webp": "a703b6f6",
+    "images/page-14-87a8cf00.webp": "87a8cf00",
+    "images/page-15-ae7ddc82.webp": "ae7ddc82"
+  }
+}

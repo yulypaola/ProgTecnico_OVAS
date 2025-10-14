@@ -1,0 +1,12 @@
+body { font-family: sans-serif; text-align: center; background: #eee; margin: 0; }
+.book { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; margin: 10px auto; }
+.page { margin: 5px; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.3); }
+img { width: 100%; height: auto; display: block; }
+.controls { margin: 10px; }
+@media (min-width: 768px) {
+  .book { flex-wrap: nowrap; }
+  .page { width: 48%; }
+}
+@media (max-width: 767px) {
+  .page { width: 95%; }
+}

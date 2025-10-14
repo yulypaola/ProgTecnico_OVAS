@@ -1,74 +1,243 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Flipbook Exporter – GitHub Pages (100% en el navegador)</title>
-  <meta name="description" content="Sube un PDF y genera un ZIP con un flipbook estático sin marcas de agua, listo para descargar y publicar." />
-  <link rel="stylesheet" href="css/style.css" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Visor PDF local (con flip si hay turn.js)</title>
+<style>
+  :root{--bg:#0b0f19;--panel:#0f172a;--text:#e5e7eb;--muted:#94a3b8;--ring:rgba(255,255,255,.10);--btn:rgba(255,255,255,.08);--btn-bd:rgba(255,255,255,.18)}
+  html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto}
+  .shell{min-height:100%;display:flex;flex-direction:column}
+  header{position:sticky;top:0;z-index:10;background:rgba(15,23,42,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--ring)}
+  .bar{display:flex;gap:8px;align-items:center;padding:10px 14px;flex-wrap:wrap}
+  .brand{font-weight:800;margin-right:auto}
+  .btn{background:var(--btn);border:1px solid var(--btn-bd);color:#fff;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700}
+  .btn[aria-disabled="true"]{opacity:.55;cursor:not-allowed}
+  input[type=file]{display:none}
+  .hint{color:var(--muted);font-size:12px}
+  #log{white-space:pre-wrap;color:#a7f3d0;font-size:12px;padding:6px 12px;border-top:1px solid var(--ring)}
+  main{flex:1;display:flex;align-items:center;justify-content:center;padding:16px}
+  #stage{width:100%;max-width:1200px}
+  #book, #list{position:relative;margin-inline:auto}
+  #book{max-width:95vw;max-height:86vh;background:#111827;border-radius:16px;overflow:hidden;
+        box-shadow:0 12px 34px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.03), inset 0 24px 48px rgba(0,0,0,.18)}
+  #book::after{content:'';position:absolute;top:4%;bottom:4%;left:50%;width:3px;transform:translateX(-50%);
+               background:linear-gradient(to bottom,transparent,rgba(0,0,0,.4),transparent);opacity:.25}
+  #book[data-mode=single]::after{display:none}
+  .page-img{width:100%;height:100%;object-fit:contain;display:block}
+  .hard{}
+  .loading{padding:24px;opacity:.85;text-align:center}
+  #list img{width:min(100%,900px);display:block;margin:0 auto 16px;border-radius:8px;background:#111827}
+  footer{position:sticky;bottom:0;background:rgba(15,23,42,.92);border-top:1px solid var(--ring)}
+  .controls{display:flex;gap:10px;align-items:center;justify-content:center;padding:10px 14px}
+  #status{min-width:90px;text-align:center;color:var(--muted);font-weight:700}
+  #prog{height:6px;background:#0b1220;border:1px solid var(--ring);border-radius:999px;overflow:hidden}
+  #prog>span{display:block;height:100%;background:linear-gradient(90deg,#60a5fa,#a78bfa);width:0%}
+</style>
 </head>
 <body>
-  <header class="bar">
-    <h1>Flipbook Exporter</h1>
-    <p class="subtitle">Funciona en GitHub Pages: elige un PDF → vista previa → descarga un <strong>.zip</strong> con un flipbook sin marcas de agua.</p>
+<div class="shell">
+  <header>
+    <div class="bar">
+      <div class="brand">Visor PDF local</div>
+
+      <input id="pdfFile" type="file" accept="application/pdf" />
+      <button id="pick" class="btn">📄 Cargar PDF</button>
+      <span id="fileName" class="hint"></span>
+
+      <label class="hint">Resolución:
+        <input id="scale" type="range" min="1" max="2.4" step="0.1" value="1.4" />
+      </label>
+
+      <button id="render" class="btn" aria-disabled="true">⚙️ Renderizar</button>
+    </div>
+    <div id="prog" aria-hidden="true"><span></span></div>
+    <div id="log">Listo. Elige un PDF y luego pulsa “Renderizar”.</div>
   </header>
 
   <main>
-    <section class="panel">
-      <div class="picker">
-        <label class="file">
-          <input id="file" type="file" accept="application/pdf" />
-          📄 Selecciona tu PDF
-        </label>
-        <span id="fileName" class="muted">Ningún archivo seleccionado</span>
-      </div>
-
-      <div class="actions">
-        <button id="preview" class="btn" disabled>Vista previa</button>
-        <select id="scale" class="select" title="Resolución de exportación">
-          <option value="1">x1 (rápido)</option>
-          <option value="1.5" selected>x1.5</option>
-          <option value="2">x2</option>
-          <option value="3">x3 (lento/alta)</option>
-        </select>
-        <button id="export" class="btn primary" disabled>Exportar flipbook (.zip)</button>
-      </div>
-    </section>
-
-    <section class="book-wrap" id="previewWrap" hidden>
-      <div class="spread">
-        <div class="page left"><div class="page-inner"><canvas id="canvasLeft"></canvas></div></div>
-        <div class="page right"><div class="page-inner"><canvas id="canvasRight"></canvas></div></div>
-      </div>
-      <div class="toolbar">
-        <button class="btn" id="prev" title="Anterior (←)">◀</button>
-        <span class="page-meta">Página</span>
-        <input class="jump" id="pageInput" type="number" min="1" value="1" />
-        <span class="page-meta">de <span id="total">0</span></span>
-        <button class="btn" id="next" title="Siguiente (→)">▶</button>
-      </div>
-      <p class="muted small center">Vista previa renderizada con PDF.js (sin marcas de agua). En móvil verás una sola página.</p>
-    </section>
-
-    <section class="howto">
-      <h2>¿Qué hay dentro del ZIP exportado?</h2>
-      <pre><code>flipbook/
- ├─ index.html          ← visor libro (2 páginas)
- ├─ css/style.css
- ├─ js/app.js
- └─ pages/page-001.png, page-002.png, ...</code></pre>
-      <p class="muted small">El visor exportado no necesita librerías ni Internet; usa solo imágenes PNG generadas en tu navegador.</p>
-    </section>
+    <div id="stage">
+      <!-- flipbook (si hay turn.js) -->
+      <div id="book" hidden><div class="loading">Preparando flip…</div></div>
+      <!-- lista (fallback sin turn.js) -->
+      <div id="list" hidden><div class="loading">Renderizando páginas…</div></div>
+    </div>
   </main>
 
-  <!-- PDF.js (CDN, funciona perfecto en HTTPS/GitHub Pages) -->
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.7.76/build/pdf.min.js"></script>
-  <script>pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.7.76/build/pdf.worker.min.js";</script>
+  <footer>
+    <div class="controls" id="nav" hidden>
+      <button id="prev" class="btn" aria-disabled="true">◀︎</button>
+      <span id="status">– / –</span>
+      <button id="next" class="btn" aria-disabled="true">▶︎</button>
+    </div>
+  </footer>
+</div>
 
-  <!-- JSZip + FileSaver para generar y descargar el ZIP -->
-  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+<!-- PDF.js (solo esta librería es obligatoria). Sin worker para file:// -->
+<script src="https://unpkg.com/pdfjs-dist@4.3.136/build/pdf.min.js"></script>
+<script> if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = null; </script>
 
-  <script src="js/app.js"></script>
+<!-- turn.js (opcional; si no carga, usamos modo lista) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
+
+<script>
+(function(){
+  // util habilitar/deshabilitar (sin disabled nativo para evitar “prohibido”)
+  function setEnabled(btn, enabled){
+    btn.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+    btn.style.pointerEvents = enabled ? 'auto' : 'none';
+    btn.style.opacity = enabled ? '1' : '.55';
+  }
+  function log(msg, color='#a7f3d0'){ $log.textContent = msg; $log.style.color = color; }
+  function progress(pct){ if(pct==null){ $prog.setAttribute('aria-hidden','true'); $bar.style.width='0%'; } else { $prog.removeAttribute('aria-hidden'); $bar.style.width = pct + '%'; } }
+
+  const $file = document.getElementById('pdfFile');
+  const $pick = document.getElementById('pick');
+  const $render = document.getElementById('render');
+  const $fileName = document.getElementById('fileName');
+  const $scale = document.getElementById('scale');
+  const $book = document.getElementById('book');
+  const $list = document.getElementById('list');
+  const $nav = document.getElementById('nav');
+  const $prev = document.getElementById('prev');
+  const $next = document.getElementById('next');
+  const $status = document.getElementById('status');
+  const $log = document.getElementById('log');
+  const $prog = document.getElementById('prog');
+  const $bar = $prog.querySelector('span');
+
+  let pdfBuf=null, pages=[], pageCount=0;
+
+  $pick.onclick = ()=> $file.click();
+
+  // cuando eliges el archivo PDF
+  $file.addEventListener('change', async ()=> {
+    const f = $file.files && $file.files[0];
+    if(!f){ log('No seleccionaste archivo','#fde68a'); return; }
+    $fileName.textContent = ' — ' + f.name;
+    pdfBuf = await f.arrayBuffer();
+    setEnabled($render, true);  // <- aquí se habilita Renderizar SIEMPRE
+    log('PDF cargado. Pulsa Renderizar.');
+  });
+
+  // renderizar
+  $render.addEventListener('click', async ()=>{
+    if(!pdfBuf){ log('Primero elige un PDF','#fde68a'); return; }
+    if(!window.pdfjsLib){ log('No se pudo cargar PDF.js (revisa tu internet).','#fecaca'); return; }
+
+    setEnabled($render,false);
+    pages = [];
+    progress(0);
+    $book.hidden = true; $list.hidden = false; $nav.hidden = true;
+    $list.innerHTML = '<div class="loading">Preparando…</div>';
+
+    try{
+      const pdf = await pdfjsLib.getDocument({data: pdfBuf, disableWorker:true}).promise;
+      pageCount = pdf.numPages;
+      const scale = parseFloat($scale.value);
+      $status.textContent = `0 / ${pageCount}`;
+      $list.innerHTML = ''; // limpiar
+
+      for (let p=1; p<=pageCount; p++){
+        const page = await pdf.getPage(p);
+        const viewport = page.getViewport({ scale });
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d', {alpha:false});
+        canvas.width = viewport.width; canvas.height = viewport.height;
+        await page.render({canvasContext: ctx, viewport}).promise;
+        let url; try{ url = canvas.toDataURL('image/webp',0.92); }catch{ url = canvas.toDataURL('image/png'); }
+        pages.push(url);
+
+        // en modo lista, vamos mostrando cada página
+        const im = new Image(); im.src = url; im.alt = 'Página '+p; im.loading='lazy';
+        $list.appendChild(im);
+
+        progress(Math.round(p*100/pageCount));
+        $status.textContent = `${p} / ${pageCount}`;
+      }
+
+      // si turn.js está disponible, activamos flipbook; si no, dejamos lista
+      if (window.jQuery && typeof jQuery.fn.turn === 'function'){
+        initFlipbook(pages);
+        log('Renderizado ✓ • Modo LIBRO activo');
+      } else {
+        $book.hidden = true; $list.hidden = false; $nav.hidden = true;
+        log('Renderizado ✓ • Modo LISTA (turn.js no disponible)');
+      }
+    }catch(err){
+      console.error(err);
+      log('Error al renderizar: ' + (err && err.message ? err.message : err), '#fecaca');
+    }finally{
+      progress(null);
+      setEnabled($render,true);
+    }
+  });
+
+  function initFlipbook(imgs){
+    $book.innerHTML = ''; // limpiar
+    imgs.forEach((src,idx)=>{
+      const page = document.createElement('div');
+      if(idx===0 || idx===imgs.length-1) page.className='hard';
+      const img = new Image();
+      img.src = src; img.alt = `Página ${idx+1}`; img.className='page-img'; img.draggable=false;
+      page.appendChild(img); $book.appendChild(page);
+    });
+
+    const $ = window.jQuery;
+    const probe = new Image();
+    probe.onload = ()=>{
+      const ratio = probe.naturalHeight / probe.naturalWidth;
+      const isM = ()=> innerWidth < 992;
+      const compute = ()=>{
+        const maxW = Math.min(innerWidth*0.95, 1400);
+        const availH = Math.max(220, innerHeight - 180);
+        const maxByW = isM()? maxW : Math.floor(maxW/2);
+        const maxByH = Math.round(availH / ratio);
+        const pw = Math.max(220, Math.min(maxByW, maxByH));
+        return { w: isM()? pw : pw*2, h: Math.round(pw*ratio) };
+      };
+      const s = compute();
+      $($book).turn({
+        width:s.w, height:s.h,
+        display:isM()? 'single' : 'double',
+        autoCenter:true, elevation:80, acceleration:true, duration:800, turnCorners:'bl,br,tl,tr'
+      });
+      $book.setAttribute('data-mode', isM()? 'single':'double');
+
+      function onResize(){
+        const s2 = compute();
+        try{ $($book).turn('display', isM()? 'single':'double'); }catch{}
+        try{ $($book).turn('size', s2.w, s2.h); }catch{}
+        try{ $($book).turn('center'); }catch{}
+        $book.setAttribute('data-mode', isM()? 'single':'double');
+        updateStatus();
+      }
+      addEventListener('resize', onResize);
+
+      function updateStatus(){
+        const c = $($book).turn('page') || 1;
+        $status.textContent = c + ' / ' + imgs.length;
+        setEnabled($prev, c>1);
+        setEnabled($next, c<imgs.length);
+      }
+      $($book).bind('turned', updateStatus);
+      updateStatus();
+
+      $prev.onclick = ()=> $($book).turn('previous');
+      $next.onclick = ()=> $($book).turn('next');
+      $book.addEventListener('click',(e)=>{
+        const r = $book.getBoundingClientRect(), x = e.clientX - r.left;
+        if (x < r.width/2) $($book).turn('previous'); else $($book).turn('next');
+      });
+
+      // mostrar flipbook / ocultar lista
+      $list.hidden = true; $book.hidden = false; $nav.hidden = false;
+    };
+    probe.src = imgs[0];
+  }
+})();
+</script>
 </body>
 </html>
+

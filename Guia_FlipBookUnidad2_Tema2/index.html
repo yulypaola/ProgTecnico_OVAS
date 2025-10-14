@@ -102,19 +102,20 @@
             const host = document.createElement('div'); host.id = TOP_ID; host.style.position='fixed'; host.style.top='12px'; host.style.right='12px'; host.style.zIndex='10001'; host.style.pointerEvents='none';
             const shadow = host.attachShadow ? host.attachShadow({ mode: 'closed' }) : null;
             const wrap = document.createElement('div');
-            wrap.innerHTML = '<style>.wm{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:12px;background:rgba(15,23,42,.78);color:#e2e8f0;font:600 12px/1.2 system-ui,-apple-system,Segoe UI,Roboto;letter-spacing:.2px;border:1px solid rgba(255,255,255,.09);box-shadow:0 6px 20px rgba(0,0,0,.25)}</style><div class="wm">E‑Flip Generator <small style="opacity:.8;font-weight:500">Static</small></div>';
+            wrap.innerHTML = '<style>.wm{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:12px;background:rgba(15,23,42,.78);color:#e2e8f0;font:600 12px/1.2 system-ui,-apple-system,Segoe UI,Roboto;letter-spacing:.2px;border:1px solid rgba(255,255,255,.09);box-shadow:0 6px 20px rgba(0,0,0,.25)}</style><div class="wm">www.unicordoba.edu.co<small style="opacity:.8;font-weight:500"> </small></div>';
             (shadow||host).appendChild(wrap);
             document.body.appendChild(host);
           }
-          function createBot(){
+            function createBot(){
             if (document.getElementById(BOT_ID)) return;
             const host = document.createElement('div'); host.id = BOT_ID; host.style.position='fixed'; host.style.left='12px'; host.style.bottom='12px'; host.style.zIndex='10001'; host.style.pointerEvents='none';
             const shadow = host.attachShadow ? host.attachShadow({ mode: 'closed' }) : null;
             const wrap = document.createElement('div');
-            wrap.innerHTML = '<style>.wm{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:12px;background:rgba(15,23,42,.78);color:#e2e8f0;font:600 12px/1.2 system-ui,-apple-system,Segoe UI,Roboto;letter-spacing:.2px;border:1px solid rgba(255,255,255,.09);box-shadow:0 6px 20px rgba(0,0,0,.25)}</style><div class="wm"><small style="opacity:.8;font-weight:500">by</small> Eduar Barón Espitia</div>';
+            wrap.innerHTML = '<style>.wm{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:12px;background:rgba(15,23,42,.78);color:#e2e8f0;font:600 12px/1.2 system-ui,-apple-system,Segoe UI,Roboto;letter-spacing:.2px;border:1px solid rgba(255,255,255,.09);box-shadow:0 6px 20px rgba(0,0,0,.25)}</style><div class="wm"><small style="opacity:.8;font-weight:500">by</small> CINTIA. Centro de Innovación en TIC para apoyo a la Academia</div>';
             (shadow||host).appendChild(wrap);
             document.body.appendChild(host);
           }
+
           createTop(); createBot();
           const mo = new MutationObserver(() => { if (!document.getElementById(TOP_ID)) createTop(); if (!document.getElementById(BOT_ID)) createBot(); });
           mo.observe(document.documentElement, { childList:true, subtree:true });

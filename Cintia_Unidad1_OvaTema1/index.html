@@ -1,1327 +1,412 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OVA: Tema 3 — Estructuras de control secuenciales y condicionales</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Poppins', sans-serif; }
-    .sidebar-link { transition: all .3s ease; border-left: 4px solid transparent; }
-    .sidebar-link.active, .sidebar-link:hover { background:#e6f4ea; color:#166534; border-left-color:#22c55e; }
-    .content-pane { display:none; animation:fadeIn .5s ease-in-out; }
-    .content-pane.active { display:block; }
-    @keyframes fadeIn { from {opacity:0; transform:translateY(20px)} to {opacity:1; transform:translateY(0)} }
-    .quiz-option:hover { background:#f0fdf4; }
-    .quiz-option.selected { background:#dcfce7; border-color:#22c55e; }
-    .image-container { position:relative; overflow:hidden; }
-    .expand-btn { position:absolute; bottom:10px; right:10px; background:rgba(34,197,94,.85); color:#fff; border:none; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px; opacity:0; transition:opacity .3s, transform .3s; z-index:10; }
-    @media (max-width: 768px) { .expand-btn { opacity:.9; width:44px; height:44px; font-size:22px; } }
-    .image-container:hover .expand-btn { opacity:1; transform:scale(1.1); }
-    .image-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.8); z-index:1000; justify-content:center; align-items:center; opacity:0; transition:opacity .3s; }
-    .image-modal.active { display:flex; opacity:1; }
-    .modal-content { max-width:90%; max-height:90%; position:relative; }
-    .modal-content img { max-width:100%; max-height:90vh; border:4px solid #fff; border-radius:4px; box-shadow:0 10px 25px rgba(0,0,0,.5); }
-    .close-modal { position:absolute; top:-20px; right:-20px; background:#ef4444; color:#fff; border:none; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px; }
- 
-  /* ====== Tooltips (estilos globales) ====oop== */
-.tooltip {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-  font-weight: bold;
-  color: #006633; /* Verde oscuro */
-}
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 280px;
-  background-color: #006633; /* Verde oscuro */
-  color: #ffffff;            /* Texto blanco */
-  text-align: left;
-  border-radius: 6px;
-  padding: 10px;
-  font-size: 14px;
-  font-weight: normal;
-  position: absolute;
-  z-index: 30;      /* sube la capa por si hay otros elementos encima */
-  bottom: 125%;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.4s;
-  pointer-events: none; /* evita interferir con el hover */
-}
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
-}
-/* Bocina redonda (toggle TTS) */
-.tts-fab{
-  width:64px; height:64px; border-radius:9999px;
-  background:#10b981; color:#fff; border:none; cursor:pointer;
-  display:flex; align-items:center; justify-content:center;
-  font-size:28px; line-height:1;
-  box-shadow:0 8px 18px rgba(16,185,129,.35);
-  transition:transform .15s ease, background .2s ease;
-}
-.tts-fab:hover{ transform:translateY(-1px); }
-.tts-fab.muted{ background:#9ca3af; }   /* gris cuando está desactivada */
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Flip-PDF Local — Cargar, Ver como Libro y Exportar ZIP</title>
 
-  
-  </style>
+<!-- Estilos base -->
+<style>
+  :root{
+    --bg:#0b0f19; --panel:#0f172a; --text:#e5e7eb; --muted:#94a3b8;
+    --ring:rgba(255,255,255,.10); --btn:rgba(255,255,255,.08); --btn-bd:rgba(255,255,255,.18);
+    --accent:#60a5fa;
+  }
+  html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial,sans-serif}
+  .shell{min-height:100%;display:flex;flex-direction:column}
+  header{
+    position:sticky;top:0;z-index:20;background:rgba(15,23,42,.88);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--ring)
+  }
+  .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:10px 14px}
+  .brand{font-weight:800;letter-spacing:.3px;margin-right:auto}
+  .right{display:flex;gap:8px;align-items:center}
+  .btn{
+    color:#fff;background:var(--btn);border:1px solid var(--btn-bd);
+    padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600
+  }
+  .btn[disabled]{opacity:.6;cursor:not-allowed}
+  .file{display:inline-flex;align-items:center;gap:8px}
+  input[type="file"]{display:none}
+  label.btn{cursor:pointer}
+  .hint{color:var(--muted);font-size:12px}
+  .range{accent-color:var(--accent)}
+  main{flex:1;display:flex;align-items:center;justify-content:center;padding:16px}
+  #book{
+    position:relative;max-width:95vw;max-height:86vh;background:#111827;border-radius:16px;overflow:hidden;
+    box-shadow:0 12px 34px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.03), inset 0 24px 48px rgba(0,0,0,.18)
+  }
+  #book::after{
+    content:'';position:absolute;top:4%;bottom:4%;left:50%;width:3px;transform:translateX(-50%);
+    background:linear-gradient(to bottom,transparent,rgba(0,0,0,.4),transparent);opacity:.25;pointer-events:none;filter:blur(.2px)
+  }
+  #book[data-mode="single"]::after{display:none}
+  .loading{padding:24px;opacity:.85}
+  footer{
+    position:sticky;bottom:0;background:rgba(15,23,42,.88);backdrop-filter:blur(8px);
+    border-top:1px solid var(--ring)
+  }
+  .controls{display:flex;gap:10px;align-items:center;justify-content:center;padding:10px 14px}
+  #status{min-width:90px;text-align:center;color:var(--muted);font-weight:700}
+  #prog{height:6px;background:#0b1220;border:1px solid var(--ring);border-radius:999px;overflow:hidden}
+  #prog>span{display:block;height:100%;background:linear-gradient(90deg,#60a5fa,#a78bfa);width:0%}
+  .kbd{font:600 12px/1 monospace;color:#cbd5e1;border:1px solid var(--ring);padding:2px 6px;border-radius:6px}
+</style>
+
+<!-- Librerías (CDN) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2kDEe57..."
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js" integrity="sha512-9vHq..."
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.3.136/pdf.min.js" integrity="sha512-2rC5..."
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  // worker para PDF.js
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.3.136/pdf.worker.min.js";
+</script>
+
+<!-- Zip & Save -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-5gQy..."
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-bG6d..."
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
-<body class="bg-slate-50">
 
-  <div class="flex h-screen">
-  <aside class="w-64 bg-white shadow-lg flex-shrink-0 hidden md:flex md:flex-col md:sticky md:top-0 md:h-screen md:overflow-y-auto border-r">
+<body>
+<div class="shell">
+  <header>
+    <div class="bar">
+      <div class="brand">Flip-PDF Local</div>
+      <div class="file">
+        <input id="pdfFile" type="file" accept="application/pdf" />
+        <label for="pdfFile" class="btn">📄 Cargar PDF</label>
+        <span id="fileName" class="hint"></span>
+      </div>
 
-    <div class="p-4">
-      <div style="width:150px;height:150px" class="p-2 mx-auto flex items-center justify-center bg-white rounded-full shadow-lg border-2 border-green-500">
-        <img src="img/logo.webp" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
+      <div class="right">
+        <label class="hint">Resolución:
+          <input id="scale" class="range" type="range" min="0.8" max="2.5" step="0.1" value="1.4" />
+        </label>
+        <button id="build" class="btn" disabled>⚙️ Renderizar</button>
+        <button id="exportZip" class="btn" disabled>💾 Exportar .zip</button>
       </div>
     </div>
-<nav class="mt-6 flex-1" role="navigation" aria-label="Secciones del OVA">
-  <a href="#" class="sidebar-link active flex items-center py-3 px-6 font-medium text-slate-700"
-     data-target="introduccion" aria-label="Introducción">
-    <span class="mr-3 text-xl">🚀</span> Introducción
-  </a>
-  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-     data-target="objetivos" aria-label="Objetivos">
-    <span class="mr-3 text-xl">🎯</span> Objetivos
-  </a>
-  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-     data-target="contenido" aria-label="Contenido">
-    <span class="mr-3 text-xl">📚</span> Contenido
-  </a>
-  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-     data-target="actividades" aria-label="Actividades">
-    <span class="mr-3 text-xl">✍️</span> Actividades
-  </a>
-  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-     data-target="evaluacion" aria-label="Evaluación">
-    <span class="mr-3 text-xl">✔️</span> Evaluación
-  </a>
-  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-     data-target="recursos" aria-label="Recursos">
-    <span class="mr-3 text-xl">📖</span> Recursos
-  </a>
-  <a href="#" class="sidebar-link flex items-center py-3 px-6 font-medium text-slate-700"
-     data-target="bibliografia" aria-label="Bibliografía">
-    <span class="mr-3 text-xl">📚</span> Bibliografía
-  </a>
-</nav>
+    <div id="prog" aria-hidden="true"><span></span></div>
+  </header>
 
-   <div class="mt-4 p-4 border-t border-emerald-100">
-  <!-- Bocina redonda -->
-  <button id="menu-tts-toggle"
-          type="button"
-          aria-pressed="false"
-          class="tts-fab muted"
-          title="Voz desactivada"
-          aria-label="Voz desactivada">
-    🔇
-  </button>
-</div>
-
-
-    
-  </aside>
-<main class="flex-1 p-4 sm:p-6 md:p-10 bg-gray-50 max-h-screen overflow-y-auto">
-
-    <div class="md:hidden mb-6 flex flex-col items-center">
-      <div style="width:100px;height:100px" class="p-2 flex items-center justify-center bg-white rounded-full shadow-lg mb-2">
-        <img src="img/logo.webp" alt="Logo OVA" class="w-5/6 h-5/6 object-contain" loading="lazy">
-      </div>
-      <select id="mobile-nav" class="w-full mt-2 p-2 border rounded-md bg-white shadow-sm">
-        <option value="introduccion">🚀 Introducción</option>
-        <option value="objetivos">🎯 Objetivos</option>
-        <option value="contenido">📚 Contenido</option>
-        <option value="actividades">✍️ Actividades</option>
-        <option value="evaluacion">✔️ Evaluación</option>
-        <option value="recursos">📖 Recursos</option>
-        <option value="bibliografia">📚 Bibliografía</option>
-      </select>
-    </div>
-
-   <!-- Intro -->
-        <section id="introduccion" class="content-pane active">
-<!-- TTS sección: Introducción -->
-<div class="flex justify-end">
-  <div class="space-y-1">
-    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-         data-target="introduccion">
-      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-        <span class="mr-1">▶️</span> Leer
-      </button>
-      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏸️</span> Pausar
-      </button>
-      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏹️</span> Detener
-      </button>
-      <div class="flex items-center ml-2">
-        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-      </div>
-    </div>
-    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-    </div>
-  </div>
-</div>
-
-          
-          <h1 class="text-2xl sm:text-3xl font-extrabold text-emerald-800">
-            Estructuras de control secuenciales y condicionales
-          </h1>
-
-            <p class="mt-4 leading-relaxed">
-              En programación, las <strong>estructuras de control</strong>  son como el mapa que guía a un programa. 
-              Sin estas estructuras, el programa solo podría ejecutar instrucciones una tras otra, sin tomar decisiones ni reaccionar a distintas situaciones.  
-              Con esta guía aprenderás paso a paso cómo funcionan las <strong>secuencias</strong> y las <strong>estructuras condicionales</strong>, 
-              para que puedas usarlas sin miedo y con confianza.
-            </p>
-          
-          <div class="mt-6 p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-lg">
-            <p class="text-emerald-900">
-              Navega por el menú para explorar el objetivo, el contenido, las actividades, la evaluación y los recursos.
-            </p>
-          </div>
-        </section>
-
-   <!-- Objetivo -->
-        <section id="objetivos" class="content-pane">
-<!-- TTS sección: Introducción -->
-<div class="flex justify-end">
-  <div class="space-y-1">
-    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-         data-target="objetivos">
-      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-        <span class="mr-1">▶️</span> Leer
-      </button>
-      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏸️</span> Pausar
-      </button>
-      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏹️</span> Detener
-      </button>
-      <div class="flex items-center ml-2">
-        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-      </div>
-    </div>
-    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-    </div>
-  </div>
-</div>
-
-          
-          <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Objetivo</h2>
-          <p class="leading-relaxed">
-            <strong>Comprender y dominar</strong> las estructuras de control básicas (secuenciales y condicionales) mediante explicaciones sencillas, ejemplos prácticos y ejercicios guiados en pseudocódigo.
-          </p>
-        </section>
-    
-    <!-- Contenido -->
-      <section id="contenido" class="content-pane">
-      <div class="space-y-4">
-        <!-- A: Estructuras de control secuenciales -->
-        <!-- TTS para acordeón de CONTENIDO (lee solo el <details> abierto) -->
-<div class="flex justify-end">
-  <div class="space-y-1">
-    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-         data-mode="accordion" data-container="#contenido">
-      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-        <span class="mr-1">▶️</span> Leer
-      </button>
-      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏸️</span> Pausar
-      </button>
-      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏹️</span> Detener
-      </button>
-      <div class="flex items-center ml-2">
-        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-      </div>
-    </div>
-    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-    </div>
-  </div>
-</div>
-
-        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
-          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-            Estructuras de control secuenciales
-            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
-          </summary>
-          <div class="px-4 pb-4 text-slate-700 space-y-3">
-         
-             <p class="mt-4 leading-relaxed">
-              Las 
-              <span class="tooltip">
-                <strong>estructuras de control secuenciales</strong>
-                <span class="tooltiptext">
-                  Representan el flujo natural de la lógica: una acción ocurre después de otra.
-                </span>
-              </span> 
-              son la forma más básica de organización en un algoritmo o programa. En ellas, las instrucciones se ejecutan una tras otra, en el mismo orden en que fueron escritas, sin condiciones ni repeticiones.
-            </p>
-            
-                     
-            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2"> Características de estructuras de control secuenciales </figcaption>
-              <img src="img/img01.png" alt=" . " class="w-full object-contain rounded"/>
-            </figure>
-            <div class="p-4">
-            
-
-         </figure>
-                <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg">
-                
-                  <p>
-                     <span class="tooltip"><strong>Estructuras de control.</strong>
-                      <span class="tooltiptext">
-                        Aunque son limitadas, siempre estarán presentes, ya sea de manera independiente o combinadas con estructuras condicionales y repetitivas para resolver problemas más complejos.
-                      </span>
-                    </span>  
-                    — Las estructuras de control secuenciales constituyen el pilar de la programación, 
-                    pues aseguran que las instrucciones se ejecuten de forma ordenada y lógica. 
-                  </p>
-                
-                                  
-                </div>
-          </figure>
-
-              
-   <figcaption class="font-semibold text-emerald-800 mb-2">
-          En las estructuras secuenciales encontramos 
-          <span class="tooltip"><strong>Ventajas</strong>
-            <span class="tooltiptext">
-              Las ventajas de las estructuras secuanciales se reflejan en su simplicidad, ya que son fáciles de entender e implementar; en su valor como introducción a la programación, al ser útiles para aprender los fundamentos; y en la claridad que proporcionan al dar orden y lógica a los algoritmos.
-            </span>
-          </span>
-          y también algunas 
-          <span class="tooltip"><strong>Limitaciones</strong>
-            <span class="tooltiptext">
-              Limitaciones: la falta de lógica en los diagramas de flujo simples que no permiten tomar decisiones complejas, la ausencia de repetición automática de procesos, y la posible complejidad que surge cuando se aplican a problemas de mayor escala.
-            </span>
-          </span>.
-    </figcaption>
-
-               
-               <img src="img/img02.png" alt=" . " class="w-full object-contain rounded"/>
-  
-     
-            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Ejemplos cotidianos donde se aplican estructuras de control secuenciales </figcaption>
-              <img src="img/img03.png" alt=" . " class="w-full object-contain rounded"/>
-            </figure>
-
-           <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-                <figcaption class="font-semibold text-emerald-800 mb-2">
-                  Ejemplo en 
-                  <span class="tooltip"><strong>pseudocódigo</strong>
-                    <span class="tooltiptext">
-                      El pseudocódigo es una forma de escribir algoritmos usando un lenguaje intermedio, que combina palabras del lenguaje natural con estructuras básicas de programación.
-                    </span>
-                  </span> 
-                  - problemática: calcular área
-                </figcaption>
-                <img src="img/img04.png" alt=" . " class="w-full object-contain rounded"/>
-        </figure>
-
-                          
-                
-           
-            </div>
-          </div>
-        </details>
-
-        <!-- B: Estructuras de control condicionales -->
-        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
-          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-            Estructuras de control condicionales 
-            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
-          </summary>
-          <div class="px-4 pb-4 text-slate-700 space-y-3">
-            
-          <p>
-            Las <strong>estructuras de control</strong> 
-            <span class="tooltip">condicionales
-              <span class="tooltiptext">
-                Estas condiciones  <br>
-                se expresan como proposiciones <br>
-                que pueden ser verdaderas <br>
-                (True) o falsas (False)
-              </span>
-            </span>. 
-             permiten que un programa tome decisiones según se cumpla o no una condición lógica.
-          </p>
-
-            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Estructuras condicionales en programación </figcaption>
-              <img src="img/img05.png" alt=" . " class="w-full object-contain rounded"/>
-            </figure>
-
-             <p class="mt-3 text-slate-700 leading-relaxed">
-                  Las <strong>estructuras condicionales</strong> permiten controlar el flujo de un programa al tomar decisiones
-                  basadas en condiciones lógicas. Estas pueden ser 
-                  <span class="tooltip"><em>simples</em>
-                    <span class="tooltiptext">
-                      Ejecutan una acción si se cumple la condición
-                    </span>
-                  </span>, 
-                  <span class="tooltip"><em>dobles</em>
-                    <span class="tooltiptext">
-                      Definen un camino cuando la condición es verdadera y otro cuando es falsa
-                    </span>
-                  </span> o 
-                  <span class="tooltip"><em>múltiples</em>
-                    <span class="tooltiptext">
-                      Permiten elegir entre varios casos posibles
-                    </span>
-                  </span>.
-              </p>
-            
-
-            <div class="grid sm:grid-cols-2 gap-4">
-              
-            </div>
-          </div>
-        </details>
-
-        <!-- 3  Condicional Simple (Si) -->
-        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
-          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-            Condicional Simple (Si)
-            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
-          </summary>
-          <div class="px-4 pb-4 text-slate-700 space-y-3">
-          
-            <p class="mt-3 text-slate-700 leading-relaxed">
-              El <strong>condicional simple</strong> 
-              (<span class="text-red-600 font-bold">si</span>) 
-              ejecuta un bloque de instrucciones solo si se cumple una condición. 
-              Si no se cumple, continúa con la siguiente instrucción sin ejecutar el bloque.
-            </p>
-            
-            <figure class="border rounded p-3">
-              <img src="img/img06.png" class="w-full object-contain" alt="Condicional simple">
-            </figure>
-
-             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-                  <figcaption class="font-semibold text-emerald-800 mb-2">
-                    Ejemplo. Verificar si un número es positivo 
-                    (<span class="tooltip">PSeInt
-                      <span class="tooltiptext">
-                        PSeInt es una herramienta educativa diseñada para aprender lógica de programación 
-                        mediante pseudocódigo, de forma sencilla e intuitiva.
-                      </span>
-                    </span>): 
-                  </figcaption>
-                  <img src="img/img07.png" alt="Ejemplo en PSeInt" class="w-full object-contain rounded"/>
-            </figure>
-
-            
-            
-          </div>
-        </details>
-
-     <!-- Condicional compuesto o doble (Si - sino)-->
-        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
-          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-            Condicional compuesto o doble (Si - sino)
-            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
-          </summary>
-          <div class="px-4 pb-4 text-slate-700 space-y-3">
-          
-        <p class="mt-3 text-slate-700 leading-relaxed">
-            Cuando existen dos caminos posibles, usamos 
-            <span class="text-red-600 font-bold">si-sino</span> (if–else). 
-            Si la condición es verdadera, ejecuta el primer bloque; 
-            en caso contrario, ejecuta el bloque del 
-            <span class="text-red-600 font-bold">sino</span>.
-      </p>
-            
-            <figure class="border rounded p-3">
-              <img src="img/img08.png" class="w-full object-contain" alt="Tipos de datos">
-            </figure>
-
-              <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-                  <figcaption class="font-semibold text-emerald-800 mb-2">
-                    Ejemplo: Determinar si un estudiante aprueba - 
-                    (<span class="tooltip">PSeInt
-                      <span class="tooltiptext">
-                        PSeInt es una herramienta educativa diseñada para aprender lógica de programación 
-                        mediante pseudocódigo, de forma sencilla e intuitiva.
-                      </span>
-                    </span>): 
-                  </figcaption>
-                  <img src="img/img09.png" alt="Ejemplo en PSeInt" class="w-full object-contain rounded"/>
-            </figure>            
-            
-          </div>
-        </details>
-        
-
-        <!-- 3.2.3.	Condicionales múltiples  -->
-        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
-          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-            Condicionales múltiples 
-            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
-          </summary>
-          <div class="px-4 pb-4 text-slate-700 space-y-3">
-
-           <p class="mt-3 text-slate-700 leading-relaxed">
-                Los <strong>condicionales múltiples</strong> permiten tomar decisiones cuando existen varias condiciones posibles. 
-                Se pueden implementar de dos formas:
-          </p>
-
-              <ul class="list-disc ml-6 space-y-2 text-slate-700">
-                <li>
-                  Mediante múltiples condicionales 
-                  <span class="tooltip text-green-600 font-bold">SI anidados
-                    <span class="tooltiptext">
-                      Donde cada condición se evalúa de forma secuencial.
-                    </span>
-                  </span>.
-                </li>
-                <li>
-                  Mediante la 
-                  <span class="tooltip text-green-600 font-bold">estructura SEGÚN
-                    <span class="tooltiptext">
-                      Facilita la lectura cuando se compara una misma variable contra diferentes valores.
-                    </span>
-                  </span>, que mejora la claridad del código.
-                </li>
-              </ul>
-
-          
-            <figure>
-              <img src="img/img10.png" class="w-full object-contain" alt="Cómo implementar condicionales múltiples">
-            </figure>
-          </div>
-        </details>
-
-         <!-- Condicionales múltiples con SI   -->
-        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
-          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-            Condicionales múltiples con SI  
-            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
-          </summary>
-          <div class="px-4 pb-4 text-slate-700 space-y-3">
-
-            <p class="mb-3">
-            Los <strong> condicionales múltiples con SI </strong> permiten evaluar diferentes escenarios de manera secuencial. En esta estructura, si la primera condición no se cumple, el programa pasa a revisar la siguiente y así sucesivamente, hasta encontrar una que sea verdadera o ejecutar el bloque final de lo contrario. 
-            </p>
-          
-           <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Estructuras condicional múltiple con SI  </figcaption>
-              <img src="img/img11.png" alt=" . " class="w-full object-contain rounded"/>
-            </figure>
-
-            <p class="mb-3">
-            Esta forma de anidar  <strong> condicionales </strong> es útil cuando se requiere comparar varias posibilidades que no pueden resolverse con una sola instrucción condicional. 
-            </p>
-
-             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Características condicionales condicional múltiples con si  </figcaption>
-              <img src="img/img12.png" alt=" . " class="w-full object-contain rounded"/>
-            </figure>
-
-            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-                  <figcaption class="font-semibold text-emerald-800 mb-2">
-                    Ejemplo de condicional múltiple con SI - 
-                    (<span class="tooltip">PSeInt
-                      <span class="tooltiptext">
-                        PSeInt es una herramienta educativa diseñada para aprender lógica de programación 
-                        mediante pseudocódigo, de forma sencilla e intuitiva.
-                      </span>
-                    </span>): 
-                  </figcaption>
-                  <img src="img/img13.png" alt="Ejemplo en PSeInt" class="w-full object-contain rounded"/>
-            </figure>        
-          
-          </div>
-        </details>
-
-        <!-- Condicionales múltiples con Según -->
-        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
-          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-           Condicionales múltiples con Según 
-            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
-          </summary>
-          <div class="px-4 pb-4 text-slate-700 space-y-3">
-
-            <p class="mt-3 text-slate-700 leading-relaxed">
-                    El condicional 
-                    <span class="tooltip text-red-600 font-bold">SEGÚN
-                      <span class="tooltiptext">
-                        Conocido en otros lenguajes como switch
-                      </span>
-                    </span> 
-                    permite evaluar una sola variable y compararla contra distintos valores posibles. 
-                    Según el valor que tome, se ejecuta un bloque de acciones.
-            </p>
-          
-           <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Estructuras condicional SEGUN  </figcaption>
-              <img src="img/img14.png" alt=" . " class="w-full object-contain rounded"/>
-            </figure>
-
-             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Características condicional SEGUN  </figcaption>
-              <img src="img/img15.png" alt=" . " class="w-full object-contain rounded"/>
-            </figure>
-
-            <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-                  <figcaption class="font-semibold text-emerald-800 mb-2">
-                    Ejemplo de condicional SEGUN - 
-                    (<span class="tooltip">PSeInt
-                      <span class="tooltiptext">
-                        PSeInt es una herramienta educativa diseñada para aprender lógica de programación 
-                        mediante pseudocódigo, de forma sencilla e intuitiva.
-                      </span>
-                    </span>): 
-                  </figcaption>
-                  <img src="img/img16.png" alt="Ejemplo en PSeInt" class="w-full object-contain rounded"/>
-            </figure>        
-          
-          </div>
-
-          
-        </details>
- <!-- ejemplosn -->
-        <details class="group bg-white border border-emerald-200 rounded-lg shadow-sm">
-          <summary class="cursor-pointer list-none p-4 font-bold text-emerald-800 flex items-center justify-between">
-           Ejercicios Prácticos con estructuras condicionales  
-            <span class="transition-transform group-open:rotate-45 text-xl">＋</span>
-          </summary>
-          <div class="px-4 pb-4 text-slate-700 space-y-3">
-
-            <p class="mt-3 text-slate-700 leading-relaxed">
-                    Las estructuras de control condicionales permiten que un programa tome decisiones según se cumpla o no una condición lógica. Estas condiciones se expresan como proposiciones que pueden 
-            </p>
-             <p class="mt-3 text-slate-700 leading-relaxed">
-                    Enunciado 1. Un cine necesita calcular el valor a cobrar por tiquete. Si el cliente es menor de 12 años recibe 20% de descuento sobre el precio base. 
-            </p>
-           <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Desarrollo:  </figcaption>
-              <img src="img/img17.png" alt=" . " class="w-full object-contain rounded"/>
-            </figure>
-
-             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Pseudocódigo   </figcaption>
-              <img src="img/img17_01.png" alt=" . " class="w-full object-contain rounded"/>
-            </figure>
-
-             <p class="mt-3 text-slate-700 leading-relaxed">
-                    Enunciado 2. Un restaurante aplica descuentos según el día de la semana: (lunes (1): 10%, martes (2): 15%, miércoles (3): 20%, Otros días: sin descuento). Calcular el total a pagar para una cuenta dada. 
-            </p>
-           <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Desarrollo:  </figcaption>
-              <img src="img/img18.png" alt=" . " class="w-full object-contain rounded"/>
-            </figure>
-
-             <figure class="bg-white border border-emerald-200 rounded-lg p-4">
-              <figcaption class="font-semibold text-emerald-800 mb-2">Pseudocódigo   </figcaption>
-              <img src="img/img18_01.png" alt=" . " class="w-full object-contain rounded"/>
-            </figure> 
-          
-          </div>
-
-          
-        </details>
-        
-      </div>
-    </section>
-
-    <!-- Actividades -->
-    <section id="actividades" class="content-pane">
-      <!-- TTS sección: Introducción -->
-        <div class="flex justify-end">
-          <div class="space-y-1">
-            <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-                 data-target="introduccion">
-              <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-                <span class="mr-1">▶️</span> Leer
-              </button>
-              <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-                <span class="mr-1">⏸️</span> Pausar
-              </button>
-              <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-                <span class="mr-1">⏹️</span> Detener
-              </button>
-              <div class="flex items-center ml-2">
-                <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-                <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-              </div>
-            </div>
-            <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-              <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-              <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-            </div>
-          </div>
-        </div>
-
-      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Actividades</h2>
-
-      <!-- Situación 1 -->
-  <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5 mb-6">
-    <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 1</h3>
-    <p class="mb-3">
-      Escriba el pseudocódigo para un programa que determine si una persona es mayor de edad (18 años o más).
-    </p>
-    <textarea rows="8" class="w-full p-3 border rounded bg-white"
-      placeholder="Pseudocódigo…&#10;Algoritmo MayorDeEdad&#10;Leer edad&#10;Si edad &gt;= 18 Entonces&#10;    Escribir 'Mayor de edad'&#10;SiNo&#10;    Escribir 'Menor de edad'&#10;FinSi&#10;FinAlgoritmo"></textarea>
-  </article>
-
-  <!-- Situación 2 -->
-  <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5 mb-6">
-    <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 2</h3>
-    <p class="mb-3">
-      Un supermercado aplica descuentos así: Si el cliente compra más de 10 productos, obtiene 15% de descuento.
-      Si compra entre 5 y 10, obtiene 10%. Si compra menos de 5, no tiene descuento.
-      Diseñe el pseudocódigo con condicionales múltiples para este caso.
-    </p>
-    <textarea rows="10" class="w-full p-3 border rounded bg-white"
-      placeholder="Pseudocódigo…&#10;Algoritmo DescuentoSuper&#10;Leer cantidad, precioUnidad&#10;subtotal &lt;- cantidad * precioUnidad&#10;descuento &lt;- 0&#10;Si cantidad &gt; 10 Entonces&#10;    descuento &lt;- subtotal * 0.15&#10;SiNoSi cantidad &gt;= 5 Entonces&#10;    descuento &lt;- subtotal * 0.10&#10;FinSi&#10;total &lt;- subtotal - descuento&#10;Escribir total, descuento&#10;FinAlgoritmo"></textarea>
-  </article>
-
-  <!-- Situación 3 -->
-  <article class="bg-white border-l-4 border-emerald-500 rounded-lg shadow-sm p-5">
-    <h3 class="text-xl font-bold text-emerald-700 mb-2">Situación 3</h3>
-    <p class="mb-3">
-      Usando la estructura SEGÚN, diseñe un pseudocódigo que muestre el día de la semana según un número ingresado
-      (1 = lunes, 2 = martes, …, 7 = domingo).
-    </p>
-    <textarea rows="11" class="w-full p-3 border rounded bg-white"
-      placeholder="Pseudocódigo…&#10;Algoritmo DiaSegunNumero&#10;Leer n&#10;Segun n Hacer&#10;    1: Escribir 'Lunes'&#10;    2: Escribir 'Martes'&#10;    3: Escribir 'Miércoles'&#10;    4: Escribir 'Jueves'&#10;    5: Escribir 'Viernes'&#10;    6: Escribir 'Sábado'&#10;    7: Escribir 'Domingo'&#10;De Otro Modo: Escribir 'Número inválido'&#10;FinSegun&#10;FinAlgoritmo"></textarea>
-  </article>
-
-
-</section>  <!-- ← cierre de la sección ACTIVIDADES -->
-
-
-    <!-- Evaluación (quiz) -->
-    <section id="evaluacion" class="content-pane">
-      <!-- TTS sección: Introducción -->
-<div class="flex justify-end">
-  <div class="space-y-1">
-    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-         data-target="evaluacion">
-      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-        <span class="mr-1">▶️</span> Leer
-      </button>
-      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏸️</span> Pausar
-      </button>
-      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏹️</span> Detener
-      </button>
-      <div class="flex items-center ml-2">
-        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-      </div>
-    </div>
-    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-    </div>
-  </div>
-</div>
-
-      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Evaluación</h2>
-      <div class="bg-white p-5 rounded-lg shadow-md">
-        <div id="quiz"></div>
-        <button id="quiz-submit" class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded transition-colors">Finalizar</button>
-        <div id="quiz-result" class="mt-3 text-lg font-bold"></div>
-      </div>
-    </section>
-
-    <!-- Recursos (3 tarjetas como la imagen) -->
-    <section id="recursos" class="content-pane">
-      <!-- TTS sección: Introducción -->
-<div class="flex justify-end">
-  <div class="space-y-1">
-    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-         data-target="recursos">
-      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-        <span class="mr-1">▶️</span> Leer
-      </button>
-      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏸️</span> Pausar
-      </button>
-      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏹️</span> Detener
-      </button>
-      <div class="flex items-center ml-2">
-        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-      </div>
-    </div>
-    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-    </div>
-  </div>
-</div>
-
-      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-6">Recursos</h2>
-      <div class="grid lg:grid-cols-3 gap-5">
-        <!-- Card 1 -->
-        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-2">
-              <h3 class="text-xl font-bold text-slate-900 leading-tight">Lógica de programación</h3>
-              <span class="badge">Libro</span>
-            </div>
-            <p class="text-sm text-slate-700"><strong>Trejos Buriticá, O. I.</strong> (2023). <em>Lógica de programación</em>. Ediciones de la U.</p>
-            <a href="https://www.edicionesdelau.com/" target="_blank" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
-          </div>
-          <div class="mt-4 flex justify-end">
-            <img src="img/09_ebooks724_ucordoba.png" alt="QR Lógica de programación" class="w-20 h-20 object-contain">
-          </div>
-        </article>
-        <!-- Card 2 -->
-        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-2">
-              <h3 class="text-xl font-bold text-slate-900 leading-tight">Solucionario en pseudocódigo</h3>
-              <span class="badge">Libro</span>
-            </div>
-            <p class="text-sm text-slate-700"><strong>Trejos Buriticá, O. I.</strong> (2021). <em>Lógica de programación: solucionario en pseudocódigo. Ejercicios resueltos</em>. Ediciones de la U.</p>
-            <a href="https://www.edicionesdelau.com/" target="_blank" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
-          </div>
-          <div class="mt-4 flex justify-end">
-            <img src="img/08_solucionario_ucordoba.png" alt="QR Solucionario en pseudocódigo" class="w-20 h-20 object-contain">
-          </div>
-        </article>
-        <!-- Card 3 -->
-        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-2">
-                <h3 class="font-bold text-lg text-green-800 mb-2 pr-2">Programación basada en PSeInt</h3>
-                <span class="badge">Libro</span>
-            </div>
-                  <p class="text-slate-600 mb-4">Celi V., P. (2023).<i>Fundamentos de programación basados en PSeInt.</i> (1.ª ed.) [PDF]. ITQ.</p>
-                  <a href="https://itq.edu.ec/wp-content/uploads/2023/04/2023-04-19_fundamentos_de_programacion_basados_en_pseint.pdf" target="_blank" class="text-green-700 hover:text-green-900 underline block mb-4">Ver recurso</a>          </div>
-          <div class="mt-4 flex justify-end">
-                   <img src="img/06_progpseint.png" alt="QR Code" class="w-16 h-16">
-          </div>
-        </article>
-        <!-- Card 4 -->
-        <article class="bg-white rounded-2xl shadow-md border border-emerald-100 p-5 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-2">
-              <h3 class="text-xl font-bold text-slate-900 leading-tight">Fundamentos de programación</h3>
-              <span class="badge">Libro</span>
-            </div>
-            <p class="text-sm text-slate-700"><strong>García Santillán, I.</strong> (Ed.). (2014). <em>Fundamentos de programación usando PSeInt</em>. Unidad de Producción y Difusión Científica y Académica.</p>
-            <a href="#" class="inline-block mt-3 text-emerald-700 underline">Ver recurso</a>
-          </div>
-          <div class="mt-4 flex justify-end">
-            <img src="img/07_fundamPseint.png" alt="QR Fundamentos de programación" class="w-20 h-20 object-contain">
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- Bibliografía -->
-    <section id="bibliografia" class="content-pane">
-      <!-- TTS sección: Introducción -->
-<div class="flex justify-end">
-  <div class="space-y-1">
-    <div class="speech-controls p-2 bg-emerald-100 rounded-lg flex items-center flex-wrap gap-2 text-sm"
-         data-target="bibliografia">
-      <button class="play-btn bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-1 px-3 rounded-full flex items-center">
-        <span class="mr-1">▶️</span> Leer
-      </button>
-      <button class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏸️</span> Pausar
-      </button>
-      <button class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-3 rounded-full flex items-center" disabled>
-        <span class="mr-1">⏹️</span> Detener
-      </button>
-      <div class="flex items-center ml-2">
-        <label class="text-xs text-emerald-800 mr-2">Velocidad:</label>
-        <input type="range" class="speech-rate w-24" min="0.5" max="2" step="0.1" value="1">
-      </div>
-    </div>
-    <div class="p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800 text-right max-w-xl w-full ml-auto">
-      <strong>💡 Atajos:</strong> <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Espacio</kbd> reproducir/pausar ·
-      <kbd class="bg-white px-2 py-0.5 rounded border text-[10px]">Tab</kbd> detener
-    </div>
-  </div>
-</div>
-
-      <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-4">Bibliografía</h2>
-      <ul class="space-y-3">
-        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
-          Trejos Buriticá, O. I. (2023). <em>Lógica de programación</em>. Ediciones de la U.
-        </li>
-        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
-          Trejos Buriticá, O. I. (2021). <em>Lógica de programación: solucionario en pseudocódigo. Ejercicios resueltos</em>. Ediciones de la U.
-        </li>
-        <li class="bg-white p-4 rounded-lg border-l-4 border-emerald-500 shadow-sm">
-          García Santillán, I. (Ed.). (2014). <em>Fundamentos de programación usando PSeInt</em>. Unidad de Producción y Difusión Científica y Académica.
-        </li>
-      </ul>
-      <footer class="mt-10 pt-6 border-t text-center text-slate-600">
-        <p class="font-medium">Unicórdoba, calidad, innovación e inclusión para la transformación del territorio.</p>
-        <a class="text-emerald-700 underline" href="https://www.unicordoba.edu.co" target="_blank">www.unicordoba.edu.co</a>
-      </footer>
-    </section>
+  <main>
+    <div id="book"><div class="loading">Carga un PDF y pulsa “Renderizar”.</div></div>
   </main>
-</div>
 
-<!-- Image modal -->
-<div id="imgModal" class="image-modal">
-  <img id="imgModalSrc" src="" alt="Vista ampliada" class="max-w-[92vw] max-h-[92vh] border-4 border-white rounded shadow-2xl"/>
+  <footer>
+    <div class="controls">
+      <button id="prev" class="btn" disabled>◀︎</button>
+      <span id="status">– / –</span>
+      <button id="next" class="btn" disabled>▶︎</button>
+      <button id="auto" class="btn" disabled>Auto ▷</button>
+      <span class="hint">Atajos: <span class="kbd">←</span> / <span class="kbd">→</span>, clic izquierda/derecha</span>
+    </div>
+  </footer>
 </div>
 
 <script>
-/* === Navegación + voz SOLO al hacer clic === */
 (() => {
-  const panes = document.querySelectorAll('.content-pane');
-  const links = document.querySelectorAll('.sidebar-link');
-  const mobileNav = document.getElementById('mobile-nav');
+  const $book = document.getElementById('book');
+  const $file = document.getElementById('pdfFile');
+  const $fileName = document.getElementById('fileName');
+  const $build = document.getElementById('build');
+  const $exportZip = document.getElementById('exportZip');
+  const $scale = document.getElementById('scale');
+  const $prev = document.getElementById('prev');
+  const $next = document.getElementById('next');
+  const $status = document.getElementById('status');
+  const $auto = document.getElementById('auto');
+  const $prog = document.getElementById('prog');
+  const $bar = $prog.querySelector('span');
 
-  function go(id){
-    panes.forEach(p=>p.classList.remove('active'));
-    document.getElementById(id)?.classList.add('active');
-    links.forEach(a=>{
-      const active = a.dataset.target===id;
-      a.classList.toggle('active', active);
-      a.setAttribute('aria-current', active ? 'page' : 'false');
-    });
-    if(mobileNav) mobileNav.value=id;
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
+  let pdfArrayBuffer = null;
+  let pagesDataURLs = []; // data URLs de las páginas renderizadas
+  let titleForZip = 'flip_book';
 
-  // ===== TTS (toggle con bocina) =====
-  const synth = window.speechSynthesis;
-  let voices = [];
-  function loadVoices(){ voices = synth.getVoices(); }
-  loadVoices();
-  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
-
-  let menuTtsEnabled = JSON.parse(localStorage.getItem('menuTtsEnabled') || 'false');
-  const ttsBtn = document.getElementById('menu-tts-toggle');
-
-  function updateTtsBtn(){
-    if(!ttsBtn) return;
-    ttsBtn.classList.toggle('muted', !menuTtsEnabled);
-    ttsBtn.setAttribute('aria-pressed', menuTtsEnabled ? 'true' : 'false');
-    ttsBtn.setAttribute('aria-label', menuTtsEnabled ? 'Voz activada' : 'Voz desactivada');
-    ttsBtn.title = menuTtsEnabled ? 'Voz activada' : 'Voz desactivada';
-    ttsBtn.textContent = menuTtsEnabled ? '🔊' : '🔇';
-  }
-  updateTtsBtn();
-
-  ttsBtn?.addEventListener('click', () => {
-    menuTtsEnabled = !menuTtsEnabled;
-    localStorage.setItem('menuTtsEnabled', JSON.stringify(menuTtsEnabled));
-    if(!menuTtsEnabled) synth.cancel();
-    updateTtsBtn();
+  // Cargar PDF
+  $file.addEventListener('change', async (e) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    titleForZip = (f.name || 'flip_book').replace(/\.pdf$/i,'').replace(/[^\w\-]+/g,'_');
+    $fileName.textContent = f.name;
+    pdfArrayBuffer = await f.arrayBuffer();
+    $build.disabled = false;
+    $exportZip.disabled = true;
+    $status.textContent = '– / –';
+    $book.innerHTML = '<div class="loading">Listo para renderizar…</div>';
   });
 
-  function speakMenu(text){
-    if(!menuTtsEnabled || !text) return;
-    try{
-      synth.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      const v = voices.find(v => /es/i.test(v.lang)) || null;
-      if (v) u.voice = v, u.lang = v.lang; else u.lang = 'es-ES';
-      u.rate = 1.0;
-      synth.speak(u);
-    }catch(e){}
-  }
+  // Renderizar PDF -> imágenes + flipbook
+  $build.addEventListener('click', async () => {
+    if (!pdfArrayBuffer) return;
+    disableNav(true);
+    $exportZip.disabled = true;
+    pagesDataURLs = [];
+    $book.innerHTML = '<div class="loading">Preparando…</div>';
+    showProgress(0);
 
-  // ===== Un SOLO listener: navega + lee (si está activado) =====
-  links.forEach(a => {
-    a.addEventListener('click', (e) => {
-      e.preventDefault();
-      const id = a.dataset.target;
-      if (id) go(id);
+    try {
+      const pdf = await pdfjsLib.getDocument({data: pdfArrayBuffer}).promise;
+      const total = pdf.numPages;
+      const scale = parseFloat($scale.value); // factor de resolución
 
-      // Toma aria-label para no leer el emoji
-      const label = a.getAttribute('aria-label') || a.textContent.replace(/\s+/g,' ').trim();
-      speakMenu(label);
-    });
+      for (let p = 1; p <= total; p++) {
+        const page = await pdf.getPage(p);
+        const viewport = page.getViewport({scale});
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d', {alpha:false});
+        canvas.width  = viewport.width;
+        canvas.height = viewport.height;
+        await page.render({canvasContext: ctx, viewport}).promise;
+
+        // WEBP suele comprimir mejor; fallback a PNG si el navegador no soporta
+        let dataUrl;
+        try { dataUrl = canvas.toDataURL('image/webp', 0.92); }
+        catch { dataUrl = canvas.toDataURL('image/png'); }
+
+        pagesDataURLs.push(dataUrl);
+        showProgress(Math.round(p*100/total));
+      }
+
+      mountFlipbook(pagesDataURLs);
+      $exportZip.disabled = false;
+    } catch (err) {
+      console.error(err);
+      alert('No pude renderizar el PDF. Ver consola para más detalles.');
+      $book.innerHTML = '<div class="loading">Ocurrió un error. Intenta con otro PDF.</div>';
+    } finally {
+      showProgress(null);
+    }
   });
 
-  // Mobile select
-  mobileNav?.addEventListener('change', e => {
-    go(e.target.value);
-    // También lee en móvil si está activado
-    const opt = e.target.selectedOptions[0];
-    const label = (opt?.textContent || '').replace(/\s+/g,' ').trim();
-    speakMenu(label);
+  function showProgress(percent){
+    if (percent === null){
+      $prog.setAttribute('aria-hidden','true');
+      $bar.style.width = '0%';
+    } else {
+      $prog.removeAttribute('aria-hidden');
+      $bar.style.width = percent + '%';
+    }
+  }
+
+  // Inicializar flipbook con turn.js
+  function mountFlipbook(imgs){
+    $book.innerHTML = '';
+    imgs.forEach((url, idx) => {
+      const page = document.createElement('div');
+      if (idx === 0 || idx === imgs.length - 1) page.className = 'hard';
+      const img = document.createElement('img');
+      img.src = url; img.alt = 'Página ' + (idx+1);
+      img.style.width='100%'; img.style.height='100%'; img.style.objectFit='contain';
+      img.draggable = false;
+      page.appendChild(img);
+      $book.appendChild(page);
+    });
+
+    const $ = window.jQuery;
+    const ratioPromise = new Promise((res)=>{
+      const t = new Image();
+      t.onload = ()=>res(t.naturalHeight / t.naturalWidth);
+      t.src = imgs[0];
+    });
+
+    ratioPromise.then((ratio)=>{
+      const isMobile = () => window.innerWidth < 992;
+      const maxBookW = () => Math.min(window.innerWidth * 0.95, 1400);
+      const compute = () => {
+        const maxW = maxBookW();
+        const footerH = 64;
+        const availableH = Math.max(220, window.innerHeight - 140 - footerH);
+        const maxPageWByWidth = isMobile() ? maxW : Math.floor(maxW / 2);
+        const maxPageWByHeight = Math.round(availableH / ratio);
+        const pageWidth = Math.max(220, Math.min(maxPageWByWidth, maxPageWByHeight));
+        const bookWidth = isMobile() ? pageWidth : pageWidth * 2;
+        const bookHeight = Math.round(pageWidth * ratio);
+        return {bookWidth, bookHeight};
+      };
+
+      const s0 = compute();
+      $($book).turn({
+        width: s0.bookWidth, height: s0.bookHeight,
+        display: isMobile() ? 'single' : 'double',
+        autoCenter: true, acceleration: true, elevation: 80,
+        turnCorners: 'bl,br,tl,tr', duration: 800, gradients: true
+      });
+      $book.setAttribute('data-mode', window.innerWidth < 992 ? 'single' : 'double');
+
+      const onResize = () => {
+        const s = compute();
+        try { $($book).turn('display', window.innerWidth < 992 ? 'single' : 'double'); } catch {}
+        try { $($book).turn('size', s.bookWidth, s.bookHeight); } catch {}
+        try { $($book).turn('center'); } catch {}
+        $book.setAttribute('data-mode', window.innerWidth < 992 ? 'single' : 'double');
+        updateStatus();
+      };
+      window.addEventListener('resize', onResize);
+      window.addEventListener('orientationchange', onResize);
+
+      // Controles
+      function updateStatus(){
+        const c = $($book).turn('page') || 1;
+        $status.textContent = c + ' / ' + imgs.length;
+        $prev.disabled = c <= 1;
+        $next.disabled = c >= imgs.length;
+        $auto.disabled = false;
+      }
+      $($book).bind('turned', updateStatus);
+      updateStatus();
+
+      $prev.onclick = () => $($book).turn('previous');
+      $next.onclick = () => $($book).turn('next');
+
+      // click en zonas izquierda/derecha
+      $book.addEventListener('click',(e)=>{
+        const r = $book.getBoundingClientRect();
+        const x = e.clientX - r.left;
+        if (x < r.width/2) $($book).turn('previous'); else $($book).turn('next');
+      });
+
+      // teclado
+      window.addEventListener('keydown',(e)=>{
+        if (e.key === 'ArrowLeft') { e.preventDefault(); $($book).turn('previous'); }
+        if (e.key === 'ArrowRight'){ e.preventDefault(); $($book).turn('next'); }
+      });
+
+      // auto-pase
+      let timer=null;
+      function startAuto(){
+        stopAuto();
+        timer = setInterval(()=>{
+          const p = $($book).turn('page');
+          if (p >= imgs.length) { stopAuto(); return; }
+          $($book).turn('next');
+        }, 4500);
+        $auto.textContent = 'Auto ⏸';
+      }
+      function stopAuto(){ if (timer){ clearInterval(timer); timer=null; $auto.textContent='Auto ▷'; } }
+      $auto.onclick = ()=> timer ? stopAuto() : startAuto();
+      ['click','keydown','wheel','touchstart','pointerdown'].forEach(ev=>{
+        $book.addEventListener(ev, ()=>{ if (timer) stopAuto(); }, {passive:true});
+      });
+
+      // habilitar botones principales
+      disableNav(false);
+    });
+  }
+
+  function disableNav(flag){
+    [$prev,$next,$auto].forEach(b=> b.disabled = flag);
+  }
+
+  // Exportar ZIP listo para subir
+  $exportZip.addEventListener('click', async ()=>{
+    if (!pagesDataURLs.length) return;
+    const zip = new JSZip();
+    const folder = `${titleForZip}`;
+    const imgFolder = zip.folder(`${folder}/images`);
+
+    // Agregar imágenes
+    for (let i=0;i<pagesDataURLs.length;i++){
+      const dataUrl = pagesDataURLs[i];
+      const base64 = dataUrl.split(',')[1];
+      const ext = dataUrl.startsWith('data:image/png') ? 'png' : 'webp';
+      imgFolder.file(`page-${i+1}.${ext}`, base64, {base64:true});
+    }
+
+    // index.html minimal para desplegar
+    const ext = pagesDataURLs[0].startsWith('data:image/png') ? 'png' : 'webp';
+    const pagesList = Array.from({length: pagesDataURLs.length}, (_,i)=>`"images/page-${i+1}.${ext}"`).join(',');
+    const indexHtml =
+`<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>${titleForZip} — Flipbook</title>
+<link rel="preload" as="image" href="./images/page-1.${ext}">
+<style>
+  html,body{height:100%;margin:0;background:#0b0f19;color:#e5e7eb;font-family:system-ui,-apple-system,Segoe UI,Roboto}
+  .wrap{display:flex;align-items:center;justify-content:center;height:100%;padding:16px;box-sizing:border-box}
+  #book{position:relative;max-width:95vw;max-height:90vh;background:#111827;border-radius:16px;overflow:hidden;
+        box-shadow:0 12px 34px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.03), inset 0 24px 48px rgba(0,0,0,.18)}
+  #book::after{content:'';position:absolute;top:4%;bottom:4%;left:50%;width:3px;transform:translateX(-50%);
+               background:linear-gradient(to bottom,transparent,rgba(0,0,0,.4),transparent);opacity:.25;pointer-events:none}
+  #book[data-mode="single"]::after{display:none}
+  .controls{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:10px;background:rgba(15,23,42,.92);
+            padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.08)}
+  .btn{color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);padding:6px 10px;border-radius:10px;cursor:pointer}
+  #status{min-width:80px;text-align:center;color:#94a3b8;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap"><div id="book"><div style="padding:18px;opacity:.8">Cargando…</div></div></div>
+<div class="controls">
+  <button id="prev" class="btn">◀︎</button><span id="status">–/–</span><button id="next" class="btn">▶︎</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
+<script>
+const imgs=[${pagesList}];
+(function(){
+  const book = document.getElementById('book');
+  book.innerHTML='';
+  imgs.forEach((src,idx)=>{
+    const p=document.createElement('div');
+    if(idx===0||idx===imgs.length-1)p.className='hard';
+    const i=new Image(); i.src=src; i.alt=''; i.style.width='100%'; i.style.height='100%'; i.style.objectFit='contain';
+    p.appendChild(i); book.appendChild(p);
+  });
+  const isMobile=()=>window.innerWidth<992;
+  const ratioPromise=new Promise(res=>{const t=new Image();t.onload=()=>res(t.naturalHeight/t.naturalWidth);t.src=imgs[0]});
+  ratioPromise.then(ratio=>{
+    const compute=()=>{
+      const maxW=Math.min(window.innerWidth*.95,1400);
+      const availH=Math.max(220, window.innerHeight-120);
+      const maxByW=isMobile()?maxW:Math.floor(maxW/2);
+      const maxByH=Math.round(availH/ratio);
+      const pw=Math.max(220, Math.min(maxByW,maxByH));
+      return {w:isMobile()?pw:pw*2,h:Math.round(pw*ratio)};
+    };
+    const s=compute();
+    $(book).turn({width:s.w,height:s.h,display:isMobile()?'single':'double',autoCenter:true,elevation:80,acceleration:true,duration:800,turnCorners:'bl,br,tl,tr'});
+    book.setAttribute('data-mode', isMobile()?'single':'double');
+    const prev=document.getElementById('prev'), next=document.getElementById('next'), status=document.getElementById('status');
+    function u(){ const c=$(book).turn('page'); status.textContent=c+' / '+imgs.length; prev.disabled=c<=1; next.disabled=c>=imgs.length; }
+    u(); $(book).bind('turned',u);
+    prev.onclick=()=>$(book).turn('previous'); next.onclick=()=>$(book).turn('next');
+    window.addEventListener('resize',()=>{const s2=compute(); try{$(book).turn('display',isMobile()?'single':'double');}catch{} try{$(book).turn('size',s2.w,s2.h);}catch{} try{$(book).turn('center');}catch{} book.setAttribute('data-mode', isMobile()?'single':'double'); u();});
+    book.addEventListener('click',(e)=>{const r=book.getBoundingClientRect(); const x=e.clientX-r.left; if(x<r.width/2)$(book).turn('previous'); else $(book).turn('next');});
+    window.addEventListener('keydown',(e)=>{if(e.key==='ArrowLeft'){e.preventDefault();$(book).turn('previous');} if(e.key==='ArrowRight'){e.preventDefault();$(book).turn('next');}});
   });
 })();
 </script>
+</body></html>`;
 
+    // README
+    const readme =
+`# ${titleForZip}
+Este paquete fue generado por Flip-PDF Local.
+Cómo usar:
+1) Sube la carpeta "${titleForZip}" completa a tu servidor (o abre "index.html").
+2) Asegúrate de tener internet para cargar las librerías de CDN (jQuery/turn.js).
+3) Las páginas están en /images.`;
 
+    zip.file(`${folder}/index.html`, indexHtml);
+    zip.file(`${folder}/README.txt`, readme);
 
-  
-<script>
-// Activities check (very lightweight rubric)
-
-// ====== Verificador de Actividades (S1: cine, S2: efectivo) ======
-document.getElementById('check-acts')?.addEventListener('click', () => {
-  let correct = 0, total = 0;
-
-  // Helper: evalúa si el texto contiene TODAS las palabras clave (al menos una variante por grupo)
-  const hasAll = (txt, keywords) => {
-    txt = txt.toLowerCase();
-    return keywords.every(group =>
-      group.some(k => txt.includes(k))
-    );
-  };
-
-  // -------- Situación 1 (Cine) --------
-  // Entradas
-  total++;
-  if (hasAll(document.querySelector('.a1.entrada')?.value || '', [
-      ['edad'], ['precio', 'preciobase'] ])) correct++;
-
-  // Restricciones
-  total++;
-  if (hasAll(document.querySelector('.a1.restricciones')?.value || '', [
-      ['edad','>=','mayor','igual','0'], ['precio','preciobase','>','mayor','0'] ])) correct++;
-
-  // Condición
-  total++;
-  if (hasAll(document.querySelector('.a1.condicion')?.value || '', [
-      ['edad','<','menor','12'] ])) correct++;
-
-  // Proceso
-  total++;
-  if (hasAll(document.querySelector('.a1.proceso')?.value || '', [
-      ['si','if'], ['edad','<','menor','12'], ['precio','preciobase','*','0.8','20%'] ])) correct++;
-
-  // Salidas
-  total++;
-  if (hasAll(document.querySelector('.a1.salidas')?.value || '', [
-      ['total','pagar','valor'] ])) correct++;
-
-
-
-  // -------- Situación 2 (Tienda) --------
-  // Entradas
-  total++;
-  if (hasAll(document.querySelector('.a2.entrada')?.value || '', [
-      ['subtotal'], ['medio','pago','mediopago'] ])) correct++;
-
-  // Restricciones
-  total++;
-  if (hasAll(document.querySelector('.a2.restricciones')?.value || '', [
-      ['subtotal','>','mayor','0'] ])) correct++;
-
-  // Condición
-  total++;
-  if (hasAll(document.querySelector('.a2.condicion')?.value || '', [
-      ['medio','pago','mediopago'], ['efectivo','"efectivo"','=='] ])) correct++;
-
-  // Proceso
-  total++;
-  if (hasAll(document.querySelector('.a2.proceso')?.value || '', [
-      ['si','if'], ['efectivo'], ['subtotal','*','0.9','10%'] ])) correct++;
-
-  // Salidas
-  total++;
-  if (hasAll(document.querySelector('.a2.salidas')?.value || '', [
-      ['total','pagar'], ['descuento'] ])) correct++;
-
-  // Resultado
-  const res = document.getElementById('acts-result');
-  res.textContent = `Respuestas correctas: ${correct} de ${total}.`;
-  res.className = 'mt-3 font-semibold ' + (correct/total >= 0.7 ? 'text-emerald-700' : 'text-red-700');
-  window.scrollTo({ top: res.offsetTop - 80, behavior: 'smooth' });
-});
-
-
-
-// Quiz
-// Quiz
-const quizData = [
-  {
-    q: "¿Qué es un condicional en programación?",
-    opts: [
-      "Una instrucción que se repite varias veces.",
-      "Una estructura que permite tomar decisiones según una condición.",
-      "Un tipo de variable que almacena valores lógicos.",
-      "Un ciclo infinito."
-    ],
-    a: 1
-  },
-  {
-    q: "Verdadero o Falso: El condicional SI permite ejecutar un bloque de instrucciones únicamente si la condición es verdadera.",
-    opts: ["Verdadero","Falso"],
-    a: 0
-  },
-  {
-    q: "¿Cuál de las siguientes opciones corresponde a un condicional múltiple con SI?",
-    opts: [
-      "Una estructura donde se evalúa una sola variable con varios valores.",
-      "Una cadena de condicionales anidados donde se verifican varias condiciones.",
-      "Un ciclo que se repite mientras se cumpla una condición.",
-      "Una función que recibe varios parámetros."
-    ],
-    a: 1
-  },
-  {
-    q: "En la estructura SEGÚN, la sección “De Otro Modo” es:",
-    opts: [
-      "Obligatoria y siempre debe estar presente.",
-      "Opcional y se ejecuta solo si ningún caso coincide.",
-      "Un ciclo dentro de la estructura.",
-      "Un comentario dentro del pseudocódigo."
-    ],
-    a: 1
-  },
-  {
-    q: "Verdadero o Falso: Un condicional anidado es cuando dentro de un SI se incluye otro SI para evaluar condiciones adicionales.",
-    opts: ["Verdadero","Falso"],
-    a: 0
-  }
-];
-
-
-  
-const quiz = document.getElementById('quiz');
-if(quiz){
-  quizData.forEach((it,i)=>{
-    const wrap = document.createElement('div'); wrap.className='mb-5';
-    wrap.innerHTML = `<p class='font-semibold mb-2'>${i+1}. ${it.q}</p>`;
-    it.opts.forEach((op,idx)=>{
-      const d=document.createElement('div');
-      d.className='quiz-option p-3 border-2 border-slate-200 rounded-lg cursor-pointer mb-2';
-      d.textContent=op;
-      d.addEventListener('click',()=>{
-        wrap.querySelectorAll('.quiz-option').forEach(x=>x.classList.remove('selected'));
-        d.classList.add('selected');
-      });
-      wrap.appendChild(d);
-    });
-    quiz.appendChild(wrap);
+    const blob = await zip.generateAsync({type:'blob', compression:'DEFLATE'});
+    saveAs(blob, `${titleForZip}.zip`);
   });
-  document.getElementById('quiz-submit').addEventListener('click',()=>{
-    let score=0, answered=0;
-    [...quiz.children].forEach((block,i)=>{
-      const sel = block.querySelector('.quiz-option.selected'); 
-      if(sel){ answered++; if(sel.textContent===quizData[i].opts[quizData[i].a]) score++; }
-    });
-    const pct = score/quizData.length;
-    const out=document.getElementById('quiz-result');
-    out.textContent = `Puntaje: ${score}/${quizData.length} (${Math.round(pct*100)}%).`;
-    out.className='mt-3 text-lg font-bold ' + (pct>=0.7?'text-emerald-700':'text-red-700');
-    // report to SCORM if available
-    if(window.SCORM12) SCORM12.setScore(pct);
-    window.scrollTo({top:0,behavior:'smooth'});
-  });
-}
-// ===== Zoom ligero de imágenes de <figure> =====
-// Lightweight image zoom for figures with images (click to open)
-const modal=document.getElementById('imgModal');
-const modalImg=document.getElementById('imgModalSrc');
-document.querySelectorAll('figure img').forEach(img=>{
-  img.classList.add('cursor-zoom-in');
-  img.addEventListener('click',()=>{ modal.classList.add('active'); modalImg.src=img.src; });
-});
-modal?.addEventListener('click',()=>modal.classList.remove('active'));
+
+})();
 </script>
-
-<script>
-// ==== TTS genérico (para .speech-controls con data-target) ====
-document.addEventListener('DOMContentLoaded', function () {
-  const synth = window.speechSynthesis;
-  let voices = [], preferred = null;
-
-  function loadVoices(){
-    voices = synth.getVoices();
-    preferred = voices.find(v => v.name.includes('Paulina'))
-             || voices.find(v => (v.lang||'').toLowerCase().startsWith('es'))
-             || voices[0] || null;
-  }
-  loadVoices();
-  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
-
-  document.querySelectorAll('.speech-controls[data-target]').forEach(controls => {
-    const targetId = controls.dataset.target;
-    const section  = document.getElementById(targetId);
-    if (!section) return;
-
-    const playBtn  = controls.querySelector('.play-btn');
-    const pauseBtn = controls.querySelector('.pause-btn');
-    const stopBtn  = controls.querySelector('.stop-btn');
-    const rateCtrl = controls.querySelector('.speech-rate');
-
-    let currentUtterance = null, isPaused = false;
-
-    function getTextFromSection(sec){
-      const nodes = sec.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption,pre');
-      if (!nodes.length) return (sec.textContent||'').trim();
-      let text = '';
-      nodes.forEach(el=>{
-        const t=(el.textContent||'').trim();
-        if (!t) return;
-        text += (/^H[1-6]$/.test(el.tagName) ? t + '. . . ' : t + ' ');
-      });
-      return text.trim();
-    }
-    function setButtons(playing){
-      playBtn.disabled  = playing && !isPaused;
-      pauseBtn.disabled = !playing;
-      stopBtn.disabled  = !playing;
-    }
-    function stop(){
-      if (synth.speaking || synth.pending) synth.cancel();
-      currentUtterance=null; isPaused=false; setButtons(false);
-    }
-    function play(){
-      if (currentUtterance && isPaused && synth.speaking){
-        synth.resume(); isPaused=false; setButtons(true); return;
-      }
-      stop();
-      const text=getTextFromSection(section);
-      if (!text) return;
-      const utt=new SpeechSynthesisUtterance(text);
-      utt.lang  =(preferred && preferred.lang) || 'es-ES';
-      utt.voice = preferred || null;
-      utt.rate  = parseFloat(rateCtrl?.value || '1');
-      utt.onend   = ()=>{ currentUtterance=null; setButtons(false); };
-      utt.onerror = ()=>{ currentUtterance=null; setButtons(false); };
-      currentUtterance=utt; synth.speak(utt); isPaused=false; setButtons(true);
-    }
-    function pause(){
-      if (currentUtterance && !isPaused && synth.speaking){
-        synth.pause(); isPaused=true; playBtn.disabled=false;
-      }
-    }
-
-    playBtn?.addEventListener('click',  play);
-    pauseBtn?.addEventListener('click', pause);
-    stopBtn?.addEventListener('click',  stop);
-    rateCtrl?.addEventListener('change', ()=>{ if (currentUtterance && !isPaused && synth.speaking){ stop(); setTimeout(play,80);} });
-
-    // Atajos: solo cuando la sección está visible
-    document.addEventListener('keydown', (e)=>{
-      const activePane = document.querySelector('.content-pane.active');
-      if (!activePane || activePane.id !== targetId) return;
-      if (e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA') return;
-      if (e.code==='Space'){ e.preventDefault(); (currentUtterance && !isPaused && synth.speaking) ? pause() : play(); }
-      if (e.code==='Tab' && !e.shiftKey){ stop(); }
-    });
-  });
-});
-</script>
-
-  <script>
-// ==== TTS para acordeón (lee solo el <details> abierto en #contenido) ====
-document.addEventListener('DOMContentLoaded', () => {
-  const synth = window.speechSynthesis;
-  let voices=[], preferred=null;
-  function loadVoices(){
-    voices = synth.getVoices();
-    preferred = voices.find(v=>v.name.includes('Paulina'))
-             || voices.find(v=>(v.lang||'').toLowerCase().startsWith('es'))
-             || voices[0] || null;
-  }
-  loadVoices();
-  if (synth.onvoiceschanged!==undefined) synth.onvoiceschanged=loadVoices;
-
-  const ctrl = document.querySelector('.speech-controls[data-mode="accordion"][data-container="#contenido"]');
-  if (!ctrl) return;
-  const container = document.querySelector('#contenido');
-
-  const playBtn  = ctrl.querySelector('.play-btn');
-  const pauseBtn = ctrl.querySelector('.pause-btn');
-  const stopBtn  = ctrl.querySelector('.stop-btn');
-  const rateCtrl = ctrl.querySelector('.speech-rate');
-
-  let currentUtterance=null, isPaused=false;
-
-  function getActiveDetails(){ return container.querySelector('details[open]') || container.querySelector('details'); }
-  function getDetailsText(det){
-    if (!det) return '';
-    const parts=[];
-    const sum=det.querySelector(':scope > summary');
-    if (sum){ const t=(sum.textContent||'').trim(); if (t) parts.push(t + '. . . '); }
-    const bodyNodes = det.querySelectorAll(':scope > :not(summary)');
-    if (bodyNodes.length){
-      bodyNodes.forEach(n=>{
-        n.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,figcaption,pre').forEach(el=>{
-          const t=(el.textContent||'').trim(); if (t) parts.push(t + ' ');
-        });
-        if (!n.querySelector('h1,h2,h3,h4,h5,h6,p,li,figcaption,pre')){
-          const t=(n.textContent||'').trim(); if (t) parts.push(t + ' ');
-        }
-      });
-    }else{
-      const t=(det.textContent||'').trim(); if (t) parts.push(t);
-    }
-    return parts.join('').trim();
-  }
-  function setButtons(playing){
-    playBtn.disabled  = playing && !isPaused;
-    pauseBtn.disabled = !playing;
-    stopBtn.disabled  = !playing;
-  }
-  function stop(){
-    if (synth.speaking || synth.pending) synth.cancel();
-    currentUtterance=null; isPaused=false; setButtons(false);
-  }
-  function play(){
-    if (currentUtterance && isPaused && synth.speaking){ synth.resume(); isPaused=false; setButtons(true); return; }
-    stop();
-    const det=getActiveDetails(); const text=getDetailsText(det);
-    if (!text) return;
-    const utt=new SpeechSynthesisUtterance(text);
-    utt.lang  =(preferred && preferred.lang) || 'es-ES';
-    utt.voice = preferred || null;
-    utt.rate  = parseFloat(rateCtrl?.value || '1');
-    utt.onend   = ()=>{ currentUtterance=null; setButtons(false); };
-    utt.onerror = ()=>{ currentUtterance=null; setButtons(false); };
-    currentUtterance=utt; synth.speak(utt); isPaused=false; setButtons(true);
-  }
-  function pause(){
-    if (currentUtterance && !isPaused && synth.speaking){ synth.pause(); isPaused=true; playBtn.disabled=false; }
-  }
-
-  playBtn.addEventListener('click',  play);
-  pauseBtn.addEventListener('click', pause);
-  stopBtn.addEventListener('click',  stop);
-  rateCtrl?.addEventListener('change', ()=>{ if (currentUtterance && !isPaused && synth.speaking){ stop(); setTimeout(play,80);} });
-
-  // Si se abre otro acordeón, corta la lectura
-  container.querySelectorAll('details').forEach(d=>{
-    d.addEventListener('toggle', ()=>{ if (d.open) stop(); });
-  });
-
-  // Atajos cuando "contenido" esté visible
-  document.addEventListener('keydown', (e)=>{
-    const activePane=document.querySelector('.content-pane.active');
-    if (!activePane || activePane.id!=='contenido') return;
-    if (e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA') return;
-    if (e.code==='Space'){ e.preventDefault(); (currentUtterance && !isPaused && synth.speaking) ? pause() : play(); }
-    if (e.code==='Tab' && !e.shiftKey){ stop(); }
-    if (e.code==='Escape'){ stop(); }
-  });
-});
-</script>
-
- 
-  
 </body>
 </html>

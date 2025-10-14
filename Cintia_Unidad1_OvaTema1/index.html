@@ -27,7 +27,7 @@
   #status{min-width:90px;text-align:center;color:var(--muted);font-weight:700}
   #prog{height:6px;background:#0b1220;border:1px solid var(--ring);border-radius:999px;overflow:hidden}
   #prog>span{display:block;height:100%;background:linear-gradient(90deg,#60a5fa,#a78bfa);width:0%}
-  #log{white-space:pre-wrap;color:#fca5a5;font-size:12px;padding:6px 12px}
+  #log{white-space:pre-wrap;color:#a7f3d0;font-size:12px;padding:6px 12px}
 </style>
 </head>
 <body>
@@ -65,22 +65,50 @@
   </footer>
 </div>
 
-<!-- Librerías (CDN). SIN integrity ni worker para que funcionen en file:// -->
+<!-- jQuery + turn.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.3.136/pdf.min.js"></script>
-<script> pdfjsLib.GlobalWorkerOptions.workerSrc = null; </script>
+
+<!-- JSZip + FileSaver -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
 <script>
+/* ===== CARGA DINÁMICA CON FALLBACK PARA PDF.js ===== */
+(async function ensurePdfJs(){
+  if (window.pdfjsLib) return;
+  const urls = [
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.3.136/pdf.min.js",
+    "https://unpkg.com/pdfjs-dist@4.3.136/build/pdf.min.js",
+    "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.3.136/build/pdf.min.js"
+  ];
+  for (const u of urls){
+    try { await loadScript(u); if (window.pdfjsLib) break; } catch {}
+  }
+  if (!window.pdfjsLib){
+    document.getElementById('log').textContent = "No se pudo cargar PDF.js (¿sin internet?). Aun así puedes subir a un servidor y funcionará.";
+  }
+  // modo sin worker para file://
+  if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = null;
+  function loadScript(src){
+    return new Promise((res,rej)=>{ const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s); });
+  }
+})();
+</script>
+
+<script>
 (function(){
-  // --- util acceso/habilitar botones (evita el ícono de prohibido) ---
+  // ===== util =====
   function setEnabled(btn, enabled){
     btn.setAttribute('aria-disabled', enabled ? 'false' : 'true');
     btn.style.pointerEvents = enabled ? 'auto' : 'none';
     btn.style.opacity = enabled ? '1' : '.55';
   }
+  function progress(pct){
+    if(pct==null){ $prog.setAttribute('aria-hidden','true'); $bar.style.width='0%'; }
+    else { $prog.removeAttribute('aria-hidden'); $bar.style.width = pct + '%'; }
+  }
+  function logInfo(msg,color='#a7f3d0'){ $log.textContent = msg; $log.style.color=color; }
 
   const $book = document.getElementById('book');
   const $file = document.getElementById('pdfFile');
@@ -98,121 +126,112 @@
   let pdfArrayBuffer = null;
   let pagesDataURLs = [];
   let titleForZip = 'flip_book';
+  let pageCount = 0;
 
-  // Estado inicial: solo “Cargar PDF” activo
-  setEnabled($build, false);
-  setEnabled($exportZip, false);
-  setEnabled($prev, false);
-  setEnabled($next, false);
+  // Estado inicial
+  setEnabled($build, false); setEnabled($exportZip,false);
+  setEnabled($prev,false); setEnabled($next,false);
 
-  // Cargar archivo
+  // ===== selección de archivo =====
   $file.addEventListener('change', async (e)=>{
-    clearLog();
     const f = e.target.files && e.target.files[0];
-    if(!f){ info('No seleccionaste archivo.'); return; }
-
-    titleForZip = (f.name || 'flip_book').replace(/\.pdf$/i,'').replace(/[^\w\-]+/g,'_');
+    if(!f){ logInfo('No seleccionaste archivo.','#fde68a'); return; }
+    titleForZip = (f.name||'flip_book').replace(/\.pdf$/i,'').replace(/[^\w\-]+/g,'_');
     $fileName.textContent = ' — ' + f.name;
-    $book.innerHTML = '<div class="loading">Analizando PDF…</div>';
-    try{
-      pdfArrayBuffer = await f.arrayBuffer();
-      // prueba rápida: abre y cuenta páginas (sin worker)
-      const probe = await pdfjsLib.getDocument({data: pdfArrayBuffer, disableWorker:true}).promise;
-      info(`PDF cargado ✓ • Páginas: ${probe.numPages}`);
-      $status.textContent = `0 / ${probe.numPages}`;
-      setEnabled($build, true);       // << HABILITADO YA
-      setEnabled($exportZip, false);
-      $book.innerHTML = '<div class="loading">Listo. Pulsa “Renderizar”.</div>';
-    }catch(err){
-      error('Error al leer el PDF. Detalle: ' + (err && err.message ? err.message : err));
-      setEnabled($build, false);
-      pdfArrayBuffer = null;
-      $book.innerHTML = '<div class="loading">No se pudo leer el PDF.</div>';
+    $book.innerHTML = '<div class="loading">PDF listo. Pulsa “Renderizar”.</div>';
+    $status.textContent = '…';
+    // habilitar “Renderizar” SIEMPRE tras elegir
+    setEnabled($build,true);
+    setEnabled($exportZip,false);
+    pagesDataURLs = [];
+    pdfArrayBuffer = await f.arrayBuffer();
+    // intenta contar páginas (si PDF.js ya cargó)
+    if (window.pdfjsLib){
+      try{
+        const probe = await pdfjsLib.getDocument({data: pdfArrayBuffer, disableWorker:true}).promise;
+        pageCount = probe.numPages;
+        $status.textContent = `0 / ${pageCount}`;
+        logInfo(`PDF cargado ✓ • Páginas: ${pageCount}`);
+      }catch{
+        logInfo('PDF cargado. No se pudo contar páginas aún (PDF.js cargando).','#fde68a');
+      }
+    }else{
+      logInfo('PDF cargado. Esperando PDF.js (se intenta por CDN)…','#fde68a');
     }
   });
 
-  // Renderizar -> imágenes + flipbook
+  // ===== render =====
   $build.addEventListener('click', async ()=>{
-    if(!pdfArrayBuffer){ warn('Primero elige un PDF.'); return; }
-    setEnabled($build, false);
-    setEnabled($prev, false);
-    setEnabled($next, false);
-    setEnabled($exportZip, false);
-    pagesDataURLs = [];
-    progress(0);
+    if(!pdfArrayBuffer){ logInfo('Primero elige un PDF.','#fde68a'); return; }
+    if(!window.pdfjsLib){ logInfo('PDF.js no está disponible. Revisa tu conexión o abre este archivo desde un servidor local.','#fecaca'); return; }
+    setEnabled($build,false); setEnabled($prev,false); setEnabled($next,false); setEnabled($exportZip,false);
+    pagesDataURLs = []; progress(0);
     $book.innerHTML = '<div class="loading">Renderizando…</div>';
-
     try{
       const pdf = await pdfjsLib.getDocument({data: pdfArrayBuffer, disableWorker:true}).promise;
-      const total = pdf.numPages;
+      const total = pdf.numPages; pageCount = total;
       const scale = parseFloat($scale.value);
-
-      for(let p=1; p<=total; p++){
+      for (let p=1; p<=total; p++){
         const page = await pdf.getPage(p);
         const viewport = page.getViewport({ scale });
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d', {alpha:false});
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
+        canvas.width = viewport.width; canvas.height = viewport.height;
         await page.render({canvasContext: ctx, viewport}).promise;
-
         let url; try{ url = canvas.toDataURL('image/webp',0.92); }catch{ url = canvas.toDataURL('image/png'); }
         pagesDataURLs.push(url);
         progress(Math.round(p*100/total));
         $status.textContent = `${p} / ${total}`;
       }
-
       mountFlipbook(pagesDataURLs);
-      setEnabled($exportZip, true);
-      info('Render finalizado ✓');
+      setEnabled($exportZip,true);
+      logInfo('Render finalizado ✓');
     }catch(err){
-      error('Falló el render: ' + (err && err.message ? err.message : err));
-      $book.innerHTML = '<div class="loading">Ocurrió un error al renderizar.</div>';
+      console.error(err);
+      logInfo('Error al renderizar: ' + (err && err.message ? err.message : err), '#fecaca');
+      $book.innerHTML = '<div class="loading">Ocurrió un error.</div>';
     }finally{
       progress(null);
-      setEnabled($build, true);
+      setEnabled($build,true);
     }
   });
 
+  // ===== flipbook =====
   function mountFlipbook(imgs){
     $book.innerHTML = '';
     imgs.forEach((src,idx)=>{
       const page = document.createElement('div');
       if(idx===0 || idx===imgs.length-1) page.className='hard';
-      const img = document.createElement('img');
-      img.src = src; img.alt = `Página ${idx+1}`;
+      const img = new Image();
+      img.src=src; img.alt=`Página ${idx+1}`;
       img.style.width='100%'; img.style.height='100%'; img.style.objectFit='contain'; img.draggable=false;
-      page.appendChild(img);
-      $book.appendChild(page);
+      page.appendChild(img); $book.appendChild(page);
     });
 
     const $ = window.jQuery;
-    const probe = new Image();
-    probe.onload = ()=>{
-      const ratio = probe.naturalHeight / probe.naturalWidth;
-      const isMobile = ()=> innerWidth < 992;
+    const t = new Image();
+    t.onload = ()=>{
+      const ratio = t.naturalHeight / t.naturalWidth;
+      const isM = ()=> innerWidth < 992;
       const compute = ()=>{
         const maxW = Math.min(innerWidth*0.95, 1400);
         const availH = Math.max(220, innerHeight - 180);
-        const maxByW = isMobile()? maxW : Math.floor(maxW/2);
+        const maxByW = isM()? maxW : Math.floor(maxW/2);
         const maxByH = Math.round(availH / ratio);
-        const pw = Math.max(220, Math.min(maxByW, maxByH));
-        return { w: isMobile()? pw : pw*2, h: Math.round(pw*ratio) };
+        const pw = Math.max(220, Math.min(maxByW,maxByH));
+        return { w: isM()? pw : pw*2, h: Math.round(pw*ratio) };
       };
       const s = compute();
-      $($book).turn({
-        width: s.w, height: s.h,
-        display: isMobile()? 'single' : 'double',
-        autoCenter: true, elevation: 80, acceleration: true, duration: 800, turnCorners: 'bl,br,tl,tr'
-      });
-      $book.setAttribute('data-mode', isMobile()? 'single':'double');
+      $($book).turn({ width:s.w, height:s.h, display:isM()?'single':'double',
+        autoCenter:true, elevation:80, acceleration:true, duration:800, turnCorners:'bl,br,tl,tr' });
+      $book.setAttribute('data-mode', isM()?'single':'double');
 
-      const onResize = ()=>{
-        const s2 = compute();
-        try{ $($book).turn('display', isMobile()? 'single':'double'); }catch{}
-        try{ $($book).turn('size', s2.w, s2.h); }catch{}
-        try{ $($book).turn('center'); }catch{}
-        $book.setAttribute('data-mode', isMobile()? 'single':'double');
+      const onResize=()=>{
+        const s2=compute();
+        try{$($book).turn('display', isM()?'single':'double');}catch{}
+        try{$($book).turn('size', s2.w, s2.h);}catch{}
+        try{$($book).turn('center');}catch{}
+        $book.setAttribute('data-mode', isM()?'single':'double');
         updateStatus();
       };
       addEventListener('resize', onResize);
@@ -229,28 +248,24 @@
       $prev.onclick = ()=> $($book).turn('previous');
       $next.onclick = ()=> $($book).turn('next');
 
-      // clic izquierda/derecha
       $book.addEventListener('click',(e)=>{
-        const r = $book.getBoundingClientRect();
-        const x = e.clientX - r.left;
+        const r = $book.getBoundingClientRect(); const x = e.clientX - r.left;
         if(x < r.width/2) $($book).turn('previous'); else $($book).turn('next');
       });
     };
-    probe.src = imgs[0];
+    t.src = imgs[0];
   }
 
-  // Exportar ZIP
+  // ===== ZIP =====
   $exportZip.addEventListener('click', async ()=>{
-    if(!pagesDataURLs.length){ warn('Aún no hay páginas.'); return; }
+    if(!pagesDataURLs.length){ logInfo('Primero renderiza.','#fde68a'); return; }
     const zip = new JSZip();
     const dir = titleForZip;
     const images = zip.folder(`${dir}/images`);
     const ext = pagesDataURLs[0].startsWith('data:image/png') ? 'png' : 'webp';
-
-    for(let i=0;i<pagesDataURLs.length;i++){
+    for (let i=0;i<pagesDataURLs.length;i++){
       images.file(`page-${i+1}.${ext}`, pagesDataURLs[i].split(',')[1], {base64:true});
     }
-
     const pagesJson = '[' + pagesDataURLs.map((_,i)=>`"images/page-${i+1}.${ext}"`).join(',') + ']';
     const index =
 `<!doctype html><html lang="es"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
@@ -276,19 +291,8 @@ const isM=()=>innerWidth<992;const t=new Image();t.onload=()=>{const r=t.natural
     zip.file(`${dir}/README.txt`, `Sube la carpeta "${titleForZip}" y abre index.html. (Usa CDN para jQuery/turn.js).`);
     const blob = await zip.generateAsync({type:'blob', compression:'DEFLATE'});
     saveAs(blob, `${titleForZip}.zip`);
-    info('ZIP generado ✓');
+    logInfo('ZIP generado ✓');
   });
-
-  // Helpers UI
-  function progress(pct){
-    if(pct==null){ $prog.setAttribute('aria-hidden','true'); $bar.style.width='0%'; }
-    else { $prog.removeAttribute('aria-hidden'); $bar.style.width = pct + '%'; }
-  }
-  function info(msg){ $log.textContent = msg; $log.style.color = '#a7f3d0'; }
-  function warn(msg){ $log.textContent = msg; $log.style.color = '#fde68a'; }
-  function error(msg){ $log.textContent = msg; $log.style.color = '#fecaca'; }
-  function clearLog(){ $log.textContent=''; }
-
 })();
 </script>
 </body>

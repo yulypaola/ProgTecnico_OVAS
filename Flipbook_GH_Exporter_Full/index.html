@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flipbook Exporter – GitHub Pages (100% en el navegador)</title>
+  <meta name="description" content="Sube un PDF y genera un ZIP con un flipbook estático sin marcas de agua, listo para descargar y publicar." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="bar">
+    <h1>Flipbook Exporter</h1>
+    <p class="subtitle">Elige un PDF → vista previa → descarga un <strong>.zip</strong> con un flipbook sin marcas de agua (dos páginas).</p>
+    <div id="libStatus" class="lib-status">Cargando librerías…</div>
+  </header>
+
+  <main>
+    <section class="panel">
+      <div class="picker">
+        <label class="file">
+          <input id="file" type="file" accept="application/pdf" />
+          📄 Selecciona tu PDF
+        </label>
+        <span id="fileName" class="muted">Ningún archivo seleccionado</span>
+      </div>
+
+      <div class="actions">
+        <button id="preview" class="btn" disabled>Vista previa</button>
+        <select id="scale" class="select" title="Resolución de exportación">
+          <option value="1">x1 (rápido)</option>
+          <option value="1.5" selected>x1.5</option>
+          <option value="2">x2</option>
+          <option value="3">x3 (lento/alta)</option>
+        </select>
+        <button id="export" class="btn primary" disabled>Exportar flipbook (.zip)</button>
+      </div>
+    </section>
+
+    <section class="book-wrap" id="previewWrap" hidden>
+      <div class="spread">
+        <div class="page left"><div class="page-inner"><canvas id="canvasLeft"></canvas></div></div>
+        <div class="page right"><div class="page-inner"><canvas id="canvasRight"></canvas></div></div>
+      </div>
+      <div class="toolbar">
+        <button class="btn" id="prev" title="Anterior (←)">◀</button>
+        <span class="page-meta">Página</span>
+        <input class="jump" id="pageInput" type="number" min="1" value="1" />
+        <span class="page-meta">de <span id="total">0</span></span>
+        <button class="btn" id="next" title="Siguiente (→)">▶</button>
+      </div>
+      <p class="muted small center">Vista previa renderizada con PDF.js (sin marcas de agua). En móvil verás una sola página.</p>
+    </section>
+
+    <section class="howto">
+      <h2>¿Qué hay dentro del ZIP exportado?</h2>
+      <pre><code>flipbook/
+ ├─ index.html          ← visor libro (2 páginas)
+ ├─ css/style.css
+ ├─ js/app.js
+ └─ pages/page-001.png, page-002.png, ...</code></pre>
+      <p class="muted small">El visor exportado no necesita librerías ni Internet; usa solo imágenes PNG generadas en tu navegador.</p>
+    </section>
+  </main>
+
+  <!-- PDF.js (CDN) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.7.76/build/pdf.min.js" onload="window.__pdfLoaded=true"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.7.76/build/pdf.worker.min.js" onload="window.__pdfWorkerLoaded=true"></script>
+
+  <!-- Nuestro JS (incluye constructor de ZIP propio, sin dependencias) -->
+  <script defer src="js/app_full.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+{
+  "pageCount": 14,
+  "pages": [
+    {
+      "src": "./images/page-1-b5f394ad.webp"
+    },
+    {
+      "src": "./images/page-2-93c23f05.webp"
+    },
+    {
+      "src": "./images/page-3-f6e96339.webp"
+    },
+    {
+      "src": "./images/page-4-916565ee.webp"
+    },
+    {
+      "src": "./images/page-5-ba24b5b5.webp"
+    },
+    {
+      "src": "./images/page-6-4ec23e65.webp"
+    },
+    {
+      "src": "./images/page-7-f4884f6a.webp"
+    },
+    {
+      "src": "./images/page-8-a17c6862.webp"
+    },
+    {
+      "src": "./images/page-9-4a966a91.webp"
+    },
+    {
+      "src": "./images/page-10-bc484d47.webp"
+    },
+    {
+      "src": "./images/page-11-e041a910.webp"
+    },
+    {
+      "src": "./images/page-12-f97c0412.webp"
+    },
+    {
+      "src": "./images/page-13-e9552365.webp"
+    },
+    {
+      "src": "./images/page-14-a204c2c4.webp"
+    }
+  ],
+  "generatedAt": "2025-10-14T02:32:33.084Z",
+  "source": "Guia_Unidad2_Tema1_BuclesNew.pdf",
+  "integrity": {
+    "images/page-1-b5f394ad.webp": "b5f394ad",
+    "images/page-2-93c23f05.webp": "93c23f05",
+    "images/page-3-f6e96339.webp": "f6e96339",
+    "images/page-4-916565ee.webp": "916565ee",
+    "images/page-5-ba24b5b5.webp": "ba24b5b5",
+    "images/page-6-4ec23e65.webp": "4ec23e65",
+    "images/page-7-f4884f6a.webp": "f4884f6a",
+    "images/page-8-a17c6862.webp": "a17c6862",
+    "images/page-9-4a966a91.webp": "4a966a91",
+    "images/page-10-bc484d47.webp": "bc484d47",
+    "images/page-11-e041a910.webp": "e041a910",
+    "images/page-12-f97c0412.webp": "f97c0412",
+    "images/page-13-e9552365.webp": "e9552365",
+    "images/page-14-a204c2c4.webp": "a204c2c4"
+  }
+}

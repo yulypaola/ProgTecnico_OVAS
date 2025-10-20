@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flipbook</title>
+<style>
+  :root{
+    --bg:#111; --fg:#eaeaea; --muted:#9aa0a6; --accent:#3aa675;
+    --shadow: 0 12px 36px rgba(0,0,0,.38);
+    --flip-duration: 800ms;
+    --fold-width: 24px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans";}
+  .topbar{display:flex;align-items:center;gap:12px;padding:10px 12px;border-bottom:1px solid #222;
+    background:#0b0b0b;position:sticky;top:0;z-index:10}
+  .title{font-weight:600;letter-spacing:.2px}
+  .spacer{flex:1}
+  .controls{display:flex;align-items:center;gap:6px}
+  button{background:#1b1b1b;border:1px solid #2a2a2a;color:var(--fg);padding:6px 10px;border-radius:8px;
+    cursor:pointer;font-size:14px}
+  button:hover:not(:disabled){border-color:var(--accent)}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  .counter{color:var(--muted);font-size:14px;min-width:160px;text-align:right}
+  .stage{position:fixed;top:50px;left:0;right:0;bottom:0;display:grid;place-items:center;padding:12px}
+  .book{width:100%;height:100%;max-width:1600px;max-height:calc(100vh - 80px);
+    display:grid;grid-template-columns:1fr 1fr;gap:12px;perspective:2000px}
+  .single .book{grid-template-columns:1fr}
+  .page{background:#000;border-radius:10px;overflow:hidden;position:relative;box-shadow:var(--shadow);
+    display:grid;place-items:center}
+  .page img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+  .clickzone{position:absolute;top:0;bottom:0;width:25%}
+  .clickzone.left{left:0;cursor:pointer}
+  .clickzone.right{right:0;cursor:pointer}
+
+  .flip-overlay{position:absolute;inset:0;transform-style:preserve-3d;pointer-events:none}
+  .flip-overlay.animate{animation-duration:var(--flip-duration);animation-timing-function:ease-in-out}
+  .flip-next.animate{animation-name:flipNext}
+  .flip-prev.animate{animation-name:flipPrev}
+  .face{position:absolute;inset:0;backface-visibility:hidden;display:grid;place-items:center;background:#000}
+  .face img{max-width:100%;max-height:100%;object-fit:contain}
+  .back{transform:rotateY(180deg)}
+
+  .shadeL,.shadeR{position:absolute;top:0;bottom:0;width:var(--fold-width);pointer-events:none}
+  .shadeL{left:0;background:linear-gradient(to right, rgba(0,0,0,var(--shadeL,0.45)) 0%, rgba(0,0,0,0) 100%)}
+  .shadeR{right:0;background:linear-gradient(to left, rgba(0,0,0,var(--shadeR,0.45)) 0%, rgba(0,0,0,0) 100%)}
+
+  @keyframes flipNext{0%{transform:rotateY(0deg)}45%{transform:rotateY(-90deg)}100%{transform:rotateY(-180deg)}}
+  @keyframes flipPrev{0%{transform:rotateY(0deg)}45%{transform:rotateY(90deg)}100%{transform:rotateY(180deg)}}
+
+  @media (max-width:768px){.book{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+  <div class="topbar" role="region" aria-label="Barra de navegación del flipbook">
+    <div class="title">Flipbook</div>
+    <div class="spacer"></div>
+    <div class="controls">
+      <button id="btnFirst" aria-label="Primera página">⏮</button>
+      <button id="btnPrev" aria-label="Página anterior">◀</button>
+      <button id="btnNext" aria-label="Página siguiente">▶</button>
+      <button id="btnLast" aria-label="Última página">⏭</button>
+    </div>
+    <div id="counter" class="counter" aria-live="polite" aria-atomic="true"></div>
+  </div>
+
+  <div id="root" class="stage">
+    <div id="book" class="book"></div>
+  </div>
+
+<script>
+const IMAGES = [
+"img/page-001.png",
+    "img/page-002.png",
+    "img/page-003.png",
+    "img/page-004.png",
+    "img/page-005.png",
+    "img/page-006.png",
+    "img/page-007.png",
+    "img/page-008.png",
+    "img/page-009.png",
+    "img/page-010.png",
+    "img/page-011.png",
+    "img/page-012.png",
+    "img/page-013.png",
+    "img/page-014.png",
+    "img/page-015.png"
+];
+
+let currentIndex = 0;
+const root = document.getElementById('root');
+const book = document.getElementById('book');
+const counterEl = document.getElementById('counter');
+const btnFirst = document.getElementById('btnFirst');
+const btnPrev  = document.getElementById('btnPrev');
+const btnNext  = document.getElementById('btnNext');
+const btnLast  = document.getElementById('btnLast');
+
+function isSingleMode(){return window.matchMedia("(max-width: 768px)").matches;}
+function clampIndex(i){
+  const max=IMAGES.length-1;
+  if(isSingleMode()){return Math.max(0, Math.min(i,max));}
+  if(i%2!==0) i--; if(i<0) i=0; if(i>max) i=(max%2===0)?max:max-1; return i;
+}
+
+function pageDiv(src){
+  const d=document.createElement('div'); d.className='page';
+  const img=new Image(); img.src=src; img.loading='lazy'; img.decoding='async'; img.alt='Página';
+  d.appendChild(img);
+  const L=document.createElement('div'); L.className='clickzone left'; L.onclick=goPrev;
+  const R=document.createElement('div'); R.className='clickzone right'; R.onclick=goNext;
+  d.appendChild(L); d.appendChild(R);
+  setupDrag(d);
+  return d;
+}
+
+function formatCounter(){
+  const total=IMAGES.length;
+  if(isSingleMode()) return "Página "+(currentIndex+1)+" de "+total;
+  const L=currentIndex+1, R=Math.min(currentIndex+2,total);
+  return (L===R) ? ("Página "+L+" de "+total) : ("Páginas "+L+"–"+R+" de "+total);
+}
+
+function updateButtons(){
+  const total=IMAGES.length;
+  if(isSingleMode()){
+    btnFirst.disabled=currentIndex===0;
+    btnPrev.disabled=currentIndex===0;
+    btnNext.disabled=currentIndex>=total-1;
+    btnLast.disabled=currentIndex>=total-1;
+  }else{
+    btnFirst.disabled=currentIndex===0;
+    btnPrev.disabled=currentIndex===0;
+    const endPair=(currentIndex>=total-2)||(currentIndex===total-1);
+    btnNext.disabled=endPair; btnLast.disabled=endPair;
+  }
+}
+
+function renderSpread(){
+  book.innerHTML='';
+  const single=isSingleMode();
+  if(single){
+    root.classList.add('single'); book.classList.add('single');
+    book.appendChild(pageDiv(IMAGES[currentIndex]));
+  }else{
+    root.classList.remove('single'); book.classList.remove('single');
+    book.appendChild(pageDiv(IMAGES[currentIndex]));
+    if(currentIndex+1<IMAGES.length) book.appendChild(pageDiv(IMAGES[currentIndex+1]));
+  }
+  counterEl.textContent=formatCounter();
+  updateButtons();
+}
+
+function createFlipOverlay(frontSrc, backSrc, dir){
+  const overlay=document.createElement('div');
+  overlay.className='flip-overlay';
+  overlay.style.setProperty('--shadeL','0');
+  overlay.style.setProperty('--shadeR','0');
+
+  const front=document.createElement('div'); front.className='face front';
+  const fImg=new Image(); fImg.src=frontSrc; front.appendChild(fImg);
+
+  const back=document.createElement('div'); back.className='face back';
+  const bImg=new Image(); bImg.src=backSrc; back.appendChild(bImg);
+
+  const shadeL=document.createElement('div'); shadeL.className='shadeL';
+  const shadeR=document.createElement('div'); shadeR.className='shadeR';
+
+  overlay.appendChild(front); overlay.appendChild(back);
+  overlay.appendChild(shadeL); overlay.appendChild(shadeR);
+
+  overlay.dataset.dir=dir;
+  overlay.style.transformOrigin = (dir==='next') ? 'right center' : 'left center';
+  return overlay;
+}
+
+let flipping=false;
+
+function goNext(){
+  if(flipping) return;
+  if(isSingleMode()){
+    if(currentIndex>=IMAGES.length-1) return;
+    flipSingle('next');
+  }else{
+    if(currentIndex>=IMAGES.length-2) return;
+    flipDouble('next');
+  }
+}
+
+function goPrev(){
+  if(flipping) return;
+  if(isSingleMode()){
+    if(currentIndex<=0) return;
+    flipSingle('prev');
+  }else{
+    if(currentIndex<=0) return;
+    flipDouble('prev');
+  }
+}
+
+function flipSingle(direction){
+  flipping=true;
+  const from=currentIndex;
+  const to=clampIndex(currentIndex + (direction==='next'?1:-1));
+  const page=book.querySelector('.page');
+  const overlay=createFlipOverlay(IMAGES[from], IMAGES[to], direction==='next' ? 'next':'prev');
+  page.appendChild(overlay);
+  requestAnimationFrame(()=>{ overlay.classList.add('animate', direction==='next'?'flip-next':'flip-prev'); });
+  overlay.addEventListener('animationend', ()=>{ currentIndex=to; renderSpread(); flipping=false; }, {once:true});
+}
+
+function flipDouble(direction){
+  flipping=true;
+  if(direction==='next'){
+    const rightPage=book.children[1]||book.children[0];
+    const fromFront=IMAGES[currentIndex+1]||IMAGES[currentIndex];
+    const nextLeftIndex=currentIndex+2;
+    const toBack=IMAGES[nextLeftIndex]||IMAGES[IMAGES.length-1];
+    const overlay=createFlipOverlay(fromFront,toBack,'next');
+    rightPage.appendChild(overlay);
+    requestAnimationFrame(()=>{ overlay.classList.add('animate','flip-next'); });
+    overlay.addEventListener('animationend', ()=>{ currentIndex=clampIndex(currentIndex+2); renderSpread(); flipping=false; }, {once:true});
+  }else{
+    const leftPage=book.children[0];
+    const fromFront=IMAGES[currentIndex];
+    const prevRightIndex=currentIndex-1;
+    const toBack=IMAGES[prevRightIndex];
+    const overlay=createFlipOverlay(fromFront,toBack,'prev');
+    leftPage.appendChild(overlay);
+    requestAnimationFrame(()=>{ overlay.classList.add('animate','flip-prev'); });
+    overlay.addEventListener('animationend', ()=>{ currentIndex=clampIndex(currentIndex-2); renderSpread(); flipping=false; }, {once:true});
+  }
+}
+
+function setupDrag(pageEl){
+  let startX=null, dragging=false, overlay=null, dir=null, width=0;
+
+  function onStart(ev){
+    if(flipping) return;
+    const rect=pageEl.getBoundingClientRect();
+    width=rect.width;
+    const x=(ev.touches?ev.touches[0].clientX:ev.clientX)-rect.left;
+
+    if(isSingleMode()){
+      dir = (x>rect.width*0.6) ? 'next' : (x<rect.width*0.4 ? 'prev' : null);
+      if(!dir) return;
+    }else{
+      if(x>rect.width*0.6 && pageEl===book.children[1]) dir='next';
+      else if(x<rect.width*0.4 && pageEl===book.children[0]) dir='prev';
+      else return;
+    }
+
+    startX = ev.touches?ev.touches[0].clientX:ev.clientX;
+    dragging=true;
+
+    if(isSingleMode()){
+      const from=currentIndex;
+      const to=clampIndex(currentIndex + (dir==='next'?1:-1));
+      overlay=createFlipOverlay(IMAGES[from], IMAGES[to], dir);
+    }else{
+      if(dir==='next'){
+        const fromFront=IMAGES[currentIndex+1]||IMAGES[currentIndex];
+        const toBack=IMAGES[currentIndex+2]||IMAGES[IMAGES.length-1];
+        overlay=createFlipOverlay(fromFront,toBack,'next');
+      }else{
+        const fromFront=IMAGES[currentIndex];
+        const toBack=IMAGES[currentIndex-1];
+        overlay=createFlipOverlay(fromFront,toBack,'prev');
+      }
+    }
+    pageEl.appendChild(overlay);
+    ev.preventDefault();
+  }
+
+  function onMove(ev){
+    if(!dragging || !overlay) return;
+    const clientX = ev.touches?ev.touches[0].clientX:ev.clientX;
+    const delta = clientX - startX;
+    let progress = Math.min(1, Math.max(0, Math.abs(delta)/ (width*0.9)));
+    const angle = (dir==='next' ? -180 : 180) * progress;
+    overlay.style.transform = "rotateY(" + angle + "deg)";
+    const shade = 0.55 * progress;
+    overlay.style.setProperty('--shadeL', dir==='prev' ? shade : 0);
+    overlay.style.setProperty('--shadeR', dir==='next' ? shade : 0);
+    ev.preventDefault();
+  }
+
+  function onEnd(ev){
+    if(!dragging || !overlay) return;
+    const endX = (ev.changedTouches?ev.changedTouches[0].clientX:ev.clientX) || startX;
+    const moved = Math.abs(endX - startX);
+    const willCommit = moved > (width * 0.35);
+    if(willCommit){
+      overlay.classList.add('animate', dir==='next'?'flip-next':'flip-prev');
+      overlay.addEventListener('animationend', ()=>{
+        if(isSingleMode()){
+          currentIndex = clampIndex(currentIndex + (dir==='next'?1:-1));
+        }else{
+          currentIndex = clampIndex(currentIndex + (dir==='next'?2:-2));
+        }
+        renderSpread(); flipping=false;
+      }, {once:true});
+      flipping=true;
+    }else{
+      overlay.style.transition='transform 300ms ease';
+      overlay.style.transform='rotateY(0deg)';
+      setTimeout(()=>{ overlay.remove(); }, 320);
+    }
+    dragging=false; overlay=null; dir=null; startX=null;
+    ev.preventDefault();
+  }
+
+  pageEl.addEventListener('mousedown', onStart);
+  pageEl.addEventListener('touchstart', onStart, {passive:false});
+  window.addEventListener('mousemove', onMove, {passive:false});
+  window.addEventListener('touchmove', onMove, {passive:false});
+  window.addEventListener('mouseup', onEnd, {passive:false});
+  window.addEventListener('touchend', onEnd, {passive:false});
+}
+
+function goFirst(){ if(flipping) return; currentIndex=0; renderSpread(); }
+function goLast(){
+  if(flipping) return;
+  currentIndex = isSingleMode() ? (IMAGES.length-1) : ((IMAGES.length%2===0)?IMAGES.length-2:IMAGES.length-1);
+  renderSpread();
+}
+
+btnFirst.addEventListener('click', goFirst);
+btnPrev .addEventListener('click', goPrev);
+btnNext .addEventListener('click', goNext);
+btnLast .addEventListener('click', goLast);
+
+window.addEventListener('keydown', (e)=>{
+  if(e.key==='ArrowLeft') goPrev();
+  else if(e.key==='ArrowRight') goNext();
+  else if(e.key==='Home') goFirst();
+  else if(e.key==='End') goLast();
+});
+
+let rAF=null;
+window.addEventListener('resize', ()=>{
+  if(rAF) cancelAnimationFrame(rAF);
+  rAF=requestAnimationFrame(()=>renderSpread());
+});
+
+renderSpread();
+</script>
+</body>
+</html>

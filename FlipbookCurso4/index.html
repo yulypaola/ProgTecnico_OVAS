@@ -8,10 +8,11 @@
   :root{
     --bg:#111; --fg:#eaeaea; --muted:#9aa0a6; --accent:#3aa675;
     --shadow: 0 12px 36px rgba(0,0,0,.38);
-    --flip-duration: 720ms; /* un poco más rápido */
+    --flip-duration: 720ms;
     --fold-width: 24px;
-    --zoom: 1;
+    --zoom: 1;             /* zoom del usuario */
     --bar-h: 60px;
+    --gap: 10px;           /* separación entre páginas */
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);
@@ -26,22 +27,23 @@
   button:hover:not(:disabled){border-color:var(--accent)}
   button:disabled{opacity:.45;cursor:not-allowed}
   .counter{color:var(--muted);font-size:14px;min-width:160px;text-align:right}
-  .stage{position:fixed;top:var(--bar-h);left:0;right:0;bottom:0;display:grid;place-items:center;padding:0 10px}
+
+  .stage{position:fixed;top:var(--bar-h);left:0;right:0;bottom:0;display:grid;place-items:center;padding:0 8px}
   .book-wrap{transform:scale(var(--zoom)); transform-origin:center; transition:transform 120ms ease;}
-  .book{width:min(96vw,1600px);height:calc(100vh - var(--bar-h) - 12px);
-    display:grid;grid-template-columns:1fr 1fr;gap:10px;perspective:2000px;align-items:stretch}
-  .single .book{grid-template-columns:1fr}
+  /* el tamaño real (px) del libro lo fija JS con style.width/height */
+  .book{display:grid;grid-auto-flow:column;grid-template-columns:auto auto;gap:var(--gap);
+        perspective:2000px;align-items:stretch}
+  .single .book{grid-template-columns:auto}
+
   .page{background:#000;border-radius:10px;overflow:hidden;position:relative;box-shadow:var(--shadow);
     display:grid;place-items:center}
-  .page img{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;display:block;background:#fff}
+  .page img{width:100%;height:100%;object-fit:contain;display:block;background:#fff}
   .page.blank{background:#0b0b0b} /* hoja vacía (tapa izquierda) */
 
-  /* zonas clicables */
   .clickzone{position:absolute;top:0;bottom:0;width:25%}
   .clickzone.left{left:0;cursor:pointer}
   .clickzone.right{right:0;cursor:pointer}
 
-  /* overlay de volteo */
   .flip-overlay{position:absolute;inset:0;transform-style:preserve-3d;pointer-events:none}
   .flip-overlay.animate{animation-duration:var(--flip-duration);animation-timing-function:ease-in-out}
   .flip-next.animate{animation-name:flipNext}
@@ -54,11 +56,11 @@
   .shadeL{left:0;background:linear-gradient(to right, rgba(0,0,0,var(--shadeL,0.45)) 0%, rgba(0,0,0,0) 100%)}
   .shadeR{right:0;background:linear-gradient(to left, rgba(0,0,0,var(--shadeR,0.45)) 0%, rgba(0,0,0,0) 100%)}
 
-  /* Importante: NEXT (avanzar) gira la hoja DERECHA hacia la IZQUIERDA */
+  /* Avanzar: hoja derecha → izquierda */
   @keyframes flipNext{0%{transform:rotateY(0deg)}45%{transform:rotateY(-90deg)}100%{transform:rotateY(-180deg)}}
   @keyframes flipPrev{0%{transform:rotateY(0deg)}45%{transform:rotateY(90deg)}100%{transform:rotateY(180deg)}}
 
-  @media (max-width:768px){.book{grid-template-columns:1fr}}
+  @media (max-width:768px){.book{grid-template-columns:auto}}
 </style>
 </head>
 <body>
@@ -96,9 +98,11 @@ const IMAGES = [
   "img/page-011.png","img/page-012.png","img/page-013.png","img/page-014.png","img/page-015.png"
 ];
 
-/* ==== ESTADO Y REFERENCIAS ==== */
+/* ====== Estado ====== */
 let autoTimer = null;
-let zoom = 1; const ZMIN=0.6, ZMAX=2.0, ZSTEP=0.1;
+let userZoom = 1, ZMIN=0.6, ZMAX=2.0, ZSTEP=0.1;
+let ratio = 0.7071; // fallback; se recalcula con la primera imagen (w/h)
+
 const root   = document.getElementById('root');
 const wrap   = document.querySelector('.book-wrap');
 const book   = document.getElementById('book');
@@ -112,31 +116,54 @@ const btnZoomOut = document.getElementById('btnZoomOut');
 const btnZoomReset = document.getElementById('btnZoomReset');
 const btnAuto = document.getElementById('btnAuto');
 
-/* MODELO DE NAVEGACIÓN
-   two-up (desktop): currentIndex = índice de la PÁGINA IZQUIERDA del par.
-   Cover (libro cerrado): currentIndex = -1 (sólo portada a la derecha). */
 function twoUp(){ return !window.matchMedia("(max-width: 768px)").matches; }
+/* currentIndex:
+   - móvil: índice de página mostrada
+   - desktop: índice de la PÁGINA IZQUIERDA; -1 = portada (izq vacía + pág1 derecha) */
 let currentIndex = twoUp() ? -1 : 0;
 
-function clampIndex(i){
-  if(!twoUp()) return Math.max(0, Math.min(IMAGES.length-1, i));
-  if(i < -1) i = -1;
-  if(i >= 0 && i % 2 === 1) i -= 1; // izquierda siempre par (2,4,6 → idx 1,3,5)
-  const maxLeft = (IMAGES.length % 2 === 0) ? (IMAGES.length - 2) : (IMAGES.length - 3);
-  if(i > maxLeft) i = maxLeft;
-  return i;
+/* ====== Auto-fit: dimensiona libro en px y aplica escala para encajar ====== */
+function applyAutoFit(){
+  // dimensiones del viewport util
+  const vw = root.clientWidth - 16;                 // 8px paddings
+  const vh = root.clientHeight - 8;
+
+  // Queremos definir un alto "base" de página (pageH) y ancho pageW = pageH * ratio
+  // Para que TODO quepa: para 2 páginas => (2*pageW + gap) <= vw  y pageH <= vh
+  const GAP = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--gap')) || 10;
+
+  let pageH_byHeight = vh; // limitar por alto
+  let pageH_byWidth;
+
+  if(twoUp()){
+    pageH_byWidth = (vw - GAP) / (2 * ratio);
+  }else{
+    pageH_byWidth = vw / ratio;
+  }
+
+  const pageH = Math.max(100, Math.min(pageH_byHeight, pageH_byWidth)); // alto real de UNA página
+  const pageW = pageH * ratio;
+
+  // Asignar tamaño real del "libro"
+  if(twoUp()){
+    book.style.width  = (pageW*2 + GAP) + "px";
+    book.style.height = pageH + "px";
+  }else{
+    book.style.width  = pageW + "px";
+    book.style.height = pageH + "px";
+  }
+
+  // Escala de usuario (zoom) – SIEMPRE encaja porque el tamaño base ya está ajustado
+  document.documentElement.style.setProperty('--zoom', userZoom.toString());
 }
 
-/* ==== UI helpers ==== */
-function setZoom(val){
-  zoom = Math.max(ZMIN, Math.min(ZMAX, val));
-  document.documentElement.style.setProperty('--zoom', zoom);
-}
-btnZoomIn.onclick  = ()=> setZoom(zoom + ZSTEP);
-btnZoomOut.onclick = ()=> setZoom(zoom - ZSTEP);
+/* ====== Zoom ====== */
+function setZoom(val){ userZoom = Math.max(ZMIN, Math.min(ZMAX, val)); applyAutoFit(); }
+btnZoomIn.onclick  = ()=> setZoom(userZoom + ZSTEP);
+btnZoomOut.onclick = ()=> setZoom(userZoom - ZSTEP);
 btnZoomReset.onclick = ()=> setZoom(1);
 
-/* ==== Construcción de páginas ==== */
+/* ====== Construcción de páginas ====== */
 function pageDiv(src, isBlank=false){
   const d=document.createElement('div');
   d.className='page' + (isBlank ? ' blank' : '');
@@ -155,8 +182,7 @@ function formatCounter(){
   const N = IMAGES.length;
   if(!twoUp()) return `Página ${currentIndex+1} de ${N}`;
   if(currentIndex === -1) return `Página 1 de ${N}`;
-  const L = currentIndex + 1;
-  const R = Math.min(N, currentIndex + 2);
+  const L = currentIndex + 1, R = Math.min(N, currentIndex + 2);
   return (L===R) ? `Página ${L} de ${N}` : `Páginas ${L}–${R} de ${N}`;
 }
 
@@ -176,34 +202,32 @@ function updateButtons(){
   btnLast.disabled  = atLast;
 }
 
-/* ==== Render principal ==== */
+/* ====== Render ====== */
 function renderSpread(){
   book.innerHTML='';
   if(!twoUp()){
-    // Móvil: 1 sola página
     const idx = Math.max(0, currentIndex===-1?0:currentIndex);
     book.parentElement.parentElement.classList.add('single');
     book.classList.add('single');
     book.appendChild(pageDiv(IMAGES[idx]));
   }else{
-    // Desktop: portada / pares
     book.parentElement.parentElement.classList.remove('single');
     book.classList.remove('single');
     if(currentIndex === -1){
-      // Tapa: izquierda en blanco, derecha página 1
-      book.appendChild(pageDiv('', true));
-      book.appendChild(pageDiv(IMAGES[0]));
+      book.appendChild(pageDiv('', true));       // izquierda vacía (tapa)
+      book.appendChild(pageDiv(IMAGES[0]));      // derecha pág. 1
     }else{
-      book.appendChild(pageDiv(IMAGES[currentIndex]));           // izquierda
+      book.appendChild(pageDiv(IMAGES[currentIndex])); // izquierda
       const r = currentIndex + 1;
-      book.appendChild( r < IMAGES.length ? pageDiv(IMAGES[r]) : pageDiv('', true) ); // derecha o blanco si no hay
+      book.appendChild( r < IMAGES.length ? pageDiv(IMAGES[r]) : pageDiv('', true) ); // derecha o vacía
     }
   }
   counterEl.textContent = formatCounter();
   updateButtons();
+  applyAutoFit();
 }
 
-/* ==== Overlay de flip (orientado RTL: derecha → izquierda al avanzar) ==== */
+/* ====== Efecto flip (D→I al avanzar) ====== */
 function createFlipOverlay(frontSrc, backSrc, dir){
   const overlay=document.createElement('div');
   overlay.className='flip-overlay';
@@ -222,12 +246,10 @@ function createFlipOverlay(frontSrc, backSrc, dir){
   overlay.appendChild(front); overlay.appendChild(back);
   overlay.appendChild(shadeL); overlay.appendChild(shadeR);
 
-  // Avanzar (next): hoja derecha gira hacia la izquierda → pivote en su borde derecho
   overlay.style.transformOrigin = (dir==='next') ? 'right center' : 'left center';
   overlay.dataset.dir = dir;
   return overlay;
 }
-
 let flipping=false;
 
 function goNext(){
@@ -238,12 +260,10 @@ function goNext(){
   }else{
     const maxLeft = (IMAGES.length % 2 === 0) ? (IMAGES.length - 2) : (IMAGES.length - 3);
     if(currentIndex >= maxLeft) return;
-    // de portada a primer par
     if(currentIndex === -1) { flipCoverToFirst(); return; }
     flipDouble('next');
   }
 }
-
 function goPrev(){
   if(flipping) return;
   if(!twoUp()){
@@ -251,39 +271,31 @@ function goPrev(){
     flipSingle('prev');
   }else{
     if(currentIndex <= -1) return;
-    // volver a portada si estamos en el primer par
     if(currentIndex === 0) { flipFirstToCover(); return; }
     flipDouble('prev');
   }
 }
 
-/* --- Transiciones --- */
 function flipCoverToFirst(){
   flipping = true;
-  // Hoja derecha (portada) → se voltea mostrando la siguiente (página 2) a la izquierda
   const rightPage = book.children[1];
   const overlay = createFlipOverlay(IMAGES[0], IMAGES[1] || IMAGES[0], 'next');
   rightPage.appendChild(overlay);
   requestAnimationFrame(()=> overlay.classList.add('animate','flip-next'));
   overlay.addEventListener('animationend', ()=>{
-    currentIndex = 1; // par (2-3) → índice izquierdo = 1
-    renderSpread(); flipping=false;
+    currentIndex = 1; renderSpread(); flipping=false;
   }, {once:true});
 }
-
 function flipFirstToCover(){
   flipping = true;
-  // Volvemos del par (2-3) a la portada: la hoja izquierda (página 2) se devuelve
   const leftPage = book.children[0];
   const overlay = createFlipOverlay(IMAGES[1], IMAGES[0], 'prev');
   leftPage.appendChild(overlay);
   requestAnimationFrame(()=> overlay.classList.add('animate','flip-prev'));
   overlay.addEventListener('animationend', ()=>{
-    currentIndex = -1; // portada
-    renderSpread(); flipping=false;
+    currentIndex = -1; renderSpread(); flipping=false;
   }, {once:true});
 }
-
 function flipSingle(direction){
   flipping=true;
   const from = Math.max(0, currentIndex);
@@ -296,14 +308,13 @@ function flipSingle(direction){
     currentIndex = to; renderSpread(); flipping=false;
   }, {once:true});
 }
-
 function flipDouble(direction){
   flipping=true;
   if(direction==='next'){
     const rightPage = book.children[1] || book.children[0];
     const fromFront = IMAGES[currentIndex+1] || IMAGES[currentIndex];
     const toBack    = IMAGES[currentIndex+2] || IMAGES[IMAGES.length-1];
-    const overlay = createFlipOverlay(fromFront, toBack, 'next'); // RTL
+    const overlay = createFlipOverlay(fromFront, toBack, 'next');
     rightPage.appendChild(overlay);
     requestAnimationFrame(()=> overlay.classList.add('animate','flip-next'));
     overlay.addEventListener('animationend', ()=>{
@@ -314,7 +325,7 @@ function flipDouble(direction){
     const leftPage  = book.children[0];
     const fromFront = IMAGES[currentIndex];
     const toBack    = IMAGES[currentIndex-1];
-    const overlay = createFlipOverlay(fromFront, toBack, 'prev'); // LTR al retroceder
+    const overlay = createFlipOverlay(fromFront, toBack, 'prev');
     leftPage.appendChild(overlay);
     requestAnimationFrame(()=> overlay.classList.add('animate','flip-prev'));
     overlay.addEventListener('animationend', ()=>{
@@ -324,7 +335,7 @@ function flipDouble(direction){
   }
 }
 
-/* Drag (arrastre) con misma dirección visual */
+/* Drag */
 function setupDrag(pageEl){
   let startX=null, dragging=false, overlay=null, dir=null, width=0;
 
@@ -337,7 +348,7 @@ function setupDrag(pageEl){
       dir = (x>rect.width*0.6) ? 'next' : (x<rect.width*0.4 ? 'prev' : null);
       if(!dir) return;
     }else{
-      if(currentIndex === -1){ // portada: sólo next sobre la derecha
+      if(currentIndex === -1){
         if(pageEl===book.children[1] && x>rect.width*0.4) dir='next'; else return;
       }else{
         if(x>rect.width*0.6 && pageEl===book.children[1]) dir='next';
@@ -413,18 +424,12 @@ function setupDrag(pageEl){
   window.addEventListener('touchend', onEnd, {passive:false});
 }
 
-/* Ir a extremos */
-function goFirst(){
-  if(flipping) return;
-  currentIndex = twoUp() ? -1 : 0; renderSpread();
-}
+/* Extremos */
+function goFirst(){ if(flipping) return; currentIndex = twoUp() ? -1 : 0; renderSpread(); }
 function goLast(){
   if(flipping) return;
-  if(!twoUp()){
-    currentIndex = IMAGES.length - 1;
-  }else{
-    currentIndex = (IMAGES.length % 2 === 0) ? (IMAGES.length - 2) : (IMAGES.length - 3);
-  }
+  if(!twoUp()) currentIndex = IMAGES.length - 1;
+  else currentIndex = (IMAGES.length % 2 === 0) ? (IMAGES.length - 2) : (IMAGES.length - 3);
   renderSpread();
 }
 
@@ -435,19 +440,13 @@ function startAuto(){
   autoTimer = setInterval(()=>{
     const before = currentIndex;
     goNext();
-    // detener al llegar al final
-    if(before === currentIndex){
-      stopAuto();
-    }
-  }, 1800); // velocidad
+    if(before === currentIndex) stopAuto();
+  }, 1800);
 }
-function stopAuto(){
-  if(autoTimer){ clearInterval(autoTimer); autoTimer=null; }
-  btnAuto.textContent = "Auto ▶";
-}
+function stopAuto(){ if(autoTimer){ clearInterval(autoTimer); autoTimer=null; } btnAuto.textContent = "Auto ▶"; }
 btnAuto.addEventListener('click', ()=> autoTimer ? stopAuto() : startAuto());
 
-/* Botones nav y teclado */
+/* Nav y teclado */
 btnFirst.addEventListener('click', goFirst);
 btnPrev .addEventListener('click', goPrev);
 btnNext .addEventListener('click', goNext);
@@ -458,27 +457,29 @@ window.addEventListener('keydown', (e)=>{
   else if(e.key==='ArrowRight') goNext();
   else if(e.key==='Home') goFirst();
   else if(e.key==='End') goLast();
-  else if((e.ctrlKey||e.metaKey) && (e.key==='=' || e.key==='+')) setZoom(zoom+ZSTEP);
-  else if((e.ctrlKey||e.metaKey) && e.key==='-') setZoom(zoom-ZSTEP);
+  else if((e.ctrlKey||e.metaKey) && (e.key==='=' || e.key==='+')) setZoom(userZoom+0.1);
+  else if((e.ctrlKey||e.metaKey) && e.key==='-') setZoom(userZoom-0.1);
   else if((e.ctrlKey||e.metaKey) && e.key==='0') setZoom(1);
 });
 
-/* Responsivo (cambio entre 1 y 2 páginas) */
+/* Responsivo */
 let raf=0;
 window.addEventListener('resize', ()=>{
   cancelAnimationFrame(raf);
   raf = requestAnimationFrame(()=>{
-    const wasTwoUp = (currentIndex !== -1) || twoUp();
-    const t2 = twoUp();
-    if(t2 && currentIndex===0) currentIndex = -1;      // pasar a portada
-    if(!t2 && currentIndex===-1) currentIndex = 0;     // en móvil mostrar portada como 1
+    const wasTwo = twoUp();
+    currentIndex = wasTwo ? (currentIndex===0? -1: currentIndex) : (currentIndex===-1? 0: currentIndex);
     renderSpread();
   });
 });
 
-/* Init */
-setZoom(1);
-renderSpread();
+/* Detectar ratio real de la 1ª imagen y arrancar */
+(function init(){
+  const probe = new Image();
+  probe.onload = ()=>{ if(probe.naturalHeight>0) ratio = probe.naturalWidth / probe.naturalHeight; renderSpread(); };
+  probe.onerror = ()=>{ renderSpread(); };
+  probe.src = IMAGES[0];
+})();
 </script>
 </body>
 </html>

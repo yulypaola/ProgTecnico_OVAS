@@ -8,45 +8,53 @@
   :root{
     --bg:#111; --fg:#eaeaea; --muted:#9aa0a6; --accent:#3aa675;
     --shadow: 0 12px 36px rgba(0,0,0,.38);
-    --flip-duration: 800ms;
+    --flip-duration: 720ms; /* un poco más rápido */
     --fold-width: 24px;
+    --zoom: 1;
+    --bar-h: 60px;
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);
     font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans";}
-  .topbar{display:flex;align-items:center;gap:12px;padding:10px 12px;border-bottom:1px solid #222;
-    background:#0b0b0b;position:sticky;top:0;z-index:10}
+  .topbar{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid #222;
+    background:#0b0b0b;position:sticky;top:0;z-index:10;min-height:var(--bar-h)}
   .title{font-weight:600;letter-spacing:.2px}
   .spacer{flex:1}
-  .controls{display:flex;align-items:center;gap:6px}
+  .controls{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
   button{background:#1b1b1b;border:1px solid #2a2a2a;color:var(--fg);padding:6px 10px;border-radius:8px;
     cursor:pointer;font-size:14px}
   button:hover:not(:disabled){border-color:var(--accent)}
   button:disabled{opacity:.45;cursor:not-allowed}
   .counter{color:var(--muted);font-size:14px;min-width:160px;text-align:right}
-  .stage{position:fixed;top:50px;left:0;right:0;bottom:0;display:grid;place-items:center;padding:12px}
-  .book{width:100%;height:100%;max-width:1600px;max-height:calc(100vh - 80px);
-    display:grid;grid-template-columns:1fr 1fr;gap:12px;perspective:2000px}
+  .stage{position:fixed;top:var(--bar-h);left:0;right:0;bottom:0;display:grid;place-items:center;padding:0 10px}
+  .book-wrap{transform:scale(var(--zoom)); transform-origin:center; transition:transform 120ms ease;}
+  .book{width:min(96vw,1600px);height:calc(100vh - var(--bar-h) - 12px);
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;perspective:2000px;align-items:stretch}
   .single .book{grid-template-columns:1fr}
   .page{background:#000;border-radius:10px;overflow:hidden;position:relative;box-shadow:var(--shadow);
     display:grid;place-items:center}
-  .page img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+  .page img{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;display:block;background:#fff}
+  .page.blank{background:#0b0b0b} /* hoja vacía (tapa izquierda) */
+
+  /* zonas clicables */
   .clickzone{position:absolute;top:0;bottom:0;width:25%}
   .clickzone.left{left:0;cursor:pointer}
   .clickzone.right{right:0;cursor:pointer}
 
+  /* overlay de volteo */
   .flip-overlay{position:absolute;inset:0;transform-style:preserve-3d;pointer-events:none}
   .flip-overlay.animate{animation-duration:var(--flip-duration);animation-timing-function:ease-in-out}
   .flip-next.animate{animation-name:flipNext}
   .flip-prev.animate{animation-name:flipPrev}
   .face{position:absolute;inset:0;backface-visibility:hidden;display:grid;place-items:center;background:#000}
-  .face img{max-width:100%;max-height:100%;object-fit:contain}
+  .face img{width:100%;height:100%;object-fit:contain;background:#fff}
   .back{transform:rotateY(180deg)}
 
   .shadeL,.shadeR{position:absolute;top:0;bottom:0;width:var(--fold-width);pointer-events:none}
   .shadeL{left:0;background:linear-gradient(to right, rgba(0,0,0,var(--shadeL,0.45)) 0%, rgba(0,0,0,0) 100%)}
   .shadeR{right:0;background:linear-gradient(to left, rgba(0,0,0,var(--shadeR,0.45)) 0%, rgba(0,0,0,0) 100%)}
 
+  /* Importante: NEXT (avanzar) gira la hoja DERECHA hacia la IZQUIERDA */
   @keyframes flipNext{0%{transform:rotateY(0deg)}45%{transform:rotateY(-90deg)}100%{transform:rotateY(-180deg)}}
   @keyframes flipPrev{0%{transform:rotateY(0deg)}45%{transform:rotateY(90deg)}100%{transform:rotateY(180deg)}}
 
@@ -56,60 +64,87 @@
 <body>
   <div class="topbar" role="region" aria-label="Barra de navegación del flipbook">
     <div class="title">Flipbook</div>
-    <div class="spacer"></div>
-    <div class="controls">
+    <div class="controls" aria-label="Controles de navegación">
       <button id="btnFirst" aria-label="Primera página">⏮</button>
       <button id="btnPrev" aria-label="Página anterior">◀</button>
       <button id="btnNext" aria-label="Página siguiente">▶</button>
       <button id="btnLast" aria-label="Última página">⏭</button>
     </div>
+    <div class="controls" aria-label="Controles de zoom">
+      <button id="btnZoomOut" aria-label="Reducir zoom">🔍−</button>
+      <button id="btnZoomReset" aria-label="Restablecer zoom">100%</button>
+      <button id="btnZoomIn" aria-label="Aumentar zoom">🔍＋</button>
+    </div>
+    <div class="controls" aria-label="Reproducción automática">
+      <button id="btnAuto" aria-label="Pase automático">Auto ▶</button>
+    </div>
+    <div class="spacer"></div>
     <div id="counter" class="counter" aria-live="polite" aria-atomic="true"></div>
   </div>
 
   <div id="root" class="stage">
-    <div id="book" class="book"></div>
+    <div class="book-wrap">
+      <div id="book" class="book"></div>
+    </div>
   </div>
 
 <script>
+/* ==== LISTA DE IMÁGENES ==== */
 const IMAGES = [
-"img/page-001.png",
-    "img/page-002.png",
-    "img/page-003.png",
-    "img/page-004.png",
-    "img/page-005.png",
-    "img/page-006.png",
-    "img/page-007.png",
-    "img/page-008.png",
-    "img/page-009.png",
-    "img/page-010.png",
-    "img/page-011.png",
-    "img/page-012.png",
-    "img/page-013.png",
-    "img/page-014.png",
-    "img/page-015.png"
+  "img/page-001.png","img/page-002.png","img/page-003.png","img/page-004.png","img/page-005.png",
+  "img/page-006.png","img/page-007.png","img/page-008.png","img/page-009.png","img/page-010.png",
+  "img/page-011.png","img/page-012.png","img/page-013.png","img/page-014.png","img/page-015.png"
 ];
 
-let currentIndex = 0;
-const root = document.getElementById('root');
-const book = document.getElementById('book');
+/* ==== ESTADO Y REFERENCIAS ==== */
+let autoTimer = null;
+let zoom = 1; const ZMIN=0.6, ZMAX=2.0, ZSTEP=0.1;
+const root   = document.getElementById('root');
+const wrap   = document.querySelector('.book-wrap');
+const book   = document.getElementById('book');
 const counterEl = document.getElementById('counter');
 const btnFirst = document.getElementById('btnFirst');
 const btnPrev  = document.getElementById('btnPrev');
 const btnNext  = document.getElementById('btnNext');
 const btnLast  = document.getElementById('btnLast');
+const btnZoomIn = document.getElementById('btnZoomIn');
+const btnZoomOut = document.getElementById('btnZoomOut');
+const btnZoomReset = document.getElementById('btnZoomReset');
+const btnAuto = document.getElementById('btnAuto');
 
-function isSingleMode(){return window.matchMedia("(max-width: 768px)").matches;}
+/* MODELO DE NAVEGACIÓN
+   two-up (desktop): currentIndex = índice de la PÁGINA IZQUIERDA del par.
+   Cover (libro cerrado): currentIndex = -1 (sólo portada a la derecha). */
+function twoUp(){ return !window.matchMedia("(max-width: 768px)").matches; }
+let currentIndex = twoUp() ? -1 : 0;
+
 function clampIndex(i){
-  const max=IMAGES.length-1;
-  if(isSingleMode()){return Math.max(0, Math.min(i,max));}
-  if(i%2!==0) i--; if(i<0) i=0; if(i>max) i=(max%2===0)?max:max-1; return i;
+  if(!twoUp()) return Math.max(0, Math.min(IMAGES.length-1, i));
+  if(i < -1) i = -1;
+  if(i >= 0 && i % 2 === 1) i -= 1; // izquierda siempre par (2,4,6 → idx 1,3,5)
+  const maxLeft = (IMAGES.length % 2 === 0) ? (IMAGES.length - 2) : (IMAGES.length - 3);
+  if(i > maxLeft) i = maxLeft;
+  return i;
 }
 
-function pageDiv(src){
-  const d=document.createElement('div'); d.className='page';
-  const img=new Image(); img.src=src; img.loading='lazy'; img.decoding='async'; img.alt='Página';
+/* ==== UI helpers ==== */
+function setZoom(val){
+  zoom = Math.max(ZMIN, Math.min(ZMAX, val));
+  document.documentElement.style.setProperty('--zoom', zoom);
+}
+btnZoomIn.onclick  = ()=> setZoom(zoom + ZSTEP);
+btnZoomOut.onclick = ()=> setZoom(zoom - ZSTEP);
+btnZoomReset.onclick = ()=> setZoom(1);
+
+/* ==== Construcción de páginas ==== */
+function pageDiv(src, isBlank=false){
+  const d=document.createElement('div');
+  d.className='page' + (isBlank ? ' blank' : '');
+  const img=new Image();
+  img.loading='lazy'; img.decoding='async'; img.alt='Página';
+  if(!isBlank){ img.src=src; }
   d.appendChild(img);
-  const L=document.createElement('div'); L.className='clickzone left'; L.onclick=goPrev;
+  const L=document.createElement('div'); L.className='clickzone left';  L.onclick=goPrev;
   const R=document.createElement('div'); R.className='clickzone right'; R.onclick=goNext;
   d.appendChild(L); d.appendChild(R);
   setupDrag(d);
@@ -117,42 +152,58 @@ function pageDiv(src){
 }
 
 function formatCounter(){
-  const total=IMAGES.length;
-  if(isSingleMode()) return "Página "+(currentIndex+1)+" de "+total;
-  const L=currentIndex+1, R=Math.min(currentIndex+2,total);
-  return (L===R) ? ("Página "+L+" de "+total) : ("Páginas "+L+"–"+R+" de "+total);
+  const N = IMAGES.length;
+  if(!twoUp()) return `Página ${currentIndex+1} de ${N}`;
+  if(currentIndex === -1) return `Página 1 de ${N}`;
+  const L = currentIndex + 1;
+  const R = Math.min(N, currentIndex + 2);
+  return (L===R) ? `Página ${L} de ${N}` : `Páginas ${L}–${R} de ${N}`;
 }
 
 function updateButtons(){
-  const total=IMAGES.length;
-  if(isSingleMode()){
-    btnFirst.disabled=currentIndex===0;
-    btnPrev.disabled=currentIndex===0;
-    btnNext.disabled=currentIndex>=total-1;
-    btnLast.disabled=currentIndex>=total-1;
-  }else{
-    btnFirst.disabled=currentIndex===0;
-    btnPrev.disabled=currentIndex===0;
-    const endPair=(currentIndex>=total-2)||(currentIndex===total-1);
-    btnNext.disabled=endPair; btnLast.disabled=endPair;
+  const N = IMAGES.length;
+  if(!twoUp()){
+    btnFirst.disabled = currentIndex<=0;
+    btnPrev.disabled  = currentIndex<=0;
+    btnNext.disabled  = currentIndex>=N-1;
+    btnLast.disabled  = currentIndex>=N-1;
+    return;
   }
+  btnFirst.disabled = currentIndex<=-1;
+  btnPrev.disabled  = currentIndex<=-1;
+  const atLast = (N%2===1) ? (currentIndex>=N-3) : (currentIndex>=N-2);
+  btnNext.disabled  = atLast;
+  btnLast.disabled  = atLast;
 }
 
+/* ==== Render principal ==== */
 function renderSpread(){
   book.innerHTML='';
-  const single=isSingleMode();
-  if(single){
-    root.classList.add('single'); book.classList.add('single');
-    book.appendChild(pageDiv(IMAGES[currentIndex]));
+  if(!twoUp()){
+    // Móvil: 1 sola página
+    const idx = Math.max(0, currentIndex===-1?0:currentIndex);
+    book.parentElement.parentElement.classList.add('single');
+    book.classList.add('single');
+    book.appendChild(pageDiv(IMAGES[idx]));
   }else{
-    root.classList.remove('single'); book.classList.remove('single');
-    book.appendChild(pageDiv(IMAGES[currentIndex]));
-    if(currentIndex+1<IMAGES.length) book.appendChild(pageDiv(IMAGES[currentIndex+1]));
+    // Desktop: portada / pares
+    book.parentElement.parentElement.classList.remove('single');
+    book.classList.remove('single');
+    if(currentIndex === -1){
+      // Tapa: izquierda en blanco, derecha página 1
+      book.appendChild(pageDiv('', true));
+      book.appendChild(pageDiv(IMAGES[0]));
+    }else{
+      book.appendChild(pageDiv(IMAGES[currentIndex]));           // izquierda
+      const r = currentIndex + 1;
+      book.appendChild( r < IMAGES.length ? pageDiv(IMAGES[r]) : pageDiv('', true) ); // derecha o blanco si no hay
+    }
   }
-  counterEl.textContent=formatCounter();
+  counterEl.textContent = formatCounter();
   updateButtons();
 }
 
+/* ==== Overlay de flip (orientado RTL: derecha → izquierda al avanzar) ==== */
 function createFlipOverlay(frontSrc, backSrc, dir){
   const overlay=document.createElement('div');
   overlay.className='flip-overlay';
@@ -171,8 +222,9 @@ function createFlipOverlay(frontSrc, backSrc, dir){
   overlay.appendChild(front); overlay.appendChild(back);
   overlay.appendChild(shadeL); overlay.appendChild(shadeR);
 
-  overlay.dataset.dir=dir;
+  // Avanzar (next): hoja derecha gira hacia la izquierda → pivote en su borde derecho
   overlay.style.transformOrigin = (dir==='next') ? 'right center' : 'left center';
+  overlay.dataset.dir = dir;
   return overlay;
 }
 
@@ -180,94 +232,134 @@ let flipping=false;
 
 function goNext(){
   if(flipping) return;
-  if(isSingleMode()){
-    if(currentIndex>=IMAGES.length-1) return;
+  if(!twoUp()){
+    if(currentIndex >= IMAGES.length-1) return;
     flipSingle('next');
   }else{
-    if(currentIndex>=IMAGES.length-2) return;
+    const maxLeft = (IMAGES.length % 2 === 0) ? (IMAGES.length - 2) : (IMAGES.length - 3);
+    if(currentIndex >= maxLeft) return;
+    // de portada a primer par
+    if(currentIndex === -1) { flipCoverToFirst(); return; }
     flipDouble('next');
   }
 }
 
 function goPrev(){
   if(flipping) return;
-  if(isSingleMode()){
-    if(currentIndex<=0) return;
+  if(!twoUp()){
+    if(currentIndex <= 0) return;
     flipSingle('prev');
   }else{
-    if(currentIndex<=0) return;
+    if(currentIndex <= -1) return;
+    // volver a portada si estamos en el primer par
+    if(currentIndex === 0) { flipFirstToCover(); return; }
     flipDouble('prev');
   }
 }
 
+/* --- Transiciones --- */
+function flipCoverToFirst(){
+  flipping = true;
+  // Hoja derecha (portada) → se voltea mostrando la siguiente (página 2) a la izquierda
+  const rightPage = book.children[1];
+  const overlay = createFlipOverlay(IMAGES[0], IMAGES[1] || IMAGES[0], 'next');
+  rightPage.appendChild(overlay);
+  requestAnimationFrame(()=> overlay.classList.add('animate','flip-next'));
+  overlay.addEventListener('animationend', ()=>{
+    currentIndex = 1; // par (2-3) → índice izquierdo = 1
+    renderSpread(); flipping=false;
+  }, {once:true});
+}
+
+function flipFirstToCover(){
+  flipping = true;
+  // Volvemos del par (2-3) a la portada: la hoja izquierda (página 2) se devuelve
+  const leftPage = book.children[0];
+  const overlay = createFlipOverlay(IMAGES[1], IMAGES[0], 'prev');
+  leftPage.appendChild(overlay);
+  requestAnimationFrame(()=> overlay.classList.add('animate','flip-prev'));
+  overlay.addEventListener('animationend', ()=>{
+    currentIndex = -1; // portada
+    renderSpread(); flipping=false;
+  }, {once:true});
+}
+
 function flipSingle(direction){
   flipping=true;
-  const from=currentIndex;
-  const to=clampIndex(currentIndex + (direction==='next'?1:-1));
-  const page=book.querySelector('.page');
-  const overlay=createFlipOverlay(IMAGES[from], IMAGES[to], direction==='next' ? 'next':'prev');
+  const from = Math.max(0, currentIndex);
+  const to   = clampIndex(currentIndex + (direction==='next'?1:-1));
+  const page = book.querySelector('.page');
+  const overlay = createFlipOverlay(IMAGES[from], IMAGES[to], direction==='next'?'next':'prev');
   page.appendChild(overlay);
-  requestAnimationFrame(()=>{ overlay.classList.add('animate', direction==='next'?'flip-next':'flip-prev'); });
-  overlay.addEventListener('animationend', ()=>{ currentIndex=to; renderSpread(); flipping=false; }, {once:true});
+  requestAnimationFrame(()=> overlay.classList.add('animate', direction==='next'?'flip-next':'flip-prev'));
+  overlay.addEventListener('animationend', ()=>{
+    currentIndex = to; renderSpread(); flipping=false;
+  }, {once:true});
 }
 
 function flipDouble(direction){
   flipping=true;
   if(direction==='next'){
-    const rightPage=book.children[1]||book.children[0];
-    const fromFront=IMAGES[currentIndex+1]||IMAGES[currentIndex];
-    const nextLeftIndex=currentIndex+2;
-    const toBack=IMAGES[nextLeftIndex]||IMAGES[IMAGES.length-1];
-    const overlay=createFlipOverlay(fromFront,toBack,'next');
+    const rightPage = book.children[1] || book.children[0];
+    const fromFront = IMAGES[currentIndex+1] || IMAGES[currentIndex];
+    const toBack    = IMAGES[currentIndex+2] || IMAGES[IMAGES.length-1];
+    const overlay = createFlipOverlay(fromFront, toBack, 'next'); // RTL
     rightPage.appendChild(overlay);
-    requestAnimationFrame(()=>{ overlay.classList.add('animate','flip-next'); });
-    overlay.addEventListener('animationend', ()=>{ currentIndex=clampIndex(currentIndex+2); renderSpread(); flipping=false; }, {once:true});
+    requestAnimationFrame(()=> overlay.classList.add('animate','flip-next'));
+    overlay.addEventListener('animationend', ()=>{
+      currentIndex = clampIndex(currentIndex + 2);
+      renderSpread(); flipping=false;
+    }, {once:true});
   }else{
-    const leftPage=book.children[0];
-    const fromFront=IMAGES[currentIndex];
-    const prevRightIndex=currentIndex-1;
-    const toBack=IMAGES[prevRightIndex];
-    const overlay=createFlipOverlay(fromFront,toBack,'prev');
+    const leftPage  = book.children[0];
+    const fromFront = IMAGES[currentIndex];
+    const toBack    = IMAGES[currentIndex-1];
+    const overlay = createFlipOverlay(fromFront, toBack, 'prev'); // LTR al retroceder
     leftPage.appendChild(overlay);
-    requestAnimationFrame(()=>{ overlay.classList.add('animate','flip-prev'); });
-    overlay.addEventListener('animationend', ()=>{ currentIndex=clampIndex(currentIndex-2); renderSpread(); flipping=false; }, {once:true});
+    requestAnimationFrame(()=> overlay.classList.add('animate','flip-prev'));
+    overlay.addEventListener('animationend', ()=>{
+      currentIndex = clampIndex(currentIndex - 2);
+      renderSpread(); flipping=false;
+    }, {once:true});
   }
 }
 
+/* Drag (arrastre) con misma dirección visual */
 function setupDrag(pageEl){
   let startX=null, dragging=false, overlay=null, dir=null, width=0;
 
   function onStart(ev){
     if(flipping) return;
-    const rect=pageEl.getBoundingClientRect();
-    width=rect.width;
+    const rect=pageEl.getBoundingClientRect(); width=rect.width;
     const x=(ev.touches?ev.touches[0].clientX:ev.clientX)-rect.left;
 
-    if(isSingleMode()){
+    if(!twoUp()){
       dir = (x>rect.width*0.6) ? 'next' : (x<rect.width*0.4 ? 'prev' : null);
       if(!dir) return;
     }else{
-      if(x>rect.width*0.6 && pageEl===book.children[1]) dir='next';
-      else if(x<rect.width*0.4 && pageEl===book.children[0]) dir='prev';
-      else return;
+      if(currentIndex === -1){ // portada: sólo next sobre la derecha
+        if(pageEl===book.children[1] && x>rect.width*0.4) dir='next'; else return;
+      }else{
+        if(x>rect.width*0.6 && pageEl===book.children[1]) dir='next';
+        else if(x<rect.width*0.4 && pageEl===book.children[0]) dir='prev';
+        else return;
+      }
     }
 
     startX = ev.touches?ev.touches[0].clientX:ev.clientX;
     dragging=true;
 
-    if(isSingleMode()){
-      const from=currentIndex;
-      const to=clampIndex(currentIndex + (dir==='next'?1:-1));
-      overlay=createFlipOverlay(IMAGES[from], IMAGES[to], dir);
+    if(!twoUp()){
+      const from = Math.max(0, currentIndex);
+      const to   = clampIndex(currentIndex + (dir==='next'?1:-1));
+      overlay = createFlipOverlay(IMAGES[from], IMAGES[to], dir);
     }else{
-      if(dir==='next'){
-        const fromFront=IMAGES[currentIndex+1]||IMAGES[currentIndex];
-        const toBack=IMAGES[currentIndex+2]||IMAGES[IMAGES.length-1];
-        overlay=createFlipOverlay(fromFront,toBack,'next');
+      if(currentIndex === -1 && dir==='next'){
+        overlay = createFlipOverlay(IMAGES[0], IMAGES[1]||IMAGES[0], 'next');
+      }else if(dir==='next'){
+        overlay = createFlipOverlay(IMAGES[currentIndex+1]||IMAGES[currentIndex], IMAGES[currentIndex+2]||IMAGES[IMAGES.length-1], 'next');
       }else{
-        const fromFront=IMAGES[currentIndex];
-        const toBack=IMAGES[currentIndex-1];
-        overlay=createFlipOverlay(fromFront,toBack,'prev');
+        overlay = createFlipOverlay(IMAGES[currentIndex], IMAGES[currentIndex-1], 'prev');
       }
     }
     pageEl.appendChild(overlay);
@@ -295,8 +387,10 @@ function setupDrag(pageEl){
     if(willCommit){
       overlay.classList.add('animate', dir==='next'?'flip-next':'flip-prev');
       overlay.addEventListener('animationend', ()=>{
-        if(isSingleMode()){
+        if(!twoUp()){
           currentIndex = clampIndex(currentIndex + (dir==='next'?1:-1));
+        }else if(currentIndex === -1 && dir==='next'){
+          currentIndex = 1;
         }else{
           currentIndex = clampIndex(currentIndex + (dir==='next'?2:-2));
         }
@@ -304,9 +398,8 @@ function setupDrag(pageEl){
       }, {once:true});
       flipping=true;
     }else{
-      overlay.style.transition='transform 300ms ease';
-      overlay.style.transform='rotateY(0deg)';
-      setTimeout(()=>{ overlay.remove(); }, 320);
+      overlay.style.transition='transform 280ms ease'; overlay.style.transform='rotateY(0deg)';
+      setTimeout(()=>{ overlay.remove(); }, 300);
     }
     dragging=false; overlay=null; dir=null; startX=null;
     ev.preventDefault();
@@ -320,13 +413,41 @@ function setupDrag(pageEl){
   window.addEventListener('touchend', onEnd, {passive:false});
 }
 
-function goFirst(){ if(flipping) return; currentIndex=0; renderSpread(); }
+/* Ir a extremos */
+function goFirst(){
+  if(flipping) return;
+  currentIndex = twoUp() ? -1 : 0; renderSpread();
+}
 function goLast(){
   if(flipping) return;
-  currentIndex = isSingleMode() ? (IMAGES.length-1) : ((IMAGES.length%2===0)?IMAGES.length-2:IMAGES.length-1);
+  if(!twoUp()){
+    currentIndex = IMAGES.length - 1;
+  }else{
+    currentIndex = (IMAGES.length % 2 === 0) ? (IMAGES.length - 2) : (IMAGES.length - 3);
+  }
   renderSpread();
 }
 
+/* Auto pase */
+function startAuto(){
+  if(autoTimer) return;
+  btnAuto.textContent = "Auto ⏸";
+  autoTimer = setInterval(()=>{
+    const before = currentIndex;
+    goNext();
+    // detener al llegar al final
+    if(before === currentIndex){
+      stopAuto();
+    }
+  }, 1800); // velocidad
+}
+function stopAuto(){
+  if(autoTimer){ clearInterval(autoTimer); autoTimer=null; }
+  btnAuto.textContent = "Auto ▶";
+}
+btnAuto.addEventListener('click', ()=> autoTimer ? stopAuto() : startAuto());
+
+/* Botones nav y teclado */
 btnFirst.addEventListener('click', goFirst);
 btnPrev .addEventListener('click', goPrev);
 btnNext .addEventListener('click', goNext);
@@ -337,14 +458,26 @@ window.addEventListener('keydown', (e)=>{
   else if(e.key==='ArrowRight') goNext();
   else if(e.key==='Home') goFirst();
   else if(e.key==='End') goLast();
+  else if((e.ctrlKey||e.metaKey) && (e.key==='=' || e.key==='+')) setZoom(zoom+ZSTEP);
+  else if((e.ctrlKey||e.metaKey) && e.key==='-') setZoom(zoom-ZSTEP);
+  else if((e.ctrlKey||e.metaKey) && e.key==='0') setZoom(1);
 });
 
-let rAF=null;
+/* Responsivo (cambio entre 1 y 2 páginas) */
+let raf=0;
 window.addEventListener('resize', ()=>{
-  if(rAF) cancelAnimationFrame(rAF);
-  rAF=requestAnimationFrame(()=>renderSpread());
+  cancelAnimationFrame(raf);
+  raf = requestAnimationFrame(()=>{
+    const wasTwoUp = (currentIndex !== -1) || twoUp();
+    const t2 = twoUp();
+    if(t2 && currentIndex===0) currentIndex = -1;      // pasar a portada
+    if(!t2 && currentIndex===-1) currentIndex = 0;     // en móvil mostrar portada como 1
+    renderSpread();
+  });
 });
 
+/* Init */
+setZoom(1);
 renderSpread();
 </script>
 </body>

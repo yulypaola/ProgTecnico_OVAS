@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flipbook — Universidad de Córdoba</title>
+
+  <link rel="preload" as="image" href="./img/page-1-b5f394ad.webp" />
+
+  <style>
+    html,body{
+      height:100%;margin:0;
+      background:url('./fondo.png') no-repeat center center fixed;
+      background-size:cover;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial,sans-serif;
+      color:#e5e7eb;
+    }
+    .wrap{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height:100%;
+      padding:16px;
+      box-sizing:border-box;
+      overflow:auto; /* permite desplazarse si el zoom hace que se salga */
+    }
+    #book{
+      position:relative;
+      max-width:95vw;
+      max-height:90vh;
+      box-shadow:0 12px 34px rgba(0,0,0,.38);
+      background:#111827cc;
+      border-radius:16px;
+      overflow:hidden;
+      touch-action:none;
+      transform-origin:center center; /* importante para el zoom */
+    }
+    #book::after{
+      content:'';
+      position:absolute;
+      top:4%;bottom:4%;left:50%;
+      width:3px;
+      transform:translateX(-50%);
+      background:linear-gradient(to bottom,transparent,rgba(0,0,0,.4),transparent);
+      opacity:.25;
+      pointer-events:none
+    }
+    #book[data-mode="single"]::after{display:none}
+    .loading{text-align:center;opacity:.8;padding:18px}
+    .controls{
+      position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+      display:flex;gap:10px;align-items:center;background:rgba(15,23,42,.92);
+      padding:8px 12px;border-radius:999px;backdrop-filter:blur(8px);z-index:10000;
+      border:1px solid rgba(255,255,255,.1)
+    }
+    .btn{
+      color:#fff;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.18);
+      padding:6px 10px;
+      border-radius:10px;
+      cursor:pointer
+    }
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    #status{min-width:72px;text-align:center;color:#94a3b8;font-weight:600}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="book"><div class="loading">Cargando…</div></div>
+  </div>
+
+  <!-- Barra inferior -->
+  <div class="controls">
+    <button id="prev" class="btn">◀︎</button>
+    <span id="status">– / –</span>
+    <button id="next" class="btn">▶︎</button>
+    <button id="auto" class="btn">Auto ▷</button>
+  </div>
+
+  <!-- Librerías -->
+  <script src="./lib/jquery.min.js"></script>
+  <script src="./lib/turn.min.js"></script>
+
+  <!-- Lógica del libro -->
+  <script
+  data-pages='["img/page-1-b5f394ad.webp","img/page-2-93c23f05.webp","img/page-3-f6e96339.webp","img/page-4-916565ee.webp","img/page-5-ba24b5b5.webp","img/page-6-4ec23e65.webp","img/page-7-f4884f6a.webp","img/page-8-a17c6862.webp","img/page-9-4a966a91.webp","img/page-10-bc484d47.webp","img/page-11-e041a910.webp","img/page-12-f97c0412.webp","img/page-13-e9552365.webp","img/page-14-a204c2c4.webp"]'>
+  (async function(){
+    const imgs = JSON.parse(document.currentScript.getAttribute('data-pages'));
+    const first = await new Promise((res,rej)=>{
+      const i=new Image();
+      i.onload=()=>res(i);
+      i.onerror=rej;
+      i.src=imgs[0];
+    });
+    const ratio = first.naturalHeight/first.naturalWidth;
+    const container=document.getElementById('book');
+    container.innerHTML='';
+
+    function mount(){
+      const book=document.getElementById('book');
+      imgs.forEach((src,idx)=>{
+        const page=document.createElement('div');
+        if(idx===0||idx===imgs.length-1)page.className='hard';
+        const img=document.createElement('img');
+        img.src=src;img.alt='';
+        img.style.width='100%';
+        img.style.height='100%';
+        img.style.objectFit='contain';
+        img.draggable=false;
+        page.appendChild(img);
+        book.appendChild(page);
+      });
+
+      const $=window.jQuery;
+      const isMobile=()=>window.innerWidth<992;
+      const maxBookW=()=>Math.min(window.innerWidth*0.95,1400);
+      const compute=()=>{
+        const maxW=maxBookW();
+        const controls=document.querySelector('.controls');
+        const availableH=Math.max(200,window.innerHeight-(controls?.offsetHeight||0)-24);
+        const maxPageWByWidth=isMobile()?maxW:Math.floor(maxW/2);
+        const maxPageWByHeight=Math.round(availableH/ratio);
+        const pageWidth=Math.max(180,Math.min(maxPageWByWidth,maxPageWByHeight));
+        const bookWidth=isMobile()?pageWidth:pageWidth*2;
+        const bookHeight=Math.round(pageWidth*ratio);
+        return{pageWidth,bookWidth,bookHeight};
+      };
+
+      const s0=compute();
+      $(book).turn({
+        width:s0.bookWidth,height:s0.bookHeight,
+        display:isMobile()?'single':'double',
+        autoCenter:true,elevation:80,acceleration:true,
+        turnCorners:'bl,br,tl,tr',duration:800,gradients:true
+      });
+      book.setAttribute('data-mode',isMobile()?'single':'double');
+
+      window.addEventListener('resize',()=>{
+        const s=compute();
+        $(book).turn('size', s.bookWidth, s.bookHeight);
+        book.setAttribute('data-mode',isMobile()?'single':'double');
+      });
+
+      const prev=document.getElementById('prev');
+      const next=document.getElementById('next');
+      const status=document.getElementById('status');
+      function updateStatus(){
+        const c=$(book).turn('page');
+        status.textContent=c+' / '+imgs.length;
+        prev.disabled=c<=1;next.disabled=c>=imgs.length;
+      }
+      updateStatus();
+      $(book).bind('turned',updateStatus);
+      prev.onclick=()=>$(book).turn('previous');
+      next.onclick=()=>$(book).turn('next');
+
+      book.addEventListener('click',(e)=>{
+        const rect=book.getBoundingClientRect();
+        const x=e.clientX-rect.left;
+        if(x<rect.width/2)$(book).turn('previous');else $(book).turn('next');
+      });
+      window.addEventListener('keydown',(e)=>{
+        if(e.key==='ArrowLeft'){e.preventDefault();$(book).turn('previous');}
+        if(e.key==='ArrowRight'){e.preventDefault();$(book).turn('next');}
+      });
+
+      const autoBtn=document.getElementById('auto');
+      let autoTimer=null;
+      function startAuto(){
+        stopAuto();
+        autoTimer=setInterval(()=>{
+          const p=$(book).turn('page');
+          if(p>=imgs.length){stopAuto();return;}
+          $(book).turn('next');
+        },5000);
+        autoBtn.textContent='Auto ⏸';
+      }
+      function stopAuto(){
+        if(autoTimer)clearInterval(autoTimer);
+        autoTimer=null;
+        autoBtn.textContent='Auto ▷';
+      }
+      autoBtn.onclick=()=>autoTimer?stopAuto():startAuto();
+
+      // ----- ZOOM CON SCROLL DEL MOUSE SOBRE EL LIBRO -----
+      let scale = 1;
+      const minScale = 0.8;
+      const maxScale = 2.5;
+
+      function applyScale(){
+        book.style.transform = `scale(${scale})`;
+      }
+
+      // Zoom con rueda del mouse
+      book.addEventListener('wheel',(e)=>{
+        e.preventDefault(); // usamos el scroll para zoom
+        const factor = e.deltaY < 0 ? 1.1 : 1/1.1; // arriba: acerca, abajo: aleja
+        const newScale = Math.min(maxScale, Math.max(minScale, scale * factor));
+        if(newScale === scale) return;
+        scale = newScale;
+        applyScale();
+      },{passive:false});
+
+      // Doble clic para volver al 100%
+      book.addEventListener('dblclick',()=>{
+        scale = 1;
+        applyScale();
+      });
+    }
+    mount();
+  })();
+  </script>
+</body>
+</html>
